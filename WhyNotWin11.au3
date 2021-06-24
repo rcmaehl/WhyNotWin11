@@ -23,7 +23,7 @@ RunWait("powershell -Command $env:firmware_type | Out-File -FilePath .\WhyNot.tx
 
 $sBOOT = FileRead(".\WhyNot.txt")
 $sBOOT = StringStripWS($sBOOT, $STR_STRIPALL)
-If Not $sBOOT = "Legacy" Then
+If Not StringInStr($sBOOT, "Legacy") Then
 	$sBOOTText = "Congrats, this value checks out."
 Else
 	$sBOOTText = "BOOT should have a 'UEFI' or 'Secure' result. This means that your computer is using modern and secure code to prevent data tampering during boot. You can adjust this in your motherboard settings after ensuring that your disk below is GPT."
