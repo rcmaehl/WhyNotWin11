@@ -12,8 +12,8 @@ $sTPM = StringTrimLeft($sTPM, 1)
 
 RunWait("powershell -Command $env:firmware_type | Out-File -FilePath .\WhyNot.txt", "", @SW_HIDE)
 
-$sFirmware = FileRead(".\WhyNot.txt")
-$sFirmware = StringStripWS($sFirmware, $STR_STRIPALL)
+$sBOOT = FileRead(".\WhyNot.txt")
+$sBOOT = StringStripWS($sBOOT, $STR_STRIPALL)
 
 RunWait("powershell -Command Get-Partition -DriveLetter C | Get-Disk | Out-File -FilePath .\WhyNot.txt", "", @SW_HIDE)
 
@@ -27,5 +27,5 @@ EndIf
 FileDelete(".\WhyNot.txt")
 
 MsgBox(0, "WhyNotWin11", "TPM:" & @TAB & $sTPM & @CRLF & _
-						"Disk:" & @TAB & $sFirmware & @CRLF & _
+						"Disk:" & @TAB & $sBOOT & @CRLF & _
 						"GPT:" & @TAB & $sGPT)
