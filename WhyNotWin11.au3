@@ -43,10 +43,10 @@ Func Main()
 	GUICtrlSetFont(-1, 18, 600)
 	GUICtrlCreateLabel("* Results Based on Currently Known Requirements", 130, 80, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
 
-	Local $hCheck[9][3]
-	Local $hLabel[9] = ["Boot Type", "CPU Generation", "CPU Core Count", "CPU Frequency", "Disk Partitioning", "RAM", "Secure Boot", "Storage", "TPM Minimum"]
+	Local $hCheck[10][3]
+	Local $hLabel[10] = ["Boot Type", "CPU Architecture", "CPU Generation", "CPU Core Count", "CPU Frequency", "Disk Partitioning", "RAM", "Secure Boot", "Storage", "TPM Minimum"]
 
-	For $iRow = 0 To 8 Step 1
+	For $iRow = 0 To 9 Step 1
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 130, 140 + $iRow * 40, 40, 40, $SS_CENTER+$SS_SUNKEN+$SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, 0xF4C141)
 		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & $hLabel[$iRow], 170, 140 + $iRow * 40, 300, 40, $SS_CENTERIMAGE)
@@ -68,108 +68,118 @@ Func Main()
 		GUICtrlSetData($hCheck[0][2], FileReadLine(".\WhyNot.txt", 1));"Secure Boot Not Enabled")
 	EndIf
 
-	#cs
-	RunWait("powershell -Command $env:firmware_type | Out-File -FilePath .\WhyNot.txt", "", @SW_HIDE)
-	If Not FileReadLine(".\WhyNot.txt", 1) = "Legacy" Then
+	If _GetCPUInfo(4) >= 64 Then
 		GUICtrlSetData($hCheck[1][0], "OK")
 		GUICtrlSetBkColor($hCheck[1][0], 0x4CC355)
-		GUICtrlSetData($hCheck[1][2], FileReadLine(".\WhyNot.txt", 1));"Secure Boot Detected as Enabled")
+		GUICtrlSetData($hCheck[1][2], _GetCPUInfo(4) & " Bit CPU")
 	Else
 		GUICtrlSetData($hCheck[1][0], "X")
 		GUICtrlSetBkColor($hCheck[1][0], 0xFA113D)
-		GUICtrlSetData($hCheck[1][2], FileReadLine(".\WhyNot.txt", 1));"Secure Boot Not Enabled")
+		GUICtrlSetData($hCheck[1][2], _GetCPUInfo(0) & " Bit CPU")
 	EndIf
-	#ce
-	GUICtrlSetData($hCheck[1][2], _GetCPUInfo(2))
 
-	If _GetCPUInfo(0) >= 2 Or _GetCPUInfo(1) >= 2 Then
+	#cs
+	RunWait("powershell -Command $env:firmware_type | Out-File -FilePath .\WhyNot.txt", "", @SW_HIDE)
+	If Not FileReadLine(".\WhyNot.txt", 1) = "Legacy" Then
 		GUICtrlSetData($hCheck[2][0], "OK")
 		GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
-		GUICtrlSetData($hCheck[2][2], _GetCPUInfo(0) & " Cores, " & _GetCPUInfo(1) & " Threads")
+		GUICtrlSetData($hCheck[2][2], FileReadLine(".\WhyNot.txt", 1));"Secure Boot Detected as Enabled")
 	Else
 		GUICtrlSetData($hCheck[2][0], "X")
 		GUICtrlSetBkColor($hCheck[2][0], 0xFA113D)
-		GUICtrlSetData($hCheck[2][2], _GetCPUInfo(0) & " Cores, " & _GetCPUInfo(1) & " Threads")
+		GUICtrlSetData($hCheck[2][2], FileReadLine(".\WhyNot.txt", 1));"Secure Boot Not Enabled")
 	EndIf
+	#ce
+	GUICtrlSetData($hCheck[2][2], _GetCPUInfo(2))
 
-	If _GetCPUInfo(3) >= 1000 Then
+	If _GetCPUInfo(0) >= 2 Or _GetCPUInfo(1) >= 2 Then
 		GUICtrlSetData($hCheck[3][0], "OK")
 		GUICtrlSetBkColor($hCheck[3][0], 0x4CC355)
-		GUICtrlSetData($hCheck[3][2], _GetCPUInfo(3) & " MHz")
+		GUICtrlSetData($hCheck[3][2], _GetCPUInfo(0) & " Cores, " & _GetCPUInfo(1) & " Threads")
 	Else
 		GUICtrlSetData($hCheck[3][0], "X")
 		GUICtrlSetBkColor($hCheck[3][0], 0xFA113D)
-		GUICtrlSetData($hCheck[3][2], _GetCPUInfo(3) & " MHz")
+		GUICtrlSetData($hCheck[3][2], _GetCPUInfo(0) & " Cores, " & _GetCPUInfo(1) & " Threads")
+	EndIf
+
+	If _GetCPUInfo(3) >= 1000 Then
+		GUICtrlSetData($hCheck[4][0], "OK")
+		GUICtrlSetBkColor($hCheck[4][0], 0x4CC355)
+		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
+	Else
+		GUICtrlSetData($hCheck[4][0], "X")
+		GUICtrlSetBkColor($hCheck[4][0], 0xFA113D)
+		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	EndIf
 
 	RunWait("powershell -Command Get-Partition -DriveLetter C | Get-Disk | Out-File -FilePath .\WhyNot.txt", "", @SW_HIDE)
 	If StringInStr(FileRead(".\WhyNot.txt"), "GPT") Then
-		GUICtrlSetData($hCheck[4][0], "OK")
-		GUICtrlSetBkColor($hCheck[4][0], 0x4CC355)
-		GUICtrlSetData($hCheck[4][2], StringRight(StringStripWS(FileReadLine(".\WhyNot.txt", 5),$STR_STRIPTRAILING),3));"GPT Detected")
+		GUICtrlSetData($hCheck[5][0], "OK")
+		GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
+		GUICtrlSetData($hCheck[5][2], StringRight(StringStripWS(FileReadLine(".\WhyNot.txt", 5),$STR_STRIPTRAILING),3));"GPT Detected")
 	Else
-		GUICtrlSetData($hCheck[4][0], "X")
-		GUICtrlSetBkColor($hCheck[4][0], 0xFA113D)
-		GUICtrlSetData($hCheck[4][2], StringRight(StringStripWS(FileReadLine(".\WhyNot.txt", 5),$STR_STRIPTRAILING),3));"GPT Not Detected")
+		GUICtrlSetData($hCheck[5][0], "X")
+		GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
+		GUICtrlSetData($hCheck[5][2], StringRight(StringStripWS(FileReadLine(".\WhyNot.txt", 5),$STR_STRIPTRAILING),3));"GPT Not Detected")
 	EndIf
 
 	Local $aMem = MemGetStats()
 	If $aMem[1]/1048576 >= 4 Then
-		GUICtrlSetData($hCheck[5][0], "OK")
-		GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
-		GUICtrlSetData($hCheck[5][2], Round($aMem[1]/1048576,1) & " GB")
+		GUICtrlSetData($hCheck[6][0], "OK")
+		GUICtrlSetBkColor($hCheck[6][0], 0x4CC355)
+		GUICtrlSetData($hCheck[6][2], Round($aMem[1]/1048576,1) & " GB")
 	Else
-		GUICtrlSetData($hCheck[5][0], "X")
-		GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
-		GUICtrlSetData($hCheck[5][2], Round($aMem[1]/1048576,1) & " GB")
+		GUICtrlSetData($hCheck[6][0], "X")
+		GUICtrlSetBkColor($hCheck[6][0], 0xFA113D)
+		GUICtrlSetData($hCheck[6][2], Round($aMem[1]/1048576,1) & " GB")
 	EndIf
 
 	RunWait("powershell -Command Confirm-SecureBootUEFI | Out-File -FilePath .\WhyNot.txt", "", @SW_HIDE)
 	If StringInStr(FileRead(".\WhyNot.txt"), "True") Then
-		GUICtrlSetData($hCheck[6][0], "OK")
-		GUICtrlSetBkColor($hCheck[6][0], 0x4CC355)
-		GUICtrlSetData($hCheck[6][2], "Enabled")
-	Else
-		GUICtrlSetData($hCheck[6][0], "X")
-		GUICtrlSetBkColor($hCheck[6][0], 0xFA113D)
-		GUICtrlSetData($hCheck[6][2], "Disabled")
-	EndIf
-
-	If DriveSpaceTotal("C:\")/1024 >= 64 Then
 		GUICtrlSetData($hCheck[7][0], "OK")
 		GUICtrlSetBkColor($hCheck[7][0], 0x4CC355)
-		GUICtrlSetData($hCheck[7][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB on C:\")
+		GUICtrlSetData($hCheck[7][2], "Enabled")
 	Else
 		GUICtrlSetData($hCheck[7][0], "X")
 		GUICtrlSetBkColor($hCheck[7][0], 0xFA113D)
-		GUICtrlSetData($hCheck[7][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB on C:\")
+		GUICtrlSetData($hCheck[7][2], "Disabled")
+	EndIf
+
+	If DriveSpaceTotal("C:\")/1024 >= 64 Then
+		GUICtrlSetData($hCheck[8][0], "OK")
+		GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
+		GUICtrlSetData($hCheck[8][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB on C:\")
+	Else
+		GUICtrlSetData($hCheck[8][0], "X")
+		GUICtrlSetBkColor($hCheck[8][0], 0xFA113D)
+		GUICtrlSetData($hCheck[8][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB on C:\")
 	EndIf
 
 	Select
 		Case _GetTPMInfo(0) = False
-			GUICtrlSetData($hCheck[8][0], "X")
-			GUICtrlSetBkColor($hCheck[8][0], 0xFA113D)
-			GUICtrlSetData($hCheck[8][2], "TPM Not Activated")
+			GUICtrlSetData($hCheck[9][0], "X")
+			GUICtrlSetBkColor($hCheck[9][0], 0xFA113D)
+			GUICtrlSetData($hCheck[9][2], "TPM Not Activated")
 		Case _GetTPMInfo(1) = False
-			GUICtrlSetData($hCheck[8][0], "X")
-			GUICtrlSetBkColor($hCheck[8][0], 0xFA113D)
-			GUICtrlSetData($hCheck[8][2], "TPM Not Enabled")
+			GUICtrlSetData($hCheck[9][0], "X")
+			GUICtrlSetBkColor($hCheck[9][0], 0xFA113D)
+			GUICtrlSetData($hCheck[9][2], "TPM Not Enabled")
 		Case Not Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
-			GUICtrlSetData($hCheck[8][0], "X")
-			GUICtrlSetBkColor($hCheck[8][0], 0xFA113D)
-			GUICtrlSetData($hCheck[8][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " Not Supported")
+			GUICtrlSetData($hCheck[9][0], "X")
+			GUICtrlSetBkColor($hCheck[9][0], 0xFA113D)
+			GUICtrlSetData($hCheck[9][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " Not Supported")
 		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 2.0
-			GUICtrlSetData($hCheck[8][0], "OK")
-			GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
-			GUICtrlSetData($hCheck[8][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " Detected")
+			GUICtrlSetData($hCheck[9][0], "OK")
+			GUICtrlSetBkColor($hCheck[9][0], 0x4CC355)
+			GUICtrlSetData($hCheck[9][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " Detected")
 		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
-			GUICtrlSetData($hCheck[8][0], "OK")
-			GUICtrlSetBkColor($hCheck[8][0], 0xF4C141)
-			GUICtrlSetData($hCheck[8][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " Detected")
+			GUICtrlSetData($hCheck[9][0], "OK")
+			GUICtrlSetBkColor($hCheck[9][0], 0xF4C141)
+			GUICtrlSetData($hCheck[9][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " Detected")
 		Case Else
-			GUICtrlSetData($hCheck[8][0], "X")
-			GUICtrlSetBkColor($hCheck[8][0], 0xFA113D)
-			GUICtrlSetData($hCheck[8][2], _GetTPMInfo(0) & " " & _GetTPMInfo(1) & " " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]))
+			GUICtrlSetData($hCheck[9][0], "X")
+			GUICtrlSetBkColor($hCheck[9][0], 0xFA113D)
+			GUICtrlSetData($hCheck[9][2], _GetTPMInfo(0) & " " & _GetTPMInfo(1) & " " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]))
 	EndSelect
 
 

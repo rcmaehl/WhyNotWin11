@@ -7,6 +7,7 @@ Func _GetCPUInfo($iFlag = 0)
     Local Static $sThreads
 	Local Static $sName
 	Local Static $sSpeed
+	Local Static $sArch
 
 	If Not $sName <> "" Then
 		Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2');
@@ -19,6 +20,7 @@ Func _GetCPUInfo($iFlag = 0)
 				$sThreads = $Obj_Item.NumberOfLogicalProcessors
 				$sName = $obj_Item.Name
 				$sSpeed = $Obj_Item.MaxClockSpeed
+				$sArch = $Obj_Item.AddressWidth
 			Next
 		Else
 			Return 0
@@ -33,6 +35,8 @@ Func _GetCPUInfo($iFlag = 0)
 			Return StringStripWS(String($sName), $STR_STRIPTRAILING)
 		Case 3
 			Return String($sSpeed)
+		Case 4
+			Return Number($sArch)
 		Case Else
 			Return 0
 	EndSwitch
