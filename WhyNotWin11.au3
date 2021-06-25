@@ -33,10 +33,12 @@ Func ExtractFiles()
 		Case Not FileExists(@TempDir & "\SupportedProcessorsAMD.txt")
 			FileInstall(".\includes\SupportedProcessorsAMD.txt", @TempDir & "\SupportedProcessorsAMD.txt")
 			FileInstall(".\includes\SupportedProcessorsIntel.txt", @TempDir & "\SupportedProcessorsIntel.txt")
+			FileInstall(".\includes\SupportedProcessorsQualcomm.txt", @TempDir & "\SupportedProcessorsQualcomm.txt")
 		Case FileExists(@TempDir & "\SupportedProcessorsAMD.txt")
 			If _VersionCompare($sVersion, FileReadLine(@TempDir & "\SupportedProcessorsAMD.txt",1)) = 1 Then
 				FileInstall(".\includes\SupportedProcessorsAMD.txt", @TempDir & "\SupportedProcessorsAMD.txt", $FC_OVERWRITE)
 				FileInstall(".\includes\SupportedProcessorsIntel.txt", @TempDir & "\SupportedProcessorsIntel.txt", $FC_OVERWRITE)
+				FileInstall(".\includes\SupportedProcessorsQualcomm.txt", @TempDir & "\SupportedProcessorsQualcomm.txt", $FC_OVERWRITE)
 			EndIf
 		Case Else
 			;;;
@@ -115,46 +117,68 @@ Func Main()
 		GUICtrlSetData($hCheck[1][2], _GetCPUInfo(0) & " Bit CPU")
 	EndIf
 
-	If StringInStr(_GetCPUInfo(2), "AMD") Then
-		$iLines = _FileCountLines(@TempDir & "\SupportedProcessorsAMD.txt")
-		If @error Then
+	Select
+		Case StringInStr(_GetCPUInfo(2), "AMD")
+			$iLines = _FileCountLines(@TempDir & "\SupportedProcessorsAMD.txt")
+			If @error Then
+				GUICtrlSetData($hCheck[2][0], "?")
+				GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+			EndIf
+			For $iLine = 1 to $iLines Step 1
+				$sLine = FileReadLine(@TempDir & "\SupportedProcessorsAMD.txt", $iLine)
+				If @error = -1 Then
+					GUICtrlSetData($hCheck[2][0], "X")
+					GUICtrlSetBkColor($hCheck[2][0], 0xFA113D)
+					ExitLoop
+				EndIf
+				If StringInStr(_GetCPUInfo(2), $sLine) Then
+					GUICtrlSetData($hCheck[2][0], "OK")
+					GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
+					ExitLoop
+				EndIf
+			Next
+		Case StringInStr(_GetCPUInfo(2), "Intel")
+			$iLines = _FileCountLines(@TempDir & "\SupportedProcessorsIntel.txt")
+			If @error Then
+				GUICtrlSetData($hCheck[2][0], "?")
+				GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+			EndIf
+			For $iLine = 1 to $iLines Step 1
+				$sLine = FileReadLine(@TempDir & "\SupportedProcessorsIntel.txt", $iLine)
+				If @error = -1 Then
+					GUICtrlSetData($hCheck[2][0], "X")
+					GUICtrlSetBkColor($hCheck[2][0], 0xFA113D)
+					ExitLoop
+				EndIf
+				If StringInStr(_GetCPUInfo(2), $sLine) Then
+					GUICtrlSetData($hCheck[2][0], "OK")
+					GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
+					ExitLoop
+				EndIf
+			Next
+		Case StringInStr(_GetCPUInfo(2), "SnapDragon")
+			$iLines = _FileCountLines(@TempDir & "\SupportedProcessorsQualcomm.txt")
+			If @error Then
+				GUICtrlSetData($hCheck[2][0], "?")
+				GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+			EndIf
+			For $iLine = 1 to $iLines Step 1
+				$sLine = FileReadLine(@TempDir & "\SupportedProcessorsQualcomm.txt", $iLine)
+				If @error = -1 Then
+					GUICtrlSetData($hCheck[2][0], "X")
+					GUICtrlSetBkColor($hCheck[2][0], 0xFA113D)
+					ExitLoop
+				EndIf
+				If StringInStr(_GetCPUInfo(2), $sLine) Then
+					GUICtrlSetData($hCheck[2][0], "OK")
+					GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
+					ExitLoop
+				EndIf
+			Next
+		Case Else
 			GUICtrlSetData($hCheck[2][0], "?")
 			GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-		EndIf
-		For $iLine = 1 to $iLines Step 1
-			$sLine = FileReadLine(@TempDir & "\SupportedProcessorsAMD.txt", $iLine)
-			If @error = -1 Then
-				GUICtrlSetData($hCheck[2][0], "X")
-				GUICtrlSetBkColor($hCheck[2][0], 0xFA113D)
-				ExitLoop
-			EndIf
-			If StringInStr(_GetCPUInfo(2), $sLine) Then
-				GUICtrlSetData($hCheck[2][0], "OK")
-				GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
-				ExitLoop
-			EndIf
-		Next
-	ElseIf StringInStr(_GetCPUInfo(2), "Intel") Then
-		$iLines = _FileCountLines(@TempDir & "\SupportedProcessorsIntel.txt")
-		If @error Then
-			GUICtrlSetData($hCheck[2][0], "?")
-			GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-		EndIf
-		For $iLine = 1 to $iLines Step 1
-			$sLine = FileReadLine(@TempDir & "\SupportedProcessorsIntel.txt", $iLine)
-			If @error = -1 Then
-				GUICtrlSetData($hCheck[2][0], "X")
-				GUICtrlSetBkColor($hCheck[2][0], 0xFA113D)
-				ExitLoop
-			EndIf
-			If StringInStr(_GetCPUInfo(2), $sLine) Then
-				GUICtrlSetData($hCheck[2][0], "OK")
-				GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
-				ExitLoop
-			EndIf
-		Next
-	EndIf
-#ce
+	EndSelect
 	GUICtrlSetData($hCheck[2][2], _GetCPUInfo(2))
 
 	If _GetCPUInfo(0) >= 2 Or _GetCPUInfo(1) >= 2 Then
