@@ -1,6 +1,9 @@
 # WhyNotWin11
 Detection Script to help identify the more niche settings for why your PC isn't Windows 11 ready
 
+![image](https://user-images.githubusercontent.com/716581/123370289-6b0acc80-d54d-11eb-96e6-c343c8989e94.png)
+
+
 ----
 
 ## A Comptiable PC
@@ -12,18 +15,18 @@ DISK|GPT|Next Generation Disk Layout
 
 ## To-Do
 
-- [ ] Hard Floor Checks:
-    - [ ] Cores >= 2
-    - [ ] CPU Freq >= 1 GHZ
-    - [ ] RAM >= 4 GB
-    - [ ] Storage >= 64 GB
-    - [ ] TPM >= 1.2
+- [x] Hard Floor Checks:
+    - [x] Cores >= 2
+    - [x] CPU Freq >= 1 GHZ
+    - [x] RAM >= 4 GB
+    - [x] Storage >= 64 GB
+    - [x] TPM >= 1.2
     - [x] SecureBoot
-    - [ ] ~~SMode~~ (WhyNotWin11 is not compatible with S Mode Devices)
+    - [x] ~~SMode~~ (WhyNotWin11 is not compatible with S Mode Devices)
 - [ ] Soft Floor Checks:
     - [x] TPM >= 2.0
     - [ ] CPU Compatibility list
-- [ ] A fancier GUI
+- [x] A fancier GUI
 
 ## How to build from source code
 
