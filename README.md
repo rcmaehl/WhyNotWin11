@@ -10,6 +10,20 @@ TPM|Present|On-board security chip
 BOOT|UEFI or Secure|OS boot method, configurable on UEFI settings
 DISK|GPT|Next Generation Disk Layout
 
+## To-Do
+
+- [ ] Hard Floor Checks:
+    - [ ] Cores >= 2
+    - [ ] CPU Freq >= 1 GHZ
+    - [ ] RAM >= 4 GB
+    - [ ] Storage >= 64 GB
+    - [ ] TPM >= 1.2
+    - [x] SecureBoot
+    - [ ] ~~SMode~~ (WhyNotWin11 is not compatible with S Mode Devices)
+- [ ] Soft Floor Checks:
+    - [x] TPM >= 2.0
+    - [ ] CPU Compatibility list
+
 ## How to build from source code
 
 1. Download and run "AutoIt Full Installation" from [official website](https://www.autoitscript.com/site/autoit/downloads). 
