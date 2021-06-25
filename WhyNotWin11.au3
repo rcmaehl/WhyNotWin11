@@ -115,7 +115,7 @@ Func Main()
 
 
 	RunWait("powershell -Command Get-Partition -DriveLetter C | Get-Disk | Out-File -FilePath .\WhyNot.txt", "", @SW_HIDE)
-	If StringInStr(FileRead(".\WhyNot.txt"), "GPT") Then
+	If StringInStr(FileRead(".\WhyNot.txt"), "GPT") And Not StringInStr(FileRead(".\WhyNot.txt"), "Error") Then
 		GUICtrlSetData($hCheck[6][0], "OK")
 		GUICtrlSetBkColor($hCheck[6][0], 0x4CC355)
 		GUICtrlSetData($hCheck[6][2], StringRight(StringStripWS(FileReadLine(".\WhyNot.txt", 5),$STR_STRIPTRAILING),3));"GPT Detected")
