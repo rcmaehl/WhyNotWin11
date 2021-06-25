@@ -3,8 +3,8 @@
 #AutoIt3Wrapper_Icon=.\assets\windows11-logo.ico
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify the more niche settings for why your PC isn't Windows 11 ready
-#AutoIt3Wrapper_Res_Fileversion=2.0.0.0
-#AutoIt3Wrapper_Res_ProductVersion=2.0.0
+#AutoIt3Wrapper_Res_Fileversion=2.0.1.0
+#AutoIt3Wrapper_Res_ProductVersion=2.0.1
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 #AutoIt3Wrapper_Run_Au3Stripper=y
@@ -58,7 +58,7 @@ Func Main()
 	GUISetState(@SW_SHOW, $hGUI)
 
 	RunWait("powershell -Command $env:firmware_type | Out-File -FilePath .\WhyNot.txt", "", @SW_HIDE)
-	If Not FileReadLine(".\WhyNot.txt", 1) = "Legacy" Then
+	If Not StringInStr(FileReadLine(".\WhyNot.txt", 1), "Legacy") Then
 		GUICtrlSetData($hCheck[0][0], "OK")
 		GUICtrlSetBkColor($hCheck[0][0], 0x4CC355)
 		GUICtrlSetData($hCheck[0][2], FileReadLine(".\WhyNot.txt", 1));"Secure Boot Detected as Enabled")
