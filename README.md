@@ -23,6 +23,7 @@ DISK|GPT|Next Generation Disk Layout
 - [ ] Soft Floor Checks:
     - [x] TPM >= 2.0
     - [ ] CPU Compatibility list
+- [ ] A fancier GUI
 
 ## How to build from source code
 
