@@ -22,8 +22,6 @@ If Not IsArray($sTPM) Then
 		$sOut = $sOut & @CRLF & StdoutRead($iPID)
 		If @error Then ExitLoop ; Exit the loop if the process closes or StdoutRead returns an error.
 	WEnd
-	MsgBox(0, "Out", $sOut)
-	Exit
 	$sTPM = _StringBetween(FileRead(".\WhyNot.txt"), "-TPM Present:", "-TPM Version")
 	If Not IsArray($sTPM) Then
 		MsgBox(16, "TPMTool call failed", "TPM check 2 failed; This will be reported as 'Not Present'.", 10)
