@@ -1,6 +1,6 @@
 #RequireAdmin
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
-#AutoIt3Wrapper_Icon=..\Downloads\windows11-logo.ico
+#AutoIt3Wrapper_Icon=.\windows11-logo.ico
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify the more niche settings for why your PC isn't Windows 11 ready
 #AutoIt3Wrapper_Res_Fileversion=1.1.2
