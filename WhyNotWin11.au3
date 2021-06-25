@@ -58,7 +58,7 @@ Func Main()
 	GUISetState(@SW_SHOW, $hGUI)
 
 	RunWait("powershell -Command $env:firmware_type | Out-File -FilePath .\WhyNot.txt", "", @SW_HIDE)
-	If Not StringInStr(FileReadLine(".\WhyNot.txt", 1), "Legacy") Then
+	If Not StringInStr(FileRead(".\WhyNot.txt"), "Legacy") Then
 		GUICtrlSetData($hCheck[0][0], "OK")
 		GUICtrlSetBkColor($hCheck[0][0], 0x4CC355)
 		GUICtrlSetData($hCheck[0][2], FileReadLine(".\WhyNot.txt", 1));"Secure Boot Detected as Enabled")
