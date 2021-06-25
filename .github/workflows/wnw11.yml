@@ -1,0 +1,38 @@
+name: wnw11
+
+on: push
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    steps:
+    - name: Install tools
+      run: |
+           Invoke-WebRequest -Uri https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.exe -OutFile autoit-v3-setup.exe
+           ./autoit-v3-setup.exe /S
+           Start-Sleep -s 10
+           Invoke-WebRequest -Uri https://www.autoitscript.com/cgi-bin/getfile.pl?../autoit3/scite/download/SciTE4AutoIt3.exe -OutFile SciTE4AutoIt3.exe
+           ./SciTE4AutoIt3.exe /S
+           Start-Sleep -s 10
+           Invoke-WebRequest -Uri https://www.autoitscript.com/autoit3/scite/download/Au3Stripper.zip -OutFile Au3Stripper.zip
+           Expand-Archive -Path Au3Stripper.zip -DestinationPath "C:\Program Files (x86)\AutoIt3\SciTE\au3Stripper" -Force
+
+    - name: Checkout repo
+      run: |
+           dir
+           git clone https://github.com/${{ github.repository }} --depth 1
+
+    - name: Compile
+      run: |
+           dir
+           cd WhyNotWin11
+           C:\"Program Files (x86)"\AutoIt3\AutoIt3.exe "C:\Program Files (x86)\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3" /NoStatus /prod /in ".\WhyNotWin11.au3"
+           Start-Sleep -s 10
+
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+       name: WNW11
+       path: WhyNotWin11\WhyNotWin11.exe
+       if-no-files-found: error
