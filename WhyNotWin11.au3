@@ -112,18 +112,21 @@ Func Main()
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	EndIf
 
-
-
 	RunWait("powershell -Command Get-Partition -DriveLetter C | Get-Disk | Out-File -FilePath .\WhyNot.txt", "", @SW_HIDE)
-	If StringInStr(FileRead(".\WhyNot.txt"), "GPT") And Not StringInStr(FileRead(".\WhyNot.txt"), "Error") Then
-		GUICtrlSetData($hCheck[6][0], "OK")
-		GUICtrlSetBkColor($hCheck[6][0], 0x4CC355)
-		GUICtrlSetData($hCheck[6][2], StringRight(StringStripWS(FileReadLine(".\WhyNot.txt", 5),$STR_STRIPTRAILING),3));"GPT Detected")
-	Else
-		GUICtrlSetData($hCheck[6][0], "X")
-		GUICtrlSetBkColor($hCheck[6][0], 0xFA113D)
-		GUICtrlSetData($hCheck[6][2], StringRight(StringStripWS(FileReadLine(".\WhyNot.txt", 5),$STR_STRIPTRAILING),3));"GPT Not Detected")
-	EndIf
+	Select
+		Case StringInStr(FileRead(".\WhyNot.txt"), "Error")
+			GUICtrlSetData($hCheck[6][0], "?")
+			GUICtrlSetBkColor($hCheck[6][0], 0xF4C141)
+			GUICtrlSetData($hCheck[6][2], "Unable to determine")
+		Case StringInStr(FileRead(".\WhyNot.txt"), "GPT")
+			GUICtrlSetData($hCheck[6][0], "OK")
+			GUICtrlSetBkColor($hCheck[6][0], 0x4CC355)
+			GUICtrlSetData($hCheck[6][2], "GPT Detected")
+		Case Else
+			GUICtrlSetData($hCheck[6][0], "X")
+			GUICtrlSetBkColor($hCheck[6][0], 0xFA113D)
+			GUICtrlSetData($hCheck[6][2], StringRight(StringStripWS(FileReadLine(".\WhyNot.txt", 5),$STR_STRIPTRAILING),3));"GPT Not Detected")
+	EndSelect
 
 	$aMem = DllCall("Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
 	If @error Then
@@ -190,6 +193,7 @@ Func Main()
 			GUICtrlSetData($hCheck[10][2], _GetTPMInfo(0) & " " & _GetTPMInfo(1) & " " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]))
 	EndSelect
 
+	FileDelete(".\WhyNot.txt")
 
 	While 1
 		$hMsg = GUIGetMsg()
