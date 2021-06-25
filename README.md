@@ -1,17 +1,10 @@
 # WhyNotWin11
-Detection Script to help identify the more niche settings for why your PC isn't Windows 11 ready
+Detection Script to help identify why your PC isn't Windows 11 ready
 
 ![image](https://user-images.githubusercontent.com/716581/123370289-6b0acc80-d54d-11eb-96e6-c343c8989e94.png)
 
 
 ----
-
-## A Comptiable PC
-Field|Windows 11 Compatible Value|Description
-----|----|----
-TPM|Present|On-board security chip
-BOOT|UEFI or Secure|OS boot method, configurable on UEFI settings
-DISK|GPT|Next Generation Disk Layout
 
 ## To-Do
 
