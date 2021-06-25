@@ -74,7 +74,7 @@ Func Main()
 	GUICtrlSetFont(-1, 24, 400)
 
 	Local $hCheck[11][3]
-	Local $hLabel[11] = ["Boot Type", "CPU Architecture", "CPU Generation (Beta)", "CPU Core Count", "CPU Frequency", "DirectX Support", "Disk Partitioning", "RAM", "Secure Boot", "Storage", "TPM Minimum"]
+	Local $hLabel[11] = ["Boot Type", "CPU Architecture", "CPU Generation", "CPU Core Count", "CPU Frequency", "DirectX Support", "Disk Partitioning", "RAM", "Secure Boot", "Storage", "TPM Minimum"]
 
 	For $iRow = 0 To 10 Step 1
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 130, 110 + $iRow * 40, 40, 40, $SS_CENTER+$SS_SUNKEN+$SS_CENTERIMAGE)
