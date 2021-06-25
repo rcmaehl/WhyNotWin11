@@ -1,537 +1,538 @@
-Intel®	Atom®	x6200FE
-Intel®	Atom®	x6211E
-Intel®	Atom®	x6212RE
-Intel®	Atom®	x6413E
-Intel®	Atom®	x6414RE
-Intel®	Atom®	x6425E
-Intel®	Atom®	x6425RE
-Intel®	Atom®	x6427FE
-Intel®	Celeron®	G4900
-Intel®	Celeron®	G4900T
-Intel®	Celeron®	G4920
-Intel®	Celeron®	G4930
-Intel®	Celeron®	G4930E
-Intel®	Celeron®	G4930T
-Intel®	Celeron®	G4932E
-Intel®	Celeron®	G4950
-Intel®	Celeron®	J4005
-Intel®	Celeron®	J4105
-Intel®	Celeron®	J4115
-Intel®	Celeron®	N4000
-Intel®	Celeron®	N4100
-Intel®	Celeron®	3867U
-Intel®	Celeron®	4205U
-Intel®	Celeron®	4305U
-Intel®	Celeron®	4305UE
-Intel®	Celeron®	J4025
-Intel®	Celeron®	J4125
-Intel®	Celeron®	N4020
-Intel®	Celeron®	N4120
-Intel®	Celeron®	5205U
-Intel®	Celeron®	5305U
-Intel®	Celeron®	G5900
-Intel®	Celeron®	G5900E
-Intel®	Celeron®	G5900T
-Intel®	Celeron®	G5900TE
-Intel®	Celeron®	G5905
-Intel®	Celeron®	G5905T
-Intel®	Celeron®	G5920
-Intel®	Celeron®	G5925
-Intel®	Celeron®	J6412
-Intel®	Celeron®	J6413
-Intel®	Celeron®	N6210
-Intel®	Celeron®	N6211
-Intel®	Celeron®	N4500
-Intel®	Celeron®	N4505
-Intel®	Celeron®	N5100
-Intel®	Celeron®	N5105
-Intel®	Celeron®	6305
-Intel®	Celeron®	6305E
-Intel®	Core™	i5-10210Y
-Intel®	Core™	i5-10310Y
-Intel®	Core™	i5-8200Y
-Intel®	Core™	i5-8210Y
-Intel®	Core™	i5-8310Y
-Intel®	Core™	i7-10510Y
-Intel®	Core™	i7-8500Y
-Intel®	Core™	m3-8100Y
-Intel®	Core™	i3-8100
-Intel®	Core™	i3-8100B
-Intel®	Core™	i3-8100H
-Intel®	Core™	i3-8100T
-Intel®	Core™	i3-8109U
-Intel®	Core™	i3-8140U
-Intel®	Core™	i3-8300
-Intel®	Core™	i3-8300T
-Intel®	Core™	i3-8350K
-Intel®	Core™	i5+8400
-Intel®	Core™	i5+8500
-Intel®	Core™	i5-8257U
-Intel®	Core™	i5-8259U
-Intel®	Core™	i5-8260U
-Intel®	Core™	i5-8269U
-Intel®	Core™	i5-8279U
-Intel®	Core™	i5-8300H
-Intel®	Core™	i5-8400
-Intel®	Core™	i5-8400B
-Intel®	Core™	i5-8400H
-Intel®	Core™	i5-8400T
-Intel®	Core™	i5-8500
-Intel®	Core™	i5-8500B
-Intel®	Core™	i5-8500T
-Intel®	Core™	i5-8600
-Intel®	Core™	i5-8600K
-Intel®	Core™	i5-8600T
-Intel®	Core™	i7-8086K
-Intel®	Core™	i7-8557U
-Intel®	Core™	i7-8559U
-Intel®	Core™	i7-8569U
-Intel®	Core™	i7-8700
-Intel®	Core™	i7-8700B
-Intel®	Core™	i7-8700K
-Intel®	Core™	i7-8700T
-Intel®	Core™	i7-8750H
-Intel®	Core™	i7-8850H
-Intel®	Core™	i3-8130U
-Intel®	Core™	i5-8250U
-Intel®	Core™	i5-8350U
-Intel®	Core™	i7-8550U
-Intel®	Core™	i7-8650U
-Intel®	Core™	i3-8145U
-Intel®	Core™	i3-8145UE
-Intel®	Core™	i5-8265U
-Intel®	Core™	i5-8365U
-Intel®	Core™	i5-8365UE
-Intel®	Core™	i7-8565U
-Intel®	Core™	i7-8665U
-Intel®	Core™	i7-8665UE
-Intel®	Core™	i3-9100
-Intel®	Core™	i3-9100E
-Intel®	Core™	i3-9100F
-Intel®	Core™	i3-9100HL
-Intel®	Core™	i3-9100T
-Intel®	Core™	i3-9100TE
-Intel®	Core™	i3-9300
-Intel®	Core™	i3-9300T
-Intel®	Core™	i3-9320
-Intel®	Core™	i3-9350K
-Intel®	Core™	i3-9350KF
-Intel®	Core™	i5-9300H
-Intel®	Core™	i5-9300HF
-Intel®	Core™	i5-9400
-Intel®	Core™	i5-9400F
-Intel®	Core™	i5-9400H
-Intel®	Core™	i5-9400T
-Intel®	Core™	i5-9500
-Intel®	Core™	i5-9500E
-Intel®	Core™	i5-9500F
-Intel®	Core™	i5-9500T
-Intel®	Core™	i5-9500TE
-Intel®	Core™	i5-9600
-Intel®	Core™	i5-9600K
-Intel®	Core™	i5-9600KF
-Intel®	Core™	i5-9600T
-Intel®	Core™	i7-9700
-Intel®	Core™	i7-9700E
-Intel®	Core™	i7-9700F
-Intel®	Core™	i7-9700K
-Intel®	Core™	i7-9700KF
-Intel®	Core™	i7-9700T
-Intel®	Core™	i7-9700TE
-Intel®	Core™	i7-9750H
-Intel®	Core™	i7-9750HF
-Intel®	Core™	i7-9850H
-Intel®	Core™	i7-9850HE
-Intel®	Core™	i7-9850HL
-Intel®	Core™	i9-8950HK
-Intel®	Core™	i9-9880H
-Intel®	Core™	i9-9900
-Intel®	Core™	i9-9900K
-Intel®	Core™	i9-9900KF
-Intel®	Core™	i9-9900KS
-Intel®	Core™	i9-9900T
-Intel®	Core™	i9-9980HK
-Intel®	Core™	i3-10100Y
-Intel®	Core™	i3-10110Y
-Intel®	Core™	i9-10900X
-Intel®	Core™	i9-10920X
-Intel®	Core™	i9-10940X
-Intel®	Core™	i9-10980XE
-Intel®	Core™	i3-10100
-Intel®	Core™	i3-10100E
-Intel®	Core™	i3-10100F
-Intel®	Core™	i3-10100T
-Intel®	Core™	i3-10100TE
-Intel®	Core™	i3-10105
-Intel®	Core™	i3-10105F
-Intel®	Core™	i3-10105T
-Intel®	Core™	i3-10110U
-Intel®	Core™	i3-10300
-Intel®	Core™	i3-10300T
-Intel®	Core™	i3-10305
-Intel®	Core™	i3-10305T
-Intel®	Core™	i3-10320
-Intel®	Core™	i3-10325
-Intel®	Core™	i5-10200H
-Intel®	Core™	i5-10210U
-Intel®	Core™	i5-10300H
-Intel®	Core™	i5-10310U
-Intel®	Core™	i5-10400
-Intel®	Core™	i5-10400F
-Intel®	Core™	i5-10400H
-Intel®	Core™	i5-10400T
-Intel®	Core™	i5-10500
-Intel®	Core™	i5-10500E
-Intel®	Core™	i5-10500H
-Intel®	Core™	i5-10500T
-Intel®	Core™	i5-10500TE
-Intel®	Core™	i5-10600
-Intel®	Core™	i5-10600K
-Intel®	Core™	i5-10600KF
-Intel®	Core™	i5-10600T
-Intel®	Core™	i7-10510U
-Intel®	Core™	i7-10610U
-Intel®	Core™	i7-10700
-Intel®	Core™	i7-10700E
-Intel®	Core™	i7-10700F
-Intel®	Core™	i7-10700K
-Intel®	Core™	i7-10700KF
-Intel®	Core™	i7-10700T
-Intel®	Core™	i7-10700TE
-Intel®	Core™	i7-10710U
-Intel®	Core™	i7-10750H
-Intel®	Core™	i7-10810U
-Intel®	Core™	i7-10850H
-Intel®	Core™	i7-10870H
-Intel®	Core™	i7-10875H
-Intel®	Core™	i9-10850K
-Intel®	Core™	i9-10885H
-Intel®	Core™	i9-10900
-Intel®	Core™	i9-10900E
-Intel®	Core™	i9-10900F
-Intel®	Core™	i9-10900K
-Intel®	Core™	i9-10900KF
-Intel®	Core™	i9-10900T
-Intel®	Core™	i9-10900TE
-Intel®	Core™	i9-10980HK
-Intel®	Core™	i3-1000G1
-Intel®	Core™	i3-1000G4
-Intel®	Core™	i3-1005G1
-Intel®	Core™	i5-1030G4
-Intel®	Core™	i5-1030G7
-Intel®	Core™	i5-1035G1
-Intel®	Core™	i5-1035G4
-Intel®	Core™	i5-1035G7
-Intel®	Core™	i5-1038NG7
-Intel®	Core™	i7-1060G7
-Intel®	Core™	i7-1065G7
-Intel®	Core™	i7-1068NG7
-Intel®	Core™	i3-L13G4
-Intel®	Core™	i5-L16G7
-Intel®	Core™	i5-11400
-Intel®	Core™	i5-11400F
-Intel®	Core™	i5-11400T
-Intel®	Core™	i5-11500
-Intel®	Core™	i5-11500T
-Intel®	Core™	i5-11600
-Intel®	Core™	i5-11600K
-Intel®	Core™	i5-11600KF
-Intel®	Core™	i5-11600T
-Intel®	Core™	i7-11700
-Intel®	Core™	i7-11700F
-Intel®	Core™	i7-11700K
-Intel®	Core™	i7-11700KF
-Intel®	Core™	i7-11700T
-Intel®	Core™	i9-11900
-Intel®	Core™	i9-11900F
-Intel®	Core™	i9-11900K
-Intel®	Core™	i9-11900KF
-Intel®	Core™	i9-11900T
-Intel®	Core™	i3-1110G4
-Intel®	Core™	i3-1115G4
-Intel®	Core™	i3-1115G4E
-Intel®	Core™	i3-1115GRE
-Intel®	Core™	i3-1120G4
-Intel®	Core™	i3-1125G4
-Intel®	Core™	i5-11300H
-Intel®	Core™	i5-1130G7
-Intel®	Core™	i5-1135G7
-Intel®	Core™	i5-1135G7
-Intel®	Core™	i5-1140G7
-Intel®	Core™	i5-1145G7
-Intel®	Core™	i5-1145G7E
-Intel®	Core™	i5-1145GRE
-Intel®	Core™	i7-11370H
-Intel®	Core™	i7-11375H
-Intel®	Core™	i7-1160G7
-Intel®	Core™	i7-1165G7
-Intel®	Core™	i7-1165G7
-Intel®	Core™	i7-1180G7
-Intel®	Core™	i7-1185G7
-Intel®	Core™	i7-1185G7E
-Intel®	Core™	i7-1185GRE
-Intel®	Pentium®	Gold 4425Y
-Intel®	Pentium®	Gold 6500Y
-Intel®	Pentium®	Gold G5400
-Intel®	Pentium®	Gold G5400T
-Intel®	Pentium®	Gold G5420
-Intel®	Pentium®	Gold G5420T
-Intel®	Pentium®	Gold G5500
-Intel®	Pentium®	Gold G5500T
-Intel®	Pentium®	Gold G5600
-Intel®	Pentium®	Gold G5600T
-Intel®	Pentium®	Gold G5620
-Intel®	Pentium®	Silver J5005
-Intel®	Pentium®	Silver N5000
-Intel®	Pentium®	Gold 4417U
-Intel®	Pentium®	Gold 5405U
-Intel®	Pentium®	Silver J5040
-Intel®	Pentium®	Silver N5030
-Intel®	Pentium®	Gold 6405U
-Intel®	Pentium®	Gold G6400
-Intel®	Pentium®	Gold G6400E
-Intel®	Pentium®	Gold G6400T
-Intel®	Pentium®	Gold G6400TE
-Intel®	Pentium®	Gold G6405
-Intel®	Pentium®	Gold G6405T
-Intel®	Pentium®	Gold G6500
-Intel®	Pentium®	Gold G6500T
-Intel®	Pentium®	Gold G6505
-Intel®	Pentium®	Gold G6505T
-Intel®	Pentium®	Gold G6600
-Intel®	Pentium®	Gold G6605
-Intel®	Pentium®	6805
-Intel®	Pentium®	J6426
-Intel®	Pentium®	N6415
-Intel®	Pentium®	Silver N6000
-Intel®	Pentium®	Silver N6005
-Intel®	Pentium®	Gold 7505
-Intel®	Xeon®	Bronze 3104
-Intel®	Xeon®	Bronze 3106
-Intel®	Xeon®	Gold 5115
-Intel®	Xeon®	Gold 5118
-Intel®	Xeon®	Gold 5119T
-Intel®	Xeon®	Gold 5120
-Intel®	Xeon®	Gold 5120T
-Intel®	Xeon®	Gold 5122
-Intel®	Xeon®	Gold 6126
-Intel®	Xeon®	Gold 6126F
-Intel®	Xeon®	Gold 6126T
-Intel®	Xeon®	Gold 6128
-Intel®	Xeon®	Gold 6130
-Intel®	Xeon®	Gold 6130F
-Intel®	Xeon®	Gold 6130T
-Intel®	Xeon®	Gold 6132
-Intel®	Xeon®	Gold 6134
-Intel®	Xeon®	Gold 6136
-Intel®	Xeon®	Gold 6138
-Intel®	Xeon®	Gold 6138F
-Intel®	Xeon®	Gold 6138P
-Intel®	Xeon®	Gold 6138T
-Intel®	Xeon®	Gold 6140
-Intel®	Xeon®	Gold 6142
-Intel®	Xeon®	Gold 6142F
-Intel®	Xeon®	Gold 6144
-Intel®	Xeon®	Gold 6146
-Intel®	Xeon®	Gold 6148
-Intel®	Xeon®	Gold 6148F
-Intel®	Xeon®	Gold 6150
-Intel®	Xeon®	Gold 6152
-Intel®	Xeon®	Gold 6154
-Intel®	Xeon®	Platinum 8153
-Intel®	Xeon®	Platinum 8156
-Intel®	Xeon®	Platinum 8158
-Intel®	Xeon®	Platinum 8160
-Intel®	Xeon®	Platinum 8160F
-Intel®	Xeon®	Platinum 8160T
-Intel®	Xeon®	Platinum 8164
-Intel®	Xeon®	Platinum 8168
-Intel®	Xeon®	Platinum 8170
-Intel®	Xeon®	Platinum 8176
-Intel®	Xeon®	Platinum 8176F
-Intel®	Xeon®	Platinum 8180
-Intel®	Xeon®	Silver 4108
-Intel®	Xeon®	Silver 4109T
-Intel®	Xeon®	Silver 4110
-Intel®	Xeon®	Silver 4112
-Intel®	Xeon®	Silver 4114
-Intel®	Xeon®	Silver 4114T
-Intel®	Xeon®	Silver 4116
-Intel®	Xeon®	Silver 4116T
-Intel®	Xeon®	E-2124
-Intel®	Xeon®	E-2124G
-Intel®	Xeon®	E-2126G
-Intel®	Xeon®	E-2134
-Intel®	Xeon®	E-2136
-Intel®	Xeon®	E-2144G
-Intel®	Xeon®	E-2146G
-Intel®	Xeon®	E-2174G
-Intel®	Xeon®	E-2176G
-Intel®	Xeon®	E-2176M
-Intel®	Xeon®	E-2186G
-Intel®	Xeon®	E-2186M
-Intel®	Xeon®	E-2224
-Intel®	Xeon®	E-2224G
-Intel®	Xeon®	E-2226G
-Intel®	Xeon®	E-2226GE
-Intel®	Xeon®	E-2234
-Intel®	Xeon®	E-2236
-Intel®	Xeon®	E-2244G
-Intel®	Xeon®	E-2246G
-Intel®	Xeon®	E-2254ME
-Intel®	Xeon®	E-2254ML
-Intel®	Xeon®	E-2274G
-Intel®	Xeon®	E-2276G
-Intel®	Xeon®	E-2276M
-Intel®	Xeon®	E-2276ME
-Intel®	Xeon®	E-2276ML
-Intel®	Xeon®	E-2278G
-Intel®	Xeon®	E-2278GE
-Intel®	Xeon®	E-2278GEL
-Intel®	Xeon®	E-2286G
-Intel®	Xeon®	E-2286M
-Intel®	Xeon®	E-2288G
-Intel®	Xeon®	Bronze 3204
-Intel®	Xeon®	Bronze 3206R
-Intel®	Xeon®	Gold 5215
-Intel®	Xeon®	Gold 5215L
-Intel®	Xeon®	Gold 5217
-Intel®	Xeon®	Gold 5218B
-Intel®	Xeon®	Gold 5218N
-Intel®	Xeon®	Gold 5218R
-Intel®	Xeon®	Gold 5218T
-Intel®	Xeon®	Gold 5220
-Intel®	Xeon®	Gold 5220R
-Intel®	Xeon®	Gold 5220S
-Intel®	Xeon®	Gold 5220T
-Intel®	Xeon®	Gold 5222
-Intel®	Xeon®	Gold 6208U
-Intel®	Xeon®	Gold 6209U
-Intel®	Xeon®	Gold 6210U
-Intel®	Xeon®	Gold 6212U
-Intel®	Xeon®	Gold 6222V
-Intel®	Xeon®	Gold 6226
-Intel®	Xeon®	Gold 6226R
-Intel®	Xeon®	Gold 6230
-Intel®	Xeon®	Gold 6230N
-Intel®	Xeon®	Gold 6230R
-Intel®	Xeon®	Gold 6230T
-Intel®	Xeon®	Gold 6238
-Intel®	Xeon®	Gold 6238L
-Intel®	Xeon®	Gold 6238T
-Intel®	Xeon®	Gold 6240
-Intel®	Xeon®	Gold 6240L
-Intel®	Xeon®	Gold 6240R
-Intel®	Xeon®	Gold 6240Y
-Intel®	Xeon®	Gold 6242
-Intel®	Xeon®	Gold 6242R
-Intel®	Xeon®	Gold 6244
-Intel®	Xeon®	Gold 6246R
-Intel®	Xeon®	Gold 6248
-Intel®	Xeon®	Gold 6248R
-Intel®	Xeon®	Gold 6250
-Intel®	Xeon®	Gold 6250L
-Intel®	Xeon®	Gold 6252
-Intel®	Xeon®	Gold 6252N
-Intel®	Xeon®	Gold 6254
-Intel®	Xeon®	Gold 6256
-Intel®	Xeon®	Gold 6258R
-Intel®	Xeon®	Gold 6262V
-Intel®	Xeon®	Gold Gold 5218
-Intel®	Xeon®	Gold Gold 6238R
-Intel®	Xeon®	Gold6246
-Intel®	Xeon®	Goldv 6234
-Intel®	Xeon®	Platinum 8253
-Intel®	Xeon®	Platinum 8256
-Intel®	Xeon®	Platinum 8260
-Intel®	Xeon®	Platinum 8260L
-Intel®	Xeon®	Platinum 8260Y
-Intel®	Xeon®	Platinum 8268
-Intel®	Xeon®	Platinum 8270
-Intel®	Xeon®	Platinum 8276
-Intel®	Xeon®	Platinum 8276L
-Intel®	Xeon®	Platinum 8280
-Intel®	Xeon®	Platinum 8280L
-Intel®	Xeon®	Platinum 9221
-Intel®	Xeon®	Platinum 9222
-Intel®	Xeon®	Platinum 9242
-Intel®	Xeon®	Platinum 9282
-Intel®	Xeon®	Silver 4208
-Intel®	Xeon®	Silver 4209T
-Intel®	Xeon®	Silver 4210
-Intel®	Xeon®	Silver 4210R
-Intel®	Xeon®	Silver 4210T
-Intel®	Xeon®	Silver 4214
-Intel®	Xeon®	Silver 4214R
-Intel®	Xeon®	Silver 4214Y
-Intel®	Xeon®	Silver 4215
-Intel®	Xeon®	Silver 4215R
-Intel®	Xeon®	Silver 4216
-Intel®	Xeon®	W-2223
-Intel®	Xeon®	W-2225
-Intel®	Xeon®	W-2235
-Intel®	Xeon®	W-2245
-Intel®	Xeon®	W-2255
-Intel®	Xeon®	W-2265
-Intel®	Xeon®	W-2275
-Intel®	Xeon®	W-2295
-Intel®	Xeon®	W-3223
-Intel®	Xeon®	W-3225
-Intel®	Xeon®	W-3235
-Intel®	Xeon®	W-3245
-Intel®	Xeon®	W-3245M
-Intel®	Xeon®	W-3265
-Intel®	Xeon®	W-3265M
-Intel®	Xeon®	W-3275
-Intel®	Xeon®	W-3275M
-Intel®	Xeon®	W-10855M
-Intel®	Xeon®	W-10885M
-Intel®	Xeon®	W-1250
-Intel®	Xeon®	W-1250E
-Intel®	Xeon®	W-1250P
-Intel®	Xeon®	W-1250TE
-Intel®	Xeon®	W-1270
-Intel®	Xeon®	W-1270E
-Intel®	Xeon®	W-1270P
-Intel®	Xeon®	W-1270TE
-Intel®	Xeon®	W-1290
-Intel®	Xeon®	W-1290E
-Intel®	Xeon®	W-1290P
-Intel®	Xeon®	W-1290T
-Intel®	Xeon®	W-1290TE
-Intel®	Xeon®	Gold 5315Y
-Intel®	Xeon®	Gold 5317
-Intel®	Xeon®	Gold 5318N
-Intel®	Xeon®	Gold 5318S
-Intel®	Xeon®	Gold 5320
-Intel®	Xeon®	Gold 5320T
-Intel®	Xeon®	Gold 6312U
-Intel®	Xeon®	Gold 6314U
-Intel®	Xeon®	Gold 6326
-Intel®	Xeon®	Gold 6330
-Intel®	Xeon®	Gold 6330N
-Intel®	Xeon®	Gold 6334
-Intel®	Xeon®	Gold 6336Y
-Intel®	Xeon®	Gold 6338
-Intel®	Xeon®	Gold 6338N
-Intel®	Xeon®	Gold 6338T
-Intel®	Xeon®	Gold 6342
-Intel®	Xeon®	Gold 6346
-Intel®	Xeon®	Gold 6348
-Intel®	Xeon®	Gold 6354
-Intel®	Xeon®	Gold Gold 5318Y
-Intel®	Xeon®	Platinum 8351N
-Intel®	Xeon®	Platinum 8352S
-Intel®	Xeon®	Platinum 8352V
-Intel®	Xeon®	Platinum 8352Y
-Intel®	Xeon®	Platinum 8358
-Intel®	Xeon®	Platinum 8358P
-Intel®	Xeon®	Platinum 8360Y
-Intel®	Xeon®	Platinum 8368
-Intel®	Xeon®	Platinum 8368Q
-Intel®	Xeon®	Platinum 8380
-Intel®	Xeon®	Silver 4309Y
-Intel®	Xeon®	Silver 4310
-Intel®	Xeon®	Silver 4310T
-Intel®	Xeon®	Silver 4314
-Intel®	Xeon®	Silver 4316
+2.1.0.0
+x6200FE
+x6211E
+x6212RE
+x6413E
+x6414RE
+x6425E
+x6425RE
+x6427FE
+G4900
+G4900T
+G4920
+G4930
+G4930E
+G4930T
+G4932E
+G4950
+J4005
+J4105
+J4115
+N4000
+N4100
+3867U
+4205U
+4305U
+4305UE
+J4025
+J4125
+N4020
+N4120
+5205U
+5305U
+G5900
+G5900E
+G5900T
+G5900TE
+G5905
+G5905T
+G5920
+G5925
+J6412
+J6413
+N6210
+N6211
+N4500
+N4505
+N5100
+N5105
+6305
+6305E
+i5-10210Y
+i5-10310Y
+i5-8200Y
+i5-8210Y
+i5-8310Y
+i7-10510Y
+i7-8500Y
+m3-8100Y
+i3-8100
+i3-8100B
+i3-8100H
+i3-8100T
+i3-8109U
+i3-8140U
+i3-8300
+i3-8300T
+i3-8350K
+i5+8400
+i5+8500
+i5-8257U
+i5-8259U
+i5-8260U
+i5-8269U
+i5-8279U
+i5-8300H
+i5-8400
+i5-8400B
+i5-8400H
+i5-8400T
+i5-8500
+i5-8500B
+i5-8500T
+i5-8600
+i5-8600K
+i5-8600T
+i7-8086K
+i7-8557U
+i7-8559U
+i7-8569U
+i7-8700
+i7-8700B
+i7-8700K
+i7-8700T
+i7-8750H
+i7-8850H
+i3-8130U
+i5-8250U
+i5-8350U
+i7-8550U
+i7-8650U
+i3-8145U
+i3-8145UE
+i5-8265U
+i5-8365U
+i5-8365UE
+i7-8565U
+i7-8665U
+i7-8665UE
+i3-9100
+i3-9100E
+i3-9100F
+i3-9100HL
+i3-9100T
+i3-9100TE
+i3-9300
+i3-9300T
+i3-9320
+i3-9350K
+i3-9350KF
+i5-9300H
+i5-9300HF
+i5-9400
+i5-9400F
+i5-9400H
+i5-9400T
+i5-9500
+i5-9500E
+i5-9500F
+i5-9500T
+i5-9500TE
+i5-9600
+i5-9600K
+i5-9600KF
+i5-9600T
+i7-9700
+i7-9700E
+i7-9700F
+i7-9700K
+i7-9700KF
+i7-9700T
+i7-9700TE
+i7-9750H
+i7-9750HF
+i7-9850H
+i7-9850HE
+i7-9850HL
+i9-8950HK
+i9-9880H
+i9-9900
+i9-9900K
+i9-9900KF
+i9-9900KS
+i9-9900T
+i9-9980HK
+i3-10100Y
+i3-10110Y
+i9-10900X
+i9-10920X
+i9-10940X
+i9-10980XE
+i3-10100
+i3-10100E
+i3-10100F
+i3-10100T
+i3-10100TE
+i3-10105
+i3-10105F
+i3-10105T
+i3-10110U
+i3-10300
+i3-10300T
+i3-10305
+i3-10305T
+i3-10320
+i3-10325
+i5-10200H
+i5-10210U
+i5-10300H
+i5-10310U
+i5-10400
+i5-10400F
+i5-10400H
+i5-10400T
+i5-10500
+i5-10500E
+i5-10500H
+i5-10500T
+i5-10500TE
+i5-10600
+i5-10600K
+i5-10600KF
+i5-10600T
+i7-10510U
+i7-10610U
+i7-10700
+i7-10700E
+i7-10700F
+i7-10700K
+i7-10700KF
+i7-10700T
+i7-10700TE
+i7-10710U
+i7-10750H
+i7-10810U
+i7-10850H
+i7-10870H
+i7-10875H
+i9-10850K
+i9-10885H
+i9-10900
+i9-10900E
+i9-10900F
+i9-10900K
+i9-10900KF
+i9-10900T
+i9-10900TE
+i9-10980HK
+i3-1000G1
+i3-1000G4
+i3-1005G1
+i5-1030G4
+i5-1030G7
+i5-1035G1
+i5-1035G4
+i5-1035G7
+i5-1038NG7
+i7-1060G7
+i7-1065G7
+i7-1068NG7
+i3-L13G4
+i5-L16G7
+i5-11400
+i5-11400F
+i5-11400T
+i5-11500
+i5-11500T
+i5-11600
+i5-11600K
+i5-11600KF
+i5-11600T
+i7-11700
+i7-11700F
+i7-11700K
+i7-11700KF
+i7-11700T
+i9-11900
+i9-11900F
+i9-11900K
+i9-11900KF
+i9-11900T
+i3-1110G4
+i3-1115G4
+i3-1115G4E
+i3-1115GRE
+i3-1120G4
+i3-1125G4
+i5-11300H
+i5-1130G7
+i5-1135G7
+i5-1135G7
+i5-1140G7
+i5-1145G7
+i5-1145G7E
+i5-1145GRE
+i7-11370H
+i7-11375H
+i7-1160G7
+i7-1165G7
+i7-1165G7
+i7-1180G7
+i7-1185G7
+i7-1185G7E
+i7-1185GRE
+Gold 4425Y
+Gold 6500Y
+Gold G5400
+Gold G5400T
+Gold G5420
+Gold G5420T
+Gold G5500
+Gold G5500T
+Gold G5600
+Gold G5600T
+Gold G5620
+Silver J5005
+Silver N5000
+Gold 4417U
+Gold 5405U
+Silver J5040
+Silver N5030
+Gold 6405U
+Gold G6400
+Gold G6400E
+Gold G6400T
+Gold G6400TE
+Gold G6405
+Gold G6405T
+Gold G6500
+Gold G6500T
+Gold G6505
+Gold G6505T
+Gold G6600
+Gold G6605
+6805
+J6426
+N6415
+Silver N6000
+Silver N6005
+Gold 7505
+Bronze 3104
+Bronze 3106
+Gold 5115
+Gold 5118
+Gold 5119T
+Gold 5120
+Gold 5120T
+Gold 5122
+Gold 6126
+Gold 6126F
+Gold 6126T
+Gold 6128
+Gold 6130
+Gold 6130F
+Gold 6130T
+Gold 6132
+Gold 6134
+Gold 6136
+Gold 6138
+Gold 6138F
+Gold 6138P
+Gold 6138T
+Gold 6140
+Gold 6142
+Gold 6142F
+Gold 6144
+Gold 6146
+Gold 6148
+Gold 6148F
+Gold 6150
+Gold 6152
+Gold 6154
+Platinum 8153
+Platinum 8156
+Platinum 8158
+Platinum 8160
+Platinum 8160F
+Platinum 8160T
+Platinum 8164
+Platinum 8168
+Platinum 8170
+Platinum 8176
+Platinum 8176F
+Platinum 8180
+Silver 4108
+Silver 4109T
+Silver 4110
+Silver 4112
+Silver 4114
+Silver 4114T
+Silver 4116
+Silver 4116T
+E-2124
+E-2124G
+E-2126G
+E-2134
+E-2136
+E-2144G
+E-2146G
+E-2174G
+E-2176G
+E-2176M
+E-2186G
+E-2186M
+E-2224
+E-2224G
+E-2226G
+E-2226GE
+E-2234
+E-2236
+E-2244G
+E-2246G
+E-2254ME
+E-2254ML
+E-2274G
+E-2276G
+E-2276M
+E-2276ME
+E-2276ML
+E-2278G
+E-2278GE
+E-2278GEL
+E-2286G
+E-2286M
+E-2288G
+Bronze 3204
+Bronze 3206R
+Gold 5215
+Gold 5215L
+Gold 5217
+Gold 5218B
+Gold 5218N
+Gold 5218R
+Gold 5218T
+Gold 5220
+Gold 5220R
+Gold 5220S
+Gold 5220T
+Gold 5222
+Gold 6208U
+Gold 6209U
+Gold 6210U
+Gold 6212U
+Gold 6222V
+Gold 6226
+Gold 6226R
+Gold 6230
+Gold 6230N
+Gold 6230R
+Gold 6230T
+Gold 6238
+Gold 6238L
+Gold 6238T
+Gold 6240
+Gold 6240L
+Gold 6240R
+Gold 6240Y
+Gold 6242
+Gold 6242R
+Gold 6244
+Gold 6246R
+Gold 6248
+Gold 6248R
+Gold 6250
+Gold 6250L
+Gold 6252
+Gold 6252N
+Gold 6254
+Gold 6256
+Gold 6258R
+Gold 6262V
+Gold Gold 5218
+Gold Gold 6238R
+Gold6246
+Goldv 6234
+Platinum 8253
+Platinum 8256
+Platinum 8260
+Platinum 8260L
+Platinum 8260Y
+Platinum 8268
+Platinum 8270
+Platinum 8276
+Platinum 8276L
+Platinum 8280
+Platinum 8280L
+Platinum 9221
+Platinum 9222
+Platinum 9242
+Platinum 9282
+Silver 4208
+Silver 4209T
+Silver 4210
+Silver 4210R
+Silver 4210T
+Silver 4214
+Silver 4214R
+Silver 4214Y
+Silver 4215
+Silver 4215R
+Silver 4216
+W-2223
+W-2225
+W-2235
+W-2245
+W-2255
+W-2265
+W-2275
+W-2295
+W-3223
+W-3225
+W-3235
+W-3245
+W-3245M
+W-3265
+W-3265M
+W-3275
+W-3275M
+W-10855M
+W-10885M
+W-1250
+W-1250E
+W-1250P
+W-1250TE
+W-1270
+W-1270E
+W-1270P
+W-1270TE
+W-1290
+W-1290E
+W-1290P
+W-1290T
+W-1290TE
+Gold 5315Y
+Gold 5317
+Gold 5318N
+Gold 5318S
+Gold 5320
+Gold 5320T
+Gold 6312U
+Gold 6314U
+Gold 6326
+Gold 6330
+Gold 6330N
+Gold 6334
+Gold 6336Y
+Gold 6338
+Gold 6338N
+Gold 6338T
+Gold 6342
+Gold 6346
+Gold 6348
+Gold 6354
+Gold Gold 5318Y
+Platinum 8351N
+Platinum 8352S
+Platinum 8352V
+Platinum 8352Y
+Platinum 8358
+Platinum 8358P
+Platinum 8360Y
+Platinum 8368
+Platinum 8368Q
+Platinum 8380
+Silver 4309Y
+Silver 4310
+Silver 4310T
+Silver 4314
+Silver 4316

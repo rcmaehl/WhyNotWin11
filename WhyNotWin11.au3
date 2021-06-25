@@ -3,15 +3,20 @@
 #AutoIt3Wrapper_Icon=.\assets\windows11-logo.ico
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify the more niche settings for why your PC isn't Windows 11 ready
-#AutoIt3Wrapper_Res_Fileversion=2.0.1.0
-#AutoIt3Wrapper_Res_ProductVersion=2.0.1
+#AutoIt3Wrapper_Res_Fileversion=2.1.0.0
+#AutoIt3Wrapper_Res_ProductVersion=2.1.0
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #Au3Stripper_Parameters=/so
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
+
+Global $sVersion = "2.1.0.0"
+
 #include <File.au3>
+#include <Misc.au3>
 #include <String.au3>
+#include <EditConstants.au3>
 #include <GUIConstantsEx.au3>
 #include <StaticConstants.au3>
 #include <AutoItConstants.au3>
@@ -19,19 +24,43 @@
 
 #include ".\Includes\_WMIC.au3"
 
+ExtractFiles()
 Main()
+
+Func ExtractFiles()
+	Select
+		Case Not FileExists(@TempDir & "\SupportedProcessorsAMD.txt")
+			FileInstall(".\includes\SupportedProcessorsAMD.txt", @TempDir & "\SupportedProcessorsAMD.txt")
+			FileInstall(".\includes\SupportedProcessorsIntel.txt", @TempDir & "\SupportedProcessorsIntel.txt")
+		Case FileExists(@TempDir & "\SupportedProcessorsAMD.txt")
+			If _VersionCompare($sVersion, FileReadLine(@TempDir & "\SupportedProcessorsAMD.txt",1)) = 1 Then
+				FileInstall(".\includes\SupportedProcessorsAMD.txt", @TempDir & "\SupportedProcessorsAMD.txt", $FC_OVERWRITE)
+				FileInstall(".\includes\SupportedProcessorsIntel.txt", @TempDir & "\SupportedProcessorsIntel.txt", $FC_OVERWRITE)
+			EndIf
+		Case Else
+			;;;
+	EndSelect
+EndFunc
 
 Func Main()
 
 	$hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, $WS_POPUP+$WS_BORDER)
 	GUISetBkColor(0xF8F8F8)
 
+	; Top Most Interaction for Update Text
+	$hUpdate = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlSetBkColor(-1, 0xE6E6E6)
+
 	GUICtrlCreateLabel("", 0, 0, 100, 600)
+	GUICtrlSetBkColor(-1, 0xE6E6E6)
+
+	GUICtrlCreateLabel("Check for Updates", 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlSetFont(-1, 8.5, 400)
 	GUICtrlSetBkColor(-1, 0xE6E6E6)
 
 	GUICtrlCreateLabel("WhyNotWin11", 10, 10, 80, 20, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, 0xE6E6E6)
-	GUICtrlCreateLabel("v " & FileGetVersion(@ScriptFullPath), 10, 30, 80, 20, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlCreateLabel("v " & $sVersion, 10, 30, 80, 20, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, 0xE6E6E6)
 
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
@@ -45,7 +74,7 @@ Func Main()
 	GUICtrlSetFont(-1, 24, 400)
 
 	Local $hCheck[11][3]
-	Local $hLabel[11] = ["Boot Type", "CPU Architecture", "CPU Generation", "CPU Core Count", "CPU Frequency", "DirectX Support", "Disk Partitioning", "RAM", "Secure Boot", "Storage", "TPM Minimum"]
+	Local $hLabel[11] = ["Boot Type", "CPU Architecture", "CPU Generation (Beta)", "CPU Core Count", "CPU Frequency", "DirectX Support", "Disk Partitioning", "RAM", "Secure Boot", "Storage", "TPM Minimum"]
 
 	For $iRow = 0 To 10 Step 1
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 130, 110 + $iRow * 40, 40, 40, $SS_CENTER+$SS_SUNKEN+$SS_CENTERIMAGE)
@@ -83,18 +112,16 @@ Func Main()
 		GUICtrlSetData($hCheck[1][2], _GetCPUInfo(0) & " Bit CPU")
 	EndIf
 
-	#cs
-	RunWait("powershell -Command $env:firmware_type | Out-File -FilePath .\WhyNot.txt", "", @SW_HIDE)
-	If Not FileReadLine(".\WhyNot.txt", 1) = "Legacy" Then
+	$sTest = StringRegExpReplace(_GetCPUInfo(2), "[D]", "")
+	$sAMD = FileRead(@TempDir & "\SupportedProcessorsAMD.txt")
+	$sIntel = FileRead(@TempDir & "SupportedProcessorsIntel.txt")
+	If StringInStr($sAMD, $sTest) or StringInStr($sIntel, $sTest) Then
 		GUICtrlSetData($hCheck[2][0], "OK")
 		GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
-		GUICtrlSetData($hCheck[2][2], FileReadLine(".\WhyNot.txt", 1));"Secure Boot Detected as Enabled")
 	Else
 		GUICtrlSetData($hCheck[2][0], "X")
 		GUICtrlSetBkColor($hCheck[2][0], 0xFA113D)
-		GUICtrlSetData($hCheck[2][2], FileReadLine(".\WhyNot.txt", 1));"Secure Boot Not Enabled")
 	EndIf
-	#ce
 	GUICtrlSetData($hCheck[2][2], _GetCPUInfo(2))
 
 	If _GetCPUInfo(0) >= 2 Or _GetCPUInfo(1) >= 2 Then
@@ -122,7 +149,7 @@ Func Main()
 		Case StringInStr(FileRead($hFile), "Error")
 			GUICtrlSetData($hCheck[6][0], "?")
 			GUICtrlSetBkColor($hCheck[6][0], 0xF4C141)
-			GUICtrlSetData($hCheck[6][2], "Unable to determine")
+			GUICtrlSetData($hCheck[6][2], "Unable to Determine")
 		Case StringInStr(FileRead($hFile), "GPT")
 			GUICtrlSetData($hCheck[6][0], "OK")
 			GUICtrlSetBkColor($hCheck[6][0], 0x4CC355)
@@ -130,7 +157,7 @@ Func Main()
 		Case Else
 			GUICtrlSetData($hCheck[6][0], "X")
 			GUICtrlSetBkColor($hCheck[6][0], 0xFA113D)
-			GUICtrlSetData($hCheck[6][2], StringRight(StringStripWS(FileReadLine($hFile, 5),$STR_STRIPTRAILING),3));"GPT Not Detected")
+			GUICtrlSetData($hCheck[6][2], "GPT Not Detected")
 	EndSelect
 
 	$aMem = DllCall("Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
@@ -209,6 +236,7 @@ Func Main()
 				GUIDelete($hGUI)
 				Exit
 
+			; DirectX 12 takes a while. Grab the result once done
 			Case Not ProcessExists("dxdiag.exe") And FileExists($hDXFile)
 				If StringInStr(FileRead($hDXFile), "DirectX 12") Then
 					GUICtrlSetData($hCheck[5][0], "OK")
@@ -221,9 +249,58 @@ Func Main()
 				EndIf
 				FileDelete($hDXFile)
 
+			Case $hMsg = $hUpdate
+				Switch _GetLatestRelease($sVersion)
+					Case -1
+						MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, "Test Build?", "You're running a newer build than publically available!", 10)
+					Case 0
+						Switch @error
+							Case 0
+								MsgBox($MB_OK+$MB_ICONINFORMATION+$MB_TOPMOST, "Up to Date", "You're running the latest build!", 10)
+							Case 1
+								MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, "Unable to Check for Updates", "Unable to load release data.", 10)
+							Case 2
+								MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, "Unable to Check for Updates", "Invalid Data Received!", 10)
+							Case 3
+								Switch @extended
+									Case 0
+										MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, "Unable to Check for Updates", "Invalid Release Tags Received!", 10)
+									Case 1
+										MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, "Unable to Check for Updates", "Invalid Release Types Received!", 10)
+								EndSwitch
+						EndSwitch
+					Case 1
+						If MsgBox($MB_YESNO+$MB_ICONINFORMATION+$MB_TOPMOST, "Update Available", "An Update is Availabe, would you like to download it?", 10) = $IDYES Then ShellExecute("https://fcofix.org/WhyNotWin11/releases")
+				EndSwitch
+
 			Case Else
 				;;;
 
 		EndSelect
 	WEnd
+EndFunc
+
+Func _GetLatestRelease($sCurrent)
+
+	Local $dAPIBin
+	Local $sAPIJSON
+
+	$dAPIBin = InetRead("https://api.fcofix.org/repos/rcmaehl/WhyNotWin11/releases")
+	If @error Then Return SetError(1, 0, 0)
+	$sAPIJSON = BinaryToString($dAPIBin)
+	If @error Then Return SetError(2, 0, 0)
+
+	Local $aReleases = _StringBetween($sAPIJSON, '"tag_name":"', '",')
+	If @error Then Return SetError(3, 0, 0)
+	Local $aRelTypes = _StringBetween($sAPIJSON, '"prerelease":', ',')
+	If @error Then Return SetError(3, 1, 0)
+	Local $aCombined[UBound($aReleases)][2]
+
+	For $iLoop = 0 To UBound($aReleases) - 1 Step 1
+		$aCombined[$iLoop][0] = $aReleases[$iLoop]
+		$aCombined[$iLoop][1] = $aRelTypes[$iLoop]
+	Next
+
+	Return _VersionCompare($aCombined[0][0], $sCurrent)
+
 EndFunc
