@@ -10,6 +10,7 @@
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #Au3Stripper_Parameters=/so
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
+#include <File.au3>
 #include <String.au3>
 #include <GUIConstantsEx.au3>
 #include <StaticConstants.au3>
@@ -57,15 +58,19 @@ Func Main()
 
 	GUISetState(@SW_SHOW, $hGUI)
 
-	RunWait("powershell -Command $env:firmware_type | Out-File -FilePath .\WhyNot.txt", "", @SW_HIDE)
-	If Not StringInStr(FileRead(".\WhyNot.txt"), "Legacy") Then
+	$hFile = _TempFile()
+	$hDXFile = _TempFile(@TempDir, "dxdiag")
+	Run("dxdiag /whql:off /t " & $hDXFile)
+
+	RunWait("powershell -Command $env:firmware_type | Out-File -FilePath " & $hFile, "", @SW_HIDE)
+	If Not StringInStr(FileRead($hFile), "Legacy") Then
 		GUICtrlSetData($hCheck[0][0], "OK")
 		GUICtrlSetBkColor($hCheck[0][0], 0x4CC355)
-		GUICtrlSetData($hCheck[0][2], FileReadLine(".\WhyNot.txt", 1));"Secure Boot Detected as Enabled")
+		GUICtrlSetData($hCheck[0][2], FileReadLine($hFile, 1));"Secure Boot Detected as Enabled")
 	Else
 		GUICtrlSetData($hCheck[0][0], "X")
 		GUICtrlSetBkColor($hCheck[0][0], 0xFA113D)
-		GUICtrlSetData($hCheck[0][2], FileReadLine(".\WhyNot.txt", 1));"Secure Boot Not Enabled")
+		GUICtrlSetData($hCheck[0][2], FileReadLine($hFile, 1));"Secure Boot Not Enabled")
 	EndIf
 
 	If _GetCPUInfo(4) >= 64 Then
@@ -112,20 +117,20 @@ Func Main()
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	EndIf
 
-	RunWait("powershell -Command Get-Partition -DriveLetter C | Get-Disk | Out-File -FilePath .\WhyNot.txt", "", @SW_HIDE)
+	RunWait("powershell -Command Get-Partition -DriveLetter C | Get-Disk | Out-File -FilePath " & $hFile, "", @SW_HIDE)
 	Select
-		Case StringInStr(FileRead(".\WhyNot.txt"), "Error")
+		Case StringInStr(FileRead($hFile), "Error")
 			GUICtrlSetData($hCheck[6][0], "?")
 			GUICtrlSetBkColor($hCheck[6][0], 0xF4C141)
 			GUICtrlSetData($hCheck[6][2], "Unable to determine")
-		Case StringInStr(FileRead(".\WhyNot.txt"), "GPT")
+		Case StringInStr(FileRead($hFile), "GPT")
 			GUICtrlSetData($hCheck[6][0], "OK")
 			GUICtrlSetBkColor($hCheck[6][0], 0x4CC355)
 			GUICtrlSetData($hCheck[6][2], "GPT Detected")
 		Case Else
 			GUICtrlSetData($hCheck[6][0], "X")
 			GUICtrlSetBkColor($hCheck[6][0], 0xFA113D)
-			GUICtrlSetData($hCheck[6][2], StringRight(StringStripWS(FileReadLine(".\WhyNot.txt", 5),$STR_STRIPTRAILING),3));"GPT Not Detected")
+			GUICtrlSetData($hCheck[6][2], StringRight(StringStripWS(FileReadLine($hFile, 5),$STR_STRIPTRAILING),3));"GPT Not Detected")
 	EndSelect
 
 	$aMem = DllCall("Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
@@ -145,8 +150,8 @@ Func Main()
 		GUICtrlSetData($hCheck[7][2], $aMem & " GB")
 	EndIf
 
-	RunWait("powershell -Command Confirm-SecureBootUEFI | Out-File -FilePath .\WhyNot.txt", "", @SW_HIDE)
-	If StringInStr(FileRead(".\WhyNot.txt"), "True") Then
+	RunWait("powershell -Command Confirm-SecureBootUEFI | Out-File -FilePath " & $hFile, "", @SW_HIDE)
+	If StringInStr(FileRead($hFile), "True") Then
 		GUICtrlSetData($hCheck[8][0], "OK")
 		GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
 		GUICtrlSetData($hCheck[8][2], "Enabled")
@@ -193,7 +198,7 @@ Func Main()
 			GUICtrlSetData($hCheck[10][2], _GetTPMInfo(0) & " " & _GetTPMInfo(1) & " " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]))
 	EndSelect
 
-	FileDelete(".\WhyNot.txt")
+	FileDelete($hFile)
 
 	While 1
 		$hMsg = GUIGetMsg()
@@ -203,6 +208,18 @@ Func Main()
 			Case $hMsg = $GUI_EVENT_CLOSE Or $hMsg = $hExit
 				GUIDelete($hGUI)
 				Exit
+
+			Case Not ProcessExists("dxdiag.exe") And FileExists($hDXFile)
+				If StringInStr(FileRead($hDXFile), "DirectX 12") Then
+					GUICtrlSetData($hCheck[5][0], "OK")
+					GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
+					GUICtrlSetData($hCheck[5][2], "DirectX 12")
+				Else
+					GUICtrlSetData($hCheck[5][0], "X")
+					GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
+					GUICtrlSetData($hCheck[5][2], "Not DirectX 12")
+				EndIf
+				FileDelete($hDXFile)
 
 			Case Else
 				;;;
