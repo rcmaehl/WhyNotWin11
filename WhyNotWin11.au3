@@ -3,19 +3,20 @@
 #AutoIt3Wrapper_Icon=.\assets\windows11-logo.ico
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify the more niche settings for why your PC isn't Windows 11 ready
-#AutoIt3Wrapper_Res_Fileversion=2.1.0.0
-#AutoIt3Wrapper_Res_ProductVersion=2.1.0
+#AutoIt3Wrapper_Res_Fileversion=2.2.0.0
+#AutoIt3Wrapper_Res_ProductVersion=2.2.0
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #Au3Stripper_Parameters=/so
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
-Global $sVersion = "2.1.0.0"
+Global $sVersion = "2.2.0.0"
 
 #include <File.au3>
 #include <Misc.au3>
 #include <String.au3>
+#include <WinAPISysWin.au3>
 #include <EditConstants.au3>
 #include <GUIConstantsEx.au3>
 #include <StaticConstants.au3>
@@ -46,6 +47,8 @@ Func Main()
 
 	$hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, $WS_POPUP+$WS_BORDER)
 	GUISetBkColor(0xF8F8F8)
+
+	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
 
 	; Top Most Interaction for Update Text
 	$hUpdate = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
