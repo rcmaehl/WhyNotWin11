@@ -125,15 +125,21 @@ Func Main()
 		GUICtrlSetData($hCheck[6][2], StringRight(StringStripWS(FileReadLine(".\WhyNot.txt", 5),$STR_STRIPTRAILING),3));"GPT Not Detected")
 	EndIf
 
-	Local $aMem = MemGetStats()
-	If $aMem[1]/1048576 >= 4 Then
+	$aMem = DllCall("Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
+	If @error Then
+		$aMem = "Unknown"
+	Else
+		$aMem = Round($aMem[1]/1048576, 1)
+	EndIf
+
+	If $aMem >= 4 Then
 		GUICtrlSetData($hCheck[7][0], "OK")
 		GUICtrlSetBkColor($hCheck[7][0], 0x4CC355)
-		GUICtrlSetData($hCheck[7][2], Round($aMem[1]/1048576,1) & " GB")
+		GUICtrlSetData($hCheck[7][2], $aMem & " GB")
 	Else
 		GUICtrlSetData($hCheck[7][0], "X")
 		GUICtrlSetBkColor($hCheck[7][0], 0xFA113D)
-		GUICtrlSetData($hCheck[7][2], Round($aMem[1]/1048576,1) & " GB")
+		GUICtrlSetData($hCheck[7][2], $aMem & " GB")
 	EndIf
 
 	RunWait("powershell -Command Confirm-SecureBootUEFI | Out-File -FilePath .\WhyNot.txt", "", @SW_HIDE)
