@@ -326,6 +326,10 @@ Func Main()
 			; DirectX 12 takes a while. Grab the result once done
 			Case Not ProcessExists("dxdiag.exe") And FileExists($hDXFile)
 				Select
+					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "Driver Model: WDDM 3")
+						GUICtrlSetData($hCheck[5][0], "OK")
+						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
+						GUICtrlSetData($hCheck[5][2], "DirectX 12, WDDM 3")
 					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "Driver Model: WDDM 2")
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
