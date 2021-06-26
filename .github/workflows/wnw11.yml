@@ -29,13 +29,12 @@ jobs:
            cd WhyNotWin11
            C:\"Program Files (x86)"\AutoIt3\AutoIt3.exe "C:\Program Files (x86)\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3" /NoStatus /prod /in ".\WhyNotWin11.au3"
            Start-Sleep -s 10
-           Get-FileHash WhyNotWin11.exe | Format-List | Out-File -Path shasum.txt
+           Get-FileHash WhyNotWin11.exe | Format-List | Out-File -Path shasum64.txt
+           Get-FileHash WhyNotWin11_x86.exe | Format-List | Out-File -Path shasum86.txt
 
     - name: Upload
       uses: actions/upload-artifact@v2
       with:
        name: WNW11
-       path: |
-             WhyNotWin11\WhyNotWin11.exe
-             WhyNotWin11\shasum.txt
+       path: WhyNotWin11
        if-no-files-found: error
