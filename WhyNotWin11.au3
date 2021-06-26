@@ -49,6 +49,7 @@ Func Main()
 
 	$hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, $WS_POPUP+$WS_BORDER)
 	GUISetBkColor(_WinAPI_GetSysColor($COLOR_WINDOW))
+	GuiSetFont(8.5,0,0,"Arial")
 
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
 	GUICtrlSetDefBKColor(_WinAPI_GetSysColor($COLOR_WINDOW))
@@ -77,11 +78,13 @@ Func Main()
 	GUICtrlSetBkColor(-1, 0xE6E6E6)
 
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
-	GUICtrlSetBkColor(-1, 0xF2F2F2)
+	GUICtrlSetBkColor(-1, 0xE6E6E6)
 
 	GUICtrlCreateLabel("Your Windows 11 Compatiblity Results are Below", 130, 30, 640, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 18, 600, "", "", $CLEARTYPE_QUALITY)
-	GUICtrlCreateLabel("* Results Based on Currently Known Requirements", 130, 70, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlCreateLabel("* Results based on currently known requirements!", 130, 70, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlSetColor ( -1, 0xE20012 )
+	GUICtrlSetFont(-1, 10)
 
 	GUICtrlCreateLabel("X", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 24, 400)
