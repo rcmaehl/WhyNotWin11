@@ -295,7 +295,7 @@ Func Main()
 
 			; DirectX 12 takes a while. Grab the result once done
 			Case Not ProcessExists("dxdiag.exe") And FileExists($hDXFile)
-				If StringInStr(FileRead($hDXFile), "DirectX 12") Then
+				If StringInStr(FileRead($hDXFile), "DDI Version: 12") Then
 					GUICtrlSetData($hCheck[5][0], "OK")
 					GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
 					GUICtrlSetData($hCheck[5][2], "DirectX 12")
