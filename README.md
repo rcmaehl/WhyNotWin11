@@ -29,10 +29,10 @@ Detection Script to help identify why your PC isn't Windows 11 ready
 - [x] Soft Floor Checks:
     - [x] TPM >= 2.0
     - [x] CPU Compatibility list
-- [x] Other Checks:
+- [ ] Other Checks:
     - [x] DirectX 12
     - [x] WDDM 2
-    - [x] ~~Screen Resolution~~ (Removed with recent changes)
+    - [ ] Screen Resolution
 - [x] A fancier GUI
 
 ## How to build from source code
