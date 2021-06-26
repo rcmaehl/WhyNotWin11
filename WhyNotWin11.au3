@@ -86,7 +86,7 @@ Func Main()
 	GUICtrlSetFont(-1, 24, 400)
 
 	Local $hCheck[11][3]
-	Local $hLabel[11] = ["Boot Type", "CPU Architecture", "CPU Generation", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partitioning", "RAM", "Secure Boot", "Storage", "TPM Minimum"]
+	Local $hLabel[11] = ["Boot Method", "CPU Architecture", "CPU Generation", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 
 	For $iRow = 0 To 10 Step 1
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 130, 110 + $iRow * 40, 40, 40, $SS_CENTER+$SS_SUNKEN+$SS_CENTERIMAGE)
@@ -254,7 +254,7 @@ Func Main()
 		Case Else
 			GUICtrlSetData($hCheck[8][0], "X")
 			GUICtrlSetBkColor($hCheck[8][0], 0xFA113D)
-			GUICtrlSetData($hCheck[8][2], "Disabled/Not Detected")
+			GUICtrlSetData($hCheck[8][2], "Disabled / Not Detected")
 	EndSelect
 
 	If DriveSpaceTotal("C:\")/1024 >= 64 Then
