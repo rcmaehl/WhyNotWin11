@@ -17,7 +17,7 @@ Detection Script to help identify why your PC isn't Windows 11 ready
 
 ## To-Do
 
-- [ ] Hard Floor Checks:
+- [x] Hard Floor Checks:
     - [x] Cores >= 2
     - [x] CPU Freq >= 1 GHZ
     - [X] CPU Arch = 64
