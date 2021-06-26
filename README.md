@@ -32,7 +32,7 @@ Detection Script to help identify why your PC isn't Windows 11 ready
 - [x] Other Checks:
     - [x] DirectX 12
     - [x] WDDM 2
-    - [ ] ~~Screen Resolution~~ (Removed with recent changes)
+    - [x] ~~Screen Resolution~~ (Removed with recent changes)
 - [x] A fancier GUI
 
 ## How to build from source code
