@@ -26,7 +26,7 @@ Func _GetCPUInfo($iFlag = 0)
 			Local $CPUs
 			$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_ComputerSystem')
 			For $Obj_Item In $Col_Items
-				$CPUs = $Obj_Item.NumberOfProcessors
+				$sCPUs = $Obj_Item.NumberOfProcessors
 			Next
 			$sCores *= $CPUs
 			$sThreads *= $CPUs
