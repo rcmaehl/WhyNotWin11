@@ -114,14 +114,14 @@ Func Main()
 		GUICtrlSetData($hCheck[0][2], FileReadLine($hFile, 1));"Secure Boot Not Enabled")
 	EndIf
 
-	If _GetCPUInfo(4) >= 64 Then
+	If @CPUArch >= 64 Then
 		GUICtrlSetData($hCheck[1][0], "OK")
 		GUICtrlSetBkColor($hCheck[1][0], 0x4CC355)
-		GUICtrlSetData($hCheck[1][2], _GetCPUInfo(4) & " Bit CPU")
+		GUICtrlSetData($hCheck[1][2], @CPUArch & " Bit CPU")
 	Else
 		GUICtrlSetData($hCheck[1][0], "X")
 		GUICtrlSetBkColor($hCheck[1][0], 0xFA113D)
-		GUICtrlSetData($hCheck[1][2], _GetCPUInfo(0) & " Bit CPU")
+		GUICtrlSetData($hCheck[1][2], @CPUArch & " Bit CPU")
 	EndIf
 
 	Select
