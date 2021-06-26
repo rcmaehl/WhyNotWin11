@@ -87,11 +87,11 @@ Func Main()
 	GUICtrlSetFont(-1, 24, 400)
 
 	Local $hCheck[11][3]
-	Local $hLabel[11] = ["Boot Method", "CPU Architecture", "CPU Generation", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
+	Local $hLabel[11] = ["Boot Method", "CPU and OS Architecture", "CPU Generation", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 
 	For $iRow = 0 To 10 Step 1
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 130, 110 + $iRow * 40, 40, 40, $SS_CENTER+$SS_SUNKEN+$SS_CENTERIMAGE)
-		GUICtrlSetBkColor(-1, 0xF4C141)
+		GUICtrlSetBkColor(-1, 0xE6E6E6)
 		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & $hLabel[$iRow], 170, 110 + $iRow * 40, 300, 40, $SS_CENTERIMAGE)
 		GUICtrlSetFont(-1, 18, 400)
 		$hCheck[$iRow][2] = GUICtrlCreateLabel("Checking...", 470, 110 + $iRow * 40, 300, 40, $SS_CENTER+$SS_SUNKEN+$SS_CENTERIMAGE)
@@ -121,7 +121,7 @@ Func Main()
 		Case @CPUArch = "X64" And @OSArch = "X64"
 			GUICtrlSetData($hCheck[1][0], "OK")
 			GUICtrlSetBkColor($hCheck[1][0], 0x4CC355)
-			GUICtrlSetData($hCheck[1][2], "64 Bit CPU")
+			GUICtrlSetData($hCheck[1][2], "64 Bit CPU and 64 Bit OS")
 		Case @CPUArch = "X64" And @OSArch = "X86"
 			GUICtrlSetData($hCheck[1][0], "!")
 			GUICtrlSetBkColor($hCheck[1][0], 0xF4C141)
@@ -129,7 +129,7 @@ Func Main()
 		Case Else
 			GUICtrlSetData($hCheck[1][0], "X")
 			GUICtrlSetBkColor($hCheck[1][0], 0xFA113D)
-			GUICtrlSetData($hCheck[1][2], "32 Bit CPU")
+			GUICtrlSetData($hCheck[1][2], "32 Bit CPU and 32 Bit OS")
 	EndSelect
 
 	Select
