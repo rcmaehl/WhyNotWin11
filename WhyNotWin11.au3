@@ -237,6 +237,11 @@ Func Main()
 	Else
 		$aMem = Round($aMem[1]/1048576, 1)
 	EndIf
+	If $aMem = 0 Then
+		$aMem = MemGetStats()
+		$aMem = $aMem1
+		$aMem = Ceiling($aMem)
+	EndIf
 
 	If $aMem >= 4 Then
 		GUICtrlSetData($hCheck[7][0], "OK")
