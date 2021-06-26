@@ -242,15 +242,20 @@ Func Main()
 	EndIf
 
 	RunWait("powershell -Command Confirm-SecureBootUEFI | Out-File -FilePath " & $hFile, "", @SW_HIDE)
-	If StringInStr(FileRead($hFile), "True") Then
-		GUICtrlSetData($hCheck[8][0], "OK")
-		GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
-		GUICtrlSetData($hCheck[8][2], "Enabled")
-	Else
-		GUICtrlSetData($hCheck[8][0], "X")
-		GUICtrlSetBkColor($hCheck[8][0], 0xFA113D)
-		GUICtrlSetData($hCheck[8][2], "Disabled")
-	EndIf
+	Select
+		Case StringInStr(FileRead($hFile), "True")
+			GUICtrlSetData($hCheck[8][0], "OK")
+			GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
+			GUICtrlSetData($hCheck[8][2], "Enabled")
+		Case StringInStr(FileRead($hFile), "False")
+			GUICtrlSetData($hCheck[8][0], "OK")
+			GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
+			GUICtrlSetData($hCheck[8][2], "Supported")
+		Case Else
+			GUICtrlSetData($hCheck[8][0], "X")
+			GUICtrlSetBkColor($hCheck[8][0], 0xFA113D)
+			GUICtrlSetData($hCheck[8][2], "Disabled/Not Detected")
+	EndSelect
 
 	If DriveSpaceTotal("C:\")/1024 >= 64 Then
 		GUICtrlSetData($hCheck[9][0], "OK")
