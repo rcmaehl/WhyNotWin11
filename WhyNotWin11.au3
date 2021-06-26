@@ -86,7 +86,7 @@ Func Main()
 	GUICtrlSetFont(-1, 24, 400)
 
 	Local $hCheck[11][3]
-	Local $hLabel[11] = ["Boot Type", "CPU Architecture", "CPU Generation", "CPU Core Count", "CPU Frequency", "DirectX Support", "Disk Partitioning", "RAM", "Secure Boot", "Storage", "TPM Minimum"]
+	Local $hLabel[11] = ["Boot Type", "CPU Architecture", "CPU Generation", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partitioning", "RAM", "Secure Boot", "Storage", "TPM Minimum"]
 
 	For $iRow = 0 To 10 Step 1
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 130, 110 + $iRow * 40, 40, 40, $SS_CENTER+$SS_SUNKEN+$SS_CENTERIMAGE)
@@ -304,15 +304,24 @@ Func Main()
 
 			; DirectX 12 takes a while. Grab the result once done
 			Case Not ProcessExists("dxdiag.exe") And FileExists($hDXFile)
-				If StringInStr(FileRead($hDXFile), "DDI Version: 12") Then
-					GUICtrlSetData($hCheck[5][0], "OK")
-					GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
-					GUICtrlSetData($hCheck[5][2], "DirectX 12")
-				Else
-					GUICtrlSetData($hCheck[5][0], "X")
-					GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
-					GUICtrlSetData($hCheck[5][2], "Not DirectX 12")
-				EndIf
+				Select ;Driver Model: WDDM 2
+					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "DDI Version: 12")
+						GUICtrlSetData($hCheck[5][0], "OK")
+						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
+						GUICtrlSetData($hCheck[5][2], "DirectX 12, WDDM 2")
+					Case Not StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "DDI Version: 12")
+						GUICtrlSetData($hCheck[5][0], "X")
+						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
+						GUICtrlSetData($hCheck[5][2], "No DirectX 12, but WDDM2")
+					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And Not StringInStr(FileRead($hDXFile), "DDI Version: 12")
+						GUICtrlSetData($hCheck[5][0], "X")
+						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
+						GUICtrlSetData($hCheck[5][2], "DirectX 12, but no WDDM2")
+					Case Else
+						GUICtrlSetData($hCheck[5][0], "X")
+						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
+						GUICtrlSetData($hCheck[5][2], "No DirectX 12/WDDM2")
+				EndSelect
 				FileDelete($hDXFile)
 
 			Case $hMsg = $hUpdate
