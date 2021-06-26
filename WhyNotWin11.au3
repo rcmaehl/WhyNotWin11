@@ -85,7 +85,7 @@ Func Main()
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
 	GUICtrlSetBkColor(-1, $BKC - 0x0D0D0D)
 
-	GUICtrlCreateLabel("Your Windows 11 Compatiblity Results are Below", 130, 30, 640, 40, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlCreateLabel("Your Windows 11 Compatibility Results are Below", 130, 30, 640, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 18, 600, "", "", $CLEARTYPE_QUALITY)
 	GUICtrlCreateLabel("* Results Based on Currently Known Requirements!", 130, 70, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetColor(-1, 0xE20012)
