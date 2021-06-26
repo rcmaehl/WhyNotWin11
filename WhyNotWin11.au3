@@ -48,9 +48,10 @@ EndFunc
 Func Main()
 
 	$hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, $WS_POPUP+$WS_BORDER)
-	GUISetBkColor(0xF8F8F8)
+	GUISetBkColor(_WinAPI_GetSysColor($COLOR_WINDOW))
 
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
+	GUICtrlSetDefBKColor(_WinAPI_GetSysColor($COLOR_WINDOW))
 
 	; Top Most Interaction for Update Text
 	$hUpdate = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
@@ -239,7 +240,7 @@ Func Main()
 	EndIf
 	If $aMem = 0 Then
 		$aMem = MemGetStats()
-		$aMem = $aMem1
+		$aMem = $aMem[1]
 		$aMem = Ceiling($aMem)
 	EndIf
 
@@ -321,16 +322,16 @@ Func Main()
 
 			; DirectX 12 takes a while. Grab the result once done
 			Case Not ProcessExists("dxdiag.exe") And FileExists($hDXFile)
-				Select ;Driver Model: WDDM 2
-					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "DDI Version: 12")
+				Select
+					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "Driver Model: WDDM 2")
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
 						GUICtrlSetData($hCheck[5][2], "DirectX 12, WDDM 2")
-					Case Not StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "DDI Version: 12")
+					Case Not StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "Driver Model: WDDM 2")
 						GUICtrlSetData($hCheck[5][0], "X")
 						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
 						GUICtrlSetData($hCheck[5][2], "No DirectX 12, but WDDM2")
-					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And Not StringInStr(FileRead($hDXFile), "DDI Version: 12")
+					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And Not StringInStr(FileRead($hDXFile), "Driver Model: WDDM 2")
 						GUICtrlSetData($hCheck[5][0], "X")
 						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
 						GUICtrlSetData($hCheck[5][2], "DirectX 12, but no WDDM2")
