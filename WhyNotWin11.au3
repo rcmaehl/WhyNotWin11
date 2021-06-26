@@ -284,13 +284,11 @@ Func Main()
 
 	Select
 		Case _GetTPMInfo(0) = False
-			GUICtrlSetData($hCheck[10][0], "X")
-			GUICtrlSetBkColor($hCheck[10][0], 0xFA113D)
-			GUICtrlSetData($hCheck[10][2], "TPM Not Activated")
+			ContinueCase
 		Case _GetTPMInfo(1) = False
 			GUICtrlSetData($hCheck[10][0], "X")
 			GUICtrlSetBkColor($hCheck[10][0], 0xFA113D)
-			GUICtrlSetData($hCheck[10][2], "TPM Not Enabled")
+			GUICtrlSetData($hCheck[10][2], "TPM Missing/Disabled")
 		Case Not Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
 			GUICtrlSetData($hCheck[10][0], "X")
 			GUICtrlSetBkColor($hCheck[10][0], 0xFA113D)
