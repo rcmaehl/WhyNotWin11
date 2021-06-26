@@ -22,14 +22,14 @@ Func _GetCPUInfo($iFlag = 0)
 				$sSpeed = $Obj_Item.MaxClockSpeed
 				$sArch = $Obj_Item.AddressWidth
 			Next
-			
+
 			Local $CPUs
 			$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_ComputerSystem')
 			For $Obj_Item In $Col_Items
 				$sCPUs = $Obj_Item.NumberOfProcessors
 			Next
-			$sCores *= $CPUs
-			$sThreads *= $CPUs
+			$sCores *= $sCPUs
+			$sThreads *= $sCPUs
 		Else
 			Return 0
 		EndIf
