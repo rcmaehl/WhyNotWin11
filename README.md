@@ -15,6 +15,8 @@ Detection Script to help identify why your PC isn't Windows 11 ready
 
 [Download here](https://github.com/rcmaehl/WhyNotWin11/releases/latest/download/WhyNotWin11.exe)
 
+[Download DEV BUILDS here](https://github.com/rcmaehl/WhyNotWin11/actions?query=workflow%3AWNW11)
+
 ## To-Do
 
 - [x] Hard Floor Checks:
