@@ -56,6 +56,13 @@ Func Main()
 	$hUpdate = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, 0xE6E6E6)
 
+	; Top Most Interaction for Closing Window
+	$hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlSetFont(-1, 24, 400)
+
+	; Allow Dragging of Window
+	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
+
 	GUICtrlCreateLabel("", 0, 0, 100, 600)
 	GUICtrlSetBkColor(-1, 0xE6E6E6)
 
@@ -72,10 +79,10 @@ Func Main()
 	GUICtrlSetBkColor(-1, 0xF2F2F2)
 
 	GUICtrlCreateLabel("Your Windows 11 Compatiblity Results are Below", 130, 30, 640, 40, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 18, 600)
+	GUICtrlSetFont(-1, 18, 600, "", "", $CLEARTYPE_QUALITY)
 	GUICtrlCreateLabel("* Results Based on Currently Known Requirements", 130, 70, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
 
-	$hExit = GUICtrlCreateLabel("X", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlCreateLabel("X", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 24, 400)
 
 	Local $hCheck[11][3]
