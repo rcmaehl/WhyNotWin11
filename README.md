@@ -20,18 +20,19 @@ Detection Script to help identify why your PC isn't Windows 11 ready
 - [ ] Hard Floor Checks:
     - [x] Cores >= 2
     - [x] CPU Freq >= 1 GHZ
-    - [ ] CPU Arch = 64
+    - [X] CPU Arch = 64
     - [x] RAM >= 4 GB
     - [x] Storage >= 64 GB
-    - [x] TPM >= 1.2
+    - [x] ~~TPM >= 1.2~~ (Removed with recent changes)
     - [x] SecureBoot
     - [x] ~~SMode~~ (WhyNotWin11 is not compatible with S Mode Devices)
-- [ ] Soft Floor Checks:
+- [x] Soft Floor Checks:
     - [x] TPM >= 2.0
-    - [ ] CPU Compatibility list
-- [ ] Other Checks:
-    - [ ] DirectX 12
-    - [ ] Screen Resolution
+    - [x] CPU Compatibility list
+- [x] Other Checks:
+    - [x] DirectX 12
+    - [x] WDDM 2
+    - [ ] ~~Screen Resolution~~ (Removed with recent changes)
 - [x] A fancier GUI
 
 ## How to build from source code
