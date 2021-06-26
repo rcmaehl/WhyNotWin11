@@ -47,11 +47,13 @@ EndFunc
 
 Func Main()
 
+	$BKC = _WinAPI_GetSysColor($COLOR_WINDOW)
+
 	$hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, $WS_POPUP+$WS_BORDER)
-	GUISetBkColor(_WinAPI_GetSysColor($COLOR_WINDOW))
+	GUISetBkColor($BKC - 0x070707)
 
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
-	GUICtrlSetDefBKColor(_WinAPI_GetSysColor($COLOR_WINDOW))
+	GUICtrlSetDefBKColor($BKC - 0x070707)
 
 	; Top Most Interaction for Update Text
 	$hUpdate = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
@@ -65,19 +67,19 @@ Func Main()
 	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
 
 	GUICtrlCreateLabel("", 0, 0, 100, 600)
-	GUICtrlSetBkColor(-1, 0xE6E6E6)
+	GUICtrlSetBkColor(-1, $BKC - 0x191919)
 
 	GUICtrlCreateLabel("Check for Updates", 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 8.5, 400)
-	GUICtrlSetBkColor(-1, 0xE6E6E6)
+	GUICtrlSetBkColor(-1, $BKC - 0x191919)
 
 	GUICtrlCreateLabel("WhyNotWin11", 10, 10, 80, 20, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, 0xE6E6E6)
+	GUICtrlSetBkColor(-1, $BKC - 0x191919)
 	GUICtrlCreateLabel("v " & $sVersion, 10, 30, 80, 20, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, 0xE6E6E6)
+	GUICtrlSetBkColor(-1, $BKC - 0x191919)
 
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
-	GUICtrlSetBkColor(-1, 0xF2F2F2)
+	GUICtrlSetBkColor(-1, $BKC - 0x0D0D0D)
 
 	GUICtrlCreateLabel("Your Windows 11 Compatiblity Results are Below", 130, 30, 640, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 18, 600, "", "", $CLEARTYPE_QUALITY)
