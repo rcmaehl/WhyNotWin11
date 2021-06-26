@@ -53,7 +53,7 @@ EndFunc
 Func _GetDiskInfo($iFlag = 0)
 	Local Static $sType
 
-	If Not $sActivated <> "" Then
+	If Not $sType <> "" Then
 		Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2\Security\MicrosoftTPM');
 		If (IsObj($Obj_WMIService)) And (Not @error) Then
 			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_DiskPartition where BootPartition=True')
@@ -72,6 +72,7 @@ Func _GetDiskInfo($iFlag = 0)
 		Case Else
 			Return 0
 	EndSwitch
+EndFunc
 
 Func _GetTPMInfo($iFlag = 0)
 	Local Static $sActivated
