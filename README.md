@@ -23,7 +23,7 @@ Detection Script to help identify why your PC isn't Windows 11 ready
     - [X] CPU Arch = 64
     - [x] RAM >= 4 GB
     - [x] Storage >= 64 GB
-    - [x] ~~TPM >= 1.2~~ (Removed with recent changes)
+    - [x] ~~TPM >= 1.2~~ (Removed with recent changes from Microsoft)
     - [x] SecureBoot
     - [x] ~~SMode~~ (WhyNotWin11 is not compatible with S Mode Devices)
 - [x] Soft Floor Checks:
