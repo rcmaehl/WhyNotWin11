@@ -114,15 +114,22 @@ Func Main()
 		GUICtrlSetData($hCheck[0][2], FileReadLine($hFile, 1));"Secure Boot Not Enabled")
 	EndIf
 
-	If @CPUArch >= 64 Then
-		GUICtrlSetData($hCheck[1][0], "OK")
-		GUICtrlSetBkColor($hCheck[1][0], 0x4CC355)
-		GUICtrlSetData($hCheck[1][2], @CPUArch & " Bit CPU")
-	Else
-		GUICtrlSetData($hCheck[1][0], "X")
-		GUICtrlSetBkColor($hCheck[1][0], 0xFA113D)
-		GUICtrlSetData($hCheck[1][2], @CPUArch & " Bit CPU")
-	EndIf
+	Select
+		Case @CPUArch = "X64" And @OSArch = "IA64"
+			ContinueCase
+		Case @CPUArch = "X64" And @OSArch = "X64"
+			GUICtrlSetData($hCheck[1][0], "OK")
+			GUICtrlSetBkColor($hCheck[1][0], 0x4CC355)
+			GUICtrlSetData($hCheck[1][2], "64 Bit CPU")
+		Case @CPUArch = "X64" And @OSArch = "X86"
+			GUICtrlSetData($hCheck[1][0], "!")
+			GUICtrlSetBkColor($hCheck[1][0], 0xF4C141)
+			GUICtrlSetData($hCheck[1][2], "64 Bit CPU, but 32 bit OS")
+		Case Else
+			GUICtrlSetData($hCheck[1][0], "X")
+			GUICtrlSetBkColor($hCheck[1][0], 0xFA113D)
+			GUICtrlSetData($hCheck[1][2], "32 Bit CPU")
+	EndSelect
 
 	Select
 		Case StringInStr(_GetCPUInfo(2), "AMD")
