@@ -47,16 +47,18 @@ EndFunc
 
 Func Main()
 
+	$BKC = _WinAPI_GetSysColor($COLOR_WINDOW)
+
 	$hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, $WS_POPUP+$WS_BORDER)
-	GUISetBkColor(_WinAPI_GetSysColor($COLOR_WINDOW))
-	GuiSetFont(8.5,0,0,"Arial")
+	GUISetBkColor($BKC - 0x070707)
+	GUISetFont(8.5,"","","Arial")
 
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
-	GUICtrlSetDefBKColor(_WinAPI_GetSysColor($COLOR_WINDOW))
+	GUICtrlSetDefBKColor($BKC - 0x070707)
 
 	; Top Most Interaction for Update Text
 	$hUpdate = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, 0xE6E6E6)
+	GUICtrlSetBkColor(-1, $BKC - 0x191919)
 
 	; Top Most Interaction for Closing Window
 	$hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
@@ -66,31 +68,31 @@ Func Main()
 	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
 
 	GUICtrlCreateLabel("", 0, 0, 100, 600)
-	GUICtrlSetBkColor(-1, 0xE6E6E6)
+	GUICtrlSetBkColor(-1, $BKC - 0x191919)
 
 	GUICtrlCreateLabel("Check for Updates", 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 8.5, 400)
-	GUICtrlSetBkColor(-1, 0xE6E6E6)
+	GUICtrlSetBkColor(-1, $BKC - 0x191919)
 
 	GUICtrlCreateLabel("WhyNotWin11", 10, 10, 80, 20, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, 0xE6E6E6)
+	GUICtrlSetBkColor(-1, $BKC - 0x191919)
 	GUICtrlCreateLabel("v " & $sVersion, 10, 30, 80, 20, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, 0xE6E6E6)
+	GUICtrlSetBkColor(-1, $BKC - 0x191919)
 
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
-	GUICtrlSetBkColor(-1, 0xE6E6E6)
+	GUICtrlSetBkColor(-1, $BKC - 0x0D0D0D)
 
 	GUICtrlCreateLabel("Your Windows 11 Compatiblity Results are Below", 130, 30, 640, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 18, 600, "", "", $CLEARTYPE_QUALITY)
-	GUICtrlCreateLabel("* Results based on currently known requirements!", 130, 70, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetColor ( -1, 0xE20012 )
+	GUICtrlCreateLabel("* Results Based on Currently Known Requirements!", 130, 70, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlSetColor(-1, 0xE20012)
 	GUICtrlSetFont(-1, 10)
 
 	GUICtrlCreateLabel("X", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 24, 400)
 
 	Local $hCheck[11][3]
-	Local $hLabel[11] = ["Boot Method", "Architecture (CPU + OS)", "CPU Generation", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
+	Local $hLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Generation", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 
 	For $iRow = 0 To 10 Step 1
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 130, 110 + $iRow * 40, 40, 40, $SS_CENTER+$SS_SUNKEN+$SS_CENTERIMAGE)
@@ -107,33 +109,33 @@ Func Main()
 	$hDXFile = _TempFile(@TempDir, "dxdiag")
 	Run("dxdiag /whql:off /t " & $hDXFile)
 
-	RunWait("powershell -Command $env:firmware_type | Out-File -FilePath " & $hFile, "", @SW_HIDE)
-	If Not StringInStr(FileRead($hFile), "Legacy") Then
-		GUICtrlSetData($hCheck[0][0], "OK")
-		GUICtrlSetBkColor($hCheck[0][0], 0x4CC355)
-		GUICtrlSetData($hCheck[0][2], FileReadLine($hFile, 1));"Secure Boot Detected as Enabled")
-	Else
-		GUICtrlSetData($hCheck[0][0], "X")
-		GUICtrlSetBkColor($hCheck[0][0], 0xFA113D)
-		GUICtrlSetData($hCheck[0][2], FileReadLine($hFile, 1));"Secure Boot Not Enabled")
-	EndIf
-
 	Select
 		Case @CPUArch = "X64" And @OSArch = "IA64"
 			ContinueCase
 		Case @CPUArch = "X64" And @OSArch = "X64"
-			GUICtrlSetData($hCheck[1][0], "OK")
-			GUICtrlSetBkColor($hCheck[1][0], 0x4CC355)
-			GUICtrlSetData($hCheck[1][2], "64 Bit CPU and 64 Bit OS")
+			GUICtrlSetData($hCheck[0][0], "OK")
+			GUICtrlSetBkColor($hCheck[0][0], 0x4CC355)
+			GUICtrlSetData($hCheck[0][2], "64 Bit CPU and 64 Bit OS")
 		Case @CPUArch = "X64" And @OSArch = "X86"
-			GUICtrlSetData($hCheck[1][0], "!")
-			GUICtrlSetBkColor($hCheck[1][0], 0xF4C141)
-			GUICtrlSetData($hCheck[1][2], "64 Bit CPU, but 32 bit OS")
+			GUICtrlSetData($hCheck[0][0], "!")
+			GUICtrlSetBkColor($hCheck[0][0], 0xF4C141)
+			GUICtrlSetData($hCheck[0][2], "64 Bit CPU, but 32 bit OS")
 		Case Else
-			GUICtrlSetData($hCheck[1][0], "X")
-			GUICtrlSetBkColor($hCheck[1][0], 0xFA113D)
-			GUICtrlSetData($hCheck[1][2], "32 Bit CPU and 32 Bit OS")
+			GUICtrlSetData($hCheck[0][0], "X")
+			GUICtrlSetBkColor($hCheck[0][0], 0xFA113D)
+			GUICtrlSetData($hCheck[0][2], "32 Bit CPU and 32 Bit OS")
 	EndSelect
+
+	RunWait("powershell -Command $env:firmware_type | Out-File -FilePath " & $hFile, "", @SW_HIDE)
+	If Not StringInStr(FileRead($hFile), "Legacy") Then
+		GUICtrlSetData($hCheck[1][0], "OK")
+		GUICtrlSetBkColor($hCheck[1][0], 0x4CC355)
+		GUICtrlSetData($hCheck[1][2], FileReadLine($hFile, 1));"Secure Boot Detected as Enabled")
+	Else
+		GUICtrlSetData($hCheck[1][0], "X")
+		GUICtrlSetBkColor($hCheck[1][0], 0xFA113D)
+		GUICtrlSetData($hCheck[1][2], FileReadLine($hFile, 1));"Secure Boot Not Enabled")
+	EndIf
 
 	Select
 		Case StringInStr(_GetCPUInfo(2), "AMD")
@@ -144,9 +146,9 @@ Func Main()
 			EndIf
 			For $iLine = 1 to $iLines Step 1
 				$sLine = FileReadLine(@TempDir & "\SupportedProcessorsAMD.txt", $iLine)
-				If @error = -1 Then
-					GUICtrlSetData($hCheck[2][0], "X")
-					GUICtrlSetBkColor($hCheck[2][0], 0xFA113D)
+				If @error = -1 Or $iLine = $iLines Then
+					GUICtrlSetData($hCheck[2][0], "!")
+					GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
 					ExitLoop
 				EndIf
 				If StringInStr(_GetCPUInfo(2), $sLine) Then
@@ -163,9 +165,9 @@ Func Main()
 			EndIf
 			For $iLine = 1 to $iLines Step 1
 				$sLine = FileReadLine(@TempDir & "\SupportedProcessorsIntel.txt", $iLine)
-				If @error = -1 Then
-					GUICtrlSetData($hCheck[2][0], "X")
-					GUICtrlSetBkColor($hCheck[2][0], 0xFA113D)
+				If @error = -1 Or $iLine = $iLines Then
+					GUICtrlSetData($hCheck[2][0], "!")
+					GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
 					ExitLoop
 				EndIf
 				If StringInStr(_GetCPUInfo(2), $sLine) Then
@@ -182,9 +184,9 @@ Func Main()
 			EndIf
 			For $iLine = 1 to $iLines Step 1
 				$sLine = FileReadLine(@TempDir & "\SupportedProcessorsQualcomm.txt", $iLine)
-				If @error = -1 Then
-					GUICtrlSetData($hCheck[2][0], "X")
-					GUICtrlSetBkColor($hCheck[2][0], 0xFA113D)
+				If @error = -1 Or $iLine = $iLines Then
+					GUICtrlSetData($hCheck[2][0], "!")
+					GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
 					ExitLoop
 				EndIf
 				If StringInStr(_GetCPUInfo(2), $sLine) Then
@@ -285,13 +287,11 @@ Func Main()
 
 	Select
 		Case _GetTPMInfo(0) = False
-			GUICtrlSetData($hCheck[10][0], "X")
-			GUICtrlSetBkColor($hCheck[10][0], 0xFA113D)
-			GUICtrlSetData($hCheck[10][2], "TPM Not Activated")
+			ContinueCase
 		Case _GetTPMInfo(1) = False
 			GUICtrlSetData($hCheck[10][0], "X")
 			GUICtrlSetBkColor($hCheck[10][0], 0xFA113D)
-			GUICtrlSetData($hCheck[10][2], "TPM Not Enabled")
+			GUICtrlSetData($hCheck[10][2], "TPM Missing / Disabled")
 		Case Not Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
 			GUICtrlSetData($hCheck[10][0], "X")
 			GUICtrlSetBkColor($hCheck[10][0], 0xFA113D)
@@ -341,7 +341,7 @@ Func Main()
 					Case Else
 						GUICtrlSetData($hCheck[5][0], "X")
 						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
-						GUICtrlSetData($hCheck[5][2], "No DirectX 12/WDDM2")
+						GUICtrlSetData($hCheck[5][2], "No DirectX 12 / WDDM2")
 				EndSelect
 				FileDelete($hDXFile)
 
