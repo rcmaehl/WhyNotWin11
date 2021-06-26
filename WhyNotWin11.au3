@@ -280,8 +280,10 @@ Func Main()
 			GUICtrlSetBkColor($hCheck[10][0], 0x4CC355)
 			GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " Detected")
 		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
-			GUICtrlSetData($hCheck[10][0], "OK")
-			GUICtrlSetBkColor($hCheck[10][0], 0xF4C141)
+			;GUICtrlSetData($hCheck[10][0], "OK")
+			;GUICtrlSetBkColor($hCheck[10][0], 0xF4C141)
+			GUICtrlSetData($hCheck[10][0], "X")
+			GUICtrlSetBkColor($hCheck[10][0], 0xFA113D)
 			GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " Detected")
 		Case Else
 			GUICtrlSetData($hCheck[10][0], "X")
