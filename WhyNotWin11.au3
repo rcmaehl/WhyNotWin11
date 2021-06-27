@@ -457,7 +457,7 @@ Func _SetBannerText($hBannerText, $hBanner)
 
 	Local $bLinux = False
 
-	RegRead("HKEY_LOCAL_MACHINE\Software\Wine", "")
+	RegRead("HKEY_CURRENT_USER\Software\Wine", "")
 	If Not @error Then $bLinux = True
 
 	Select
