@@ -39,3 +39,15 @@ jobs:
              shasum86.txt
              shasum64.txt
        if-no-files-found: error
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+               WhyNotWin11.exe
+               WhyNotWin11_x86.exe
+               shasum86.txt
+               shasum64.txt
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
