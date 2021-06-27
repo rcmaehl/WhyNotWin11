@@ -337,7 +337,7 @@ Func Main()
 			GUICtrlSetData($hCheck[8][2], "Disabled / Not Detected")
 	EndSelect
 
-	If DriveSpaceTotal("C:\")/1024 >= 64 Then
+	If Round(DriveSpaceTotal("C:\")/1024, 0) >= 64 Then
 		GUICtrlSetData($hCheck[9][0], "OK")
 		GUICtrlSetBkColor($hCheck[9][0], 0x4CC355)
 		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB on C:\")
