@@ -217,17 +217,20 @@ Func Main()
 			If @error Then
 				GUICtrlSetData($hCheck[2][0], "?")
 				GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+				GUICtrlSetTip($hCheck[2][0], "Unable to Check List")
 			EndIf
 			For $iLine = 1 to $iLines Step 1
 				$sLine = FileReadLine(@TempDir & "\SupportedProcessorsAMD.txt", $iLine)
 				Select
 					Case @error = -1
-						GUICtrlSetData($hCheck[2][0], "!")
+						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						GUICtrlSetTip($hCheck[2][0], "Error Accessing List")
 						ExitLoop
 					Case $iLine = $iLines
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						GUICtrlSetTip($hCheck[2][0], "Not Currently Listed as Compatible")
 						ExitLoop
 					Case StringInStr(_GetCPUInfo(2), $sLine)
 						GUICtrlSetData($hCheck[2][0], "OK")
@@ -240,17 +243,20 @@ Func Main()
 			If @error Then
 				GUICtrlSetData($hCheck[2][0], "?")
 				GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+				GUICtrlSetTip($hCheck[2][0], "Unable to Check List")
 			EndIf
 			For $iLine = 1 to $iLines Step 1
 				$sLine = FileReadLine(@TempDir & "\SupportedProcessorsIntel.txt", $iLine)
 				Select
 					Case @error = -1
-						GUICtrlSetData($hCheck[2][0], "!")
+						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						GUICtrlSetTip($hCheck[2][0], "Error Accessing List")
 						ExitLoop
 					Case $iLine = $iLines
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						GUICtrlSetTip($hCheck[2][0], "Not Currently Listed as Compatible")
 						ExitLoop
 					Case StringInStr(_GetCPUInfo(2), $sLine)
 						GUICtrlSetData($hCheck[2][0], "OK")
@@ -263,17 +269,20 @@ Func Main()
 			If @error Then
 				GUICtrlSetData($hCheck[2][0], "?")
 				GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+				GUICtrlSetTip($hCheck[2][0], "Unable to Check List")
 			EndIf
 			For $iLine = 1 to $iLines Step 1
 				$sLine = FileReadLine(@TempDir & "\SupportedProcessorsQualcomm.txt", $iLine)
 				Select
 					Case @error = -1
-						GUICtrlSetData($hCheck[2][0], "!")
+						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						GUICtrlSetTip($hCheck[2][0], "Error Accessing List")
 						ExitLoop
 					Case $iLine = $iLines
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						GUICtrlSetTip($hCheck[2][0], "Not Currently Listed as Compatible")
 						ExitLoop
 					Case StringInStr(_GetCPUInfo(2), $sLine)
 						GUICtrlSetData($hCheck[2][0], "OK")
