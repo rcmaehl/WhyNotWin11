@@ -506,3 +506,42 @@ Func _SetBannerText($hBannerText, $hBanner)
 	EndSelect
 
 EndFunc
+
+Func _SetBkIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
+
+    Local Static $STM_SETIMAGE = 0x0172
+    Local $tIcon, $tID, $hDC, $hBackDC, $hBackSv, $hBitmap, $hImage, $hIcon, $hBkIcon
+
+    $tIcon = DllStructCreate('hwnd')
+    $tID = DllStructCreate('hwnd')
+    $hIcon = DllCall('user32.dll', 'int', 'PrivateExtractIcons', 'str', $sIcon, 'int', $iIndex, 'int', $iWidth, 'int', $iHeight, 'ptr', DllStructGetPtr($tIcon), 'ptr', DllStructGetPtr($tID), 'int', 1, 'int', 0)
+    If (@error) Or ($hIcon[0] = 0) Then
+        Return SetError(1, 0, 0)
+    EndIf
+    $hIcon = DllStructGetData($tIcon, 1)
+    $tIcon = 0
+    $tID = 0
+
+    $hDC = _WinAPI_GetDC(0)
+    $hBackDC = _WinAPI_CreateCompatibleDC($hDC)
+    $hBitmap = _WinAPI_CreateSolidBitmap(0, $iBackground, $iWidth, $iHeight)
+    $hBackSv = _WinAPI_SelectObject($hBackDC, $hBitmap)
+    _WinAPI_DrawIconEx($hBackDC, 0, 0, $hIcon, 0, 0, 0, 0, $DI_NORMAL)
+
+    $hImage = _GDIPlus_BitmapCreateFromHBITMAP($hBitmap)
+    $hBkIcon = DllCall($__g_hGDIPDll, 'int', 'GdipCreateHICONFromBitmap', 'hWnd', $hImage, 'int*', 0)
+    $hBkIcon = $hBkIcon[2]
+    _GDIPlus_ImageDispose($hImage)
+
+    GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, _WinAPI_CopyIcon($hBkIcon))
+    _WinAPI_RedrawWindow(GUICtrlGetHandle($ControlID))
+
+    _WinAPI_SelectObject($hBackDC, $hBackSv)
+    _WinAPI_DeleteDC($hBackDC)
+    _WinAPI_ReleaseDC(0, $hDC)
+    _WinAPI_DeleteObject($hBkIcon)
+    _WinAPI_DeleteObject($hBitmap)
+    _WinAPI_DeleteObject($hIcon)
+
+    Return SetError(0, 0, 1)
+EndFunc   ;==>_SetBkIcon
