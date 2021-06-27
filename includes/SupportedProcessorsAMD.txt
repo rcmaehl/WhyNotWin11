@@ -116,7 +116,7 @@ Ryzen 7 3700C
 Ryzen 7 3700U
 Ryzen 7 3750H
 Ryzen 7 3780U
-Ryzen 7 2700
+Ryzen 7 2700 
 Ryzen 7 2700E
 Ryzen 7 2700X
 Ryzen 7 5700U
