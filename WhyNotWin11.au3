@@ -24,6 +24,8 @@ Global $sVersion = "2.2.2.0"
 #include <File.au3>
 #include <Misc.au3>
 #include <String.au3>
+#include <GDIPlus.au3>
+#include <WinAPIGDI.au3>
 #include <WinAPISys.au3>
 #include <WinAPISysWin.au3>
 #include <EditConstants.au3>
@@ -102,17 +104,27 @@ Func Main()
 	GUICtrlCreateLabel("", 0, 0, 100, 600)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
+	_GDIPlus_Startup()
 	If @Compiled Then
 		GUICtrlCreateIcon(@ScriptFullPath, 201, 12, 100, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, @ScriptFullPath, 201, 32, 32)
 		GUICtrlCreateIcon(@ScriptFullPath, 202, 56, 100, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, @ScriptFullPath, 202, 32, 32)
 		GUICtrlCreateIcon(@ScriptFullPath, 203, 12, 144, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, @ScriptFullPath, 203, 32, 32)
 		GUICtrlCreateIcon(@ScriptFullPath, 204, 56, 144, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, @ScriptFullPath, 204, 32, 32)
 	Else
-		GUICtrlCreateIcon(".\includes\Git.ico", -1, 12, 100, 32, 32)
-		GUICtrlCreateIcon(".\includes\PP.ico", -1, 56, 100, 32, 32)
-		GUICtrlCreateIcon(".\includes\dis.ico", -1, 12, 144, 32, 32)
-		GUICtrlCreateIcon(".\includes\Web.ico", -1, 56, 144, 32, 32)
+		GUICtrlCreateIcon("", -1, 12, 100, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, ".\includes\Git.ico", -1, 32, 32)
+		GUICtrlCreateIcon("", -1, 56, 100, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, ".\includes\PP.ico", -1, 32, 32)
+		GUICtrlCreateIcon("", -1, 12, 144, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, ".\includes\dis.ico", -1, 32, 32)
+		GUICtrlCreateIcon("", -1, 56, 144, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, ".\includes\Web.ico", -1, 32, 32)
 	EndIf
+	_GDIPlus_Shutdown()
 
 	$hBannerText = GUICtrlCreateLabel("", 5, 540, 90, 20, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 8.5, $FW_NORMAL, $GUI_FONTUNDER)
