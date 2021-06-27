@@ -54,7 +54,7 @@ Func Main()
 
 	$BKC = _WinAPI_GetSysColor($COLOR_WINDOW)
 
-	$hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, $WS_POPUP+$WS_BORDER)
+	$hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitAND($WS_POPUP,$WS_BORDER))
 	GUISetBkColor($BKC - 0x070707)
 	GUISetFont(8.5,$FW_BOLD,"","Arial")
 
@@ -345,6 +345,8 @@ Func Main()
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
 						GUICtrlSetData($hCheck[5][2], "DirectX 12, WDDM 3")
+					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "Driver Model: 2") ; SQ1/SQ2
+						ContinueCase
 					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "Driver Model: WDDM 2")
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
