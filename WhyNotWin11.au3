@@ -189,15 +189,20 @@ Func Main()
 	EndSelect
 
 	RunWait("powershell -Command $env:firmware_type | Out-File -FilePath " & $hFile, "", @SW_HIDE)
-	If Not StringInStr(FileRead($hFile), "Legacy") Then
-		GUICtrlSetData($hCheck[1][0], "OK")
-		GUICtrlSetBkColor($hCheck[1][0], 0x4CC355)
-		GUICtrlSetData($hCheck[1][2], FileReadLine($hFile, 1));"Secure Boot Detected as Enabled")
-	Else
-		GUICtrlSetData($hCheck[1][0], "X")
-		GUICtrlSetBkColor($hCheck[1][0], 0xFA113D)
-		GUICtrlSetData($hCheck[1][2], FileReadLine($hFile, 1));"Secure Boot Not Enabled")
-	EndIf
+	Switch StringStripWS(StringStripCR(FileRead($hFile)), $STR_STRIPALL)
+		Case "UEFI"
+			GUICtrlSetData($hCheck[1][0], "OK")
+			GUICtrlSetBkColor($hCheck[1][0], 0x4CC355)
+			GUICtrlSetData($hCheck[1][2], FileReadLine($hFile, 1));"Secure Boot Detected as Enabled")
+		Case "Legacy"
+			GUICtrlSetData($hCheck[1][0], "X")
+			GUICtrlSetBkColor($hCheck[1][0], 0xFA113D)
+			GUICtrlSetData($hCheck[1][2], FileReadLine($hFile, 1));"Secure Boot Not Enabled")
+		Case Else
+			GUICtrlSetData($hCheck[1][0], "?")
+			GUICtrlSetBkColor($hCheck[1][0], 0xF4C141)
+			GUICtrlSetData($hCheck[1][2], "Unable to Determine")
+	EndSwitch
 
 	Select
 		Case StringInStr(_GetCPUInfo(2), "AMD")
