@@ -105,15 +105,16 @@ Func Main()
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	_GDIPlus_Startup()
+	Local $aIcons[4]
 	If @Compiled Then
-		GUICtrlCreateIcon(@ScriptFullPath, 201, 12, 100, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, @ScriptFullPath, 201, 32, 32)
-		GUICtrlCreateIcon(@ScriptFullPath, 202, 56, 100, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, @ScriptFullPath, 202, 32, 32)
-		GUICtrlCreateIcon(@ScriptFullPath, 203, 12, 144, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, @ScriptFullPath, 203, 32, 32)
-		GUICtrlCreateIcon(@ScriptFullPath, 204, 56, 144, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, @ScriptFullPath, 204, 32, 32)
+		$aIcons[0] = GUICtrlCreateIcon(@ScriptFullPath, 201, 12, 100, 32, 32)
+		_SetBkIcon($aIcons[0], 0xE6E6E6, @ScriptFullPath, 201, 32, 32)
+		$aIcons[1] = GUICtrlCreateIcon(@ScriptFullPath, 202, 56, 100, 32, 32)
+		_SetBkIcon($aIcons[1], 0xE6E6E6, @ScriptFullPath, 202, 32, 32)
+		$aIcons[2] = GUICtrlCreateIcon(@ScriptFullPath, 203, 12, 144, 32, 32)
+		_SetBkIcon($aIcons[2], 0xE6E6E6, @ScriptFullPath, 203, 32, 32)
+		$aIcons[3] = GUICtrlCreateIcon(@ScriptFullPath, 204, 56, 144, 32, 32)
+		_SetBkIcon($aIcons[3], 0xE6E6E6, @ScriptFullPath, 204, 32, 32)
 	Else
 		GUICtrlCreateIcon("", -1, 12, 100, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, ".\includes\Git.ico", -1, 32, 32)
@@ -199,11 +200,11 @@ Func Main()
 		Case "UEFI"
 			GUICtrlSetData($hCheck[1][0], "OK")
 			GUICtrlSetBkColor($hCheck[1][0], 0x4CC355)
-			GUICtrlSetData($hCheck[1][2], FileReadLine($hFile, 1));"Secure Boot Detected as Enabled")
+			GUICtrlSetData($hCheck[1][2], FileReadLine($hFile, 1))
 		Case "Legacy"
 			GUICtrlSetData($hCheck[1][0], "X")
 			GUICtrlSetBkColor($hCheck[1][0], 0xFA113D)
-			GUICtrlSetData($hCheck[1][2], FileReadLine($hFile, 1));"Secure Boot Not Enabled")
+			GUICtrlSetData($hCheck[1][2], FileReadLine($hFile, 1))
 		Case Else
 			GUICtrlSetData($hCheck[1][0], "?")
 			GUICtrlSetBkColor($hCheck[1][0], 0xF4C141)
