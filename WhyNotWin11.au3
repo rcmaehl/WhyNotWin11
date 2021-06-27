@@ -58,20 +58,20 @@ Func Main()
 	$BKC = _WinAPI_GetSysColor($COLOR_WINDOW)
 
 	$hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOr($WS_POPUP,$WS_BORDER))
-	GUISetBkColor($BKC - 0x070707)
+	GUISetBkColor(_HighContrast(0xF8F8F8))
 	GUISetFont(8.5,$FW_BOLD,"","Arial")
 
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
-	GUICtrlSetDefBKColor($BKC - 0x070707)
+	GUICtrlSetDefBKColor(_HighContrast(0xF8F8F8))
 
 	; Top Most Interaction for Update Text
 	$hUpdate = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, $BKC - 0x191919)
+	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 	GUICtrlSetCursor(-1, 0)
 
 	; Top Most Interaction for Banner
 	$hBanner = GUICtrlCreateLabel("", 5, 540, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, $BKC - 0x191919)
+	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	; Top Most Interaction for Closing Window
 	$hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
@@ -81,45 +81,37 @@ Func Main()
 	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
 
 	GUICtrlCreateLabel("", 0, 0, 100, 600)
-	GUICtrlSetBkColor(-1, $BKC - 0x191919)
+	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	If @Compiled Then
 		GUICtrlCreateIcon(@ScriptFullPath, 201, 12, 100, 32, 32)
-		GUICtrlSetBkColor(-1, $BKC - 0x191919)
 		GUICtrlCreateIcon(@ScriptFullPath, 202, 56, 100, 32, 32)
-		GUICtrlSetBkColor(-1, $BKC - 0x191919)
 		GUICtrlCreateIcon(@ScriptFullPath, 203, 12, 144, 32, 32)
-		GUICtrlSetBkColor(-1, $BKC - 0x191919)
 		GUICtrlCreateIcon(@ScriptFullPath, 204, 56, 144, 32, 32)
-		GUICtrlSetBkColor(-1, $BKC - 0x191919)
 	Else
 		GUICtrlCreateIcon(".\includes\Git.ico", -1, 12, 100, 32, 32)
-		GUICtrlSetBkColor(-1, $BKC - 0x191919)
 		GUICtrlCreateIcon(".\includes\PP.ico", -1, 56, 100, 32, 32)
-		GUICtrlSetBkColor(-1, $BKC - 0x191919)
 		GUICtrlCreateIcon(".\includes\EM.ico", -1, 12, 144, 32, 32)
-		GUICtrlSetBkColor(-1, $BKC - 0x191919)
 		GUICtrlCreateIcon(".\includes\Web.ico", -1, 56, 144, 32, 32)
-		GUICtrlSetBkColor(-1, $BKC - 0x191919)
 	EndIf
 
 	$hBannerText = GUICtrlCreateLabel("", 5, 540, 90, 20, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 8.5, $FW_NORMAL, $GUI_FONTUNDER)
-	GUICtrlSetBkColor(-1, $BKC - 0x191919)
+	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	$sBannerURL = _SetBannerText($hBannerText, $hBanner)
 
 	GUICtrlCreateLabel("Check for Updates", 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 8.5, $FW_NORMAL, $GUI_FONTUNDER)
-	GUICtrlSetBkColor(-1, $BKC - 0x191919)
+	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	GUICtrlCreateLabel("WhyNotWin11", 10, 10, 80, 20, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, $BKC - 0x191919)
+	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 	GUICtrlCreateLabel("v " & $sVersion, 10, 30, 80, 20, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, $BKC - 0x191919)
+	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
-	GUICtrlSetBkColor(-1, $BKC - 0x0D0D0D)
+	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 
 	GUICtrlCreateLabel("Your Windows 11 Compatibility Results are Below", 130, 30, 640, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 18, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
@@ -423,28 +415,6 @@ Func Main()
 	WEnd
 EndFunc
 
-Func _SetBannerText($hBannerText, $hBanner)
-
-	Local $bLinux = False
-
-	RegRead("HKEY_LOCAL_MACHINE\Software\Wine", "")
-	If Not @error Then $bLinux = True
-
-	Select
-		Case $bLinux
-			GUICtrlSetData($hBannerText, "i3 BEST WM")
-			Return "https://archlinux.org/"
-			GUICtrlSetCursor($hBanner, 0)
-		Case @LogonDomain <> @ComputerName
-			GUICtrlSetData($hBannerText, "I'M FOR HIRE")
-			Return "https://fcofix.org/rcmaehl/wiki/I'M-FOR-HIRE"
-			GUICtrlSetCursor($hBanner, 0)
-		Case Else
-			GUICtrlSetCursor($hBanner, 2)
-	EndSelect
-
-EndFunc
-
 Func _GetLatestRelease($sCurrent)
 
 	Local $dAPIBin
@@ -467,5 +437,40 @@ Func _GetLatestRelease($sCurrent)
 	Next
 
 	Return _VersionCompare($aCombined[0][0], $sCurrent)
+
+EndFunc
+
+Func _HighContrast($sColor)
+	Local Static $sSysWin
+
+	If Not $sSysWin <> "" Then $sSysWin = _WinAPI_GetSysColor($COLOR_WINDOW)
+
+	If $sSysWin = 0 Then
+		Return 16777215 - $sColor
+	Else
+		Return $sColor
+	EndIf
+
+EndFunc
+
+Func _SetBannerText($hBannerText, $hBanner)
+
+	Local $bLinux = False
+
+	RegRead("HKEY_LOCAL_MACHINE\Software\Wine", "")
+	If Not @error Then $bLinux = True
+
+	Select
+		Case $bLinux
+			GUICtrlSetData($hBannerText, "i3 BEST WM")
+			Return "https://archlinux.org/"
+			GUICtrlSetCursor($hBanner, 0)
+		Case @LogonDomain <> @ComputerName
+			GUICtrlSetData($hBannerText, "I'M FOR HIRE")
+			Return "https://fcofix.org/rcmaehl/wiki/I'M-FOR-HIRE"
+			GUICtrlSetCursor($hBanner, 0)
+		Case Else
+			GUICtrlSetCursor($hBanner, 2)
+	EndSelect
 
 EndFunc
