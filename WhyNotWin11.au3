@@ -54,7 +54,7 @@ Func Main()
 
 	$BKC = _WinAPI_GetSysColor($COLOR_WINDOW)
 
-	$hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitAND($WS_POPUP,$WS_BORDER))
+	$hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOr($WS_POPUP,$WS_BORDER))
 	GUISetBkColor($BKC - 0x070707)
 	GUISetFont(8.5,$FW_BOLD,"","Arial")
 
@@ -80,9 +80,13 @@ Func Main()
 		;;;
 	Else
 		GUICtrlCreateIcon(".\includes\Git.ico", -1, 12, 100, 32, 32)
-		GUICtrlCreateIcon(".\includes\PP.ico", -1, 56, 100, 32, 32, "", $WS_EX_TRANSPARENT)
+		GUICtrlSetBkColor(-1, $BKC - 0x191919)
+		GUICtrlCreateIcon(".\includes\PP.ico", -1, 56, 100, 32, 32)
+		GUICtrlSetBkColor(-1, $BKC - 0x191919)
 		GUICtrlCreateIcon(".\includes\EM.ico", -1, 12, 144, 32, 32)
-		GUICtrlCreateIcon(".\includes\Web.ico", -1, 56, 144, 32, 32, "", $WS_EX_TRANSPARENT)
+		GUICtrlSetBkColor(-1, $BKC - 0x191919)
+		GUICtrlCreateIcon(".\includes\Web.ico", -1, 56, 144, 32, 32)
+		GUICtrlSetBkColor(-1, $BKC - 0x191919)
 	EndIf
 
 	GUICtrlCreateLabel("Check for Updates", 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
@@ -341,11 +345,13 @@ Func Main()
 			; DirectX 12 takes a while. Grab the result once done
 			Case Not ProcessExists("dxdiag.exe") And FileExists($hDXFile)
 				Select
+					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "Driver Model: 3") ; Non-English Languages
+						ContinueCase
 					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "Driver Model: WDDM 3")
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
 						GUICtrlSetData($hCheck[5][2], "DirectX 12, WDDM 3")
-					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "Driver Model: 2") ; SQ1/SQ2
+					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "Driver Model: 2") ; Non-English Languages
 						ContinueCase
 					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "Driver Model: WDDM 2")
 						GUICtrlSetData($hCheck[5][0], "OK")
