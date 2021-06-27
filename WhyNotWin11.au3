@@ -31,8 +31,9 @@ Global $sVersion = "2.2.4.0"
 #include <EditConstants.au3>
 #include <FontConstants.au3>
 #include <GUIConstantsEx.au3>
-#include <StaticConstants.au3>
 #include <AutoItConstants.au3>
+#include <StaticConstants.au3>
+#include <StringConstants.au3>
 #include <WindowsConstants.au3>
 
 #include ".\Includes\_WMIC.au3"
