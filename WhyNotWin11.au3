@@ -66,6 +66,11 @@ Func Main()
 	GUICtrlSetBkColor(-1, $BKC - 0x191919)
 	GUICtrlSetCursor(-1, 0)
 
+	; Top Most Interaction for Banner
+	$hBanner = GUICtrlCreateLabel("", 5, 540, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlSetBkColor(-1, $BKC - 0x191919)
+	GUICtrlSetCursor(-1, 0)
+
 	; Top Most Interaction for Closing Window
 	$hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 24, $FW_MEDIUM)
@@ -88,6 +93,12 @@ Func Main()
 		GUICtrlCreateIcon(".\includes\Web.ico", -1, 56, 144, 32, 32)
 		GUICtrlSetBkColor(-1, $BKC - 0x191919)
 	EndIf
+
+	$hBannerText = GUICtrlCreateLabel("", 5, 540, 90, 20, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlSetFont(-1, 8.5, $FW_NORMAL, $GUI_FONTUNDER)
+	GUICtrlSetBkColor(-1, $BKC - 0x191919)
+
+	$sBannerURL = _SetBannerText($hBannerText)
 
 	GUICtrlCreateLabel("Check for Updates", 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 8.5, $FW_NORMAL, $GUI_FONTUNDER)
@@ -401,6 +412,26 @@ Func Main()
 
 		EndSelect
 	WEnd
+EndFunc
+
+Func _SetBannerText($hBannerText)
+
+	Local $bLinux = False
+
+	RegRead("HKEY_LOCAL_MACHINE\Software\Wine", "")
+	If Not @error Then $bLinux = True
+
+	Select
+		Case $bLinux
+			GUICtrlSetData($hBannerText, "i3 BEST WM")
+			Return "https://archlinux.org/"
+		Case @LogonDomain <> @ComputerName
+			GUICtrlSetData($hBannerText, "I'M FOR HIRE")
+			Return "https://fcofix.org/rcmaehl/wiki/I'M-FOR-HIRE"
+		Case Else
+			;;;
+	EndSelect
+
 EndFunc
 
 Func _GetLatestRelease($sCurrent)
