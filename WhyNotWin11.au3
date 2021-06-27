@@ -147,7 +147,7 @@ Func Main()
 	GUICtrlCreateLabel("Your Windows 11 Compatibility Results are Below", 130, 30, 640, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 18, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
 
-	GUICtrlCreateLabel("whynotwin11.com is not controlled by me. If you are the owner, please contact github", 130, 60, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlCreateLabel("whynotwin11.com is not controlled by me. If you are the owner, please contact github", 130, 60, 640, 20, $SS_CENTER+$SS_CENTERIMAGE+$SS_SUNKEN)
 	GUICtrlSetBKColor(-1, 0xFFFF00)
 	GUICtrlSetColor(-1, 0xE20012)
 	GUICtrlSetFont(-1, 10)
@@ -219,16 +219,20 @@ Func Main()
 			EndIf
 			For $iLine = 1 to $iLines Step 1
 				$sLine = FileReadLine(@TempDir & "\SupportedProcessorsAMD.txt", $iLine)
-				If @error = -1 Or $iLine = $iLines Then
-					GUICtrlSetData($hCheck[2][0], "!")
-					GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-					ExitLoop
-				EndIf
-				If StringInStr(_GetCPUInfo(2), $sLine) Then
-					GUICtrlSetData($hCheck[2][0], "OK")
-					GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
-					ExitLoop
-				EndIf
+				Select
+					Case @error = -1
+						GUICtrlSetData($hCheck[2][0], "!")
+						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						ExitLoop
+					Case $iLine = $iLines
+						GUICtrlSetData($hCheck[2][0], "?")
+						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						ExitLoop
+					Case StringInStr(_GetCPUInfo(2), $sLine) Then
+						GUICtrlSetData($hCheck[2][0], "OK")
+						GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
+						ExitLoop
+				EndSelect
 			Next
 		Case StringInStr(_GetCPUInfo(2), "Intel")
 			$iLines = _FileCountLines(@TempDir & "\SupportedProcessorsIntel.txt")
@@ -238,16 +242,20 @@ Func Main()
 			EndIf
 			For $iLine = 1 to $iLines Step 1
 				$sLine = FileReadLine(@TempDir & "\SupportedProcessorsIntel.txt", $iLine)
-				If @error = -1 Or $iLine = $iLines Then
-					GUICtrlSetData($hCheck[2][0], "!")
-					GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-					ExitLoop
-				EndIf
-				If StringInStr(_GetCPUInfo(2), $sLine) Then
-					GUICtrlSetData($hCheck[2][0], "OK")
-					GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
-					ExitLoop
-				EndIf
+				Select
+					Case @error = -1
+						GUICtrlSetData($hCheck[2][0], "!")
+						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						ExitLoop
+					Case $iLine = $iLines
+						GUICtrlSetData($hCheck[2][0], "?")
+						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						ExitLoop
+					Case StringInStr(_GetCPUInfo(2), $sLine) Then
+						GUICtrlSetData($hCheck[2][0], "OK")
+						GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
+						ExitLoop
+				EndSelect
 			Next
 		Case StringInStr(_GetCPUInfo(2), "SnapDragon") Or StringInStr(_GetCPUInfo(2), "Microsoft")
 			$iLines = _FileCountLines(@TempDir & "\SupportedProcessorsQualcomm.txt")
@@ -257,16 +265,20 @@ Func Main()
 			EndIf
 			For $iLine = 1 to $iLines Step 1
 				$sLine = FileReadLine(@TempDir & "\SupportedProcessorsQualcomm.txt", $iLine)
-				If @error = -1 Or $iLine = $iLines Then
-					GUICtrlSetData($hCheck[2][0], "!")
-					GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-					ExitLoop
-				EndIf
-				If StringInStr(_GetCPUInfo(2), $sLine) Then
-					GUICtrlSetData($hCheck[2][0], "OK")
-					GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
-					ExitLoop
-				EndIf
+				Select
+					Case @error = -1
+						GUICtrlSetData($hCheck[2][0], "!")
+						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						ExitLoop
+					Case $iLine = $iLines
+						GUICtrlSetData($hCheck[2][0], "?")
+						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						ExitLoop
+					Case StringInStr(_GetCPUInfo(2), $sLine) Then
+						GUICtrlSetData($hCheck[2][0], "OK")
+						GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
+						ExitLoop
+				EndSelect
 			Next
 		Case Else
 			GUICtrlSetData($hCheck[2][0], "?")
