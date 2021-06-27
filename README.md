@@ -18,7 +18,26 @@ Detection Script to help identify why your PC isn't Windows 11 ready
 [Download here](https://github.com/rcmaehl/WhyNotWin11/releases/latest/download/WhyNotWin11.exe)
 
 [Download DEV BUILDS here](https://github.com/rcmaehl/WhyNotWin11/actions?query=workflow%3AWNW11)\
-/!\ Dev builds will not be able to automatically check for updates
+/!\ Dev builds will not be able to automatically check for updates 
+## Fix whynotwin11.exe is not commonly downloaded and may be dangerous
+![## Fix whynotwin11.exe is not commonly downloaded and may be dangerous](https://i.imgur.com/sVvwCLz.png)
+
+If your computer is blocking you to download this and showing you the above error, follow these steps to download easily:
+
+1. Download the whynotwin11tool from [here](https://github.com/rcmaehl/WhyNotWin11/releases/latest/download/WhyNotWin11.exe)
+2. Go to your downloads tab by pressing **ctrl + j**
+3. Expand and click on **keep**
+4. ![enter image description here](https://windowsground.com/wp-content/uploads/2021/06/download-whynotwin11-tool.png)
+5. If it asks for confirmation, click on keep anyway
+6. ![enter image description here](https://windowsground.com/wp-content/uploads/2021/06/install-whynotwin11-tool.png)
+7. Let it download fully and then install it
+8. when you get a popup like this, click on **More info**
+9. ![enter image description here](https://lh4.googleusercontent.com/d2lfHx2KYAfm783tVZvgkGKjEpRy2b2Dy15mlgJ5RNU69o4-3I2Mw-T54I7WIMWQHrRixSDS0qlA-Y6WhUArJOfJL6CnFvUMtgcaC5nj5NQLQhm2gXWJsoMeZZFv3FGfkk9ekItj)
+10. Next click on Run anyway
+11. ![enter image description here](https://windowsground.com/wp-content/uploads/2021/06/run-anyway-whynotwin11-tool.png)
+
+If you want a detail guide you can check [here](https://windowsground.com/download-whynotwin11-compatibility-checker-tool-to-check-if-you-can-upgrade-to-windows-11/)
+
 
 ## To-Do
 
