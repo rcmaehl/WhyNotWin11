@@ -26,15 +26,22 @@ If your computer is blocking you to download this and showing you the above erro
 
 1. Download the whynotwin11tool from [here](https://github.com/rcmaehl/WhyNotWin11/releases/latest/download/WhyNotWin11.exe)
 2. Go to your downloads tab by pressing **ctrl + j**
-3. Expand and click on **keep**
-4. ![enter image description here](https://windowsground.com/wp-content/uploads/2021/06/download-whynotwin11-tool.png)
+3. Expand and click on **keep** 
+
+![enter image description here](https://windowsground.com/wp-content/uploads/2021/06/download-whynotwin11-tool.png)
+
 5. If it asks for confirmation, click on keep anyway
-6. ![enter image description here](https://windowsground.com/wp-content/uploads/2021/06/install-whynotwin11-tool.png)
+
+![enter image description here](https://windowsground.com/wp-content/uploads/2021/06/install-whynotwin11-tool.png)
+
 7. Let it download fully and then install it
 8. when you get a popup like this, click on **More info**
-9. ![enter image description here](https://lh4.googleusercontent.com/d2lfHx2KYAfm783tVZvgkGKjEpRy2b2Dy15mlgJ5RNU69o4-3I2Mw-T54I7WIMWQHrRixSDS0qlA-Y6WhUArJOfJL6CnFvUMtgcaC5nj5NQLQhm2gXWJsoMeZZFv3FGfkk9ekItj)
-10. Next click on Run anyway
-11. ![enter image description here](https://windowsground.com/wp-content/uploads/2021/06/run-anyway-whynotwin11-tool.png)
+
+![enter image description here](https://lh4.googleusercontent.com/d2lfHx2KYAfm783tVZvgkGKjEpRy2b2Dy15mlgJ5RNU69o4-3I2Mw-T54I7WIMWQHrRixSDS0qlA-Y6WhUArJOfJL6CnFvUMtgcaC5nj5NQLQhm2gXWJsoMeZZFv3FGfkk9ekItj)
+
+9. Next click on Run anyway
+
+![enter image description here](https://windowsground.com/wp-content/uploads/2021/06/run-anyway-whynotwin11-tool.png)
 
 If you want a detail guide you can check [here](https://windowsground.com/download-whynotwin11-compatibility-checker-tool-to-check-if-you-can-upgrade-to-windows-11/)
 
