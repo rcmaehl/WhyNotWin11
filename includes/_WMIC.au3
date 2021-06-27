@@ -8,6 +8,7 @@ Func _GetCPUInfo($iFlag = 0)
 	Local Static $sName
 	Local Static $sSpeed
 	Local Static $sArch
+	Local Static $sCPUs
 
 	If Not $sName <> "" Then
 		Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2');
