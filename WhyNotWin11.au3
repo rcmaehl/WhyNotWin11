@@ -7,8 +7,8 @@
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_HiDpi=N
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify the more niche settings for why your PC isn't Windows 11 ready
-#AutoIt3Wrapper_Res_Fileversion=2.2.2.0
-#AutoIt3Wrapper_Res_ProductVersion=2.2.2
+#AutoIt3Wrapper_Res_Fileversion=2.2.3.0
+#AutoIt3Wrapper_Res_ProductVersion=2.2.3
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 #AutoIt3Wrapper_Run_Au3Stripper=y
@@ -19,7 +19,7 @@
 #AutoIt3Wrapper_Res_Icon_Add=includes\web.ico
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
-Global $sVersion = "2.2.2.0"
+Global $sVersion = "2.2.3.0"
 
 #include <File.au3>
 #include <Misc.au3>
@@ -146,7 +146,13 @@ Func Main()
 
 	GUICtrlCreateLabel("Your Windows 11 Compatibility Results are Below", 130, 30, 640, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 18, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
-	GUICtrlCreateLabel("* Results Based on Currently Known Requirements!", 130, 70, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
+
+	GUICtrlCreateLabel("whynotwin11.com is not controlled by me. If you are the owner, please contact github", 130, 60, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlSetBKColor(-1, 0xFFFF00)
+	GUICtrlSetColor(-1, 0xE20012)
+	GUICtrlSetFont(-1, 10)
+
+	GUICtrlCreateLabel("* Results Based on Currently Known Requirements!", 130, 80, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetColor(-1, 0xE20012)
 	GUICtrlSetFont(-1, 10)
 
