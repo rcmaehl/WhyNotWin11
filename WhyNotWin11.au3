@@ -13,10 +13,10 @@
 #AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #Au3Stripper_Parameters=/so
-#AutoIt3Wrapper_Res_Icon_Add=includes\git.ico
-#AutoIt3Wrapper_Res_Icon_Add=includes\pp.ico
-#AutoIt3Wrapper_Res_Icon_Add=includes\dis.ico
-#AutoIt3Wrapper_Res_Icon_Add=includes\web.ico
+#AutoIt3Wrapper_Res_Icon_Add=assets\git.ico
+#AutoIt3Wrapper_Res_Icon_Add=assets\pp.ico
+#AutoIt3Wrapper_Res_Icon_Add=assets\dis.ico
+#AutoIt3Wrapper_Res_Icon_Add=assets\web.ico
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 Global $sVersion = "2.2.4.0"
@@ -118,13 +118,13 @@ Func Main()
 		_SetBkIcon($aIcons[3], 0xE6E6E6, @ScriptFullPath, 204, 32, 32)
 	Else
 		GUICtrlCreateIcon("", -1, 12, 100, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, ".\includes\Git.ico", -1, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, ".\assets\Git.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 56, 100, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, ".\includes\PP.ico", -1, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, ".\assets\PP.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 12, 144, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, ".\includes\dis.ico", -1, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, ".\assets\dis.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 56, 144, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, ".\includes\Web.ico", -1, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, ".\assets\Web.ico", -1, 32, 32)
 	EndIf
 	_GDIPlus_Shutdown()
 
