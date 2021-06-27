@@ -6,16 +6,19 @@
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify the more niche settings for why your PC isn't Windows 11 ready
-#AutoIt3Wrapper_Res_Fileversion=2.2.1.0
-#AutoIt3Wrapper_Res_ProductVersion=2.2.1
+#AutoIt3Wrapper_Res_Fileversion=2.2.2.0
+#AutoIt3Wrapper_Res_ProductVersion=2.2.2
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #Au3Stripper_Parameters=/so
-#AutoIt3Wrapper_Res_Icon_Add=includes\freeze_small.ico
+#AutoIt3Wrapper_Res_Icon_Add=includes\git.ico
+#AutoIt3Wrapper_Res_Icon_Add=includes\em.ico
+#AutoIt3Wrapper_Res_Icon_Add=includes\pp.ico
+#AutoIt3Wrapper_Res_Icon_Add=includes\web.ico
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
-Global $sVersion = "2.2.1.0"
+Global $sVersion = "2.2.2.0"
 
 #include <File.au3>
 #include <Misc.au3>
@@ -69,7 +72,6 @@ Func Main()
 	; Top Most Interaction for Banner
 	$hBanner = GUICtrlCreateLabel("", 5, 540, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $BKC - 0x191919)
-	GUICtrlSetCursor(-1, 0)
 
 	; Top Most Interaction for Closing Window
 	$hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
@@ -82,7 +84,14 @@ Func Main()
 	GUICtrlSetBkColor(-1, $BKC - 0x191919)
 
 	If @Compiled Then
-		;;;
+		GUICtrlCreateIcon(@ScriptFullPath, 201, 12, 100, 32, 32)
+		GUICtrlSetBkColor(-1, $BKC - 0x191919)
+		GUICtrlCreateIcon(@ScriptFullPath, 202, 56, 100, 32, 32)
+		GUICtrlSetBkColor(-1, $BKC - 0x191919)
+		GUICtrlCreateIcon(@ScriptFullPath, 203, 12, 144, 32, 32)
+		GUICtrlSetBkColor(-1, $BKC - 0x191919)
+		GUICtrlCreateIcon(@ScriptFullPath, 204, 56, 144, 32, 32)
+		GUICtrlSetBkColor(-1, $BKC - 0x191919)
 	Else
 		GUICtrlCreateIcon(".\includes\Git.ico", -1, 12, 100, 32, 32)
 		GUICtrlSetBkColor(-1, $BKC - 0x191919)
@@ -98,7 +107,7 @@ Func Main()
 	GUICtrlSetFont(-1, 8.5, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, $BKC - 0x191919)
 
-	$sBannerURL = _SetBannerText($hBannerText)
+	$sBannerURL = _SetBannerText($hBannerText, $hBanner)
 
 	GUICtrlCreateLabel("Check for Updates", 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 8.5, $FW_NORMAL, $GUI_FONTUNDER)
@@ -414,7 +423,7 @@ Func Main()
 	WEnd
 EndFunc
 
-Func _SetBannerText($hBannerText)
+Func _SetBannerText($hBannerText, $hBanner)
 
 	Local $bLinux = False
 
@@ -425,11 +434,13 @@ Func _SetBannerText($hBannerText)
 		Case $bLinux
 			GUICtrlSetData($hBannerText, "i3 BEST WM")
 			Return "https://archlinux.org/"
+			GUICtrlSetCursor($hBanner, 0)
 		Case @LogonDomain <> @ComputerName
 			GUICtrlSetData($hBannerText, "I'M FOR HIRE")
 			Return "https://fcofix.org/rcmaehl/wiki/I'M-FOR-HIRE"
+			GUICtrlSetCursor($hBanner, 0)
 		Case Else
-			;;;
+			GUICtrlSetCursor($hBanner, 2)
 	EndSelect
 
 EndFunc
