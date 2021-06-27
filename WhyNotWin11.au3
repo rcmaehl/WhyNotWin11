@@ -396,12 +396,16 @@ Func Main()
 			Case Not ProcessExists("dxdiag.exe") And FileExists($hDXFile)
 				$sDXFile = StringStripWS(StringStripCR(FileRead($hDXFile)), $STR_STRIPALL)
 				Select
+					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "3") ; Non-English Languages
+						ContinueCase
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:3") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM3")
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
 						GUICtrlSetData($hCheck[5][2], "DirectX 12, WDDM 3")
+					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "2") ; Non-English Languages
+						ContinueCase
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:2") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
