@@ -1,4 +1,4 @@
-2.2.1.0
+2.2.2.0
 Atom(R) x6200FE
 Atom(R) x6211E
 Atom(R) x6212RE
@@ -536,3 +536,4 @@ Xeon(R) Silver 4310
 Xeon(R) Silver 4310T
 Xeon(R) Silver 4314
 Xeon(R) Silver 4316
+EOF

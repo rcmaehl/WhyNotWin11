@@ -1,6 +1,8 @@
+2.2.2.0
 Snapdragon (TM) 850
 Snapdragon (TM) 7c
 Snapdragon (TM) 8c
 Snapdragon (TM) 8cx
 Microsoft SQ1
 Microsoft SQ2
+EOF

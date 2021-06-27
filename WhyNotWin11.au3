@@ -12,6 +12,7 @@
 #AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #Au3Stripper_Parameters=/so
+#AutoIt3Wrapper_Res_Icon_Add=includes\freeze_small.ico
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 Global $sVersion = "2.2.1.0"
@@ -21,6 +22,7 @@ Global $sVersion = "2.2.1.0"
 #include <String.au3>
 #include <WinAPISysWin.au3>
 #include <EditConstants.au3>
+#include <FontConstants.au3>
 #include <GUIConstantsEx.au3>
 #include <StaticConstants.au3>
 #include <AutoItConstants.au3>
@@ -54,7 +56,7 @@ Func Main()
 
 	$hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, $WS_POPUP+$WS_BORDER)
 	GUISetBkColor($BKC - 0x070707)
-	GUISetFont(8.5,"","","Arial")
+	GUISetFont(8.5,$FW_BOLD,"","Arial")
 
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
 	GUICtrlSetDefBKColor($BKC - 0x070707)
@@ -62,10 +64,11 @@ Func Main()
 	; Top Most Interaction for Update Text
 	$hUpdate = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $BKC - 0x191919)
+	GUICtrlSetCursor(-1, 0)
 
 	; Top Most Interaction for Closing Window
 	$hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 24, 400)
+	GUICtrlSetFont(-1, 24, $FW_MEDIUM)
 
 	; Allow Dragging of Window
 	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
@@ -73,8 +76,17 @@ Func Main()
 	GUICtrlCreateLabel("", 0, 0, 100, 600)
 	GUICtrlSetBkColor(-1, $BKC - 0x191919)
 
+	If @Compiled Then
+		;;;
+	Else
+		GUICtrlCreateIcon(".\includes\Git.ico", -1, 12, 100, 32, 32)
+		GUICtrlCreateIcon(".\includes\PP.ico", -1, 56, 100, 32, 32, "", $WS_EX_TRANSPARENT)
+		GUICtrlCreateIcon(".\includes\EM.ico", -1, 12, 144, 32, 32)
+		GUICtrlCreateIcon(".\includes\Web.ico", -1, 56, 144, 32, 32, "", $WS_EX_TRANSPARENT)
+	EndIf
+
 	GUICtrlCreateLabel("Check for Updates", 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 8.5, 400)
+	GUICtrlSetFont(-1, 8.5, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, $BKC - 0x191919)
 
 	GUICtrlCreateLabel("WhyNotWin11", 10, 10, 80, 20, $SS_CENTER+$SS_CENTERIMAGE)
@@ -86,13 +98,13 @@ Func Main()
 	GUICtrlSetBkColor(-1, $BKC - 0x0D0D0D)
 
 	GUICtrlCreateLabel("Your Windows 11 Compatibility Results are Below", 130, 30, 640, 40, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 18, 600, "", "", $CLEARTYPE_QUALITY)
+	GUICtrlSetFont(-1, 18, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
 	GUICtrlCreateLabel("* Results Based on Currently Known Requirements!", 130, 70, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetColor(-1, 0xE20012)
 	GUICtrlSetFont(-1, 10)
 
 	GUICtrlCreateLabel("X", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 24, 400)
+	GUICtrlSetFont(-1, 24, $FW_NORMAL)
 
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
@@ -101,9 +113,9 @@ Func Main()
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 130, 110 + $iRow * 40, 40, 40, $SS_CENTER+$SS_SUNKEN+$SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, 0xE6E6E6)
 		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & $hLabel[$iRow], 170, 110 + $iRow * 40, 300, 40, $SS_CENTERIMAGE)
-		GUICtrlSetFont(-1, 18, 400)
+		GUICtrlSetFont(-1, 18, $FW_NORMAL)
 		$hCheck[$iRow][2] = GUICtrlCreateLabel("Checking...", 470, 110 + $iRow * 40, 300, 40, $SS_CENTER+$SS_SUNKEN+$SS_CENTERIMAGE)
-		GUICtrlSetFont(-1, 8.5, 600)
+		GUICtrlSetFont(-1, 8.5, $FW_SEMIBOLD)
 	Next
 
 	GUISetState(@SW_SHOW, $hGUI)
@@ -179,7 +191,7 @@ Func Main()
 					ExitLoop
 				EndIf
 			Next
-		Case StringInStr(_GetCPUInfo(2), "SnapDragon")
+		Case StringInStr(_GetCPUInfo(2), "SnapDragon") Or StringInStr(_GetCPUInfo(2), "Microsoft")
 			$iLines = _FileCountLines(@TempDir & "\SupportedProcessorsQualcomm.txt")
 			If @error Then
 				GUICtrlSetData($hCheck[2][0], "?")
