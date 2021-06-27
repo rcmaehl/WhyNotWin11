@@ -26,8 +26,7 @@ jobs:
            dir
            C:\"Program Files (x86)"\AutoIt3\AutoIt3.exe "C:\Program Files (x86)\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3" /NoStatus /prod /in ".\WhyNotWin11.au3"
            Start-Sleep -s 10
-           Get-FileHash WhyNotWin11.exe | Format-List | Out-File -Path shasum64.txt
-           Get-FileHash WhyNotWin11_x86.exe | Format-List | Out-File -Path shasum86.txt
+           sha256sum -b WhyNotWin*.exe > checksum.sha256
 
     - name: Upload
       uses: actions/upload-artifact@v2
@@ -36,8 +35,7 @@ jobs:
        path: |
              WhyNotWin11.exe
              WhyNotWin11_x86.exe
-             shasum86.txt
-             shasum64.txt
+             checksum.sha256
        if-no-files-found: error
 
     - name: Release
@@ -47,7 +45,6 @@ jobs:
         files: |
                WhyNotWin11.exe
                WhyNotWin11_x86.exe
-               shasum86.txt
-               shasum64.txt
+               checksum.sha256
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
