@@ -228,7 +228,7 @@ Func Main()
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
 						ExitLoop
-					Case StringInStr(_GetCPUInfo(2), $sLine) Then
+					Case StringInStr(_GetCPUInfo(2), $sLine)
 						GUICtrlSetData($hCheck[2][0], "OK")
 						GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
 						ExitLoop
@@ -251,7 +251,7 @@ Func Main()
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
 						ExitLoop
-					Case StringInStr(_GetCPUInfo(2), $sLine) Then
+					Case StringInStr(_GetCPUInfo(2), $sLine)
 						GUICtrlSetData($hCheck[2][0], "OK")
 						GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
 						ExitLoop
@@ -274,7 +274,7 @@ Func Main()
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
 						ExitLoop
-					Case StringInStr(_GetCPUInfo(2), $sLine) Then
+					Case StringInStr(_GetCPUInfo(2), $sLine)
 						GUICtrlSetData($hCheck[2][0], "OK")
 						GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
 						ExitLoop
