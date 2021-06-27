@@ -23,6 +23,7 @@ Global $sVersion = "2.2.2.0"
 #include <File.au3>
 #include <Misc.au3>
 #include <String.au3>
+#include <WinAPISys.au3>
 #include <WinAPISysWin.au3>
 #include <EditConstants.au3>
 #include <FontConstants.au3>
@@ -456,9 +457,9 @@ EndFunc
 Func _SetBannerText($hBannerText, $hBanner)
 
 	Local $bLinux = False
+	Local $hModule = _WinAPI_GetModuleHandle("ntdll.dll")
 
-	RegRead("HKEY_CURRENT_USER\Software\Wine", "")
-	If Not @error Then $bLinux = True
+	If _WinAPI_GetProcAddress($hModule, "wine_get_host_version") Then $bLinux = True
 
 	Select
 		Case $bLinux
