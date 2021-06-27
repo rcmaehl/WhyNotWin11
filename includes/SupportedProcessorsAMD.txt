@@ -86,7 +86,7 @@ Ryzen 5 3500U
 Ryzen 5 3550H
 Ryzen 5 3580U
 Ryzen 5 2500X
-Ryzen 5 2600
+Ryzen 5 2600 
 Ryzen 5 2600E
 Ryzen 5 2600X
 Ryzen 5 5500U
