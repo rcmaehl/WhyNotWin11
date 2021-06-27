@@ -81,7 +81,7 @@ Func Main()
 
 	; Top Most Interaction for Socials
 	$hGithub = GUICtrlCreateLabel("", 12, 100, 32, 32)
-	GUICtrlSetTip(-1, "Github")
+	GUICtrlSetTip(-1, "GitHub")
 	GUICtrlSetCursor(-1, 0)
 
 	$hDonate = GUICtrlCreateLabel("", 56, 100, 32, 32)
@@ -89,7 +89,7 @@ Func Main()
 	GUICtrlSetCursor(-1, 0)
 
 	$hDiscord = GUICtrlCreateLabel("", 12, 144, 32, 32)
-	GUICtrlSetTip(-1, "Email Me")
+	GUICtrlSetTip(-1, "Discord")
 	GUICtrlSetCursor(-1, 0)
 
 	$hLTT = GUICtrlCreateLabel("", 56, 144, 32, 32)
@@ -375,24 +375,25 @@ Func Main()
 
 			; DirectX 12 takes a while. Grab the result once done
 			Case Not ProcessExists("dxdiag.exe") And FileExists($hDXFile)
+				$sDXFile = StringStripWS(StringStripCR(FileRead($hDXFile)), $STR_STRIPALL)
 				Select
-					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "Driver Model: 3") ; Non-English Languages
+					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:3") ; Non-English Languages
 						ContinueCase
-					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "Driver Model: WDDM 3")
+					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM3")
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
 						GUICtrlSetData($hCheck[5][2], "DirectX 12, WDDM 3")
-					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "Driver Model: 2") ; Non-English Languages
+					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:2") ; Non-English Languages
 						ContinueCase
-					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "Driver Model: WDDM 2")
+					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
 						GUICtrlSetData($hCheck[5][2], "DirectX 12, WDDM 2")
-					Case Not StringInStr(FileRead($hDXFile), "DDI Version: 12") And StringInStr(FileRead($hDXFile), "Driver Model: WDDM 2")
+					Case Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 						GUICtrlSetData($hCheck[5][0], "X")
 						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
 						GUICtrlSetData($hCheck[5][2], "No DirectX 12, but WDDM2")
-					Case StringInStr(FileRead($hDXFile), "DDI Version: 12") And Not StringInStr(FileRead($hDXFile), "Driver Model: WDDM 2")
+					Case StringInStr($sDXFile, "DDIVersion:12") And Not StringInStr($sDXFile, "DriverModel:WDDM2")
 						GUICtrlSetData($hCheck[5][0], "X")
 						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
 						GUICtrlSetData($hCheck[5][2], "DirectX 12, but no WDDM2")
