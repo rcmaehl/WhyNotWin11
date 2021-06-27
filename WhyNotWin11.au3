@@ -416,6 +416,9 @@ Func Main()
 				EndSelect
 				FileDelete($hDXFile)
 
+			Case $hMsg = $hBanner
+				ShellExecute($sBannerURL)
+
 			Case $hMsg = $hGithub
 				ShellExecute("https://fcofix.org/WhyNotWin11")
 
@@ -508,10 +511,12 @@ Func _SetBannerText($hBannerText, $hBanner)
 		Case $bLinux
 			GUICtrlSetData($hBannerText, "i3 BEST WM")
 			Return "https://archlinux.org/"
+			GUICtrlSetCursor($hBannerText, 0)
 			GUICtrlSetCursor($hBanner, 0)
 		Case @LogonDomain <> @ComputerName
 			GUICtrlSetData($hBannerText, "I'M FOR HIRE")
 			Return "https://fcofix.org/rcmaehl/wiki/I'M-FOR-HIRE"
+			GUICtrlSetCursor($hBannerText, 0)
 			GUICtrlSetCursor($hBanner, 0)
 		Case Else
 			GUICtrlSetCursor($hBanner, 2)
