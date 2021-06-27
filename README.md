@@ -4,7 +4,7 @@
 [![Ko-fi](https://img.shields.io/badge/Support%20me%20on-Ko--fi-FF5E5B.svg?logo=ko-fi)](https://ko-fi.com/rcmaehl)
 [![PayPal](https://img.shields.io/badge/Donate%20on-PayPal-00457C.svg?logo=paypal)](https://paypal.me/rhsky)
 [![Join the Discord chat](https://img.shields.io/badge/Discord-chat-7289da.svg?&logo=discord)](https://discord.gg/uBnBcBx)
-[![My Twitter](https://img.shields.io/badge/twitter-7289da.svg?logo=twitter)](https://twitter.com/WhyNotWin11)
+[![My Twitter](https://img.shields.io/badge/twitter-545454.svg?logo=twitter)](https://twitter.com/WhyNotWin11)
 
 # WhyNotWin11
 Detection Script to help identify why your PC isn't Windows 11 ready
