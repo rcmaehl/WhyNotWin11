@@ -5,6 +5,7 @@
 #AutoIt3Wrapper_Outfile_x64=WhyNotWin11.exe
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
+#AutoIt3Wrapper_Res_HiDpi=N
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify the more niche settings for why your PC isn't Windows 11 ready
 #AutoIt3Wrapper_Res_Fileversion=2.2.2.0
 #AutoIt3Wrapper_Res_ProductVersion=2.2.2
@@ -13,8 +14,8 @@
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #Au3Stripper_Parameters=/so
 #AutoIt3Wrapper_Res_Icon_Add=includes\git.ico
-#AutoIt3Wrapper_Res_Icon_Add=includes\em.ico
 #AutoIt3Wrapper_Res_Icon_Add=includes\pp.ico
+#AutoIt3Wrapper_Res_Icon_Add=includes\dis.ico
 #AutoIt3Wrapper_Res_Icon_Add=includes\web.ico
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
@@ -78,6 +79,23 @@ Func Main()
 	$hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 24, $FW_MEDIUM)
 
+	; Top Most Interaction for Socials
+	$hGithub = GUICtrlCreateLabel("", 12, 100, 32, 32)
+	GUICtrlSetTip(-1, "Github")
+	GUICtrlSetCursor(-1, 0)
+
+	$hDonate = GUICtrlCreateLabel("", 56, 100, 32, 32)
+	GUICtrlSetTip(-1, "Donate")
+	GUICtrlSetCursor(-1, 0)
+
+	$hDiscord = GUICtrlCreateLabel("", 12, 144, 32, 32)
+	GUICtrlSetTip(-1, "Email Me")
+	GUICtrlSetCursor(-1, 0)
+
+	$hLTT = GUICtrlCreateLabel("", 56, 144, 32, 32)
+	GUICtrlSetTip(-1, "LTT Thread")
+	GUICtrlSetCursor(-1, 0)
+
 	; Allow Dragging of Window
 	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
 
@@ -92,7 +110,7 @@ Func Main()
 	Else
 		GUICtrlCreateIcon(".\includes\Git.ico", -1, 12, 100, 32, 32)
 		GUICtrlCreateIcon(".\includes\PP.ico", -1, 56, 100, 32, 32)
-		GUICtrlCreateIcon(".\includes\EM.ico", -1, 12, 144, 32, 32)
+		GUICtrlCreateIcon(".\includes\dis.ico", -1, 12, 144, 32, 32)
 		GUICtrlCreateIcon(".\includes\Web.ico", -1, 56, 144, 32, 32)
 	EndIf
 
@@ -384,6 +402,18 @@ Func Main()
 						GUICtrlSetData($hCheck[5][2], "No DirectX 12 / WDDM2")
 				EndSelect
 				FileDelete($hDXFile)
+
+			Case $hMsg = $hGithub
+				ShellExecute("https://fcofix.org/WhyNotWin11")
+
+			Case $hMsg = $hDonate
+				ShellExecute("https://paypal.me/rhsky")
+
+			Case $hMsg = $hDiscord
+				ShellExecute("https://discord.gg/uBnBcBx")
+
+			Case $hMsg = $hLTT
+				ShellExecute("https://linustechtips.com/topic/1350354-windows-11-readiness-check-whynotwin11/")
 
 			Case $hMsg = $hUpdate
 				Switch _GetLatestRelease($sVersion)
