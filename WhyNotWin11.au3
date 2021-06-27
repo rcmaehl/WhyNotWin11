@@ -7,8 +7,8 @@
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_HiDpi=N
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify the more niche settings for why your PC isn't Windows 11 ready
-#AutoIt3Wrapper_Res_Fileversion=2.2.3.0
-#AutoIt3Wrapper_Res_ProductVersion=2.2.3
+#AutoIt3Wrapper_Res_Fileversion=2.2.4.0
+#AutoIt3Wrapper_Res_ProductVersion=2.2.4
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 #AutoIt3Wrapper_Run_Au3Stripper=y
@@ -19,7 +19,7 @@
 #AutoIt3Wrapper_Res_Icon_Add=includes\web.ico
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
-Global $sVersion = "2.2.3.0"
+Global $sVersion = "2.2.4.0"
 
 #include <File.au3>
 #include <Misc.au3>
