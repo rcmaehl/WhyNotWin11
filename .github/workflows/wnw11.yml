@@ -19,14 +19,11 @@ jobs:
            Expand-Archive -Path Au3Stripper.zip -DestinationPath "C:\Program Files (x86)\AutoIt3\SciTE\au3Stripper" -Force
 
     - name: Checkout repo
-      run: |
-           dir
-           git clone https://github.com/${{ github.repository }} --depth 1
+      uses: actions/checkout@v2
 
     - name: Compile
       run: |
            dir
-           cd WhyNotWin11
            C:\"Program Files (x86)"\AutoIt3\AutoIt3.exe "C:\Program Files (x86)\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3" /NoStatus /prod /in ".\WhyNotWin11.au3"
            Start-Sleep -s 10
            Get-FileHash WhyNotWin11.exe | Format-List | Out-File -Path shasum64.txt
@@ -37,8 +34,8 @@ jobs:
       with:
        name: WNW11
        path: |
-             WhyNotWin11\WhyNotWin11.exe
-             WhyNotWin11\WhyNotWin11_x86.exe
-             WhyNotWin11\shasum86.txt
-             WhyNotWin11\shasum64.txt
+             WhyNotWin11.exe
+             WhyNotWin11_x86.exe
+             shasum86.txt
+             shasum64.txt
        if-no-files-found: error
