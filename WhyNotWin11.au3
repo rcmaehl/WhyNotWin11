@@ -78,6 +78,10 @@ Func ExtractFiles()
 	Select
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\")
 			DirCreate(@LocalAppDataDir & "\WhyNotWin11\")
+		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\Langs\")
+			DirCreate(@LocalAppDataDir & "\WhyNotWin11\Langs\")
+			FileInstall(".\langs\0407.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0407.lang") ; German
+			FileInstall(".\langs\0409.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0409.lang") ; English
 			ContinueCase
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
 			FileInstall(".\includes\SupportedProcessorsAMD.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
@@ -656,5 +660,5 @@ Func _SetBkIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
 EndFunc   ;==>_SetBkIcon
 
 Func _Translate($sString)
-	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\" & @MUILang & ".lang", "Strings", $sString, $sString)
+	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang", "Strings", $sString, $sString)
 EndFunc
