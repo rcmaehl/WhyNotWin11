@@ -1,6 +1,6 @@
 [MetaData]
 Language=Français - France
-Translator=Pierre Grillet & Clément VILLISEK - https://clément.villisek.fr
+Translator=Pierre Grillet; Nits77; Clément VILLISEK
 Version=2.2.5.0
 [Strings]
 Donate=Faire un don
@@ -20,7 +20,7 @@ RAM Installed=Quantité de RAM installée
 Secure Boot=Secure Boot
 Storage Available=Espace de stockage disponible
 TPM Version=Version du TPM
-Checking...=Vérification...
+Checking...=Vérification en cours...
 64 Bit CPU=CPU 64 bits
 64 Bit OS=OS 64 bits
 32 Bit CPU=CPU 32 bits
@@ -30,13 +30,13 @@ Unable to Check List=N'a pas pu vérifier la liste
 Error Accessing List=Erreur lors de l'accès à la liste
 Not Currently Listed as Compatible=Ne figure pas pour l'instant sur la liste de compatibilité
 Listed as Compatible=Listé comme compatible
-Cores=Coeurs Physiques
-Threads=Coeurs Logiques
+Cores=Cœurs Physiques
+Threads=Cœurs Logiques
 GPT Detected=GPT détecté
 GPT Not Detected=GPT non détecté
 Enabled=Activé
-Supported=Supporté
-Not Supported=Non supporté
+Supported=Pris en charge
+Not Supported=Non pris en charge
 Disabled / Not Detected=Désactivé / non détecté
 Drive(s) Meet Requirements=Le(s) disque(s) respecte(nt) les exigences.
 TPM Missing / Disabled=TPM Manquant / Désactivé
