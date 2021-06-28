@@ -637,6 +637,6 @@ EndFunc   ;==>_SetBkIcon
 
 Func _Translate($sString)
 
-	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\" & @OSLang & ".lang", "Strings", $sString, $sString)
+	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\" & @MUILang & ".lang", "Strings", $sString, $sString)
 
 EndFunc
