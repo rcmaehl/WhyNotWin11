@@ -213,7 +213,7 @@ Func Main()
 	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 
 	If Not @MUILang = 0409 Then
-		GUICtrlCreateLabel(("Translation by") & " " & _GetTranslationCredit(), 130, 570, 250, 20, $SS_CENTERIMAGE)
+		GUICtrlCreateLabel(_Translate("Translation by") & " " & _GetTranslationCredit(), 130, 570, 250, 20, $SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 	EndIf
 
