@@ -8,4 +8,4 @@ Submit an Issue or Pull Request
 
 [optional]
 Link your GitHub to your Discord
-Mention rcmaehl#2289 on the Official Discord for Translator Role
+Tag rcmaehl#2289 on the Official Discord for Translator Role
