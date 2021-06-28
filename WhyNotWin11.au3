@@ -509,7 +509,7 @@ Func Main()
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM3")
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
-						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & _Translate("DirectX 12 and WDDM 3"))
+						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & "DirectX 12 & WDDM 3")
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "2") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:2") ; Non-English Languages
@@ -517,7 +517,7 @@ Func Main()
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
-						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & _Translate("DirectX 12 and WDDM 2"))
+						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & "DirectX 12 & WDDM 2")
 					Case Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 						GUICtrlSetData($hCheck[5][0], "X")
 						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
