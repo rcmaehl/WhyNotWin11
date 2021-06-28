@@ -147,6 +147,7 @@ Func Main()
 	; Top Most Interaction for Closing Window
 	$hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 24, $FW_MEDIUM)
+	GUICtrlSetCursor(-1, 0)
 
 	; Top Most Interaction for Socials
 	$hGithub = GUICtrlCreateLabel("", 12, 100, 32, 32)
@@ -229,7 +230,6 @@ Func Main()
 
 	GUICtrlCreateLabel("X", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 24, $FW_NORMAL)
-	GUICtrlSetCursor(-1, 0)
 
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
