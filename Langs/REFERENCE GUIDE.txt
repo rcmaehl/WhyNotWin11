@@ -1,5 +1,11 @@
 https://www.autoitscript.com/autoit3/docs/appendix/OSLangCodes.htm
+
+[Required]
 Use the above URL to get your 4 digit MUI Code
 Make a copy of 0000.lang named as such
 Fill out the file
 Submit an Issue or Pull Request
+
+[optional]
+Link your GitHub to your Discord
+Mention rcmaehl#2289 on the Official Discord for Translator Role
