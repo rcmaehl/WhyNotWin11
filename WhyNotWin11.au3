@@ -432,24 +432,22 @@ Func Main()
 	EndIf
 
 	$sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
-	Select
-		Case @error
-			GUICtrlSetData($hCheck[8][0], "X")
-			GUICtrlSetBkColor($hCheck[8][0], 0xFA113D)
-			GUICtrlSetData($hCheck[8][2], _Translate("Disabled / Not Detected"))
-		Case StringInStr(FileRead($hFile), "1")
+	If @error Then $sSecureBoot = 999
+	Switch $sSecureBoot
+		Case 0
+			GUICtrlSetData($hCheck[8][0], "OK")
+			GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
+			GUICtrlSetData($hCheck[8][2], _Translate("Supported"))
+		Case 1
 			GUICtrlSetData($hCheck[8][0], "OK")
 			GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
 			GUICtrlSetData($hCheck[8][2], _Translate("Enabled"))
-		Case StringInStr(FileRead($hFile), "False")
-			GUICtrlSetData($hCheck[8][0], "0")
-			GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
-			GUICtrlSetData($hCheck[8][2], _Translate("Supported"))
 		Case Else
 			GUICtrlSetData($hCheck[8][0], "X")
 			GUICtrlSetBkColor($hCheck[8][0], 0xFA113D)
 			GUICtrlSetData($hCheck[8][2], _Translate("Disabled / Not Detected"))
-	EndSelect
+	EndSwitch
+
 
 	$aDrives = DriveGetDrive($DT_FIXED)
 	$iDrives = 0
