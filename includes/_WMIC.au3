@@ -109,33 +109,57 @@ Func _GetGPUInfo($iFlag = 0)
 EndFunc
 
 Func _GetTPMInfo($iFlag = 0)
-	Local Static $sActivated
-    Local Static $sEnabled
-	Local Static $sVersion
+	If IsAdmin() Then
+		Local Static $sActivated
+		Local Static $sEnabled
+		Local Static $sVersion
 
-	If Not $sActivated <> "" Then
-		Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2\Security\MicrosoftTPM');
-		If (IsObj($Obj_WMIService)) And (Not @error) Then
-			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_TPM')
+		If Not $sActivated <> "" Then
+			Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2\Security\MicrosoftTPM');
+			If (IsObj($Obj_WMIService)) And (Not @error) Then
+				Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_TPM')
 
-			Local $Obj_Item
-			For $Obj_Item In $Col_Items
-				$sActivated = $Obj_Item.IsActivated_InitialValue
-				$sEnabled = $Obj_Item.IsEnabled_InitialValue
-				$sVersion = $obj_Item.SpecVersion
-			Next
-		Else
-			Return 0
+				Local $Obj_Item
+				For $Obj_Item In $Col_Items
+					$sActivated = $Obj_Item.IsActivated_InitialValue
+					$sEnabled = $Obj_Item.IsEnabled_InitialValue
+					$sVersion = $obj_Item.SpecVersion
+				Next
+			Else
+				Return 0
+			EndIf
 		EndIf
+		Switch $iFlag
+			Case 0
+				Return String($sActivated)
+			Case 1
+				Return String($sEnabled)
+			Case 2
+				Return String($sVersion)
+			Case Else
+				Return 0
+		EndSwitch
+	Else
+		Local Static $sPresent
+
+		If Not $sPresent <> "" Then
+			Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2');
+			If (IsObj($Obj_WMIService)) And (Not @error) Then
+				Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_PNPEntity where Description="Trusted Platform Module 2.0"')
+
+				Local $Obj_Item
+				For $Obj_Item In $Col_Items
+					$sPresent = $Obj_Item.Present
+				Next
+			Else
+				Return 0
+			EndIf
+		EndIf
+		Switch $iFlag
+			Case 0
+				Return String($sPresent)
+			Case Else
+				Return 0
+		EndSwitch
 	EndIf
-	Switch $iFlag
-		Case 0
-			Return String($sActivated)
-		Case 1
-			Return String($sEnabled)
-		Case 2
-			Return String($sVersion)
-		Case Else
-			Return 0
-	EndSwitch
 EndFunc
