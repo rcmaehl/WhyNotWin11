@@ -17,8 +17,9 @@ Detection Script to help identify why your PC isn't Windows 11 Release Ready
 
 [Download here](https://github.com/rcmaehl/WhyNotWin11/releases/latest/download/WhyNotWin11.exe)
 
-[Download DEV BUILDS here](https://github.com/rcmaehl/WhyNotWin11/actions?query=workflow%3AWNW11)\
-/!\ Dev builds will not be able to automatically check for updates
+[Download DEV BUILDS here](https://github.com/rcmaehl/WhyNotWin11/actions?query=workflow%3AWNW11)
+To download click on the top result and download artifact called WNW11.
+**Keep in mind that you will have to update these manually**
 
 ## To-Do
 
