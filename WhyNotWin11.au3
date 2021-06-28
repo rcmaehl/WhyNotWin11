@@ -13,10 +13,10 @@
 #AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #Au3Stripper_Parameters=/so
-#AutoIt3Wrapper_Res_Icon_Add=includes\git.ico
-#AutoIt3Wrapper_Res_Icon_Add=includes\pp.ico
-#AutoIt3Wrapper_Res_Icon_Add=includes\dis.ico
-#AutoIt3Wrapper_Res_Icon_Add=includes\web.ico
+#AutoIt3Wrapper_Res_Icon_Add=assets\git.ico
+#AutoIt3Wrapper_Res_Icon_Add=assets\pp.ico
+#AutoIt3Wrapper_Res_Icon_Add=assets\dis.ico
+#AutoIt3Wrapper_Res_Icon_Add=assets\web.ico
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 Global $sVersion = "2.2.4.0"
@@ -31,8 +31,9 @@ Global $sVersion = "2.2.4.0"
 #include <EditConstants.au3>
 #include <FontConstants.au3>
 #include <GUIConstantsEx.au3>
-#include <StaticConstants.au3>
 #include <AutoItConstants.au3>
+#include <StaticConstants.au3>
+#include <StringConstants.au3>
 #include <WindowsConstants.au3>
 
 #include ".\Includes\_WMIC.au3"
@@ -117,13 +118,13 @@ Func Main()
 		_SetBkIcon($aIcons[3], 0xE6E6E6, @ScriptFullPath, 204, 32, 32)
 	Else
 		GUICtrlCreateIcon("", -1, 12, 100, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, ".\includes\Git.ico", -1, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, ".\assets\Git.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 56, 100, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, ".\includes\PP.ico", -1, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, ".\assets\PP.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 12, 144, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, ".\includes\dis.ico", -1, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, ".\assets\dis.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 56, 144, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, ".\includes\Web.ico", -1, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, ".\assets\Web.ico", -1, 32, 32)
 	EndIf
 	_GDIPlus_Shutdown()
 
@@ -168,8 +169,8 @@ Func Main()
 		GUICtrlSetBkColor(-1, 0xE6E6E6)
 		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & $hLabel[$iRow], 170, 110 + $iRow * 40, 300, 40, $SS_CENTERIMAGE)
 		GUICtrlSetFont(-1, 18, $FW_NORMAL)
-		$hCheck[$iRow][2] = GUICtrlCreateLabel("Checking...", 470, 110 + $iRow * 40, 300, 40, $SS_CENTER+$SS_SUNKEN+$SS_CENTERIMAGE)
-		GUICtrlSetFont(-1, 8.5, $FW_SEMIBOLD)
+		$hCheck[$iRow][2] = GUICtrlCreateLabel("Checking...", 470, 110 + $iRow * 40, 300, 40, $SS_CENTER+$SS_SUNKEN)
+		GUICtrlSetFont(-1, 10, $FW_SEMIBOLD)
 	Next
 
 	GUISetState(@SW_SHOW, $hGUI)
@@ -184,15 +185,15 @@ Func Main()
 		Case @CPUArch = "X64" And @OSArch = "X64"
 			GUICtrlSetData($hCheck[0][0], "OK")
 			GUICtrlSetBkColor($hCheck[0][0], 0x4CC355)
-			GUICtrlSetData($hCheck[0][2], "64 Bit CPU and 64 Bit OS")
+			GUICtrlSetData($hCheck[0][2], "64 Bit CPU" & @CRLF & "64 Bit OS")
 		Case @CPUArch = "X64" And @OSArch = "X86"
 			GUICtrlSetData($hCheck[0][0], "!")
 			GUICtrlSetBkColor($hCheck[0][0], 0xF4C141)
-			GUICtrlSetData($hCheck[0][2], "64 Bit CPU, but 32 bit OS")
+			GUICtrlSetData($hCheck[0][2], "64 Bit CPU" & @CRLF & "32 bit OS")
 		Case Else
 			GUICtrlSetData($hCheck[0][0], "X")
 			GUICtrlSetBkColor($hCheck[0][0], 0xFA113D)
-			GUICtrlSetData($hCheck[0][2], "32 Bit CPU and 32 Bit OS")
+			GUICtrlSetData($hCheck[0][2], "32 Bit CPU" & @CRLF & "32 Bit OS")
 	EndSelect
 
 	RunWait("powershell -Command $env:firmware_type | Out-File -FilePath " & $hFile, "", @SW_HIDE)
@@ -225,16 +226,17 @@ Func Main()
 					Case @error = -1
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-						GUICtrlSetTip($hCheck[2][0], "Error Accessing List")
+						GUICtrlSetData($hCheck[2][2], "Error Accessing List" & @CRLF & _GetCPUInfo(2))
 						ExitLoop
 					Case $iLine = $iLines
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-						GUICtrlSetTip($hCheck[2][0], "Not Currently Listed as Compatible")
+						GUICtrlSetData($hCheck[2][2], "Not Currently Listed as Compatible" & @CRLF & _GetCPUInfo(2))
 						ExitLoop
 					Case StringInStr(_GetCPUInfo(2), $sLine)
 						GUICtrlSetData($hCheck[2][0], "OK")
 						GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
+						GUICtrlSetData($hCheck[2][2], "Listed as Compatible" & @CRLF & _GetCPUInfo(2))
 						ExitLoop
 				EndSelect
 			Next
@@ -243,7 +245,7 @@ Func Main()
 			If @error Then
 				GUICtrlSetData($hCheck[2][0], "?")
 				GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-				GUICtrlSetTip($hCheck[2][0], "Unable to Check List")
+				GUICtrlSetData($hCheck[2][2], "Unable to Check List" & @CRLF & _GetCPUInfo(2))
 			EndIf
 			For $iLine = 1 to $iLines Step 1
 				$sLine = FileReadLine(@TempDir & "\SupportedProcessorsIntel.txt", $iLine)
@@ -251,16 +253,17 @@ Func Main()
 					Case @error = -1
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-						GUICtrlSetTip($hCheck[2][0], "Error Accessing List")
+						GUICtrlSetData($hCheck[2][2], "Error Accessing List" & @CRLF & _GetCPUInfo(2))
 						ExitLoop
 					Case $iLine = $iLines
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-						GUICtrlSetTip($hCheck[2][0], "Not Currently Listed as Compatible")
+						GUICtrlSetData($hCheck[2][2], "Not Currently Listed as Compatible" & @CRLF & _GetCPUInfo(2))
 						ExitLoop
 					Case StringInStr(_GetCPUInfo(2), $sLine)
 						GUICtrlSetData($hCheck[2][0], "OK")
 						GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
+						GUICtrlSetData($hCheck[2][2], "Listed as Compatible" & @CRLF & _GetCPUInfo(2))
 						ExitLoop
 				EndSelect
 			Next
@@ -277,16 +280,17 @@ Func Main()
 					Case @error = -1
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-						GUICtrlSetTip($hCheck[2][0], "Error Accessing List")
+						GUICtrlSetData($hCheck[2][2], "Error Accessing List" & @CRLF & _GetCPUInfo(2))
 						ExitLoop
 					Case $iLine = $iLines
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-						GUICtrlSetTip($hCheck[2][0], "Not Currently Listed as Compatible")
+						GUICtrlSetData($hCheck[2][2], "Not Currently Listed as Compatible" & @CRLF & _GetCPUInfo(2))
 						ExitLoop
 					Case StringInStr(_GetCPUInfo(2), $sLine)
 						GUICtrlSetData($hCheck[2][0], "OK")
 						GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
+						GUICtrlSetData($hCheck[2][2], "Listed as Compatible" & @CRLF & _GetCPUInfo(2))
 						ExitLoop
 				EndSelect
 			Next
@@ -294,16 +298,15 @@ Func Main()
 			GUICtrlSetData($hCheck[2][0], "?")
 			GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
 	EndSelect
-	GUICtrlSetData($hCheck[2][2], _GetCPUInfo(2))
 
 	If _GetCPUInfo(0) >= 2 Or _GetCPUInfo(1) >= 2 Then
 		GUICtrlSetData($hCheck[3][0], "OK")
 		GUICtrlSetBkColor($hCheck[3][0], 0x4CC355)
-		GUICtrlSetData($hCheck[3][2], _GetCPUInfo(0) & " Cores, " & _GetCPUInfo(1) & " Threads")
+		GUICtrlSetData($hCheck[3][2], _GetCPUInfo(0) & " Cores" & @CRLF & _GetCPUInfo(1) & " Threads")
 	Else
 		GUICtrlSetData($hCheck[3][0], "X")
 		GUICtrlSetBkColor($hCheck[3][0], 0xFA113D)
-		GUICtrlSetData($hCheck[3][2], _GetCPUInfo(0) & " Cores, " & _GetCPUInfo(1) & " Threads")
+		GUICtrlSetData($hCheck[3][2], _GetCPUInfo(0) & " Cores" & @CRLF & _GetCPUInfo(1) & " Threads")
 	EndIf
 
 	If _GetCPUInfo(3) >= 1000 Then
@@ -372,14 +375,22 @@ Func Main()
 			GUICtrlSetData($hCheck[8][2], "Disabled / Not Detected")
 	EndSelect
 
+	$aDrives = DriveGetDrive($DT_FIXED)
+	$iDrives = 0
+
+	For $iLoop = 1 to $aDrives[0] Step 1
+		If Round(DriveSpaceTotal($aDrives[$iLoop])/1024, 0) >= 64 Then $iDrives += 1
+	Next
+
+
 	If Round(DriveSpaceTotal("C:\")/1024, 0) >= 64 Then
 		GUICtrlSetData($hCheck[9][0], "OK")
 		GUICtrlSetBkColor($hCheck[9][0], 0x4CC355)
-		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB on C:\")
+		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB on C:\" & @CRLF & $iDrives & " Drive(s) Meet Requirements")
 	Else
 		GUICtrlSetData($hCheck[9][0], "X")
 		GUICtrlSetBkColor($hCheck[9][0], 0xFA113D)
-		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB on C:\")
+		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB on C:\" & @CRLF & $iDrives & " Drive(s) Meet Requirements")
 	EndIf
 
 	Select
@@ -431,7 +442,7 @@ Func Main()
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM3")
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
-						GUICtrlSetData($hCheck[5][2], "DirectX 12, WDDM 3")
+						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & "DirectX 12 and WDDM 3")
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "2") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:2") ; Non-English Languages
@@ -439,19 +450,19 @@ Func Main()
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
-						GUICtrlSetData($hCheck[5][2], "DirectX 12, WDDM 2")
+						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & "DirectX 12 and WDDM 2")
 					Case Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 						GUICtrlSetData($hCheck[5][0], "X")
 						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
-						GUICtrlSetData($hCheck[5][2], "No DirectX 12, but WDDM2")
+						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & "No DirectX 12, but WDDM2")
 					Case StringInStr($sDXFile, "DDIVersion:12") And Not StringInStr($sDXFile, "DriverModel:WDDM2")
 						GUICtrlSetData($hCheck[5][0], "X")
 						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
-						GUICtrlSetData($hCheck[5][2], "DirectX 12, but no WDDM2")
+						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & "DirectX 12, but no WDDM2")
 					Case Else
 						GUICtrlSetData($hCheck[5][0], "X")
 						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
-						GUICtrlSetData($hCheck[5][2], "No DirectX 12 / WDDM2")
+						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & "No DirectX 12 or WDDM2")
 				EndSelect
 				FileDelete($hDXFile)
 

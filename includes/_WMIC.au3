@@ -8,6 +8,7 @@ Func _GetCPUInfo($iFlag = 0)
 	Local Static $sName
 	Local Static $sSpeed
 	Local Static $sArch
+	Local Static $sCPUs
 
 	If Not $sName <> "" Then
 		Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2');
@@ -69,6 +70,34 @@ Func _GetDiskInfo($iFlag = 0)
 	Switch $iFlag
 		Case 0
 			Return String($sType)
+		Case Else
+			Return 0
+	EndSwitch
+EndFunc
+
+Func _GetGPUInfo($iFlag = 0)
+    Local Static $sName
+	Local Static $sMemory
+
+	If Not $sName <> "" Then
+		Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2');
+		If (IsObj($Obj_WMIService)) And (Not @error) Then
+			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_VideoController')
+
+			Local $Obj_Item
+			For $Obj_Item In $Col_Items
+				$sName &= $Obj_Item.Name & " / "
+				$sMemory = $obj_Item.AdapterRAM
+			Next
+		Else
+			Return 0
+		EndIf
+	EndIf
+	Switch $iFlag
+		Case 0
+			Return StringTrimRight(String($sName), 3)
+		Case 1
+			Return StringStripWS(String($sMemory), $STR_STRIPTRAILING)
 		Case Else
 			Return 0
 	EndSwitch
