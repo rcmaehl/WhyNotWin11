@@ -410,7 +410,7 @@ Func Main()
 	$aMem = DllCall("Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
 	If @error Then
 		$aMem = MemGetStats()
-		$aMem = $aMem[1]
+		$aMem = Round($aMem[1]/1048576, 1)
 		$aMem = Ceiling($aMem)
 	Else
 		$aMem = Round($aMem[1]/1048576, 1)
