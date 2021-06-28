@@ -148,7 +148,7 @@ Func Main()
 	GUICtrlCreateLabel("Your Windows 11 Compatibility Results are Below", 130, 30, 640, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 18, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
 
-	GUICtrlCreateLabel("whynotwin11.com is not controlled by me. If you are the owner, please contact github", 130, 60, 640, 20, $SS_CENTER+$SS_CENTERIMAGE+$SS_SUNKEN)
+	GUICtrlCreateLabel("whynotwin11.com is not controlled by me. If you are the owner, please contact me on GitHub", 130, 60, 640, 20, $SS_CENTER+$SS_CENTERIMAGE+$SS_SUNKEN)
 	GUICtrlSetBKColor(-1, 0xFFFF00)
 	GUICtrlSetColor(-1, 0xE20012)
 	GUICtrlSetFont(-1, 10)
