@@ -448,19 +448,20 @@ Func Main()
 	$iDrives = 0
 
 	For $iLoop = 1 to $aDrives[0] Step 1
-		If Round(DriveSpaceTotal($aDrives[$iLoop])/1024, 0) >= 64 Then $iDrives += 1
+		If DriveSpaceFree($aDrives[$iLoop]) >= 64000 Then $iDrives += 1
 	Next
 
 
-	If Round(DriveSpaceTotal("C:\")/1024, 0) >= 64 Then
+	If Round(DriveSpaceFree(@HomeDrive)) >= 64000 Then
 		GUICtrlSetData($hCheck[9][0], "OK")
 		GUICtrlSetBkColor($hCheck[9][0], 0x4CC355)
-		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB C:\" & @CRLF & $iDrives & " " & _Translate("Drive(s) Meet Requirements"))
+		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceFree(@HomeDrive & "\")/1024, 0) & " GB " & @HomeDrive & @CRLF & $iDrives & " " & _Translate("Drive(s) Meet Requirements"))
 	Else
 		GUICtrlSetData($hCheck[9][0], "X")
 		GUICtrlSetBkColor($hCheck[9][0], 0xFA113D)
-		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB C:\" & @CRLF & $iDrives & " " * _Translate("Drive(s) Meet Requirements"))
+		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceFree(@HomeDrive & "\")/1024, 0) & " GB " & @HomeDrive & @CRLF & $iDrives & " " & _Translate("Drive(s) Meet Requirements"))
 	EndIf
+
 
 	Select
 		Case _GetTPMInfo(0) = False
