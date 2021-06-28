@@ -131,7 +131,7 @@ Func Main()
 
 	$hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOr($WS_POPUP,$WS_BORDER))
 	GUISetBkColor(_HighContrast(0xF8F8F8))
-	GUISetFont(8.5,$FW_BOLD,"","Arial")
+	GUISetFont(8.5 * _GDIPlus_GraphicsGetDPIRatio()[0],$FW_BOLD,"","Arial")
 
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
 	GUICtrlSetDefBKColor(_HighContrast(0xF8F8F8))
@@ -147,7 +147,7 @@ Func Main()
 
 	; Top Most Interaction for Closing Window
 	$hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 24, $FW_MEDIUM)
+	GUICtrlSetFont(-1, 24 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_MEDIUM)
 	GUICtrlSetCursor(-1, 0)
 
 	; Top Most Interaction for Socials
@@ -197,13 +197,13 @@ Func Main()
 	_GDIPlus_Shutdown()
 
 	$hBannerText = GUICtrlCreateLabel("", 5, 540, 90, 20, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 8.5, $FW_NORMAL, $GUI_FONTUNDER)
+	GUICtrlSetFont(-1, 8.5 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	$sBannerURL = _SetBannerText($hBannerText, $hBanner)
 
 	GUICtrlCreateLabel(_Translate("Check for Updates"), 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 8.5, $FW_NORMAL, $GUI_FONTUNDER)
+	GUICtrlSetFont(-1, 8.5 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	GUICtrlCreateLabel("WhyNotWin11", 10, 10, 80, 20, $SS_CENTER+$SS_CENTERIMAGE)
@@ -220,17 +220,17 @@ Func Main()
 	EndIf
 
 	GUICtrlCreateLabel(_Translate("Your Windows 11 Compatibility Results are Below"), 130, 30, 640, 40, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 18, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
+	GUICtrlSetFont(-1, 18 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
 
 	GUICtrlCreateLabel(_Translate("Now Reach WhyNotWin11 via https://www.whynotwin11.org/"), 130, 60, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 10)
+	GUICtrlSetFont(-1, 10 * _GDIPlus_GraphicsGetDPIRatio()[0])
 
 	GUICtrlCreateLabel(_Translate("Results Based on Currently Known Requirements!"), 130, 80, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetColor(-1, 0xE20012)
-	GUICtrlSetFont(-1, 10)
+	GUICtrlSetFont(-1, 10 * _GDIPlus_GraphicsGetDPIRatio()[0])
 
 	GUICtrlCreateLabel("X", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 24, $FW_NORMAL)
+	GUICtrlSetFont(-1, 24 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL)
 
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
@@ -239,9 +239,9 @@ Func Main()
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 130, 110 + $iRow * 40, 40, 40, $SS_CENTER+$SS_SUNKEN+$SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, 0xE6E6E6)
 		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($hLabel[$iRow]), 170, 110 + $iRow * 40, 300, 40, $SS_CENTERIMAGE)
-		GUICtrlSetFont(-1, 18, $FW_NORMAL)
+		GUICtrlSetFont(-1, 18 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL)
 		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate("Checking..."), 470, 110 + $iRow * 40, 300, 40, $SS_CENTER+$SS_SUNKEN)
-		GUICtrlSetFont(-1, 12, $FW_SEMIBOLD)
+		GUICtrlSetFont(-1, 12 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_SEMIBOLD)
 	Next
 
 	GUISetState(@SW_SHOW, $hGUI)
@@ -611,6 +611,37 @@ Func _GetLatestRelease($sCurrent)
 	Return _VersionCompare($aCombined[0][0], $sCurrent)
 
 EndFunc
+
+;######################################################################################################################################
+; #FUNCTION# ====================================================================================================================
+; Name ..........: _GDIPlus_GraphicsGetDPIRatio
+; Description ...:
+; Syntax ........: _GDIPlus_GraphicsGetDPIRatio([$iDPIDef = 96])
+; Parameters ....: $iDPIDef             - [optional] An integer value. Default is 96.
+; Return values .: None
+; Author ........: UEZ
+; Modified ......:
+; Remarks .......:
+; Related .......:
+; Link ..........: http://www.autoitscript.com/forum/topic/159612-dpi-resolution-problem/?hl=%2Bdpi#entry1158317
+; Example .......: No
+; ===============================================================================================================================
+Func _GDIPlus_GraphicsGetDPIRatio($iDPIDef = 96)
+    _GDIPlus_Startup()
+    Local $hGfx = _GDIPlus_GraphicsCreateFromHWND(0)
+    If @error Then Return SetError(1, @extended, 0)
+    Local $aResult
+    #forcedef $__g_hGDIPDll, $ghGDIPDll
+
+    $aResult = DllCall($__g_hGDIPDll, "int", "GdipGetDpiX", "handle", $hGfx, "float*", 0)
+
+    If @error Then Return SetError(2, @extended, 0)
+    Local $iDPI = $aResult[2]
+    Local $aresults[2] = [$iDPIDef / $iDPI, $iDPI / $iDPIDef]
+    _GDIPlus_GraphicsDispose($hGfx)
+    _GDIPlus_Shutdown()
+    Return $aresults
+EndFunc   ;==>_GDIPlus_GraphicsGetDPIRatio
 
 Func _GetTranslationCredit()
 	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\" & @MUILang & ".lang", "MetaData", "Translator", "???")
