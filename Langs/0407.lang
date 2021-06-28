@@ -5,7 +5,7 @@ Version= 2.2.5.0
 [Strings]
 Donate=Spenden
 Check for Updates=Auf Update überprüfen
-Your Windows 11 Compatibility Results are Below=Ihre Windows 11-Kompatibilitätsergebnisse sind unten aufgeführt
+Your Windows 11 Compatibility Results are Below=Windows 11-Kompatibilität ist unten aufgeführt
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Erreiche WhyNotWin11 jetzt über https://www.whynotwin11.org/
 Results Based on Currently Known Requirements!=Ergebnisse basierend auf derzeit bekannten Anforderungen!
 Translation by=Übersetzt von
@@ -40,7 +40,7 @@ Not Supported=Nicht unterstützt
 Disabled / Not Detected=Deaktiviert / Nicht erkannt
 Drive(s) Meet Requirements=Laufwerk(e) erfüllen die Anforderungen
 TPM Missing / Disabled=TPM fehlt / deaktiviert
-Detected=Erkannt
+Detected=erkannt
 DirectX 12 and WDDM 3=DirectX 12 und WDDM 3
 DirectX 12 and WDDM 2=DirectX 12 und WDDM 2
 No DirectX 12, but WDDM2=Kein DirectX 12, aber WDDM2

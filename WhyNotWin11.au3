@@ -54,9 +54,9 @@ If $CmdLine[0] > 0 Then
 					@CRLF & _
 					@TAB & "/format" & @TAB & "Export Results in an available format, can be used" & @CRLF & _
 					@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
-					@TAB & "       " & @TAB & "output. Requires afilename if used." & @CRLF & _
+					@TAB & "       " & @TAB & "output. Requires a filename if used." & @CRLF & _
 					@TAB & "formats" & @TAB & "TXT, XML" & @CRLF & _
-					@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systesms will Exit" & @CRLF & _
+					@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systems will Exit" & @CRLF & _
 					@TAB & "       " & @TAB & "with ERROR_SUCCESS." & @CRLF & _
 					@CRLF & _
 					"All flags can be shortened to just the first character (e.g. /s)" & @CRLF)
@@ -80,8 +80,34 @@ Func ExtractFiles()
 			DirCreate(@LocalAppDataDir & "\WhyNotWin11\")
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\Langs\")
 			DirCreate(@LocalAppDataDir & "\WhyNotWin11\Langs\")
+			#cs
+			FileInstall(".\langs\0004.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0004.lang")
+			FileInstall(".\langs\0401.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0401.lang")
+			FileInstall(".\langs\0402.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0402.lang")
+			FileInstall(".\langs\0403.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0403.lang")
+			FileInstall(".\langs\0404.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0404.lang") ; German
+			FileInstall(".\langs\0405.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0405.lang") ; German
+			FileInstall(".\langs\0406.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0406.lang")
 			FileInstall(".\langs\0407.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0407.lang") ; German
+			FileInstall(".\langs\0408.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0408.lang")
 			FileInstall(".\langs\0409.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0409.lang") ; English
+			FileInstall(".\langs\040A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040A.lang")
+			FileInstall(".\langs\040B.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040B.lang")
+			FileInstall(".\langs\040C.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040C.lang")
+			FileInstall(".\langs\040D.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040D.lang")
+			FileInstall(".\langs\040E.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040E.lang")
+			FileInstall(".\langs\040F.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040F.lang")
+			FileInstall(".\langs\0410.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0410.lang")
+			FileInstall(".\langs\0411.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0411.lang")
+			FileInstall(".\langs\0412.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0412.lang")
+			FileInstall(".\langs\0413.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0413.lang") ; English
+			FileInstall(".\langs\0414.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0414.lang")
+			FileInstall(".\langs\0415.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0415.lang")
+			FileInstall(".\langs\0416.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0416.lang")
+			FileInstall(".\langs\0417.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0417.lang")
+			FileInstall(".\langs\0418.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0418.lang")
+			FileInstall(".\langs\0419.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0419.lang") ; Russian
+			#ce
 			ContinueCase
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
 			FileInstall(".\includes\SupportedProcessorsAMD.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
@@ -203,6 +229,7 @@ Func Main()
 
 	GUICtrlCreateLabel("X", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 24, $FW_NORMAL)
+	GUICtrlSetCursor(-1, 0)
 
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
@@ -361,7 +388,9 @@ Func Main()
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	EndIf
 
-	RunWait("powershell -Command Get-Partition -DriveLetter C | Get-Disk | Select-Object -Property PartitionStyle | Out-File -FilePath " & $hFile, "", @SW_HIDE)
+	$sOSDrive = StringReplace(@WindowsDir, ":\Windows", "")
+
+	RunWait("powershell -Command Get-Partition -DriveLetter " & $sOSDrive & " | Get-Disk | Select-Object -Property PartitionStyle | Out-File -FilePath " & $hFile, "", @SW_HIDE)
 	Select
 		Case StringInStr(FileRead($hFile), "Error")
 			GUICtrlSetData($hCheck[6][0], "?")
