@@ -362,7 +362,7 @@ Func Main()
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	EndIf
 
-	RunWait("Get-Partition -DriveLetter $env:SystemDrive | Get-Disk | Select-Object -Property PartitionStyle | Out-File -FilePath " & $hFile, "", @SW_HIDE)
+	RunWait("powershell -Command Get-Partition -DriveLetter $env:SystemDrive | Get-Disk | Select-Object -Property PartitionStyle | Out-File -FilePath " & $hFile, "", @SW_HIDE)
 	Select
 		Case StringInStr(FileRead($hFile), "Error")
 			GUICtrlSetData($hCheck[6][0], "?")
