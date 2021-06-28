@@ -426,7 +426,7 @@ Func Main()
 	Next
 
 
-	If Round(DriveSpaceTotal("@HomeDrive")/1024, 0) >= 64 Then
+	If Round(DriveSpaceFree(@HomeDrive)) >= 64000 Then
 		GUICtrlSetData($hCheck[9][0], "OK")
 		GUICtrlSetBkColor($hCheck[9][0], 0x4CC355)
 		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceFree(@HomeDrive & "\")/1024, 0) & " GB " & @HomeDrive & @CRLF & $iDrives & " " & _Translate("Drive(s) Meet Requirements"))
