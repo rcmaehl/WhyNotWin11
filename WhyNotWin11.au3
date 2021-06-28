@@ -4,7 +4,7 @@
 #AutoIt3Wrapper_Outfile_x64=WhyNotWin11.exe
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
-#AutoIt3Wrapper_Res_HiDpi=N
+#AutoIt3Wrapper_Res_HiDpi=Y
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify the more niche settings for why your PC isn't Windows 11 ready
 #AutoIt3Wrapper_Res_Fileversion=2.2.5.0
 #AutoIt3Wrapper_Res_ProductVersion=2.2.5
