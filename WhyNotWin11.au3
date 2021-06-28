@@ -462,12 +462,11 @@ Func Main()
 	If Round(DriveSpaceTotal("C:\")/1024, 0) >= 64 Then
 		GUICtrlSetData($hCheck[9][0], "OK")
 		GUICtrlSetBkColor($hCheck[9][0], 0x4CC355)
-		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB C:\" & @CRLF & $iDrives & " " & _Translate("Drive(s) Meet Requirements"))
 	Else
 		GUICtrlSetData($hCheck[9][0], "X")
 		GUICtrlSetBkColor($hCheck[9][0], 0xFA113D)
-		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB C:\" & @CRLF & $iDrives & " " * _Translate("Drive(s) Meet Requirements"))
 	EndIf
+	GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB C:\" & @CRLF & $iDrives & " " & _Translate("Drive(s) Meet Requirements"))
 
 	Select
 		Case _GetTPMInfo(0) = False
