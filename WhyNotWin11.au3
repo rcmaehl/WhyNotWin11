@@ -266,7 +266,7 @@ Func Main()
 			GUICtrlSetData($hCheck[0][2], _Translate("32 Bit CPU") & @CRLF & _Translate("32 Bit OS"))
 	EndSelect
 
-	RunWait("powershell -Command $env:firmware_type | Out-File -FilePath " & $hFile, "", @SW_HIDE)
+	RunWait("powershell -ExecutionPolicy Bypass -Command $env:firmware_type | Out-File -FilePath " & $hFile, "", @SW_HIDE)
 	Switch StringStripWS(StringStripCR(FileRead($hFile)), $STR_STRIPALL)
 		Case "UEFI"
 			GUICtrlSetData($hCheck[1][0], "OK")
@@ -390,7 +390,7 @@ Func Main()
 
 	$sOSDrive = StringReplace(@WindowsDir, ":\Windows", "")
 
-	RunWait("powershell -Command Get-Partition -DriveLetter " & $sOSDrive & " | Get-Disk | Select-Object -Property PartitionStyle | Out-File -FilePath " & $hFile, "", @SW_HIDE)
+	RunWait("powershell -ExecutionPolicy Bypass -Command Get-Partition -DriveLetter " & $sOSDrive & " | Get-Disk | Select-Object -Property PartitionStyle | Out-File -FilePath " & $hFile, "", @SW_HIDE)
 	Select
 		Case StringInStr(FileRead($hFile), "Error")
 			GUICtrlSetData($hCheck[6][0], "?")
@@ -430,7 +430,7 @@ Func Main()
 		GUICtrlSetData($hCheck[7][2], $aMem & " GB")
 	EndIf
 
-	RunWait("powershell -Command Confirm-SecureBootUEFI | Out-File -FilePath " & $hFile, "", @SW_HIDE)
+	RunWait("powershell -ExecutionPolicy Bypass -Command Confirm-SecureBootUEFI | Out-File -FilePath " & $hFile, "", @SW_HIDE)
 	Select
 		Case StringInStr(FileRead($hFile), "True")
 			GUICtrlSetData($hCheck[8][0], "OK")
