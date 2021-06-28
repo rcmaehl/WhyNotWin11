@@ -77,6 +77,7 @@ Func ExtractFiles()
 	Select
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\")
 			DirCreate(@LocalAppDataDir & "\WhyNotWin11\")
+			ContinueCase
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\Langs\")
 			DirCreate(@LocalAppDataDir & "\WhyNotWin11\Langs\")
 			#cs
