@@ -1,4 +1,3 @@
-#RequireAdmin
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=.\assets\windows11-logo.ico
 #AutoIt3Wrapper_Outfile=WhyNotWin11_x86.exe
@@ -266,7 +265,7 @@ Func Main()
 			GUICtrlSetData($hCheck[0][2], _Translate("32 Bit CPU") & @CRLF & _Translate("32 Bit OS"))
 	EndSelect
 
-	RunWait("powershell -Command $env:firmware_type | Out-File -FilePath " & $hFile, "", @SW_HIDE)
+	RunWait("powershell -ExecutionPolicy Bypass -Command $env:firmware_type | Out-File -FilePath " & $hFile, "", @SW_HIDE)
 	Switch StringStripWS(StringStripCR(FileRead($hFile)), $STR_STRIPALL)
 		Case "UEFI"
 			GUICtrlSetData($hCheck[1][0], "OK")
@@ -390,7 +389,7 @@ Func Main()
 
 	$sOSDrive = StringReplace(@WindowsDir, ":\Windows", "")
 
-	RunWait("powershell -Command Get-Partition -DriveLetter " & $sOSDrive & " | Get-Disk | Select-Object -Property PartitionStyle | Out-File -FilePath " & $hFile, "", @SW_HIDE)
+	RunWait("powershell -ExecutionPolicy Bypass -Command Get-Partition -DriveLetter " & $sOSDrive & " | Get-Disk | Select-Object -Property PartitionStyle | Out-File -FilePath " & $hFile, "", @SW_HIDE)
 	Select
 		Case StringInStr(FileRead($hFile), "Error")
 			GUICtrlSetData($hCheck[6][0], "?")
@@ -430,14 +429,18 @@ Func Main()
 		GUICtrlSetData($hCheck[7][2], $aMem & " GB")
 	EndIf
 
-	RunWait("powershell -Command Confirm-SecureBootUEFI | Out-File -FilePath " & $hFile, "", @SW_HIDE)
+	$sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
 	Select
-		Case StringInStr(FileRead($hFile), "True")
+		Case @error
+			GUICtrlSetData($hCheck[8][0], "X")
+			GUICtrlSetBkColor($hCheck[8][0], 0xFA113D)
+			GUICtrlSetData($hCheck[8][2], _Translate("Disabled / Not Detected"))
+		Case StringInStr(FileRead($hFile), "1")
 			GUICtrlSetData($hCheck[8][0], "OK")
 			GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
 			GUICtrlSetData($hCheck[8][2], _Translate("Enabled"))
 		Case StringInStr(FileRead($hFile), "False")
-			GUICtrlSetData($hCheck[8][0], "OK")
+			GUICtrlSetData($hCheck[8][0], "0")
 			GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
 			GUICtrlSetData($hCheck[8][2], _Translate("Supported"))
 		Case Else
