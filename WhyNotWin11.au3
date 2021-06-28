@@ -4,21 +4,22 @@
 #AutoIt3Wrapper_Outfile_x64=WhyNotWin11.exe
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
-#AutoIt3Wrapper_Res_HiDpi=N
-#AutoIt3Wrapper_Res_Description=Detection Script to help identify the more niche settings for why your PC isn't Windows 11 ready
+#AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready
 #AutoIt3Wrapper_Res_Fileversion=2.2.5.0
+#AutoIt3Wrapper_Res_ProductName=WhyNotWin11
 #AutoIt3Wrapper_Res_ProductVersion=2.2.5
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
-#AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
-#AutoIt3Wrapper_Run_Au3Stripper=y
-#Au3Stripper_Parameters=/so
+#AutoIt3Wrapper_Res_Language=1033
+#AutoIt3Wrapper_Res_requestedExecutionLevel=highestAvailable
 #AutoIt3Wrapper_Res_Icon_Add=assets\git.ico
 #AutoIt3Wrapper_Res_Icon_Add=assets\pp.ico
 #AutoIt3Wrapper_Res_Icon_Add=assets\dis.ico
 #AutoIt3Wrapper_Res_Icon_Add=assets\web.ico
+#AutoIt3Wrapper_Run_Au3Stripper=y
+#Au3Stripper_Parameters=/so
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
-Global $sVersion = "2.2.5.0"
+Global $sVersion = "2.2.6.0"
 If @OSVersion = 'WIN_10' Then DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT"-1)
 
 #include <File.au3>
