@@ -7,8 +7,8 @@
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_HiDpi=N
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify the more niche settings for why your PC isn't Windows 11 ready
-#AutoIt3Wrapper_Res_Fileversion=2.2.4.0
-#AutoIt3Wrapper_Res_ProductVersion=2.2.4
+#AutoIt3Wrapper_Res_Fileversion=2.2.5.0
+#AutoIt3Wrapper_Res_ProductVersion=2.2.5
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 #AutoIt3Wrapper_Run_Au3Stripper=y
@@ -19,7 +19,7 @@
 #AutoIt3Wrapper_Res_Icon_Add=assets\web.ico
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
-Global $sVersion = "2.2.4.0"
+Global $sVersion = "2.2.5.0"
 
 #include <File.au3>
 #include <Misc.au3>
@@ -68,6 +68,9 @@ EndIf
 
 Func ExtractFiles()
 	Select
+		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\")
+			DirCreate(@LocalAppDataDir & "\WhyNotWin11\")
+			ContinueCase
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
 			FileInstall(".\includes\SupportedProcessorsAMD.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
 			FileInstall(".\includes\SupportedProcessorsIntel.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt")
@@ -171,6 +174,11 @@ Func Main()
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
 	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 
+	If Not @MUILang = 0409 Then
+		GUICtrlCreateLabel(("Translation by") & " " & _GetTranslationCredit(), 130, 570, 250, 20, $SS_CENTERIMAGE)
+		GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
+	EndIf
+
 	GUICtrlCreateLabel(_Translate("Your Windows 11 Compatibility Results are Below"), 130, 30, 640, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 18, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
 
@@ -193,7 +201,7 @@ Func Main()
 		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($hLabel[$iRow]), 170, 110 + $iRow * 40, 300, 40, $SS_CENTERIMAGE)
 		GUICtrlSetFont(-1, 18, $FW_NORMAL)
 		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate("Checking..."), 470, 110 + $iRow * 40, 300, 40, $SS_CENTER+$SS_SUNKEN)
-		GUICtrlSetFont(-1, 11, $FW_SEMIBOLD)
+		GUICtrlSetFont(-1, 12, $FW_SEMIBOLD)
 	Next
 
 	GUISetState(@SW_SHOW, $hGUI)
@@ -559,6 +567,10 @@ Func _GetLatestRelease($sCurrent)
 
 EndFunc
 
+Func _GetTranslationCredit()
+	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\" & @MUILang & ".lang", "MetaData", "Translator", "???")
+EndFunc
+
 Func _HighContrast($sColor)
 	Local Static $sSysWin
 
@@ -636,7 +648,5 @@ Func _SetBkIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
 EndFunc   ;==>_SetBkIcon
 
 Func _Translate($sString)
-
 	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\" & @MUILang & ".lang", "Strings", $sString, $sString)
-
 EndFunc
