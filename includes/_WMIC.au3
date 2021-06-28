@@ -5,12 +5,12 @@
 Func _GetCPUInfo($iFlag = 0)
 	Local Static $sCores
     Local Static $sThreads
-	Local Static $sName
+	Local Static $vName
 	Local Static $sSpeed
 	Local Static $sArch
 	Local Static $sCPUs
 
-	If Not $sName <> "" Then
+	If Not $vName <> "" Then
 		Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2');
 		If (IsObj($Obj_WMIService)) And (Not @error) Then
 			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_Processor')
@@ -19,7 +19,7 @@ Func _GetCPUInfo($iFlag = 0)
 			For $Obj_Item In $Col_Items
 				$sCores = $Obj_Item.NumberOfCores
 				$sThreads = $Obj_Item.NumberOfLogicalProcessors
-				$sName = $obj_Item.Name
+				$vName = $obj_Item.Name
 				$sSpeed = $Obj_Item.MaxClockSpeed
 				$sArch = $Obj_Item.AddressWidth
 			Next
@@ -35,15 +35,20 @@ Func _GetCPUInfo($iFlag = 0)
 			Return 0
 		EndIf
 	EndIf
+	If StringInStr($vName, "@") Then
+		$vName = StringSplit($vName, "@", $STR_NOCOUNT)
+		$sSpeed = StringRegExpReplace($vName[1], "[^[:digit:]]", "") & "0"
+		$vName = $vName[0]
+	EndIf
 	Switch $iFlag
 		Case 0
 			Return String($sCores)
 		Case 1
 			Return String($sThreads)
 		Case 2
-			Return StringStripWS(String($sName), $STR_STRIPTRAILING)
+			Return StringStripWS(String($vName), $STR_STRIPTRAILING)
 		Case 3
-			Return String($sSpeed)
+			Return Number($sSpeed)
 		Case 4
 			Return Number($sArch)
 		Case Else
