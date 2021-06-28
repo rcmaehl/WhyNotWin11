@@ -54,9 +54,9 @@ If $CmdLine[0] > 0 Then
 					@CRLF & _
 					@TAB & "/format" & @TAB & "Export Results in an available format, can be used" & @CRLF & _
 					@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
-					@TAB & "       " & @TAB & "output. Requires afilename if used." & @CRLF & _
+					@TAB & "       " & @TAB & "output. Requires a filename if used." & @CRLF & _
 					@TAB & "formats" & @TAB & "TXT, XML" & @CRLF & _
-					@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systesms will Exit" & @CRLF & _
+					@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systems will Exit" & @CRLF & _
 					@TAB & "       " & @TAB & "with ERROR_SUCCESS." & @CRLF & _
 					@CRLF & _
 					"All flags can be shortened to just the first character (e.g. /s)" & @CRLF)
