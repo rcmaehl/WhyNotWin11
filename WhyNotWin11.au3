@@ -57,6 +57,8 @@ If $CmdLine[0] > 0 Then
 					@TAB & "       " & @TAB & "with ERROR_SUCCESS." & @CRLF & _
 					@CRLF & _
 					"All flags can be shortened to just the first character (e.g. /s)" & @CRLF)
+			Case "/s", "/silent"
+				ChecksOnly()
 			Case Else
 				MsgBox(0, "Invalid", 'Invalid switch - "' & $CmdLine[$iLoop] & "." & @CRLF)
 				Exit 1
@@ -65,6 +67,9 @@ If $CmdLine[0] > 0 Then
 Else
 	Main()
 EndIf
+
+Func ChecksOnly()
+EndFunc
 
 Func ExtractFiles()
 	Select
