@@ -38,6 +38,9 @@ Global $sVersion = "2.2.5.0"
 
 #include ".\Includes\_WMIC.au3"
 
+Opt("TrayIconHide",1)
+Opt("TrayAutoPause",0)
+
 ExtractFiles()
 
 If $CmdLine[0] > 0 Then
