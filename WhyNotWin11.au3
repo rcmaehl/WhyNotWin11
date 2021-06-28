@@ -44,6 +44,13 @@ Opt("TrayAutoPause",0)
 
 ExtractFiles()
 
+Switch @OSVersion
+	Case "WIN_7", "WIN_VISTA", "WIN_XP", "WIN_XPe"
+		MsgBox($MB_ICONWARNING, _Translate("Not Supported"), @OSVersion & " " & _Translate("Not Supported")
+	Case Else
+		;;;
+EndSwitch
+
 If $CmdLine[0] > 0 Then
 	For $iLoop = 1 To $CmdLine[0] Step 1
 		Switch $CmdLine[$iLoop]
