@@ -48,4 +48,3 @@ Detection Script to help identify why your PC isn't Windows 11 ready
 1. This will create WhyNotWin11.exe in the same directory.
 
 This program is free and open source. Feel free to download and modify. Please do not sell exact copies.
-
