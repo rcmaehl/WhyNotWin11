@@ -39,7 +39,34 @@ Global $sVersion = "2.2.4.0"
 #include ".\Includes\_WMIC.au3"
 
 ExtractFiles()
-Main()
+
+If $CmdLine[0] > 0 Then
+	For $iLoop = 1 To $CmdLine[0] Step 1
+		Switch $CmdLine[$iLoop]
+			Case "/?", "/h", "/help"
+				MsgBox(0, "Help and Flags", _
+					"Checks PC for Windows 11 Release Compatibility" & @CRLF & _
+					@CRLF & _
+					"WhyNotWin11 [/format:FORMAT filename] [/silent]" & @CRLF & _
+					@CRLF & _
+					@TAB & "/format" & @TAB & "Export Results in an available format, can be used" & @CRLF & _
+					@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
+					@TAB & "       " & @TAB & "output. Requires afilename if used." & @CRLF & _
+					@TAB & "formats" & @TAB & "TXT, XML" & @CRLF & _
+					@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systesms will Exit" & @CRLF & _
+					@TAB & "       " & @TAB & "with ERROR_SUCCESS." & @CRLF & _
+					@CRLF & _
+					"All flags can be shortened to just the first character (e.g. /s)" & @CRLF)
+			Case Else
+				MsgBox(0, "Invalid", 'Invalid switch - "' & $CmdLine[$iLoop] & "." & @CRLF)
+				Exit 1
+		EndSwitch
+	Next
+Else
+	Main()
+EndIf
+
+
 
 Func ExtractFiles()
 	Select
@@ -149,9 +176,7 @@ Func Main()
 	GUICtrlCreateLabel("Your Windows 11 Compatibility Results are Below", 130, 30, 640, 40, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 18, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
 
-	GUICtrlCreateLabel("whynotwin11.com is not controlled by me. If you are the owner, please contact github", 130, 60, 640, 20, $SS_CENTER+$SS_CENTERIMAGE+$SS_SUNKEN)
-	GUICtrlSetBKColor(-1, 0xFFFF00)
-	GUICtrlSetColor(-1, 0xE20012)
+	GUICtrlCreateLabel("Now Reach WhyNotWin11 via https://www.whynotwin11.org/", 130, 60, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, 10)
 
 	GUICtrlCreateLabel("* Results Based on Currently Known Requirements!", 130, 80, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
@@ -612,3 +637,9 @@ Func _SetBkIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
 
     Return SetError(0, 0, 1)
 EndFunc   ;==>_SetBkIcon
+
+Func _Translate($sString)
+
+	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\" & @OSLang & ".lang", "Strings", $sString, $sString)
+
+EndFunc
