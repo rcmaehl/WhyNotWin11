@@ -46,7 +46,7 @@ ExtractFiles()
 
 Switch @OSVersion
 	Case "WIN_7", "WIN_VISTA", "WIN_XP", "WIN_XPe"
-		MsgBox($MB_ICONWARNING, _Translate("Not Supported"), @OSVersion & " " & _Translate("Not Supported")
+		MsgBox($MB_ICONWARNING, _Translate("Not Supported"), @OSVersion & " " & _Translate("Not Supported"))
 	Case Else
 		;;;
 EndSwitch
