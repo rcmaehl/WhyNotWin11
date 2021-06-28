@@ -80,6 +80,7 @@ Func ExtractFiles()
 			DirCreate(@LocalAppDataDir & "\WhyNotWin11\")
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\Langs\")
 			DirCreate(@LocalAppDataDir & "\WhyNotWin11\Langs\")
+			#cs
 			FileInstall(".\langs\0004.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0004.lang")
 			FileInstall(".\langs\0401.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0401.lang")
 			FileInstall(".\langs\0402.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0402.lang")
@@ -106,6 +107,7 @@ Func ExtractFiles()
 			FileInstall(".\langs\0417.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0417.lang")
 			FileInstall(".\langs\0418.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0418.lang")
 			FileInstall(".\langs\0419.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0419.lang") ; Russian
+			#ce
 			ContinueCase
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
 			FileInstall(".\includes\SupportedProcessorsAMD.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
