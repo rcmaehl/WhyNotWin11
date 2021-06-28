@@ -362,7 +362,7 @@ Func Main()
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	EndIf
 
-	RunWait("Get-Partition -DriveLetter $env:SystemDrive | Get-Disk | Select-Object -Property PartitionStyle | Out-File -FilePath " & $hFile, "", @SW_HIDE)
+	RunWait("powershell -Command Get-Partition -DriveLetter $env:SystemDrive | Get-Disk | Select-Object -Property PartitionStyle | Out-File -FilePath " & $hFile, "", @SW_HIDE)
 	Select
 		Case StringInStr(FileRead($hFile), "Error")
 			GUICtrlSetData($hCheck[6][0], "?")
@@ -426,14 +426,14 @@ Func Main()
 	Next
 
 
-	If Round(DriveSpaceTotal("C:\")/1024, 0) >= 64 Then
+	If Round(DriveSpaceTotal("@HomeDrive")/1024, 0) >= 64 Then
 		GUICtrlSetData($hCheck[9][0], "OK")
 		GUICtrlSetBkColor($hCheck[9][0], 0x4CC355)
-		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB C:\" & @CRLF & $iDrives & " " & _Translate("Drive(s) Meet Requirements"))
+		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("@HomeDrive")/1024, 0) & " GB @HomeDrive" & @CRLF & $iDrives & " " & _Translate("Drive(s) Meet Requirements"))
 	Else
 		GUICtrlSetData($hCheck[9][0], "X")
 		GUICtrlSetBkColor($hCheck[9][0], 0xFA113D)
-		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB C:\" & @CRLF & $iDrives & " " * _Translate("Drive(s) Meet Requirements"))
+		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("@HomeDrive")/1024, 0) & " GB @HomeDrive" & @CRLF & $iDrives & " " * _Translate("Drive(s) Meet Requirements"))
 	EndIf
 
 	Select
