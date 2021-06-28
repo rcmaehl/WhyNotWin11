@@ -554,6 +554,11 @@ Func Main()
 	WEnd
 EndFunc
 
+Func _ANSI2OEM($sString)
+    $atext = DllCall('user32.dll','Int','CharToOem','str',$sString,'str','')
+    Return $atext[2]
+EndFunc
+
 Func _GetLatestRelease($sCurrent)
 
 	Local $dAPIBin
@@ -660,5 +665,5 @@ Func _SetBkIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
 EndFunc   ;==>_SetBkIcon
 
 Func _Translate($sString)
-	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang", "Strings", $sString, $sString)
+	Return _ANSI2OEM(INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang", "Strings", $sString, $sString))
 EndFunc
