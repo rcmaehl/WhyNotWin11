@@ -1,0 +1,5 @@
+https://www.autoitscript.com/autoit3/docs/appendix/OSLangCodes.htm
+Use the above URL to get your 4 digit MUI Code
+Make a copy of 0000.lang named as such
+Fill out the file
+Submit an Issue or Pull Request
