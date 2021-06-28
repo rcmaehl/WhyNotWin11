@@ -389,15 +389,8 @@ Func Main()
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	EndIf
 
-	$sOSDrive = StringReplace(@WindowsDir, ":\Windows", "")
-
-	RunWait("powershell -ExecutionPolicy Bypass -Command Get-Partition -DriveLetter " & $sOSDrive & " | Get-Disk | Select-Object -Property PartitionStyle | Out-File -FilePath " & $hFile, "", @SW_HIDE)
-	Select
-		Case StringInStr(FileRead($hFile), "Error")
-			GUICtrlSetData($hCheck[6][0], "?")
-			GUICtrlSetBkColor($hCheck[6][0], 0xF4C141)
-			GUICtrlSetData($hCheck[6][2], _Translate("Unable to Determine"))
-		Case StringInStr(FileRead($hFile), "GPT")
+	Switch _GetDiskInfo(0)
+		Case "GPT"
 			GUICtrlSetData($hCheck[6][0], "OK")
 			GUICtrlSetBkColor($hCheck[6][0], 0x4CC355)
 			GUICtrlSetData($hCheck[6][2], _Translate("GPT Detected"))
@@ -405,7 +398,7 @@ Func Main()
 			GUICtrlSetData($hCheck[6][0], "X")
 			GUICtrlSetBkColor($hCheck[6][0], 0xFA113D)
 			GUICtrlSetData($hCheck[6][2], _Translate("GPT Not Detected"))
-	EndSelect
+	EndSwitch
 
 	$aMem = DllCall("Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
 	If @error Then
