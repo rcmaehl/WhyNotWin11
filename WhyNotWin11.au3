@@ -1,4 +1,3 @@
-#RequireAdmin
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=.\assets\windows11-logo.ico
 #AutoIt3Wrapper_Outfile=WhyNotWin11_x86.exe
@@ -430,14 +429,18 @@ Func Main()
 		GUICtrlSetData($hCheck[7][2], $aMem & " GB")
 	EndIf
 
-	RunWait("powershell -ExecutionPolicy Bypass -Command Confirm-SecureBootUEFI | Out-File -FilePath " & $hFile, "", @SW_HIDE)
+	$sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
 	Select
-		Case StringInStr(FileRead($hFile), "True")
+		Case @error
+			GUICtrlSetData($hCheck[8][0], "X")
+			GUICtrlSetBkColor($hCheck[8][0], 0xFA113D)
+			GUICtrlSetData($hCheck[8][2], _Translate("Disabled / Not Detected"))
+		Case StringInStr(FileRead($hFile), "1")
 			GUICtrlSetData($hCheck[8][0], "OK")
 			GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
 			GUICtrlSetData($hCheck[8][2], _Translate("Enabled"))
 		Case StringInStr(FileRead($hFile), "False")
-			GUICtrlSetData($hCheck[8][0], "OK")
+			GUICtrlSetData($hCheck[8][0], "0")
 			GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
 			GUICtrlSetData($hCheck[8][2], _Translate("Supported"))
 		Case Else
