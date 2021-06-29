@@ -335,7 +335,7 @@ Func Main()
 	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 
 	If Not (@MUILang = "0409") Then
-		GUICtrlCreateLabel(_Translate("Translation by") & " " & _GetTranslationCredit(), 130, 570, 250, 20, $SS_CENTERIMAGE)
+		GUICtrlCreateLabel(_Translate("Translation by") & " " & _GetTranslationCredit(), 130, 560, 310, 40)
 		GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 	EndIf
 
@@ -539,7 +539,7 @@ Func Main()
 	EndIf
 	If $aMem = 0 Then
 		$aMem = MemGetStats()
-		$aMem = $aMem[1]
+		$aMem = Round($aMem[1]/1048576, 1)
 		$aMem = Ceiling($aMem)
 	EndIf
 
