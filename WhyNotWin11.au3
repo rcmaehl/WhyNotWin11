@@ -82,10 +82,10 @@ If $CmdLine[0] > 0 Then
 			Case "/f", "/format"
 				Select
 					Case UBound($CmdLine) <= 3
-						MsgBox(0, "Invalid", "Missing FILENAME paramter for /format." & @CRLF)
+						MsgBox(0, "Invalid", "Missing FILENAME parameter for /format." & @CRLF)
 						Exit 1
 					Case UBound($CmdLine) <= 2
-						MsgBox(0, "Invalid", "Missing FORMAT paramter for /format." & @CRLF)
+						MsgBox(0, "Invalid", "Missing FORMAT parameter for /format." & @CRLF)
 						Exit 1
 					Case Else
 						Switch $CmdLine[2]
@@ -94,7 +94,7 @@ If $CmdLine[0] > 0 Then
 								$aOutput[1] = $CmdLine[3]
 								_ArrayDelete($CmdLine, 1-3)
 							Case Else
-								MsgBox(0, "Invalid", "Missing FORMAT paramter for /format." & @CRLF)
+								MsgBox(0, "Invalid", "Missing FORMAT parameter for /format." & @CRLF)
 								Exit 1
 						EndSwitch
 				EndSelect
@@ -687,7 +687,7 @@ Func Main()
 			Case $hMsg = $hUpdate
 				Switch _GetLatestRelease($sVersion)
 					Case -1
-						MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, _Translate("Test Build?"), _Translate("You're running a newer build than publically Available!"), 10)
+						MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, _Translate("Test Build?"), _Translate("You're running a newer build than publicly Available!"), 10)
 					Case 0
 						Switch @error
 							Case 0
