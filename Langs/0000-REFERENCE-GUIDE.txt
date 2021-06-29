@@ -7,6 +7,7 @@ All Parties Agree: Merge
 
 [Required]
 Use the above URL to get your 4 digit MUI Code
+Please use the hex number, left column
 Make a copy of 0000.lang named as such
 Fill out the file
 Submit an Issue or Pull Request
