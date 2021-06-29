@@ -106,7 +106,7 @@ Func _CPUSpeedCheck()
 	EndIf
 EndFunc
 
-Func _StartDirectXCheck()
+Func _DirectXStartCheck()
 	Local $aReturn[2]
 	Local $hDXFile = _TempFile(@TempDir, "dxdiag")
 	$aReturn[0] = $hDXFile

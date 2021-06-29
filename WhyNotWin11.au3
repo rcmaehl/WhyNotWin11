@@ -130,9 +130,7 @@ Func ChecksOnly()
 	$aResults[4][1] = @error
 	$aResults[4][2] = @extended
 
-	$aResults[5][0] = 0
-	$aResults[5][1] = @error
-	$aResults[5][2] = @extended
+	$aDirectX = _DirectXStartCheck()
 
 	$aResults[6][0] = _GPTCheck()
 	$aResults[6][1] = @error
@@ -153,6 +151,25 @@ Func ChecksOnly()
 	$aResults[10][0] = _TPMCheck()
 	$aResults[10][1] = @error
 	$aResults[10][2] = @extended
+
+	Local $iErr
+	Local $iExt
+
+	While 1
+
+		$aDirectX = _GetDirectXCheck($aDirectX)
+		$iErr = @error ; Preserve Values against IsArray()
+		$iExt = @extended
+		If Not IsArray($aDirectX) Then
+			$aResults[5][0] = $aDirectX
+			$aResults[5][1] = $iErr
+			$aResults[5][2] = $iExt
+			ExitLoop
+		EndIf
+
+		Sleep(100)
+
+	WEnd
 
 	_ArrayDisplay($aResults)
 
