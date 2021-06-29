@@ -370,7 +370,7 @@ Func Main()
 		GUICtrlSetFont(-1, 12 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_SEMIBOLD)
 	Next
 
-	$hDXFile = _TempFile(@TempDir, "dxdiag")
+		$hDXFile = _TempFile(@TempDir, "dxdiag")
 	Run("dxdiag /whql:off /t " & $hDXFile)
 
 	Select
@@ -624,7 +624,7 @@ Func Main()
 	EndSelect
 
 	GUISetState(@SW_SHOW, $hGUI)
-
+accessibility()
 	While 1
 		$hMsg = GUIGetMsg()
 
