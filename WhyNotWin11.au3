@@ -78,6 +78,7 @@ If $CmdLine[0] > 0 Then
 			Case "/s", "/silent"
 				ChecksOnly()
 				_ArrayDelete($CmdLine, 1)
+				ContinueLoop
 			Case "/f", "/format"
 				Select
 					Case UBound($CmdLine) <= 3
@@ -122,7 +123,7 @@ Func ChecksOnly()
 	$aResults[2][1] = @error
 	$aResults[2][2] = @extended
 
-	$aResults[3][0] = _CPUCoresCheck
+	$aResults[3][0] = _CPUCoresCheck()
 	$aResults[3][1] = @error
 	$aResults[3][2] = @extended
 

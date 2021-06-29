@@ -8,9 +8,9 @@ Func _ArchCheck()
 		Case @CPUArch = "X64" And @OSArch = "X64"
 			Return True
 		Case @CPUArch = "X64" And @OSArch = "X86"
-			SetError(1, 0, 0)
+			SetError(1, 0, False)
 		Case Else
-			SetError(2, 0, 0)
+			SetError(2, 0, False)
 	EndSelect
 EndFunc
 
@@ -22,7 +22,7 @@ Func _BootCheck()
 		Case "Legacy"
 			Return False
 		Case Else
-			SetError(1, 0, 0)
+			SetError(1, 0, False)
 	EndSwitch
 EndFunc
 
@@ -37,10 +37,10 @@ Func _CPUNameCheck($sCPU)
 				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $iLine)
 				Select
 					Case @error = -1
-						SetError(2, 0, 0)
+						SetError(2, 0, False)
 						ExitLoop
 					Case $iLine = $iLines
-						SetError(3, 0, 0)
+						SetError(3, 0, False)
 						ExitLoop
 					Case StringInStr($sCPU, $sLine)
 						Return True
@@ -56,10 +56,10 @@ Func _CPUNameCheck($sCPU)
 				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $iLine)
 				Select
 					Case @error = -1
-						SetError(2, 0, 0)
+						SetError(2, 0, False)
 						ExitLoop
 					Case $iLine = $iLines
-						SetError(3, 0, 0)
+						SetError(3, 0, False)
 						ExitLoop
 					Case StringInStr($sCPU, $sLine)
 						Return True
@@ -75,10 +75,10 @@ Func _CPUNameCheck($sCPU)
 				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $iLine)
 				Select
 					Case @error = -1
-						SetError(2, 0, 0)
+						SetError(2, 0, False)
 						ExitLoop
 					Case $iLine = $iLines
-						SetError(3, 0, 0)
+						SetError(3, 0, False)
 						ExitLoop
 					Case StringInStr($sCPU, $sLine)
 						Return True
@@ -131,9 +131,9 @@ Func _GetDirectXCheck($aArray)
 			Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 				Return 1
 			Case Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
-				SetError(1, 0, 0)
+				SetError(1, 0, False)
 			Case StringInStr($sDXFile, "DDIVersion:12") And Not StringInStr($sDXFile, "DriverModel:WDDM2")
-				SetError(1, 0, 0)
+				SetError(1, 0, False)
 			Case Else
 				Return False
 		EndSelect
@@ -150,7 +150,7 @@ Func _GPTCheck()
 			If $aDisks[0] = $aDisks[1] Then
 				Return True
 			Else
-				SetError($aDisks[1], $aDisks[0], 1)
+				SetError($aDisks[1], $aDisks[0], True)
 			EndIf
 		Case Else
 			Return False
@@ -218,11 +218,11 @@ Func _TPMCheck()
 		Case _GetTPMInfo(1) = False
 			Return False
 		Case Not Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
-			SetError(1, 0, 0) ; Under Version 1.2
+			SetError(1, 0, False) ; Under Version 1.2
 		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 2.0
 			Return True
 		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
-			SetError(2, 0, 0) ; Under Version 1.2 ????
+			SetError(2, 0, False) ; Under Version 1.2 ????
 		Case Else
 			Return False
 	EndSelect
