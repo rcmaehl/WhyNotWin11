@@ -678,7 +678,7 @@ Func _GDIPlus_GraphicsGetDPIRatio($iDPIDef = 96)
 EndFunc   ;==>_GDIPlus_GraphicsGetDPIRatio
 
 Func _GetTranslationCredit()
-	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\Lang\" & @MUILang & ".lang", "MetaData", "Translator", "???")
+	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang", "MetaData", "Translator", "???")
 EndFunc
 
 Func _HighContrast($sColor)
