@@ -6,7 +6,8 @@ All Parties Agree: Merge
 50% + 2 Disagree: Deny Merge until Majority Consensus reached
 
 [Required]
-Use the above URL to get your 4 hex digit MUI Code
+Use the above URL to get your 4 digit MUI Code
+Please use the hex number, left column
 Make a copy of 0000.lang named as such
 Fill out the file
 Submit an Issue or Pull Request
