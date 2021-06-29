@@ -60,6 +60,10 @@ Switch @OSVersion
 		;;;
 EndSwitch
 
+If @OSBuild >= 22000 Then
+	MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Your Windows 11 Compatibility Results are Below"), _Translate(@MUILang, "You're running the latest build!"))
+EndIf
+
 Func ProcessCMDLine()
 	$iParams = $CmdLine[0]
 	For $iLoop = 1 To $iParams Step 1
