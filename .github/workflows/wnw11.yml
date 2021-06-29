@@ -22,7 +22,7 @@ jobs:
           curl -sSfLO https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.exe `
             -sSfLO https://www.autoitscript.com/cgi-bin/getfile.pl?../autoit3/scite/download/SciTE4AutoIt3.exe `
             -sSfLO https://www.autoitscript.com/autoit3/scite/download/Au3Stripper.zip
-          Expand-Archive Au3Stripper.zip "C:\Program Files (x86)\AutoIt3\SciTE\au3Stripper" -Force
+          Expand-Archive Au3Stripper.zip "$env:ProgramFiles(x86)\AutoIt3\SciTE\au3Stripper" -Force
       - name: Install tools
         run: |
           Start-Process autoit-v3-setup.exe -ArgumentList /S -NoNewWindow -Wait
