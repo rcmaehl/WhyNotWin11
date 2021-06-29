@@ -78,12 +78,8 @@ Local $iCountLines = @extended
 $not = 0
 If @error Then
 speaking("Error reading file...")
-writeinlog("error reading file...")
 	Else
 speaking($title)
-writeinlog("Dialog: " &$title)
-writeinlog("file: " &$filetoread)
-writeinlog("File information: Lines: " &$iCountLines)
 endIf
 While 1
 $active_window = WinGetProcess("")
@@ -96,14 +92,12 @@ If NOT _ispressed($up) Then $not = 1
 If _ispressed($up) AND $move_doc = 0 Then
 return $move_doc
 speaking("home.")
-writeinlog($move_doc)
 endIf
 Sleep(15)
 If NOT _ispressed($up) Then $not = 1
 If _ispressed($up) AND $move_doc > 0 Then
 $move_doc = $move_doc -1
 speaking($R_File[$MOVE_DOC])
-writeinlog($move_doc)
 endIf
 Sleep(15)
 If NOT _ispressed($down) Then $not = 1
@@ -120,7 +114,6 @@ sleep(15)
 If NOT _ispressed($down) Then $not = 1
 If _ispressed($down) then; AND $move_doc > 0 Then
 $move_doc = $move_doc +1
-writeinlog($move_doc)
 speaking($R_File[$MOVE_DOC])
 endIf
 Sleep(15)
