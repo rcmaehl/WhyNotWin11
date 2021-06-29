@@ -9,7 +9,7 @@
 # WhyNotWin11
 Detection Script to help identify why your PC isn't Windows 11 Release Ready
 
-![image](https://user-images.githubusercontent.com/716581/123747880-7ded0c00-d881-11eb-9fdc-cd49a6ff74dc.png)
+![image](https://user-images.githubusercontent.com/716581/123796852-91b16600-d8b3-11eb-869f-b5f6c67a6de8.png)
 
 ----
 
