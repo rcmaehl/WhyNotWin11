@@ -23,6 +23,8 @@ Global $aResults[11][3]
 Global $sVersion = "2.3.0.1"
 Global $aOutput[2] = ["", ""]
 
+FileChangeDir(@SystemDir)
+
 If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT"-1)
 
 #include <File.au3>
@@ -47,7 +49,9 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 Opt("TrayIconHide",1)
 Opt("TrayAutoPause",0)
 
+If $CmdLine[0] > 0 ThenProcessCMDLine()
 ExtractFiles()
+Main()
 
 Switch @OSVersion
 	Case "WIN_7", "WIN_VISTA", "WIN_XP", "WIN_XPe"
@@ -56,7 +60,7 @@ Switch @OSVersion
 		;;;
 EndSwitch
 
-If $CmdLine[0] > 0 Then
+Func ProcessCMDLine()
 	$iParams = $CmdLine[0]
 	For $iLoop = 1 To $iParams Step 1
 		Switch $CmdLine[1]
@@ -78,6 +82,7 @@ If $CmdLine[0] > 0 Then
 			Case "/s", "/silent"
 				ChecksOnly()
 				_ArrayDelete($CmdLine, 1)
+				If UBound($CmdLine) = 1 Then Exit
 				ContinueLoop
 			Case "/f", "/format"
 				Select
@@ -103,9 +108,7 @@ If $CmdLine[0] > 0 Then
 				Exit 1
 		EndSwitch
 	Next
-Else
-	Main()
-EndIf
+EndFunc
 
 Func ChecksOnly()
 
