@@ -1,11 +1,11 @@
 [MetaData]
 Language=Italian - Italy
 Translator=Mario (@MarioMarietto)
-Version=2.2.5.0
+Version=2.3.0.1
 [Strings]
 Donate=Dona
-Check for Updates=Verifica la disponibilità di aggiornamenti
-Your Windows 11 Compatibility Results are Below=I risultati della compatibilità con Windows 11 sono mostrati sotto
+Check for Updates=Verifica aggiornamenti
+Your Windows 11 Compatibility Results are Below=L'esito della compatibilità con Windows 11 è sotto
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Raggiungi WhyNotWin11 attraverso https://www.whynotwin11.org/
 Results Based on Currently Known Requirements!=Risultati basati sui requisiti di sistema attualmente conosciuti!
 Translation by=Traduzione di
@@ -18,7 +18,7 @@ DirectX + WDDM2=DirectX + WDDM2
 Disk Partition Type=Tipo partizione del disco
 RAM Installed=RAM Installata
 Secure Boot=Secure Boot
-Storage Available=Spazio di archiviazione disponibile
+Storage Available=Archiviazione disponibile
 TPM Version=Versione TPM
 Checking...=Verifica in corso...
 64 Bit CPU=CPU a 64 Bit
@@ -38,7 +38,7 @@ Enabled=Abilitato
 Supported=Supportato
 Not Supported=Non supportato
 Disabled / Not Detected=Disabilitato / Non individuato
-Drive(s) Meet Requirements=La/le unità soddisfa/soddisfano i requisiti
+Drive(s) Meet Requirements=Le unità soddisfano i requisiti
 TPM Missing / Disabled=TPM Mancante / Disabilitato
 Detected=Individuato
 DirectX 12 and WDDM 3=DirectX 12 e WDDM 3
