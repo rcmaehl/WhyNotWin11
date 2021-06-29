@@ -6,7 +6,7 @@ Version=2.3.0.1
 Donate=Donează
 Check for Updates=Verifică actualizări
 Your Windows 11 Compatibility Results are Below=Rezultatele dvs. de compatibilitate Windows 11 sunt mai jos
-Now Reach WhyNotWin11 via https://www.whynotwin11.org/Acum ajungeți la WhyNotWin11 prin https://www.whynotwin11.org/
+Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Acum ajungeți la WhyNotWin11 prin https://www.whynotwin11.org/
 Results Based on Currently Known Requirements!=Rezultate bazate pe cerințele cunoscute în prezent!
 Translation by=Tradus de
 Architecture (CPU + OS)=Architectura (CPU + SO)
@@ -22,7 +22,7 @@ Storage Available=Memorie Disponibilă
 TPM Version=Versiune TPM
 Checking...=Se verifică...
 64 Bit CPU=CPU pe 64 Biți
-64 Bit OS= SO pe 64 Biți
+64 Bit OS=SO pe 64 Biți
 32 Bit CPU=CPU pe 32 Biți
 32 Bit OS=SO pe 32 Biți
 Unable to Determine=Nu s-a putut determina
