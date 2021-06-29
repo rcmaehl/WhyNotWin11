@@ -266,12 +266,16 @@ EndFunc
 
 Func Main()
 
-	Local $iMUI = @MUILang
+	Local Static $iMUI = @MUILang
+	Local Static $aFonts[4] = _GetTranslationFonts()
+
+	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
+
 	$BKC = _WinAPI_GetSysColor($COLOR_WINDOW)
 
 	$hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOr($WS_POPUP,$WS_BORDER))
 	GUISetBkColor(_HighContrast(0xF8F8F8))
-	GUISetFont(8.5 * _GDIPlus_GraphicsGetDPIRatio()[0],$FW_BOLD,"","Arial")
+	GUISetFont($aFonts[$FontSmall] * _GDIPlus_GraphicsGetDPIRatio()[0],$FW_BOLD,"","Arial")
 
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
 	GUICtrlSetDefBKColor(_HighContrast(0xF8F8F8))
@@ -287,7 +291,7 @@ Func Main()
 
 	; Top Most Interaction for Closing Window
 	$hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 24 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_MEDIUM)
+	GUICtrlSetFont(-1, $aFonts[$FontExtraLarge] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_MEDIUM)
 	GUICtrlSetCursor(-1, 0)
 
 	; Top Most Interaction for Socials
@@ -337,13 +341,13 @@ Func Main()
 	_GDIPlus_Shutdown()
 
 	$hBannerText = GUICtrlCreateLabel("", 5, 540, 90, 20, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 8.5 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL, $GUI_FONTUNDER)
+	GUICtrlSetFont(-1, $aFonts[$FontSmall] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	$sBannerURL = _SetBannerText($hBannerText, $hBanner)
 
 	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 8.5 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL, $GUI_FONTUNDER)
+	GUICtrlSetFont(-1, $aFonts[$FontSmall] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	GUICtrlCreateLabel("WhyNotWin11", 10, 10, 80, 20, $SS_CENTER+$SS_CENTERIMAGE)
@@ -365,17 +369,17 @@ Func Main()
 	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 
 	GUICtrlCreateLabel(_Translate($iMUI, "Your Windows 11 Compatibility Results are Below"), 130, 30, 640, 40, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 18 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
+	GUICtrlSetFont(-1, $aFonts[$FontLarge] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
 
 	GUICtrlCreateLabel(_Translate($iMUI, "Now Reach WhyNotWin11 via https://www.whynotwin11.org/"), 130, 60, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 10 * _GDIPlus_GraphicsGetDPIRatio()[0])
+	GUICtrlSetFont(-1, $aFonts[$FontMedium] * _GDIPlus_GraphicsGetDPIRatio()[0])
 
 	GUICtrlCreateLabel(_Translate($iMUI, "Results Based on Currently Known Requirements!"), 130, 80, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetColor(-1, 0xE20012)
-	GUICtrlSetFont(-1, 10 * _GDIPlus_GraphicsGetDPIRatio()[0])
+	GUICtrlSetFont(-1, $aFonts[$FontMedium] * _GDIPlus_GraphicsGetDPIRatio()[0])
 
 	GUICtrlCreateLabel("X", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 24 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL)
+	GUICtrlSetFont(-1, $aFonts[$FontExtraLarge] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL)
 
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
@@ -384,10 +388,10 @@ Func Main()
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 130, 110 + $iRow * 40, 40, 40, $SS_CENTER+$SS_SUNKEN+$SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, 0xE6E6E6)
 		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hLabel[$iRow]), 170, 110 + $iRow * 40, 300, 40, $SS_CENTERIMAGE)
-		GUICtrlSetFont(-1, 18 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL)
+		GUICtrlSetFont(-1, $aFonts[$FontLarge] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL)
 		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 470, 110 + $iRow * 40, 300, 40, $SS_CENTER+$SS_SUNKEN+$SS_CENTERIMAGE)
 		If $iRow = 0 Or $iRow = 3 Or $iRow = 6 Or $iRow = 9 Then GUICtrlSetStyle(-1, $SS_CENTER+$SS_SUNKEN)
-		GUICtrlSetFont(-1, 12 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_SEMIBOLD)
+		GUICtrlSetFont(-1, $aFonts[$FontMedium] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_SEMIBOLD)
 	Next
 
 	$hDXFile = _TempFile(@TempDir, "dxdiag")
@@ -809,6 +813,17 @@ Func _GetTranslationCredit()
 	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang", "MetaData", "Translator", "???")
 EndFunc
 
+Func _GetTranslationFonts()
+	Local $aFonts[4] = [8.5, 10, 18, 24]
+
+	$aFonts[0] = INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Small", $aFonts[0])
+	$aFonts[1] = INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Medium", $aFonts[1])
+	$aFonts[2] = INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Large", $aFonts[2])
+	$aFonts[3] = INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Extra Large", $aFonts[3])
+
+	Return $aFonts
+EndFunc
+
 Func _HighContrast($sColor)
 	Local Static $sSysWin
 
@@ -914,5 +929,5 @@ EndFunc   ;==>_SetFile
 
 Func _Translate($iMUI, $sString)
 	_INIUnicode(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang")
-	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI	& ".lang", "Strings", $sString, $sString)
+	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Strings", $sString, $sString)
 EndFunc
