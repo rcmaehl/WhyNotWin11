@@ -23,7 +23,7 @@ Global $aResults[11][3]
 Global $sVersion = "2.3.0.1"
 Global $aOutput[2] = ["", ""]
 
-If @OSVersion = 'WIN_10' Then DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT"-1)
+If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT"-1)
 
 #include <File.au3>
 #include <Misc.au3>
@@ -529,7 +529,7 @@ Func Main()
 			GUICtrlSetData($hCheck[6][2], _Translate("GPT Not Detected"))
 	EndSwitch
 
-	$aMem = DllCall("Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
+	$aMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
 	If @error Then
 		$aMem = MemGetStats()
 		$aMem = Round($aMem[1]/1048576, 1)
@@ -818,7 +818,7 @@ EndFunc   ;==>_INIUnicode
 Func _SetBannerText($hBannerText, $hBanner)
 
 	Local $bLinux = False
-	Local $hModule = _WinAPI_GetModuleHandle("ntdll.dll")
+	Local $hModule = _WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll")
 
 	If _WinAPI_GetProcAddress($hModule, "wine_get_host_version") Then $bLinux = True
 
@@ -846,7 +846,7 @@ Func _SetBkIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
 
     $tIcon = DllStructCreate('hwnd')
     $tID = DllStructCreate('hwnd')
-    $hIcon = DllCall('user32.dll', 'int', 'PrivateExtractIcons', 'str', $sIcon, 'int', $iIndex, 'int', $iWidth, 'int', $iHeight, 'ptr', DllStructGetPtr($tIcon), 'ptr', DllStructGetPtr($tID), 'int', 1, 'int', 0)
+    $hIcon = DllCall(@SystemDir & '\user32.dll', 'int', 'PrivateExtractIcons', 'str', $sIcon, 'int', $iIndex, 'int', $iWidth, 'int', $iHeight, 'ptr', DllStructGetPtr($tIcon), 'ptr', DllStructGetPtr($tID), 'int', 1, 'int', 0)
     If (@error) Or ($hIcon[0] = 0) Then
         Return SetError(1, 0, 0)
     EndIf
