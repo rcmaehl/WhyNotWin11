@@ -49,7 +49,7 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 Opt("TrayIconHide",1)
 Opt("TrayAutoPause",0)
 
-If $CmdLine[0] > 0 ThenProcessCMDLine()
+If $CmdLine[0] > 0 Then ProcessCMDLine()
 ExtractFiles()
 Main()
 
