@@ -267,7 +267,8 @@ EndFunc
 Func Main()
 
 	Local Static $iMUI = @MUILang
-	Local Static $aFonts[4] = _GetTranslationFonts()
+	Local Static $aFonts[4]
+	$aFonts = _GetTranslationFonts($iMUI)
 
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 
@@ -813,7 +814,7 @@ Func _GetTranslationCredit()
 	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang", "MetaData", "Translator", "???")
 EndFunc
 
-Func _GetTranslationFonts()
+Func _GetTranslationFonts($iMUI)
 	Local $aFonts[4] = [8.5, 10, 18, 24]
 
 	$aFonts[0] = INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Small", $aFonts[0])
