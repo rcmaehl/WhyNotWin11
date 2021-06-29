@@ -5,7 +5,7 @@
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready
-#AutoIt3Wrapper_Res_Fileversion=2.3.0.0
+#AutoIt3Wrapper_Res_Fileversion=2.3.0.1
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
 #AutoIt3Wrapper_Res_ProductVersion=2.3.0
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
@@ -20,7 +20,7 @@
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 Global $aResults[11][3]
-Global $sVersion = "2.3.0.0"
+Global $sVersion = "2.3.0.1"
 Global $aOutput[2] = ["", ""]
 
 If @OSVersion = 'WIN_10' Then DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT"-1)
@@ -889,7 +889,6 @@ Func _SetFile($sString, $sFile, $iOverwrite = $FO_READ)
 EndFunc   ;==>_SetFile
 
 Func _Translate($sString)
-	_INIUnicode(@LocalAppDataDir & "\WhyNotWin11\Langs\0804.lang")
-	;Return BinaryToString(StringToBinary(INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang", "Strings", $sString, $sString)))
-	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\0804.lang", "Strings", $sString, $sString)
+	_INIUnicode(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang")
+	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang", "Strings", $sString, $sString)
 EndFunc
