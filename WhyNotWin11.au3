@@ -1,25 +1,26 @@
-#RequireAdmin
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=.\assets\windows11-logo.ico
 #AutoIt3Wrapper_Outfile=WhyNotWin11_x86.exe
 #AutoIt3Wrapper_Outfile_x64=WhyNotWin11.exe
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
-#AutoIt3Wrapper_Res_HiDpi=N
-#AutoIt3Wrapper_Res_Description=Detection Script to help identify the more niche settings for why your PC isn't Windows 11 ready
+#AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready
 #AutoIt3Wrapper_Res_Fileversion=2.2.5.0
+#AutoIt3Wrapper_Res_ProductName=WhyNotWin11
 #AutoIt3Wrapper_Res_ProductVersion=2.2.5
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
-#AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
-#AutoIt3Wrapper_Run_Au3Stripper=y
-#Au3Stripper_Parameters=/so
+#AutoIt3Wrapper_Res_Language=1033
+#AutoIt3Wrapper_Res_requestedExecutionLevel=highestAvailable
 #AutoIt3Wrapper_Res_Icon_Add=assets\git.ico
 #AutoIt3Wrapper_Res_Icon_Add=assets\pp.ico
 #AutoIt3Wrapper_Res_Icon_Add=assets\dis.ico
 #AutoIt3Wrapper_Res_Icon_Add=assets\web.ico
+#AutoIt3Wrapper_Run_Au3Stripper=y
+#Au3Stripper_Parameters=/so
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
-Global $sVersion = "2.2.5.0"
+Global $sVersion = "2.2.6.0"
+If @OSVersion = 'WIN_10' Then DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT"-1)
 
 #include <File.au3>
 #include <Misc.au3>
@@ -43,6 +44,13 @@ Opt("TrayAutoPause",0)
 
 ExtractFiles()
 
+Switch @OSVersion
+	Case "WIN_7", "WIN_VISTA", "WIN_XP", "WIN_XPe"
+		MsgBox($MB_ICONWARNING, _Translate("Not Supported"), @OSVersion & " " & _Translate("Not Supported"))
+	Case Else
+		;;;
+EndSwitch
+
 If $CmdLine[0] > 0 Then
 	For $iLoop = 1 To $CmdLine[0] Step 1
 		Switch $CmdLine[$iLoop]
@@ -52,11 +60,11 @@ If $CmdLine[0] > 0 Then
 					@CRLF & _
 					"WhyNotWin11 [/format:FORMAT filename] [/silent]" & @CRLF & _
 					@CRLF & _
-					@TAB & "/format" & @TAB & "Export Results in an available format, can be used" & @CRLF & _
+					@TAB & "/format" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
 					@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
-					@TAB & "       " & @TAB & "output. Requires afilename if used." & @CRLF & _
+					@TAB & "       " & @TAB & "output. Requires a filename if used." & @CRLF & _
 					@TAB & "formats" & @TAB & "TXT, XML" & @CRLF & _
-					@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systesms will Exit" & @CRLF & _
+					@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systems will Exit" & @CRLF & _
 					@TAB & "       " & @TAB & "with ERROR_SUCCESS." & @CRLF & _
 					@CRLF & _
 					"All flags can be shortened to just the first character (e.g. /s)" & @CRLF)
@@ -75,24 +83,69 @@ Func ChecksOnly()
 EndFunc
 
 Func ExtractFiles()
+	If FileExists(@LocalAppDataDir & "\WhyNotWin11\langs\version") Then
+		If _VersionCompare($sVersion, FileReadLine(@LocalAppDataDir & "\WhyNotWin11\langs\version", 1)) = 1 Then
+			FileInstall(".\langs\0404.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0404.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0405.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0405.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0407.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0407.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0408.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0408.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0409.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0409.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\040C.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040C.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\040D.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040D.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\040E.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040E.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0411.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0411.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0412.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0412.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0413.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0413.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0416.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0416.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0419.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0419.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\041B.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041B.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0804.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0804.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\1034.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1034.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\1036.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1036.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\1053.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1053.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\1055.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1055.lang", $FC_OVERWRITE)
+			FileDelete(@LocalAppDataDir & "\WhyNotWin11\langs\version")
+			FileWrite(@LocalAppDataDir & "\WhyNotWin11\langs\version", $sVersion)
+		EndIf
+	EndIf
+	If FileExists(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt") Then
+		If _VersionCompare($sVersion, FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt",1)) = 1 Then
+			FileInstall(".\includes\SupportedProcessorsAMD.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $FC_OVERWRITE)
+			FileInstall(".\includes\SupportedProcessorsIntel.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $FC_OVERWRITE)
+			FileInstall(".\includes\SupportedProcessorsQualcomm.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $FC_OVERWRITE)
+		EndIf
+	EndIf
 	Select
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\")
 			DirCreate(@LocalAppDataDir & "\WhyNotWin11\")
+			ContinueCase
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\Langs\")
 			DirCreate(@LocalAppDataDir & "\WhyNotWin11\Langs\")
-			FileInstall(".\langs\0407.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0407.lang") ; German
-			FileInstall(".\langs\0409.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0409.lang") ; English
+			FileInstall(".\langs\0404.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0404.lang")
+			FileInstall(".\langs\0405.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0405.lang")
+			FileInstall(".\langs\0407.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0407.lang")
+			FileInstall(".\langs\0408.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0408.lang")
+			FileInstall(".\langs\0409.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0409.lang")
+			FileInstall(".\langs\040C.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040C.lang")
+			FileInstall(".\langs\040D.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040D.lang")
+			FileInstall(".\langs\040E.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040E.lang")
+			FileInstall(".\langs\0411.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0411.lang")
+			FileInstall(".\langs\0412.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0412.lang")
+			FileInstall(".\langs\0413.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0413.lang")
+			FileInstall(".\langs\0416.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0416.lang")
+			FileInstall(".\langs\0419.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0419.lang")
+			FileInstall(".\langs\041B.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041B.lang")
+			FileInstall(".\langs\0804.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0804.lang")
+			FileInstall(".\langs\1034.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1034.lang")
+			FileInstall(".\langs\1036.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1036.lang")
+			FileInstall(".\langs\1053.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1053.lang")
+			FileInstall(".\langs\1055.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1055.lang")
+			FileWrite(@LocalAppDataDir & "\WhyNotWin11\langs\version", $sVersion)
 			ContinueCase
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
 			FileInstall(".\includes\SupportedProcessorsAMD.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
 			FileInstall(".\includes\SupportedProcessorsIntel.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt")
 			FileInstall(".\includes\SupportedProcessorsQualcomm.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt")
-		Case FileExists(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
-			If _VersionCompare($sVersion, FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt",1)) = 1 Then
-				FileInstall(".\includes\SupportedProcessorsAMD.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $FC_OVERWRITE)
-				FileInstall(".\includes\SupportedProcessorsIntel.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $FC_OVERWRITE)
-				FileInstall(".\includes\SupportedProcessorsQualcomm.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $FC_OVERWRITE)
-			EndIf
 		Case Else
 			;;;
 	EndSelect
@@ -104,7 +157,7 @@ Func Main()
 
 	$hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOr($WS_POPUP,$WS_BORDER))
 	GUISetBkColor(_HighContrast(0xF8F8F8))
-	GUISetFont(8.5,$FW_BOLD,"","Arial")
+	GUISetFont(8.5 * _GDIPlus_GraphicsGetDPIRatio()[0],$FW_BOLD,"","Arial")
 
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
 	GUICtrlSetDefBKColor(_HighContrast(0xF8F8F8))
@@ -120,7 +173,8 @@ Func Main()
 
 	; Top Most Interaction for Closing Window
 	$hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 24, $FW_MEDIUM)
+	GUICtrlSetFont(-1, 24 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_MEDIUM)
+	GUICtrlSetCursor(-1, 0)
 
 	; Top Most Interaction for Socials
 	$hGithub = GUICtrlCreateLabel("", 12, 100, 32, 32)
@@ -169,13 +223,13 @@ Func Main()
 	_GDIPlus_Shutdown()
 
 	$hBannerText = GUICtrlCreateLabel("", 5, 540, 90, 20, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 8.5, $FW_NORMAL, $GUI_FONTUNDER)
+	GUICtrlSetFont(-1, 8.5 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	$sBannerURL = _SetBannerText($hBannerText, $hBanner)
 
 	GUICtrlCreateLabel(_Translate("Check for Updates"), 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 8.5, $FW_NORMAL, $GUI_FONTUNDER)
+	GUICtrlSetFont(-1, 8.5 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	GUICtrlCreateLabel("WhyNotWin11", 10, 10, 80, 20, $SS_CENTER+$SS_CENTERIMAGE)
@@ -187,22 +241,27 @@ Func Main()
 	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 
 	If Not @MUILang = 0409 Then
-		GUICtrlCreateLabel(("Translation by") & " " & _GetTranslationCredit(), 130, 570, 250, 20, $SS_CENTERIMAGE)
+		GUICtrlCreateLabel(_Translate("Translation by") & " " & _GetTranslationCredit(), 130, 570, 250, 20, $SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 	EndIf
 
+	GUICtrlCreateLabel(_GetCPUInfo(2), 470, 560, 300, 20, $SS_CENTERIMAGE)
+	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
+	GUICtrlCreateLabel(_GetGPUInfo(0), 470, 580, 300, 20, $SS_CENTERIMAGE)
+	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
+
 	GUICtrlCreateLabel(_Translate("Your Windows 11 Compatibility Results are Below"), 130, 30, 640, 40, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 18, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
+	GUICtrlSetFont(-1, 18 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
 
 	GUICtrlCreateLabel(_Translate("Now Reach WhyNotWin11 via https://www.whynotwin11.org/"), 130, 60, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 10)
+	GUICtrlSetFont(-1, 10 * _GDIPlus_GraphicsGetDPIRatio()[0])
 
 	GUICtrlCreateLabel(_Translate("Results Based on Currently Known Requirements!"), 130, 80, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
 	GUICtrlSetColor(-1, 0xE20012)
-	GUICtrlSetFont(-1, 10)
+	GUICtrlSetFont(-1, 10 * _GDIPlus_GraphicsGetDPIRatio()[0])
 
 	GUICtrlCreateLabel("X", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, 24, $FW_NORMAL)
+	GUICtrlSetFont(-1, 24 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL)
 
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
@@ -211,14 +270,11 @@ Func Main()
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 130, 110 + $iRow * 40, 40, 40, $SS_CENTER+$SS_SUNKEN+$SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, 0xE6E6E6)
 		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($hLabel[$iRow]), 170, 110 + $iRow * 40, 300, 40, $SS_CENTERIMAGE)
-		GUICtrlSetFont(-1, 18, $FW_NORMAL)
+		GUICtrlSetFont(-1, 18 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL)
 		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate("Checking..."), 470, 110 + $iRow * 40, 300, 40, $SS_CENTER+$SS_SUNKEN)
-		GUICtrlSetFont(-1, 12, $FW_SEMIBOLD)
+		GUICtrlSetFont(-1, 12 * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_SEMIBOLD)
 	Next
 
-	GUISetState(@SW_SHOW, $hGUI)
-
-	$hFile = _TempFile()
 	$hDXFile = _TempFile(@TempDir, "dxdiag")
 	Run("dxdiag /whql:off /t " & $hDXFile)
 
@@ -239,20 +295,20 @@ Func Main()
 			GUICtrlSetData($hCheck[0][2], _Translate("32 Bit CPU") & @CRLF & _Translate("32 Bit OS"))
 	EndSelect
 
-	RunWait("powershell -Command $env:firmware_type | Out-File -FilePath " & $hFile, "", @SW_HIDE)
-	Switch StringStripWS(StringStripCR(FileRead($hFile)), $STR_STRIPALL)
+	$sFirmware = EnvGet("firmware_type")
+	Switch $sFirmware
 		Case "UEFI"
 			GUICtrlSetData($hCheck[1][0], "OK")
 			GUICtrlSetBkColor($hCheck[1][0], 0x4CC355)
-			GUICtrlSetData($hCheck[1][2], FileReadLine($hFile, 1))
+			GUICtrlSetData($hCheck[1][2], $sFirmware)
 		Case "Legacy"
 			GUICtrlSetData($hCheck[1][0], "X")
 			GUICtrlSetBkColor($hCheck[1][0], 0xFA113D)
-			GUICtrlSetData($hCheck[1][2], FileReadLine($hFile, 1))
+			GUICtrlSetData($hCheck[1][2], $sFirmware)
 		Case Else
 			GUICtrlSetData($hCheck[1][0], "?")
 			GUICtrlSetBkColor($hCheck[1][0], 0xF4C141)
-			GUICtrlSetData($hCheck[1][2], _Translate("Unable to Determine"))
+			GUICtrlSetData($hCheck[1][2], $sFirmware)
 	EndSwitch
 
 	Select
@@ -261,7 +317,7 @@ Func Main()
 			If @error Then
 				GUICtrlSetData($hCheck[2][0], "?")
 				GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-				GUICtrlSetTip($hCheck[2][0], _Translate("Unable to Check List") & @CRLF & _GetCPUInfo(2))
+				GUICtrlSetTip($hCheck[2][0], _Translate("Unable to Check List"))
 			EndIf
 			For $iLine = 1 to $iLines Step 1
 				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $iLine)
@@ -269,17 +325,17 @@ Func Main()
 					Case @error = -1
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-						GUICtrlSetData($hCheck[2][2], _Translate("Error Accessing List") & @CRLF & _GetCPUInfo(2))
+						GUICtrlSetData($hCheck[2][2], _Translate("Error Accessing List"))
 						ExitLoop
 					Case $iLine = $iLines
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-						GUICtrlSetData($hCheck[2][2], _Translate("Not Currently Listed as Compatible") & @CRLF & _GetCPUInfo(2))
+						GUICtrlSetData($hCheck[2][2], _Translate("Not Currently Listed as Compatible"))
 						ExitLoop
 					Case StringInStr(_GetCPUInfo(2), $sLine)
 						GUICtrlSetData($hCheck[2][0], "OK")
 						GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
-						GUICtrlSetData($hCheck[2][2], _Translate("Listed as Compatible") & @CRLF & _GetCPUInfo(2))
+						GUICtrlSetData($hCheck[2][2], _Translate("Listed as Compatible"))
 						ExitLoop
 				EndSelect
 			Next
@@ -288,7 +344,7 @@ Func Main()
 			If @error Then
 				GUICtrlSetData($hCheck[2][0], "?")
 				GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-				GUICtrlSetData($hCheck[2][2], _Translate("Unable to Check List") & @CRLF & _GetCPUInfo(2))
+				GUICtrlSetData($hCheck[2][2], _Translate("Unable to Check List"))
 			EndIf
 			For $iLine = 1 to $iLines Step 1
 				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $iLine)
@@ -296,17 +352,17 @@ Func Main()
 					Case @error = -1
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-						GUICtrlSetData($hCheck[2][2], _Translate("Error Accessing List") & @CRLF & _GetCPUInfo(2))
+						GUICtrlSetData($hCheck[2][2], _Translate("Error Accessing List"))
 						ExitLoop
 					Case $iLine = $iLines
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-						GUICtrlSetData($hCheck[2][2], _Translate("Not Currently Listed as Compatible") & @CRLF & _GetCPUInfo(2))
+						GUICtrlSetData($hCheck[2][2], _Translate("Not Currently Listed as Compatible"))
 						ExitLoop
 					Case StringInStr(_GetCPUInfo(2), $sLine)
 						GUICtrlSetData($hCheck[2][0], "OK")
 						GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
-						GUICtrlSetData($hCheck[2][2], _Translate("Listed as Compatible") & @CRLF & _GetCPUInfo(2))
+						GUICtrlSetData($hCheck[2][2], _Translate("Listed as Compatible"))
 						ExitLoop
 				EndSelect
 			Next
@@ -315,7 +371,7 @@ Func Main()
 			If @error Then
 				GUICtrlSetData($hCheck[2][0], "?")
 				GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-				GUICtrlSetTip($hCheck[2][0], _Translate("Unable to Check List") & @CRLF & _GetCPUInfo(2))
+				GUICtrlSetTip($hCheck[2][0], _Translate("Unable to Check List"))
 			EndIf
 			For $iLine = 1 to $iLines Step 1
 				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $iLine)
@@ -323,17 +379,17 @@ Func Main()
 					Case @error = -1
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-						GUICtrlSetData($hCheck[2][2], _Translate("Error Accessing List") & @CRLF & _GetCPUInfo(2))
+						GUICtrlSetData($hCheck[2][2], _Translate("Error Accessing List"))
 						ExitLoop
 					Case $iLine = $iLines
 						GUICtrlSetData($hCheck[2][0], "?")
 						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
-						GUICtrlSetData($hCheck[2][2], _Translate("Not Currently Listed as Compatible") & @CRLF & _GetCPUInfo(2))
+						GUICtrlSetData($hCheck[2][2], _Translate("Not Currently Listed as Compatible"))
 						ExitLoop
 					Case StringInStr(_GetCPUInfo(2), $sLine)
 						GUICtrlSetData($hCheck[2][0], "OK")
 						GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
-						GUICtrlSetData($hCheck[2][2], _Translate("Listed as Compatible") & @CRLF & _GetCPUInfo(2))
+						GUICtrlSetData($hCheck[2][2], _Translate("Listed as Compatible"))
 						ExitLoop
 				EndSelect
 			Next
@@ -361,26 +417,27 @@ Func Main()
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	EndIf
 
-	RunWait("powershell -Command Get-Partition -DriveLetter C | Get-Disk | Select-Object -Property PartitionStyle | Out-File -FilePath " & $hFile, "", @SW_HIDE)
-	Select
-		Case StringInStr(FileRead($hFile), "Error")
-			GUICtrlSetData($hCheck[6][0], "?")
-			GUICtrlSetBkColor($hCheck[6][0], 0xF4C141)
-			GUICtrlSetData($hCheck[6][2], _Translate("Unable to Determine"))
-		Case StringInStr(FileRead($hFile), "GPT")
-			GUICtrlSetData($hCheck[6][0], "OK")
-			GUICtrlSetBkColor($hCheck[6][0], 0x4CC355)
-			GUICtrlSetData($hCheck[6][2], _Translate("GPT Detected"))
+	$aDisks = _GetDiskInfo(1)
+	Switch _GetDiskInfo(0)
+		Case "GPT"
+			If $aDisks[0] = $aDisks[1] Then
+				GUICtrlSetData($hCheck[6][0], "OK")
+				GUICtrlSetBkColor($hCheck[6][0], 0x4CC355)
+			Else
+				GUICtrlSetData($hCheck[6][0], "!")
+				GUICtrlSetBkColor($hCheck[6][0], 0xF4C141)
+			EndIf
+			GUICtrlSetData($hCheck[6][2], _Translate("GPT Detected") & @CRLF & $aDisks[1] & "/" & $aDisks[0] & " " & _Translate("Drive(s) Meet Requirements"))
 		Case Else
 			GUICtrlSetData($hCheck[6][0], "X")
 			GUICtrlSetBkColor($hCheck[6][0], 0xFA113D)
 			GUICtrlSetData($hCheck[6][2], _Translate("GPT Not Detected"))
-	EndSelect
+	EndSwitch
 
 	$aMem = DllCall("Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
 	If @error Then
 		$aMem = MemGetStats()
-		$aMem = $aMem[1]
+		$aMem = Round($aMem[1]/1048576, 1)
 		$aMem = Ceiling($aMem)
 	Else
 		$aMem = Round($aMem[1]/1048576, 1)
@@ -401,21 +458,23 @@ Func Main()
 		GUICtrlSetData($hCheck[7][2], $aMem & " GB")
 	EndIf
 
-	RunWait("powershell -Command Confirm-SecureBootUEFI | Out-File -FilePath " & $hFile, "", @SW_HIDE)
-	Select
-		Case StringInStr(FileRead($hFile), "True")
-			GUICtrlSetData($hCheck[8][0], "OK")
-			GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
-			GUICtrlSetData($hCheck[8][2], _Translate("Enabled"))
-		Case StringInStr(FileRead($hFile), "False")
+	$sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
+	If @error Then $sSecureBoot = 999
+	Switch $sSecureBoot
+		Case 0
 			GUICtrlSetData($hCheck[8][0], "OK")
 			GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
 			GUICtrlSetData($hCheck[8][2], _Translate("Supported"))
+		Case 1
+			GUICtrlSetData($hCheck[8][0], "OK")
+			GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
+			GUICtrlSetData($hCheck[8][2], _Translate("Enabled"))
 		Case Else
 			GUICtrlSetData($hCheck[8][0], "X")
 			GUICtrlSetBkColor($hCheck[8][0], 0xFA113D)
 			GUICtrlSetData($hCheck[8][2], _Translate("Disabled / Not Detected"))
-	EndSelect
+	EndSwitch
+
 
 	$aDrives = DriveGetDrive($DT_FIXED)
 	$iDrives = 0
@@ -428,14 +487,21 @@ Func Main()
 	If Round(DriveSpaceTotal("C:\")/1024, 0) >= 64 Then
 		GUICtrlSetData($hCheck[9][0], "OK")
 		GUICtrlSetBkColor($hCheck[9][0], 0x4CC355)
-		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB C:\" & @CRLF & $iDrives & " " & _Translate("Drive(s) Meet Requirements"))
 	Else
 		GUICtrlSetData($hCheck[9][0], "X")
 		GUICtrlSetBkColor($hCheck[9][0], 0xFA113D)
-		GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB C:\" & @CRLF & $iDrives & " " * _Translate("Drive(s) Meet Requirements"))
 	EndIf
+	GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB C:\" & @CRLF & $iDrives & " " & _Translate("Drive(s) Meet Requirements"))
 
 	Select
+		Case Not IsAdmin() And _GetTPMInfo(0) = True
+			GUICtrlSetData($hCheck[10][0], "OK")
+			GUICtrlSetBkColor($hCheck[10][0], 0x4CC355)
+			GUICtrlSetData($hCheck[10][2], "TPM 2.0 " & _Translate("Detected"))
+		Case Not IsAdmin() And _GetTPMInfo <> True
+			GUICtrlSetData($hCheck[10][0], "X")
+			GUICtrlSetBkColor($hCheck[10][0], 0xFA113D)
+			GUICtrlSetData($hCheck[10][2], _Translate("TPM Missing / Disabled"))
 		Case _GetTPMInfo(0) = False
 			ContinueCase
 		Case _GetTPMInfo(1) = False
@@ -462,7 +528,7 @@ Func Main()
 			GUICtrlSetData($hCheck[10][2], _GetTPMInfo(0) & " " & _GetTPMInfo(1) & " " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]))
 	EndSelect
 
-	FileDelete($hFile)
+	GUISetState(@SW_SHOW, $hGUI)
 
 	While 1
 		$hMsg = GUIGetMsg()
@@ -484,7 +550,7 @@ Func Main()
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM3")
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
-						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & _Translate("DirectX 12 and WDDM 3"))
+						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "2") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:2") ; Non-English Languages
@@ -492,19 +558,19 @@ Func Main()
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
-						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & _Translate("DirectX 12 and WDDM 2"))
+						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")
 					Case Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 						GUICtrlSetData($hCheck[5][0], "X")
 						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
-						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & _Translate("No DirectX 12, but WDDM2"))
+						GUICtrlSetData($hCheck[5][2], _Translate("No DirectX 12, but WDDM2"))
 					Case StringInStr($sDXFile, "DDIVersion:12") And Not StringInStr($sDXFile, "DriverModel:WDDM2")
 						GUICtrlSetData($hCheck[5][0], "X")
 						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
-						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & _Translate("DirectX 12, but no WDDM2"))
+						GUICtrlSetData($hCheck[5][2], _Translate("DirectX 12, but no WDDM2"))
 					Case Else
 						GUICtrlSetData($hCheck[5][0], "X")
 						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
-						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & _Translate("No DirectX 12 or WDDM2"))
+						GUICtrlSetData($hCheck[5][2], _Translate("No DirectX 12 or WDDM2"))
 				EndSelect
 				FileDelete($hDXFile)
 
@@ -526,7 +592,7 @@ Func Main()
 			Case $hMsg = $hUpdate
 				Switch _GetLatestRelease($sVersion)
 					Case -1
-						MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, _Translate("Test Build?"), _Translate("You're running a newer build than publically available!"), 10)
+						MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, _Translate("Test Build?"), _Translate("You're running a newer build than publically Available!"), 10)
 					Case 0
 						Switch @error
 							Case 0
@@ -544,7 +610,7 @@ Func Main()
 								EndSwitch
 						EndSwitch
 					Case 1
-						If MsgBox($MB_YESNO+$MB_ICONINFORMATION+$MB_TOPMOST, _Translate("Update Available"), _Translate("An Update is Availabe, would you like to download it?"), 10) = $IDYES Then ShellExecute("https://fcofix.org/WhyNotWin11/releases")
+						If MsgBox($MB_YESNO+$MB_ICONINFORMATION+$MB_TOPMOST, _Translate("Update Available"), _Translate("An Update is Available, would you like to download it?"), 10) = $IDYES Then ShellExecute("https://fcofix.org/WhyNotWin11/releases")
 				EndSwitch
 
 			Case Else
@@ -579,6 +645,37 @@ Func _GetLatestRelease($sCurrent)
 
 EndFunc
 
+;######################################################################################################################################
+; #FUNCTION# ====================================================================================================================
+; Name ..........: _GDIPlus_GraphicsGetDPIRatio
+; Description ...:
+; Syntax ........: _GDIPlus_GraphicsGetDPIRatio([$iDPIDef = 96])
+; Parameters ....: $iDPIDef             - [optional] An integer value. Default is 96.
+; Return values .: None
+; Author ........: UEZ
+; Modified ......:
+; Remarks .......:
+; Related .......:
+; Link ..........: http://www.autoitscript.com/forum/topic/159612-dpi-resolution-problem/?hl=%2Bdpi#entry1158317
+; Example .......: No
+; ===============================================================================================================================
+Func _GDIPlus_GraphicsGetDPIRatio($iDPIDef = 96)
+    _GDIPlus_Startup()
+    Local $hGfx = _GDIPlus_GraphicsCreateFromHWND(0)
+    If @error Then Return SetError(1, @extended, 0)
+    Local $aResult
+    #forcedef $__g_hGDIPDll, $ghGDIPDll
+
+    $aResult = DllCall($__g_hGDIPDll, "int", "GdipGetDpiX", "handle", $hGfx, "float*", 0)
+
+    If @error Then Return SetError(2, @extended, 0)
+    Local $iDPI = $aResult[2]
+    Local $aresults[2] = [$iDPIDef / $iDPI, $iDPI / $iDPIDef]
+    _GDIPlus_GraphicsDispose($hGfx)
+    _GDIPlus_Shutdown()
+    Return $aresults
+EndFunc   ;==>_GDIPlus_GraphicsGetDPIRatio
+
 Func _GetTranslationCredit()
 	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\" & @MUILang & ".lang", "MetaData", "Translator", "???")
 EndFunc
@@ -609,7 +706,7 @@ Func _SetBannerText($hBannerText, $hBanner)
 			Return "https://archlinux.org/"
 			GUICtrlSetCursor($hBannerText, 0)
 			GUICtrlSetCursor($hBanner, 0)
-		Case @LogonDomain <> @ComputerName
+		Case @LogonDomain <> @ComputerName And IsAdmin()
 			GUICtrlSetData($hBannerText, "I'M FOR HIRE")
 			Return "https://fcofix.org/rcmaehl/wiki/I'M-FOR-HIRE"
 			GUICtrlSetCursor($hBannerText, 0)

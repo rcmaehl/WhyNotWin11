@@ -7,7 +7,7 @@
 [![My Twitter](https://img.shields.io/badge/twitter-545454.svg?logo=twitter)](https://twitter.com/WhyNotWin11)
 
 # WhyNotWin11
-Detection Script to help identify why your PC isn't Windows 11 ready
+Detection Script to help identify why your PC isn't Windows 11 Release Ready
 
 ![image](https://user-images.githubusercontent.com/716581/123548297-33a94500-d732-11eb-882d-720fe989f2f2.png)
 
@@ -15,10 +15,10 @@ Detection Script to help identify why your PC isn't Windows 11 ready
 
 ## Download
 
-[Download here](https://github.com/rcmaehl/WhyNotWin11/releases/latest/download/WhyNotWin11.exe)
+[Download latest stable release](https://github.com/rcmaehl/WhyNotWin11/releases/latest/download/WhyNotWin11.exe)
 
-[Download DEV BUILDS here](https://github.com/rcmaehl/WhyNotWin11/actions?query=workflow%3AWNW11)\
-/!\ Dev builds will not be able to automatically check for updates
+[Download latest testing release](https://nightly.link/rcmaehl/WhyNotWin11/workflows/wnw11/main/WNW11.zip)\
+**Keep in mind that you will have to update testing releases manually**
 
 ## To-Do
 
@@ -40,11 +40,15 @@ Detection Script to help identify why your PC isn't Windows 11 ready
     - [ ] Screen Resolution
 - [x] A fancier GUI
 
-## How to build from source code
+## Compiling
 
 1. Download and run "AutoIt Full Installation" from [official website](https://www.autoitscript.com/site/autoit/downloads). 
-1. Get the source code either by [downloading zip](https://github.com/rcmaehl/WhyNotWin11/archive/master.zip) or do `git clone https://github.com/rcmaehl/WhyNotWin11`.
+1. Get the source code either by [downloading zip](https://github.com/rcmaehl/WhyNotWin11/archive/main.zip) or do `git clone https://github.com/rcmaehl/WhyNotWin11`.
 1. Right click on `WhyNotWin11.au3` in the WhyNotWin11 directory and select "Compile Script (x64) (or x86 if you have 32 bit Windows install).
 1. This will create WhyNotWin11.exe in the same directory.
 
-This program is free and open source. Feel free to download and modify. Please do not sell exact copies.
+## License
+
+WhyNotWin11 is free and open source software, it is using the LGPL-3.0 license.
+
+See LICENSE for the full license text.
