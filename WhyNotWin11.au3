@@ -20,10 +20,13 @@
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 Global $sVersion = "2.2.6.0"
+Global $aOutput[2] = ["", ""]
+
 If @OSVersion = 'WIN_10' Then DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT"-1)
 
 #include <File.au3>
 #include <Misc.au3>
+#include <Array.au3>
 #include <String.au3>
 #include <GDIPlus.au3>
 #include <WinAPIGDI.au3>
@@ -52,24 +55,46 @@ Switch @OSVersion
 EndSwitch
 
 If $CmdLine[0] > 0 Then
-	For $iLoop = 1 To $CmdLine[0] Step 1
-		Switch $CmdLine[$iLoop]
+	$iParams = $CmdLine[0]
+	For $iLoop = 1 To $iParams Step 1
+		Switch $CmdLine[1]
 			Case "/?", "/h", "/help"
 				MsgBox(0, "Help and Flags", _
 					"Checks PC for Windows 11 Release Compatibility" & @CRLF & _
 					@CRLF & _
-					"WhyNotWin11 [/format:FORMAT filename] [/silent]" & @CRLF & _
+					"WhyNotWin11 [/format FORMAT FILENAME] [/silent]" & @CRLF & _
 					@CRLF & _
 					@TAB & "/format" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
 					@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
 					@TAB & "       " & @TAB & "output. Requires a filename if used." & @CRLF & _
-					@TAB & "formats" & @TAB & "TXT, XML" & @CRLF & _
+					@TAB & "formats" & @TAB & "TXT" & @CRLF & _
 					@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systems will Exit" & @CRLF & _
 					@TAB & "       " & @TAB & "with ERROR_SUCCESS." & @CRLF & _
 					@CRLF & _
 					"All flags can be shortened to just the first character (e.g. /s)" & @CRLF)
+					Exit 0
 			Case "/s", "/silent"
 				ChecksOnly()
+				_ArrayDelete($CmdLine, 1)
+			Case "/f", "/format"
+				Select
+					Case UBound($CmdLine) <= 3
+						MsgBox(0, "Invalid", "Missing FILENAME paramter for /format." & @CRLF)
+						Exit 1
+					Case UBound($CmdLine) <= 2 Then
+						MsgBox(0, "Invalid", "Missing FORMAT paramter for /format." & @CRLF)
+						Exit 1
+					Case Else
+						Switch $CmdLine[2]
+							Case "TXT"
+								$aOutput[0] = $CmdLine[2]
+								$aOutput[1] = $CmdLine[3]
+								_ArrayDelete($CmdLine, 1-3)
+							Case Else
+								MsgBox(0, "Invalid", "Missing FORMAT paramter for /format." & @CRLF)
+								Exit 1
+						EndSwitch
+				EndSelect
 			Case Else
 				MsgBox(0, "Invalid", 'Invalid switch - "' & $CmdLine[$iLoop] & "." & @CRLF)
 				Exit 1
