@@ -143,7 +143,7 @@ Func _GetDirectXCheck($aArray)
 	EndIf
 EndFunc
 
-Func GPTCheck()
+Func _GPTCheck()
 	Local $aDisks = _GetDiskInfo(1)
 	Switch _GetDiskInfo(0)
 		Case "GPT"
@@ -157,7 +157,7 @@ Func GPTCheck()
 	EndSwitch
 EndFunc
 
-Func MemCheck()
+Func _MemCheck()
 	Local $aMem = DllCall("Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
 	If @error Then
 		$aMem = MemGetStats()
@@ -179,7 +179,7 @@ Func MemCheck()
 	EndIf
 EndFunc
 
-Func SecureBootCheck()
+Func _SecureBootCheck()
 	Local $sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
 	If @error Then $sSecureBoot = 999
 	Switch $sSecureBoot
@@ -192,7 +192,7 @@ Func SecureBootCheck()
 	EndSwitch
 EndFunc
 
-Func SpaceCheck()
+Func _SpaceCheck()
 	Local $aDrives = DriveGetDrive($DT_FIXED)
 	Local $iDrives = 0
 
@@ -207,7 +207,7 @@ Func SpaceCheck()
 	EndIf
 EndFunc
 
-Func TPMCheck()
+Func _TPMCheck()
 	Select
 		Case Not IsAdmin() And _GetTPMInfo(0) = True
 			Return True

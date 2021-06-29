@@ -41,6 +41,7 @@ If @OSVersion = 'WIN_10' Then DllCall("User32.dll", "bool", "SetProcessDpiAwaren
 #include <WindowsConstants.au3>
 
 #include ".\Includes\_WMIC.au3"
+#include ".\Includes\_Checks.au3"
 
 Opt("TrayIconHide",1)
 Opt("TrayAutoPause",0)
@@ -81,7 +82,7 @@ If $CmdLine[0] > 0 Then
 					Case UBound($CmdLine) <= 3
 						MsgBox(0, "Invalid", "Missing FILENAME paramter for /format." & @CRLF)
 						Exit 1
-					Case UBound($CmdLine) <= 2 Then
+					Case UBound($CmdLine) <= 2
 						MsgBox(0, "Invalid", "Missing FORMAT paramter for /format." & @CRLF)
 						Exit 1
 					Case Else
@@ -105,6 +106,56 @@ Else
 EndIf
 
 Func ChecksOnly()
+
+	Local $aResults[11][3]
+	Local $aDirectX[2]
+
+	$aResults[0][0] = _ArchCheck()
+	$aResults[0][1] = @error
+	$aResults[0][2] = @extended
+
+	$aResults[1][0] = _BootCheck()
+	$aResults[1][1] = @error
+	$aResults[1][2] = @extended
+
+	$aResults[2][0] = _CPUNameCheck(_GetCPUInfo(2))
+	$aResults[2][1] = @error
+	$aResults[2][2] = @extended
+
+	$aResults[3][0] = _CPUCoresCheck
+	$aResults[3][1] = @error
+	$aResults[3][2] = @extended
+
+	$aResults[4][0] = _CPUSpeedCheck()
+	$aResults[4][1] = @error
+	$aResults[4][2] = @extended
+
+	$aResults[5][0] = 0
+	$aResults[5][1] = @error
+	$aResults[5][2] = @extended
+
+	$aResults[6][0] = _GPTCheck()
+	$aResults[6][1] = @error
+	$aResults[6][2] = @extended
+
+	$aResults[7][0] = _MemCheck()
+	$aResults[7][1] = @error
+	$aResults[7][2] = @extended
+
+	$aResults[8][0] = _SecureBootCheck()
+	$aResults[8][1] = @error
+	$aResults[8][2] = @extended
+
+	$aResults[9][0] = _SpaceCheck()
+	$aResults[9][1] = @error
+	$aResults[9][2] = @extended
+
+	$aResults[10][0] = _TPMCheck()
+	$aResults[10][1] = @error
+	$aResults[10][2] = @extended
+
+	_ArrayDisplay($aResults)
+
 EndFunc
 
 Func ExtractFiles()
