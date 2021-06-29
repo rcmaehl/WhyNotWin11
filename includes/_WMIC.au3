@@ -66,6 +66,7 @@ Func _GetDiskInfo($iFlag = 0)
 			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_DiskPartition where BootPartition=True')
 
 			$aDisks[0] = 0
+			$aDisks[1] = 0
 			Local $Obj_Item
 			For $Obj_Item In $Col_Items
 				$aDisks[0] += 1

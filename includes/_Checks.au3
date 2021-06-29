@@ -110,7 +110,7 @@ Func _DirectXStartCheck()
 	Local $aReturn[2]
 	Local $hDXFile = _TempFile(@TempDir, "dxdiag")
 	$aReturn[0] = $hDXFile
-	$aReturn[1] = Run("dxdiag /whql:off /t " & $hDXFile)
+	$aReturn[1] = Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
 	Return $aReturn
 EndFunc
 
@@ -158,7 +158,7 @@ Func _GPTCheck()
 EndFunc
 
 Func _MemCheck()
-	Local $aMem = DllCall("Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
+	Local $aMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
 	If @error Then
 		$aMem = MemGetStats()
 		$aMem = Round($aMem[1]/1048576, 1)

@@ -716,7 +716,7 @@ Func Main()
 			Case $hMsg = $hUpdate
 				Switch _GetLatestRelease($sVersion)
 					Case -1
-						MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, _Translate($iMUI, "Test Build?"), _Translate($iMUI, "You're running a newer build than publically Available!"), 10)
+						MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, _Translate($iMUI, "Test Build?"), _Translate($iMUI, "You're running a newer build than publicly Available!"), 10)
 					Case 0
 						Switch @error
 							Case 0
