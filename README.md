@@ -48,4 +48,7 @@ Detection Script to help identify why your PC isn't Windows 11 Release Ready
 1. This will create WhyNotWin11.exe in the same directory.
 
 ## License
-This program is free and open source. Feel free to download and modify. Please do not sell exact copies.
+
+WhyNotWin11 is free and open source software, it is using the LGPL-3.0 license.
+
+See LICENSE for the full license text.
