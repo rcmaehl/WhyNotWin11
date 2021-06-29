@@ -4,7 +4,7 @@ Translator=Rúben Garrido
 Version=2.3.0.1
 [Strings]
 Donate=Doar
-Check for Updates=Procurar atualizações
+Check for Updates=Procurar atual.
 Your Windows 11 Compatibility Results are Below=Compatibilidade com o Windows 11
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Aceda ao WhyNotWin11 através de https://www.whynotwin11.org/
 Results Based on Currently Known Requirements!=Os resultados têm como base os requisitos conhecidos!
@@ -38,7 +38,7 @@ Enabled=Ativado
 Supported=Suportado
 Not Supported=Não suportado
 Disabled / Not Detected=Desativado / Não suportado
-Drive(s) Meet Requirements=discos cumprem os requisitos
+Drive(s) Meet Requirements=disco(s) cumpre(m) os requisitos
 TPM Missing / Disabled=TPM em falta ou desativada
 Detected=Detetada
 DirectX 12 and WDDM 3=DirectX 12 e WDDM 3
