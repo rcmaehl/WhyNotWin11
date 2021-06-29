@@ -396,7 +396,7 @@ Func Main()
 	Next
 
 	$hDXFile = _TempFile(@TempDir, "dxdiag")
-	Run("dxdiag /whql:off /t " & $hDXFile)
+	Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
 
 	Select
 		Case @CPUArch = "X64" And @OSArch = "IA64"
