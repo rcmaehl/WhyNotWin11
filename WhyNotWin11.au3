@@ -538,7 +538,7 @@ Func Main()
 			If $aDisks[0] = $aDisks[1] Then
 				GUICtrlSetData($hCheck[6][0], "OK")
 				GUICtrlSetBkColor($hCheck[6][0], 0x4CC355)
-			If $aDisks[0] = 0 Then
+			ElseIf $aDisks[0] = 0 Then
 				GUICtrlSetData($hCheck[6][0], "X")
 				GUICtrlSetBkColor($hCheck[6][0], 0xFA113D)
 				GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected") & @CRLF & $aDisks[1] & "/" & $aDisks[0] & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
