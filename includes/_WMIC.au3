@@ -146,15 +146,17 @@ Func _GetTPMInfo($iFlag = 0)
 				Return 0
 		EndSwitch
 	Else
+		Local Static $sName
 		Local Static $sPresent
 
 		If Not $sPresent <> "" Then
 			Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2');
 			If (IsObj($Obj_WMIService)) And (Not @error) Then
-				Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_PNPEntity where Description="Trusted Platform Module 2.0"')
+				Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_PNPEntity where Service="TPM"')
 
 				Local $Obj_Item
 				For $Obj_Item In $Col_Items
+					$sName = $Obj_Item.Name
 					$sPresent = $Obj_Item.Present
 				Next
 			Else
@@ -163,7 +165,11 @@ Func _GetTPMInfo($iFlag = 0)
 		EndIf
 		Switch $iFlag
 			Case 0
-				Return String($sPresent)
+				If StringInStr($sName, "2.0") Then
+					Return String($sPresent)
+				Else
+					ContinueCase
+				EndIf
 			Case Else
 				Return 0
 		EndSwitch
