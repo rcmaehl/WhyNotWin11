@@ -40,7 +40,7 @@ If @OSVersion = 'WIN_10' Then DllCall("User32.dll", "bool", "SetProcessDpiAwaren
 #include <StaticConstants.au3>
 #include <StringConstants.au3>
 #include <WindowsConstants.au3>
-
+#include "includes\WhyNotWin11_accessibility.au3"
 #include ".\Includes\_WMIC.au3"
 #include ".\Includes\_Checks.au3"
 
@@ -195,6 +195,7 @@ Func ExtractFiles()
 			FileInstall(".\langs\041B.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041B.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0804.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0804.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\1034.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1034.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\1036.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1036.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\1053.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1053.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\1055.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1055.lang", $FC_OVERWRITE)
 			FileDelete(@LocalAppDataDir & "\WhyNotWin11\langs\version")
@@ -230,6 +231,7 @@ Func ExtractFiles()
 			FileInstall(".\langs\041B.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041B.lang")
 			FileInstall(".\langs\0804.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0804.lang")
 			FileInstall(".\langs\1034.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1034.lang")
+			FileInstall(".\langs\1036.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1036.lang")
 			FileInstall(".\langs\1053.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1053.lang")
 			FileInstall(".\langs\1055.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1055.lang")
 			FileWrite(@LocalAppDataDir & "\WhyNotWin11\langs\version", $sVersion)
