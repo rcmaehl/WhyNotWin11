@@ -1,50 +1,49 @@
 name: wnw11
 
-on: push
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-
     runs-on: windows-latest
     steps:
-    - name: Install tools
-      run: |
-           Invoke-WebRequest -Uri https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.exe -OutFile autoit-v3-setup.exe
-           ./autoit-v3-setup.exe /S
-           Start-Sleep -s 10
-           Invoke-WebRequest -Uri https://www.autoitscript.com/cgi-bin/getfile.pl?../autoit3/scite/download/SciTE4AutoIt3.exe -OutFile SciTE4AutoIt3.exe
-           ./SciTE4AutoIt3.exe /S
-           Start-Sleep -s 10
-           Invoke-WebRequest -Uri https://www.autoitscript.com/autoit3/scite/download/Au3Stripper.zip -OutFile Au3Stripper.zip
-           Expand-Archive -Path Au3Stripper.zip -DestinationPath "C:\Program Files (x86)\AutoIt3\SciTE\au3Stripper" -Force
-
-    - name: Checkout repo
-      uses: actions/checkout@v2
-
-    - name: Compile
-      run: |
-           dir
-           C:\"Program Files (x86)"\AutoIt3\AutoIt3.exe "C:\Program Files (x86)\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3" /NoStatus /prod /in ".\WhyNotWin11.au3"
-           Start-Sleep -s 10
-           sha256sum -b WhyNotWin*.exe > checksums.sha256
-
-    - name: Upload
-      uses: actions/upload-artifact@v2
-      with:
-       name: WNW11
-       path: |
-             WhyNotWin11.exe
-             WhyNotWin11_x86.exe
-             checksums.sha256
-       if-no-files-found: error
-
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        files: |
-               WhyNotWin11.exe
-               WhyNotWin11_x86.exe
-               checksums.sha256
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+      - name: Cache tools
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: |
+            autoit-v3-setup.exe
+            SciTE4AutoIt3.exe
+            C:\Program Files (x86)\AutoIt3\SciTE\Au3Stripper
+          key: v2
+      - name: Download tools
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          curl -sSfLO https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.exe `
+            -sSfLO https://www.autoitscript.com/cgi-bin/getfile.pl?../autoit3/scite/download/SciTE4AutoIt3.exe `
+            -sSfLO https://www.autoitscript.com/autoit3/scite/download/Au3Stripper.zip
+          Expand-Archive Au3Stripper.zip "${env:ProgramFiles(x86)}\AutoIt3\SciTE\Au3Stripper"
+      - name: Install tools
+        run: |
+          Start-Process autoit-v3-setup.exe -ArgumentList /S -NoNewWindow -Wait
+          Start-Process SciTE4AutoIt3.exe -ArgumentList /S -NoNewWindow -Wait
+      - name: Compile
+        run: |
+          Start-Process "${env:ProgramFiles(x86)}\AutoIt3\AutoIt3.exe" "`"${env:ProgramFiles(x86)}\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3`" /NoStatus /prod /in WhyNotWin11.au3" -NoNewWindow -Wait
+          sha256sum -b WhyNotWin*.exe > checksums.sha256
+      - uses: actions/upload-artifact@v2
+        with:
+          name: WNW11
+          path: |
+            WhyNotWin11*.exe
+            checksums.sha256
+          if-no-files-found: error
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            WhyNotWin11*.exe
+            checksums.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
