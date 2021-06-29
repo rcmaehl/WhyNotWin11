@@ -539,7 +539,7 @@ Func Main()
 	EndIf
 	If $aMem = 0 Then
 		$aMem = MemGetStats()
-		$aMem = $aMem[1]
+		$aMem = Round($aMem[1]/1048576, 1)
 		$aMem = Ceiling($aMem)
 	EndIf
 
