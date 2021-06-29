@@ -1,8 +1,8 @@
 https://www.autoitscript.com/autoit3/docs/appendix/OSLangCodes.htm
 
-[Translations with Mutliple Contributors]
+[Translations with Multiple Contributors]
 All Parties Agree: Merge
-50/50 Split: Merge and advise disputees of this policy
+50/50 Split: Merge and advise disputes of this policy
 50% + 2 Disagree: Deny Merge until Majority Consensus reached
 
 [Required]
