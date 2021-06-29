@@ -60,7 +60,7 @@ If $CmdLine[0] > 0 Then
 					@CRLF & _
 					"WhyNotWin11 [/format:FORMAT filename] [/silent]" & @CRLF & _
 					@CRLF & _
-					@TAB & "/format" & @TAB & "Export Results in an available format, can be used" & @CRLF & _
+					@TAB & "/format" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
 					@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
 					@TAB & "       " & @TAB & "output. Requires a filename if used." & @CRLF & _
 					@TAB & "formats" & @TAB & "TXT, XML" & @CRLF & _
@@ -83,51 +83,69 @@ Func ChecksOnly()
 EndFunc
 
 Func ExtractFiles()
+	If FileExists(@LocalAppDataDir & "\WhyNotWin11\langs\version") Then
+		If _VersionCompare($sVersion, FileReadLine(@LocalAppDataDir & "\WhyNotWin11\langs\version", 1) = 1 Then
+			FileInstall(".\langs\0404.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0404.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0405.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0405.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0407.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0407.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0408.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0408.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0409.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0409.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\040C.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040C.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\040D.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040D.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\040E.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040E.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0411.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0411.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0412.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0412.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0413.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0413.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0416.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0416.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0419.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0419.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\041B.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041B.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0804.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0804.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\1034.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1034.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\1036.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1036.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\1053.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1053.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\1055.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1055.lang", $FC_OVERWRITE)
+			FileDelete(@LocalAppDataDir & "\WhyNotWin11\langs\version")
+			FileWrite(@LocalAppDataDir & "\WhyNotWin11\langs\version", $sVersion)
+		EndIf
+	EndIf
+	If FileExists(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt") Then
+		If _VersionCompare($sVersion, FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt",1)) = 1 Then
+			FileInstall(".\includes\SupportedProcessorsAMD.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $FC_OVERWRITE)
+			FileInstall(".\includes\SupportedProcessorsIntel.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $FC_OVERWRITE)
+			FileInstall(".\includes\SupportedProcessorsQualcomm.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $FC_OVERWRITE)
+		EndIf
+	EndIf
 	Select
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\")
 			DirCreate(@LocalAppDataDir & "\WhyNotWin11\")
 			ContinueCase
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\Langs\")
 			DirCreate(@LocalAppDataDir & "\WhyNotWin11\Langs\")
-			#cs
-			FileInstall(".\langs\0004.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0004.lang")
-			FileInstall(".\langs\0401.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0401.lang")
-			FileInstall(".\langs\0402.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0402.lang")
-			FileInstall(".\langs\0403.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0403.lang")
-			FileInstall(".\langs\0404.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0404.lang") ; German
-			FileInstall(".\langs\0405.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0405.lang") ; German
-			FileInstall(".\langs\0406.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0406.lang")
-			FileInstall(".\langs\0407.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0407.lang") ; German
+			FileInstall(".\langs\0404.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0404.lang")
+			FileInstall(".\langs\0405.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0405.lang")
+			FileInstall(".\langs\0407.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0407.lang")
 			FileInstall(".\langs\0408.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0408.lang")
-			FileInstall(".\langs\0409.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0409.lang") ; English
-			FileInstall(".\langs\040A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040A.lang")
-			FileInstall(".\langs\040B.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040B.lang")
+			FileInstall(".\langs\0409.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0409.lang")
 			FileInstall(".\langs\040C.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040C.lang")
 			FileInstall(".\langs\040D.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040D.lang")
 			FileInstall(".\langs\040E.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040E.lang")
-			FileInstall(".\langs\040F.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040F.lang")
-			FileInstall(".\langs\0410.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0410.lang")
 			FileInstall(".\langs\0411.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0411.lang")
 			FileInstall(".\langs\0412.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0412.lang")
-			FileInstall(".\langs\0413.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0413.lang") ; English
-			FileInstall(".\langs\0414.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0414.lang")
-			FileInstall(".\langs\0415.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0415.lang")
+			FileInstall(".\langs\0413.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0413.lang")
 			FileInstall(".\langs\0416.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0416.lang")
-			FileInstall(".\langs\0417.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0417.lang")
-			FileInstall(".\langs\0418.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0418.lang")
-			FileInstall(".\langs\0419.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0419.lang") ; Russian
-			#ce
+			FileInstall(".\langs\0419.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0419.lang")
+			FileInstall(".\langs\041B.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041B.lang")
+			FileInstall(".\langs\0804.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0804.lang")
+			FileInstall(".\langs\1034.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1034.lang")
+			FileInstall(".\langs\1036.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1036.lang")
+			FileInstall(".\langs\1053.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1053.lang")
+			FileInstall(".\langs\1055.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1055.lang")
+			FileWrite(@LocalAppDataDir & "\WhyNotWin11\langs\version", $sVersion)
 			ContinueCase
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
 			FileInstall(".\includes\SupportedProcessorsAMD.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
 			FileInstall(".\includes\SupportedProcessorsIntel.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt")
 			FileInstall(".\includes\SupportedProcessorsQualcomm.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt")
-		Case FileExists(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
-			If _VersionCompare($sVersion, FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt",1)) = 1 Then
-				FileInstall(".\includes\SupportedProcessorsAMD.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $FC_OVERWRITE)
-				FileInstall(".\includes\SupportedProcessorsIntel.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $FC_OVERWRITE)
-				FileInstall(".\includes\SupportedProcessorsQualcomm.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $FC_OVERWRITE)
-			EndIf
 		Case Else
 			;;;
 	EndSelect
@@ -524,7 +542,7 @@ Func Main()
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM3")
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
-						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & "DirectX 12 & WDDM 3")
+						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & "DirectX 12 && WDDM 3")
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "2") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:2") ; Non-English Languages
@@ -532,7 +550,7 @@ Func Main()
 					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
-						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & "DirectX 12 & WDDM 2")
+						GUICtrlSetData($hCheck[5][2], _GetGPUInfo(0) & @CRLF & "DirectX 12 && WDDM 2")
 					Case Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 						GUICtrlSetData($hCheck[5][0], "X")
 						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
@@ -566,7 +584,7 @@ Func Main()
 			Case $hMsg = $hUpdate
 				Switch _GetLatestRelease($sVersion)
 					Case -1
-						MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, _Translate("Test Build?"), _Translate("You're running a newer build than publically available!"), 10)
+						MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, _Translate("Test Build?"), _Translate("You're running a newer build than publically Available!"), 10)
 					Case 0
 						Switch @error
 							Case 0
@@ -584,7 +602,7 @@ Func Main()
 								EndSwitch
 						EndSwitch
 					Case 1
-						If MsgBox($MB_YESNO+$MB_ICONINFORMATION+$MB_TOPMOST, _Translate("Update Available"), _Translate("An Update is Availabe, would you like to download it?"), 10) = $IDYES Then ShellExecute("https://fcofix.org/WhyNotWin11/releases")
+						If MsgBox($MB_YESNO+$MB_ICONINFORMATION+$MB_TOPMOST, _Translate("Update Available"), _Translate("An Update is Available, would you like to download it?"), 10) = $IDYES Then ShellExecute("https://fcofix.org/WhyNotWin11/releases")
 				EndSwitch
 
 			Case Else
