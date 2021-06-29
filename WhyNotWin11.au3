@@ -240,7 +240,7 @@ Func Main()
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
 	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 
-	If Not @MUILang = 0409 Then
+	If Not (@MUILang = 0409) Then
 		GUICtrlCreateLabel(_Translate("Translation by") & " " & _GetTranslationCredit(), 130, 570, 250, 20, $SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 	EndIf
@@ -678,7 +678,7 @@ Func _GDIPlus_GraphicsGetDPIRatio($iDPIDef = 96)
 EndFunc   ;==>_GDIPlus_GraphicsGetDPIRatio
 
 Func _GetTranslationCredit()
-	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\" & @MUILang & ".lang", "MetaData", "Translator", "???")
+	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\Lang\" & @MUILang & ".lang", "MetaData", "Translator", "???")
 EndFunc
 
 Func _HighContrast($sColor)
