@@ -2,6 +2,7 @@
 Language=
 Translator=
 Version=
+RTL=false
 [Strings]
 Donate=
 Check for Updates=
@@ -57,3 +58,9 @@ Invalid Release Tags Received!=
 Invalid Release Types Received!=
 Update Available=
 An Update is Available, would you like to download it?=
+Change Language=
+DEFAULT O.S. LANGUAGE=
+Error=
+Success=
+An error occurred writing into the registry.=
+Language Changed, Click OK to restart.=
