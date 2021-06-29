@@ -19,6 +19,7 @@
 #Au3Stripper_Parameters=/so
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
+Global $aResults[11][3]
 Global $sVersion = "2.2.6.0"
 Global $aOutput[2] = ["", ""]
 
@@ -107,7 +108,6 @@ EndIf
 
 Func ChecksOnly()
 
-	Local $aResults[11][3]
 	Local $aDirectX[2]
 
 	$aResults[0][0] = _ArchCheck()
