@@ -72,6 +72,7 @@ Func _GetDiskInfo($iFlag = 0)
 				$sType = $Obj_Item.Type
 				If StringLeft($sType, 3) = "GPT" Then $aDisks[1] += 1
 			Next
+			If $aDisks[0] > 0 Then $sType = "GPT"
 		Else
 			Return 0
 		EndIf
