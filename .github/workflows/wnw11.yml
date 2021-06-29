@@ -14,15 +14,15 @@ jobs:
           path: |
             autoit-v3-setup.exe
             SciTE4AutoIt3.exe
-            C:\Program Files (x86)\AutoIt3\SciTE\au3Stripper
-          key: v1
+            C:\Program Files (x86)\AutoIt3\SciTE\Au3Stripper
+          key: v2
       - name: Download tools
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           curl -sSfLO https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.exe `
             -sSfLO https://www.autoitscript.com/cgi-bin/getfile.pl?../autoit3/scite/download/SciTE4AutoIt3.exe `
             -sSfLO https://www.autoitscript.com/autoit3/scite/download/Au3Stripper.zip
-          Expand-Archive Au3Stripper.zip "$env:ProgramFiles(x86)\AutoIt3\SciTE\au3Stripper" -Force
+          Expand-Archive Au3Stripper.zip "${env:ProgramFiles(x86)}\AutoIt3\SciTE\Au3Stripper"
       - name: Install tools
         run: |
           Start-Process autoit-v3-setup.exe -ArgumentList /S -NoNewWindow -Wait
