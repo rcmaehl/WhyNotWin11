@@ -852,5 +852,5 @@ Func _SetBkIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
 EndFunc   ;==>_SetBkIcon
 
 Func _Translate($sString)
-	Return _WinAPI_OemToChar(INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang", "Strings", $sString, $sString))
+	Return BinaryToString(StringToBinary(INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang", "Strings", $sString, $sString), 1), 4)
 EndFunc
