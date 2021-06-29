@@ -90,11 +90,26 @@ Func _CPUNameCheck($sCPU)
 	EndSelect
 EndFunc
 
-Func _CPUCores()
+Func _CPUCoresCheck()
 	If _GetCPUInfo(0) >= 2 Or _GetCPUInfo(1) >= 2 Then
 		Return True
 	Else
-		GUICtrlSetData($hCheck[3][0], "X")
-		GUICtrlSetBkColor($hCheck[3][0], 0xFA113D)
+		Return False
 	EndIf
+EndFunc
+
+Func _CPUSpeedCheck()
+	If _GetCPUInfo(3) >= 1000 Then
+		Return True
+	Else
+		Return False
+	EndIf
+EndFunc
+
+Func _StartDirectXCheck()
+	Local $aReturn[2]
+	$hDXFile = _TempFile(@TempDir, "dxdiag")
+	$aReturn[0] = $hDXFile
+	$aReturn[1] = Run("dxdiag /whql:off /t " & $hDXFile)
+	Return $aReturn
 EndFunc
