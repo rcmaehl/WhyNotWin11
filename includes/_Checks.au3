@@ -15,18 +15,18 @@ Func _ArchCheck()
 EndFunc
 
 Func _BootCheck()
-	Local $aReturn[2]
-
-	$aReturn[1] = _TempFile()
-	$aReturn[0] = Run("powershell -Command $env:firmware_type | Out-File -FilePath " & $aReturn[1], "", @SW_HIDE)
-	If @error Then
-		SetError(1, 0, 0)
-	Else
-		Return $aReturn
-	EndIf
+	$sFirmware = EnvGet("firmware_type")
+	Switch $sFirmware
+		Case "UEFI"
+			Return True
+		Case "Legacy"
+			Return False
+		Case Else
+			SetError(1, 0, 0)
+	EndSwitch
 EndFunc
 
-Func _CPUName($sCPU)
+Func _CPUNameCheck($sCPU)
 	Select
 		Case StringInStr($sCPU, "AMD")
 			$iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
@@ -88,4 +88,13 @@ Func _CPUName($sCPU)
 		Case Else
 			Return False
 	EndSelect
+EndFunc
+
+Func _CPUCores()
+	If _GetCPUInfo(0) >= 2 Or _GetCPUInfo(1) >= 2 Then
+		Return True
+	Else
+		GUICtrlSetData($hCheck[3][0], "X")
+		GUICtrlSetBkColor($hCheck[3][0], 0xFA113D)
+	EndIf
 EndFunc

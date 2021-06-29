@@ -58,15 +58,19 @@ EndFunc
 
 Func _GetDiskInfo($iFlag = 0)
 	Local Static $sType
+	Local Static $aDisks[2]
 
 	If Not $sType <> "" Then
 		Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2');
 		If (IsObj($Obj_WMIService)) And (Not @error) Then
 			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_DiskPartition where BootPartition=True')
 
+			$aDisks[0] = 0
 			Local $Obj_Item
 			For $Obj_Item In $Col_Items
+				$aDisks[0] += 1
 				$sType = $Obj_Item.Type
+				If StringLeft($sType, 3) = "GPT" Then $aDisks[1] += 1
 			Next
 		Else
 			Return 0
@@ -75,6 +79,8 @@ Func _GetDiskInfo($iFlag = 0)
 	Switch $iFlag
 		Case 0
 			Return StringLeft($sType,3)
+		Case 1
+			Return $aDisks
 		Case Else
 			Return 0
 	EndSwitch
@@ -91,7 +97,7 @@ Func _GetGPUInfo($iFlag = 0)
 
 			Local $Obj_Item
 			For $Obj_Item In $Col_Items
-				$sName &= $Obj_Item.Name & " / "
+				$sName &= $Obj_Item.Name & ", "
 				$sMemory = $obj_Item.AdapterRAM
 			Next
 		Else
@@ -100,7 +106,7 @@ Func _GetGPUInfo($iFlag = 0)
 	EndIf
 	Switch $iFlag
 		Case 0
-			Return StringTrimRight(String($sName), 3)
+			Return StringTrimRight(String($sName), 2)
 		Case 1
 			Return StringStripWS(String($sMemory), $STR_STRIPTRAILING)
 		Case Else
