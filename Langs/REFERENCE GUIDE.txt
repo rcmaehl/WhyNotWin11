@@ -1,11 +1,16 @@
 https://www.autoitscript.com/autoit3/docs/appendix/OSLangCodes.htm
 
+[Translations with Mutliple Contributors]
+All Parties Agree: Merge
+50/50 Split: Merge and advise disputees of this policy
+50% + 2 Disagree: Deny Merge until Majority Consensus reached
+
 [Required]
 Use the above URL to get your 4 digit MUI Code
 Make a copy of 0000.lang named as such
 Fill out the file
 Submit an Issue or Pull Request
 
-[optional]
+[Optional]
 Link your GitHub to your Discord
 Tag rcmaehl#2289 on the Official Discord for Translator Role
