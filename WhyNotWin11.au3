@@ -101,7 +101,7 @@ Func ProcessCMDLine()
 							Case "TXT"
 								$aOutput[0] = $CmdLine[2]
 								$aOutput[1] = $CmdLine[3]
-								_ArrayDelete($CmdLine, 1-3)
+								_ArrayDelete($CmdLine, "1-3")
 							Case Else
 								MsgBox(0, "Invalid", "Missing FORMAT paramter for /format." & @CRLF)
 								Exit 1
@@ -179,12 +179,11 @@ Func ChecksOnly()
 
 	WEnd
 
+	If Not $aOutput[0] = "" Then ParseResults($aResults)
+
 	For $iLoop = 0 To 10 Step 1
 		If $aResults[$iLoop][0] = False Then Exit 0
 	Next
-
-	If Not $aOutput[0] = "" Then ParseResults($aResults)
-
 	Exit 1
 
 EndFunc
@@ -781,11 +780,20 @@ EndFunc
 
 Func ParseResults($aResults)
 
+	MsgBox(0, "", "parse")
+
 	Local $aLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 
 	Switch $aOutput[0]
-		Case "TXT"
-			Local $hFile = FileOpen($aOutput[1], $FO_CREATEPATH+$FO_OVERWRITE)
+		Case "txt"
+			Local $sFile
+			If StringInStr($aOutput[1], ":") Then
+				$sFile = $aOutput[1]
+			Else
+				$sFile = @ScriptDir & "\" & $aOutput[1]
+			EndIf
+			MsgBox(0, "", $sFile)
+			Local $hFile = FileOpen($sFile, $FO_CREATEPATH+$FO_OVERWRITE)
 			FileWrite($hFile, "Results for " & @ComputerName)
 			For $iLoop = 0 To 10 Step 1
 				FileWrite($hFile, $aLabel[$iLoop] & @TAB & $aResults[$iLoop][0] & $aResults[$iLoop][1] & $aResults[$iLoop][2] & @CRLF)
@@ -796,9 +804,6 @@ Func ParseResults($aResults)
 	EndSwitch
 
 EndFunc
-
-
-
 
 ;######################################################################################################################################
 ; #FUNCTION# ====================================================================================================================
@@ -864,7 +869,7 @@ Func _HighContrast($sColor)
 	If $sSysWin = 0 Then
 		Return 16777215 - $sColor
 	Else
-		Return $sColor
+		Return $sSysWin + $sColor + 1
 	EndIf
 
 EndFunc
