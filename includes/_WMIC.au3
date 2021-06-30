@@ -4,14 +4,14 @@
 
 Func _GetCPUInfo($iFlag = 0)
 	Local Static $sCores
-    Local Static $sThreads
+	Local Static $sThreads
 	Local Static $vName
 	Local Static $sSpeed
 	Local Static $sArch
 	Local Static $sCPUs
 
 	If Not $vName <> "" Then
-		Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2');
+		Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2') ;
 		If (IsObj($Obj_WMIService)) And (Not @error) Then
 			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_Processor')
 
@@ -54,14 +54,14 @@ Func _GetCPUInfo($iFlag = 0)
 		Case Else
 			Return 0
 	EndSwitch
-EndFunc
+EndFunc   ;==>_GetCPUInfo
 
 Func _GetDiskInfo($iFlag = 0)
 	Local Static $sType
 	Local Static $aDisks[2]
 
 	If Not $sType <> "" Then
-		Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2');
+		Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2') ;
 		If (IsObj($Obj_WMIService)) And (Not @error) Then
 			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_DiskPartition where BootPartition=True')
 
@@ -80,20 +80,20 @@ Func _GetDiskInfo($iFlag = 0)
 	EndIf
 	Switch $iFlag
 		Case 0
-			Return StringLeft($sType,3)
+			Return StringLeft($sType, 3)
 		Case 1
 			Return $aDisks
 		Case Else
 			Return 0
 	EndSwitch
-EndFunc
+EndFunc   ;==>_GetDiskInfo
 
 Func _GetGPUInfo($iFlag = 0)
-    Local Static $sName
+	Local Static $sName
 	Local Static $sMemory
 
 	If Not $sName <> "" Then
-		Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2');
+		Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2') ;
 		If (IsObj($Obj_WMIService)) And (Not @error) Then
 			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_VideoController')
 
@@ -114,7 +114,7 @@ Func _GetGPUInfo($iFlag = 0)
 		Case Else
 			Return 0
 	EndSwitch
-EndFunc
+EndFunc   ;==>_GetGPUInfo
 
 Func _GetTPMInfo($iFlag = 0)
 	If IsAdmin() Then
@@ -123,7 +123,7 @@ Func _GetTPMInfo($iFlag = 0)
 		Local Static $sVersion
 
 		If Not $sActivated <> "" Then
-			Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2\Security\MicrosoftTPM');
+			Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2\Security\MicrosoftTPM') ;
 			If (IsObj($Obj_WMIService)) And (Not @error) Then
 				Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_TPM')
 
@@ -152,7 +152,7 @@ Func _GetTPMInfo($iFlag = 0)
 		Local Static $sPresent
 
 		If Not $sPresent <> "" Then
-			Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2');
+			Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2') ;
 			If (IsObj($Obj_WMIService)) And (Not @error) Then
 				Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_PNPEntity where Service="TPM"')
 
@@ -176,4 +176,4 @@ Func _GetTPMInfo($iFlag = 0)
 				Return 0
 		EndSwitch
 	EndIf
-EndFunc
+EndFunc   ;==>_GetTPMInfo
