@@ -179,7 +179,13 @@ Func ChecksOnly()
 
 	WEnd
 
-	_ArrayDisplay($aResults)
+	For $iLoop = 0 To 11 Step 1
+		If $aResults[$iLoop] = False Then Exit 0
+	Next
+
+	If Not $aOutput[0] = "" Then ParseResults($aResults)
+
+	Exit 1
 
 EndFunc
 
@@ -772,6 +778,27 @@ Func _GetLatestRelease($sCurrent)
 	Return _VersionCompare($aCombined[0][0], $sCurrent)
 
 EndFunc
+
+Func ParseResults($aResults)
+
+	Local $aLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
+
+	Switch $aOutput[0]
+		Case "TXT"
+			Local $hFile = FileOpen($aOutput[1], $FO_CREATEPATH+$FO_OVERWRITE)
+			FileWrite($hFile, "Results for " & @ComputerName)
+			For $iLoop = 0 To 10 Step 1
+				FileWrite($hFile, $aLabel[$iLoop] & @TAB & $aResults[$iLoop][0] & $aResults[$iLoop][1] & $aResults[$iLoop][2] & @CRLF)
+			Next
+			FileClose($hFile)
+		Case Else
+			;;;
+	EndSwitch
+
+EndFunc
+
+
+
 
 ;######################################################################################################################################
 ; #FUNCTION# ====================================================================================================================
