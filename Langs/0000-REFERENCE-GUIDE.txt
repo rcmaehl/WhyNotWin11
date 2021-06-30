@@ -1,8 +1,12 @@
 https://www.autoitscript.com/autoit3/docs/appendix/OSLangCodes.htm
 
+[Translation Requirements]
+All Strings Must Be Filled Out to be Accepted
+Due to Space Restrictions, Translations Do Not have to be 1:1
+
 [Translations with Mutliple Contributors]
 All Parties Agree: Merge
-50/50 Split: Merge and advise disputees of this policy
+50/50 Split: Merge and advise disputers of this policy
 50% + 2 Disagree: Deny Merge until Majority Consensus reached
 
 [Required]
