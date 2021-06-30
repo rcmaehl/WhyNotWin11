@@ -12,7 +12,7 @@ Func _ArchCheck()
 		Case Else
 			SetError(2, 0, False)
 	EndSelect
-EndFunc
+EndFunc   ;==>_ArchCheck
 
 Func _BootCheck()
 	Local $sFirmware = EnvGet("firmware_type")
@@ -24,16 +24,18 @@ Func _BootCheck()
 		Case Else
 			SetError(1, 0, False)
 	EndSwitch
-EndFunc
+EndFunc   ;==>_BootCheck
 
 Func _CPUNameCheck($sCPU)
+	Local $iLines
 	Select
 		Case StringInStr($sCPU, "AMD")
-			Local $iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
+			$iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
 			If @error Then
 				SetError(1, 0, 0)
 			EndIf
-			For $iLine = 1 to $iLines Step 1
+			Local $sLine
+			For $iLine = 1 To $iLines Step 1
 				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $iLine)
 				Select
 					Case @error = -1
@@ -48,11 +50,11 @@ Func _CPUNameCheck($sCPU)
 				EndSelect
 			Next
 		Case StringInStr($sCPU, "Intel")
-			Local $iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt")
+			$iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt")
 			If @error Then
 				SetError(1, 0, 0)
 			EndIf
-			For $iLine = 1 to $iLines Step 1
+			For $iLine = 1 To $iLines Step 1
 				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $iLine)
 				Select
 					Case @error = -1
@@ -67,11 +69,11 @@ Func _CPUNameCheck($sCPU)
 				EndSelect
 			Next
 		Case StringInStr($sCPU, "SnapDragon") Or StringInStr($sCPU, "Microsoft")
-			Local $iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt")
+			$iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt")
 			If @error Then
 				SetError(1, 0, 0)
 			EndIf
-			For $iLine = 1 to $iLines Step 1
+			For $iLine = 1 To $iLines Step 1
 				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $iLine)
 				Select
 					Case @error = -1
@@ -88,7 +90,7 @@ Func _CPUNameCheck($sCPU)
 		Case Else
 			Return False
 	EndSelect
-EndFunc
+EndFunc   ;==>_CPUNameCheck
 
 Func _CPUCoresCheck()
 	If _GetCPUInfo(0) >= 2 Or _GetCPUInfo(1) >= 2 Then
@@ -96,7 +98,7 @@ Func _CPUCoresCheck()
 	Else
 		Return False
 	EndIf
-EndFunc
+EndFunc   ;==>_CPUCoresCheck
 
 Func _CPUSpeedCheck()
 	If _GetCPUInfo(3) >= 1000 Then
@@ -104,7 +106,7 @@ Func _CPUSpeedCheck()
 	Else
 		Return False
 	EndIf
-EndFunc
+EndFunc   ;==>_CPUSpeedCheck
 
 Func _DirectXStartCheck()
 	Local $aReturn[2]
@@ -112,7 +114,7 @@ Func _DirectXStartCheck()
 	$aReturn[0] = $hDXFile
 	$aReturn[1] = Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
 	Return $aReturn
-EndFunc
+EndFunc   ;==>_DirectXStartCheck
 
 Func _GetDirectXCheck($aArray)
 	If Not ProcessExists($aArray[1]) And FileExists($aArray[0]) Then
@@ -141,7 +143,7 @@ Func _GetDirectXCheck($aArray)
 	Else
 		Return $aArray
 	EndIf
-EndFunc
+EndFunc   ;==>_GetDirectXCheck
 
 Func _GPTCheck()
 	Local $aDisks = _GetDiskInfo(1)
@@ -155,16 +157,16 @@ Func _GPTCheck()
 		Case Else
 			Return False
 	EndSwitch
-EndFunc
+EndFunc   ;==>_GPTCheck
 
 Func _MemCheck()
 	Local $aMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
 	If @error Then
 		$aMem = MemGetStats()
-		$aMem = Round($aMem[1]/1048576, 1)
+		$aMem = Round($aMem[1] / 1048576, 1)
 		$aMem = Ceiling($aMem)
 	Else
-		$aMem = Round($aMem[1]/1048576, 1)
+		$aMem = Round($aMem[1] / 1048576, 1)
 	EndIf
 	If $aMem = 0 Then
 		$aMem = MemGetStats()
@@ -177,7 +179,7 @@ Func _MemCheck()
 	Else
 		Return False
 	EndIf
-EndFunc
+EndFunc   ;==>_MemCheck
 
 Func _SecureBootCheck()
 	Local $sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
@@ -190,22 +192,22 @@ Func _SecureBootCheck()
 		Case Else
 			Return False
 	EndSwitch
-EndFunc
+EndFunc   ;==>_SecureBootCheck
 
 Func _SpaceCheck()
 	Local $aDrives = DriveGetDrive($DT_FIXED)
 	Local $iDrives = 0
 
-	For $iLoop = 1 to $aDrives[0] Step 1
-		If Round(DriveSpaceTotal($aDrives[$iLoop])/1024, 0) >= 64 Then $iDrives += 1
+	For $iLoop = 1 To $aDrives[0] Step 1
+		If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 64 Then $iDrives += 1
 	Next
 
-	If Round(DriveSpaceTotal("C:\")/1024, 0) >= 64 Then
+	If Round(DriveSpaceTotal("C:\") / 1024, 0) >= 64 Then
 		Return $iDrives
 	Else
 		SetError($iDrives, 0, 0)
 	EndIf
-EndFunc
+EndFunc   ;==>_SpaceCheck
 
 Func _TPMCheck()
 	Select
@@ -226,4 +228,4 @@ Func _TPMCheck()
 		Case Else
 			Return False
 	EndSelect
-EndFunc
+EndFunc   ;==>_TPMCheck
