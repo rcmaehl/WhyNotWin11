@@ -104,7 +104,7 @@ Func ProcessCMDLine()
 								$aOutput[1] = $CmdLine[3]
 								_ArrayDelete($CmdLine, "1-3")
 							Case Else
-								MsgBox(0, "Invalid", "Missing FORMAT paramter for /format." & @CRLF)
+								MsgBox(0, "Invalid", "Missing FORMAT parameter for /format." & @CRLF)
 								Exit 1
 						EndSwitch
 				EndSelect
