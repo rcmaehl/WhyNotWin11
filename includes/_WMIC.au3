@@ -1,5 +1,4 @@
 #include-once
-
 #include <StringConstants.au3>
 
 Func _GetCPUInfo($iFlag = 0)
@@ -25,6 +24,7 @@ Func _GetCPUInfo($iFlag = 0)
 			Next
 
 			Local $CPUs
+			#forceref $CPUs
 			$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_ComputerSystem')
 			For $Obj_Item In $Col_Items
 				$sCPUs = $Obj_Item.NumberOfProcessors
@@ -121,13 +121,11 @@ Func _GetTPMInfo($iFlag = 0)
 		Local Static $sActivated
 		Local Static $sEnabled
 		Local Static $sVersion
-
+		Local $Obj_WMIService, $Col_Items
 		If Not $sActivated <> "" Then
-			Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2\Security\MicrosoftTPM') ;
+			$Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2\Security\MicrosoftTPM') ;
 			If (IsObj($Obj_WMIService)) And (Not @error) Then
-				Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_TPM')
-
-				Local $Obj_Item
+				$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_TPM')
 				For $Obj_Item In $Col_Items
 					$sActivated = $Obj_Item.IsActivated_InitialValue
 					$sEnabled = $Obj_Item.IsEnabled_InitialValue
@@ -152,11 +150,9 @@ Func _GetTPMInfo($iFlag = 0)
 		Local Static $sPresent
 
 		If Not $sPresent <> "" Then
-			Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2') ;
+			$Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2') ;
 			If (IsObj($Obj_WMIService)) And (Not @error) Then
-				Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_PNPEntity where Service="TPM"')
-
-				Local $Obj_Item
+				$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_PNPEntity where Service="TPM"')
 				For $Obj_Item In $Col_Items
 					$sName = $Obj_Item.Name
 					$sPresent = $Obj_Item.Present
