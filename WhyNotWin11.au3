@@ -548,25 +548,15 @@ Func Main()
 	EndIf
 
 	$aDisks = _GetDiskInfo(1)
-	Switch _GetDiskInfo(0)
-		Case "GPT"
-			If $aDisks[0] = $aDisks[1] Then
-				GUICtrlSetData($hCheck[6][0], "OK")
-				GUICtrlSetBkColor($hCheck[6][0], 0x4CC355)
-			ElseIf $aDisks[0] = 0 Then
-				GUICtrlSetData($hCheck[6][0], "X")
-				GUICtrlSetBkColor($hCheck[6][0], 0xFA113D)
-				GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected" & @CRLF & "0 Drives Meet Requirements"))
-			Else
-				GUICtrlSetData($hCheck[6][0], "!")
-				GUICtrlSetBkColor($hCheck[6][0], 0xF4C141)
-			EndIf
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected") & @CRLF & $aDisks[1] & "/" & $aDisks[0] & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
-		Case Else
-			GUICtrlSetData($hCheck[6][0], "X")
-			GUICtrlSetBkColor($hCheck[6][0], 0xFA113D)
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected"))
-	EndSwitch
+	If _GetDiskInfo(0) = "GPT" And $aDisks[1] > 0 Then
+		GUICtrlSetData($hCheck[6][0], "OK")
+		GUICtrlSetBkColor($hCheck[6][0], 0x4CC355)
+		GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected") & @CRLF & $aDisks[1] & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
+	Else
+		GUICtrlSetData($hCheck[6][0], "X")
+		GUICtrlSetBkColor($hCheck[6][0], 0xFA113D)
+		GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected") & @CRLF & $aDisks[1] & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
+	EndIf
 
 	$aMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
 	If @error Then
