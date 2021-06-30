@@ -179,8 +179,8 @@ Func ChecksOnly()
 
 	WEnd
 
-	For $iLoop = 0 To 11 Step 1
-		If $aResults[$iLoop] = False Then Exit 0
+	For $iLoop = 0 To 10 Step 1
+		If $aResults[$iLoop][0] = False Then Exit 0
 	Next
 
 	If Not $aOutput[0] = "" Then ParseResults($aResults)
