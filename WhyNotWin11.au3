@@ -68,7 +68,7 @@ EndIf
 
 Func ProcessCMDLine()
 	Local $bCheck = False
-	$iParams = $CmdLine[0]
+	Local $iParams = $CmdLine[0]
 	For $iLoop = 1 To $iParams Step 1
 		Switch $CmdLine[1]
 			Case "/?", "/h", "/help"
@@ -219,10 +219,10 @@ Func ExtractFiles()
 			FileInstall(".\langs\041B.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041B.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0804.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0804.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0816.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0816.lang", $FC_OVERWRITE)
-			FileInstall(".\langs\1034.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1034.lang", $FC_OVERWRITE)
-			FileInstall(".\langs\1053.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1053.lang", $FC_OVERWRITE)
-			FileInstall(".\langs\1055.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1055.lang", $FC_OVERWRITE)
-			FileInstall(".\langs\1065.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1065.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\040A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040A.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\041D.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041D.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\041F.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041F.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0429.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0429.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\1801.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1801.lang", $FC_OVERWRITE)
 			FileDelete(@LocalAppDataDir & "\WhyNotWin11\langs\version")
 			FileWrite(@LocalAppDataDir & "\WhyNotWin11\langs\version", $sVersion)
@@ -263,10 +263,10 @@ Func ExtractFiles()
 			FileInstall(".\langs\041B.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041B.lang")
 			FileInstall(".\langs\0804.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0804.lang")
 			FileInstall(".\langs\0816.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0816.lang")
-			FileInstall(".\langs\1034.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1034.lang")
-			FileInstall(".\langs\1053.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1053.lang")
-			FileInstall(".\langs\1055.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1055.lang")
-			FileInstall(".\langs\1065.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1065.lang")
+			FileInstall(".\langs\040A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040A.lang")
+			FileInstall(".\langs\041D.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041D.lang")
+			FileInstall(".\langs\041F.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041F.lang")
+			FileInstall(".\langs\0429.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0429.lang")
 			FileInstall(".\langs\1801.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1801.lang")
 			FileWrite(@LocalAppDataDir & "\WhyNotWin11\langs\version", $sVersion)
 			ContinueCase
@@ -287,9 +287,10 @@ Func Main()
 
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 
-	$BKC = _WinAPI_GetSysColor($COLOR_WINDOW)
+	Local $BKC = _WinAPI_GetSysColor($COLOR_WINDOW)
+	#forceref $BKC
 
-	$hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
+	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
 	GUISetBkColor(_HighContrast(0xF8F8F8))
 	GUISetFont($aFonts[$FontSmall] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_BOLD, "", "Arial")
 
@@ -297,33 +298,33 @@ Func Main()
 	GUICtrlSetDefBkColor(_HighContrast(0xF8F8F8))
 
 	; Top Most Interaction for Update Text
-	$hUpdate = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
+	Local $hUpdate = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 	GUICtrlSetCursor(-1, 0)
 
 	; Top Most Interaction for Banner
-	$hBanner = GUICtrlCreateLabel("", 5, 540, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
+	Local $hBanner = GUICtrlCreateLabel("", 5, 540, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	; Top Most Interaction for Closing Window
-	$hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
+	Local $hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontExtraLarge] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_MEDIUM)
 	GUICtrlSetCursor(-1, 0)
 
 	; Top Most Interaction for Socials
-	$hGithub = GUICtrlCreateLabel("", 12, 100, 32, 32)
+	Local $hGithub = GUICtrlCreateLabel("", 12, 100, 32, 32)
 	GUICtrlSetTip(-1, "GitHub")
 	GUICtrlSetCursor(-1, 0)
 
-	$hDonate = GUICtrlCreateLabel("", 56, 100, 32, 32)
+	Local $hDonate = GUICtrlCreateLabel("", 56, 100, 32, 32)
 	GUICtrlSetTip(-1, _Translate($iMUI, "Donate"))
 	GUICtrlSetCursor(-1, 0)
 
-	$hDiscord = GUICtrlCreateLabel("", 12, 144, 32, 32)
+	Local $hDiscord = GUICtrlCreateLabel("", 12, 144, 32, 32)
 	GUICtrlSetTip(-1, "Discord")
 	GUICtrlSetCursor(-1, 0)
 
-	$hLTT = GUICtrlCreateLabel("", 56, 144, 32, 32)
+	Local $hLTT = GUICtrlCreateLabel("", 56, 144, 32, 32)
 	GUICtrlSetTip(-1, "LTT")
 	GUICtrlSetCursor(-1, 0)
 
@@ -336,31 +337,31 @@ Func Main()
 	_GDIPlus_Startup()
 	Local $aIcons[4]
 	If @Compiled Then
-		$aIcons[0] = GUICtrlCreateIcon(@ScriptFullPath, 201, 12, 100, 32, 32)
+		$aIcons[0] = GUICtrlCreateIcon(@ScriptFullPath, 201, 12, 110, 32, 32)
 		_SetBkIcon($aIcons[0], 0xE6E6E6, @ScriptFullPath, 201, 32, 32)
-		$aIcons[1] = GUICtrlCreateIcon(@ScriptFullPath, 202, 56, 100, 32, 32)
+		$aIcons[1] = GUICtrlCreateIcon(@ScriptFullPath, 202, 56, 110, 32, 32)
 		_SetBkIcon($aIcons[1], 0xE6E6E6, @ScriptFullPath, 202, 32, 32)
-		$aIcons[2] = GUICtrlCreateIcon(@ScriptFullPath, 203, 12, 144, 32, 32)
+		$aIcons[2] = GUICtrlCreateIcon(@ScriptFullPath, 203, 12, 154, 32, 32)
 		_SetBkIcon($aIcons[2], 0xE6E6E6, @ScriptFullPath, 203, 32, 32)
-		$aIcons[3] = GUICtrlCreateIcon(@ScriptFullPath, 204, 56, 144, 32, 32)
+		$aIcons[3] = GUICtrlCreateIcon(@ScriptFullPath, 204, 56, 154, 32, 32)
 		_SetBkIcon($aIcons[3], 0xE6E6E6, @ScriptFullPath, 204, 32, 32)
 	Else
-		GUICtrlCreateIcon("", -1, 12, 100, 32, 32)
+		GUICtrlCreateIcon("", -1, 12, 110, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, ".\assets\Git.ico", -1, 32, 32)
-		GUICtrlCreateIcon("", -1, 56, 100, 32, 32)
+		GUICtrlCreateIcon("", -1, 56, 110, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, ".\assets\PP.ico", -1, 32, 32)
-		GUICtrlCreateIcon("", -1, 12, 144, 32, 32)
+		GUICtrlCreateIcon("", -1, 12, 154, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, ".\assets\dis.ico", -1, 32, 32)
-		GUICtrlCreateIcon("", -1, 56, 144, 32, 32)
+		GUICtrlCreateIcon("", -1, 56, 154, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, ".\assets\Web.ico", -1, 32, 32)
 	EndIf
 	_GDIPlus_Shutdown()
 
-	$hBannerText = GUICtrlCreateLabel("", 5, 540, 90, 20, $SS_CENTER + $SS_CENTERIMAGE)
+	Local $hBannerText = GUICtrlCreateLabel("", 5, 540, 90, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
-	$sBannerURL = _SetBannerText($hBannerText, $hBanner)
+	Local $sBannerURL = _SetBannerText($hBannerText, $hBanner)
 
 	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL, $GUI_FONTUNDER)
@@ -395,7 +396,7 @@ Func Main()
 	GUICtrlSetFont(-1, $aFonts[$FontMedium] * _GDIPlus_GraphicsGetDPIRatio()[0])
 
 	GUICtrlCreateLabel("X", 760, 10, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, $aFonts[$FontExtraLarge] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL)
+	GUICtrlSetFont(-1, $aFonts[$FontLarge] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL)
 
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
@@ -410,7 +411,7 @@ Func Main()
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_SEMIBOLD)
 	Next
 
-	$hDXFile = _TempFile(@TempDir, "dxdiag")
+	Local $hDXFile = _TempFile(@TempDir, "dxdiag")
 	Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
 
 	Select
@@ -430,7 +431,7 @@ Func Main()
 			GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "32 Bit CPU") & @CRLF & _Translate($iMUI, "32 Bit OS"))
 	EndSelect
 
-	$sFirmware = EnvGet("firmware_type")
+	Local $sFirmware = EnvGet("firmware_type")
 	Switch $sFirmware
 		Case "UEFI"
 			GUICtrlSetData($hCheck[1][0], "OK")
@@ -446,6 +447,7 @@ Func Main()
 			GUICtrlSetData($hCheck[1][2], $sFirmware)
 	EndSwitch
 
+	Local $iLines, $sLine
 	Select
 		Case StringInStr(_GetCPUInfo(2), "AMD")
 			$iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
@@ -552,7 +554,7 @@ Func Main()
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	EndIf
 
-	$aDisks = _GetDiskInfo(1)
+	Local $aDisks = _GetDiskInfo(1)
 	Switch _GetDiskInfo(0)
 		Case "GPT"
 			If $aDisks[0] = $aDisks[1] Then
@@ -573,7 +575,7 @@ Func Main()
 			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected"))
 	EndSwitch
 
-	$aMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
+	Local $aMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
 	If @error Then
 		$aMem = MemGetStats()
 		$aMem = Round($aMem[1] / 1048576, 1)
@@ -597,7 +599,7 @@ Func Main()
 		GUICtrlSetData($hCheck[7][2], $aMem & " GB")
 	EndIf
 
-	$sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
+	Local $sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
 	If @error Then $sSecureBoot = 999
 	Switch $sSecureBoot
 		Case 0
@@ -615,8 +617,8 @@ Func Main()
 	EndSwitch
 
 
-	$aDrives = DriveGetDrive($DT_FIXED)
-	$iDrives = 0
+	Local $aDrives = DriveGetDrive($DT_FIXED)
+	Local $iDrives = 0
 
 	For $iLoop = 1 To $aDrives[0] Step 1
 		If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 64 Then $iDrives += 1
@@ -669,6 +671,7 @@ Func Main()
 
 	GUISetState(@SW_SHOW, $hGUI)
 
+	Local $hMsg, $sDXFile
 	While 1
 		$hMsg = GUIGetMsg()
 
@@ -826,10 +829,9 @@ Func _GDIPlus_GraphicsGetDPIRatio($iDPIDef = 96)
 	_GDIPlus_Startup()
 	Local $hGfx = _GDIPlus_GraphicsCreateFromHWND(0)
 	If @error Then Return SetError(1, @extended, 0)
-	Local $aResult
-	#forcedef $__g_hGDIPDll, $ghGDIPDll
+	#forcedef $__g_hGDIPDll
 
-	$aResult = DllCall($__g_hGDIPDll, "int", "GdipGetDpiX", "handle", $hGfx, "float*", 0)
+	Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipGetDpiX", "handle", $hGfx, "float*", 0)
 
 	If @error Then Return SetError(2, @extended, 0)
 	Local $iDPI = $aResult[2]

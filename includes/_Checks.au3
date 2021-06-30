@@ -27,12 +27,14 @@ Func _BootCheck()
 EndFunc   ;==>_BootCheck
 
 Func _CPUNameCheck($sCPU)
+	Local $iLines
 	Select
 		Case StringInStr($sCPU, "AMD")
-			Local $iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
+			$iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
 			If @error Then
 				SetError(1, 0, 0)
 			EndIf
+			Local $sLine
 			For $iLine = 1 To $iLines Step 1
 				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $iLine)
 				Select
@@ -48,7 +50,7 @@ Func _CPUNameCheck($sCPU)
 				EndSelect
 			Next
 		Case StringInStr($sCPU, "Intel")
-			Local $iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt")
+			$iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt")
 			If @error Then
 				SetError(1, 0, 0)
 			EndIf
@@ -67,7 +69,7 @@ Func _CPUNameCheck($sCPU)
 				EndSelect
 			Next
 		Case StringInStr($sCPU, "SnapDragon") Or StringInStr($sCPU, "Microsoft")
-			Local $iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt")
+			$iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt")
 			If @error Then
 				SetError(1, 0, 0)
 			EndIf
