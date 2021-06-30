@@ -1,9 +1,7 @@
 ;Script For accessibility
 ;made by Mateo Cedillo
-#include "_Checks.au3"
 #include "kbc.au3"
 #include "reader.au3"
-#include "_WMIC.au3"
 $LastResult = ""
 If FileExists("Config") then
 DirCreate("Config")
