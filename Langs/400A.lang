@@ -2,6 +2,11 @@
 Language=Spanish - Bolivia
 Translator=JeffersonRussell
 Version=2.3.0.1
+[Font]
+Extra Large=24
+Large=18
+Medium=10
+Small=8.5
 [Strings]
 Donate=Donar
 Check for Updates=Actualizar
@@ -21,10 +26,10 @@ Secure Boot=Arranque Seguro
 Storage Available=Espacio Disponible
 TPM Version=Versión de TPM
 Checking...=Comprobando...
-64 Bit CPU=CPU de 64 Bit
-64 Bit OS=SO de 64 Bit
-32 Bit CPU=CPU de 32 Bit
-32 Bit OS=SO de 32 Bit
+64 Bit CPU=CPU de 64 Bits
+64 Bit OS=SO de 64 Bits
+32 Bit CPU=CPU de 32 Bits
+32 Bit OS=SO de 32 Bits
 Unable to Determine=Incapaz de Determinar
 Unable to Check List=Incapaz de Comprobar Listado
 Error Accessing List=Error al Acceder al Listado
@@ -38,7 +43,7 @@ Enabled=Activado
 Supported=Soportado
 Not Supported=No Soportado
 Disabled / Not Detected=Desactivado / No Detectado
-Drive(s) Meet Requirements=Unidad(es) Compatibles
+Drive(s) Meet Requirements=Unidad(es) Compatible(s)
 TPM Missing / Disabled=Falta TPM / Desactivado
 Detected=Detectado
 DirectX 12 and WDDM 3=DirectX 12 y WDDM 3
