@@ -31,6 +31,7 @@ jobs:
         run: |
           Start-Process "${env:ProgramFiles(x86)}\AutoIt3\AutoIt3.exe" "`"${env:ProgramFiles(x86)}\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3`" /NoStatus /prod /in WhyNotWin11.au3" -NoNewWindow -Wait
           sha256sum -b WhyNotWin*.exe > checksums.sha256
+          7z a WhyNotWin11.zip WhyNotWin11*.exe checksums.sha256
       - uses: actions/upload-artifact@v2
         with:
           name: WNW11
@@ -44,6 +45,7 @@ jobs:
         with:
           files: |
             WhyNotWin11*.exe
+            WhyNotWin11.zip
             checksums.sha256
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
