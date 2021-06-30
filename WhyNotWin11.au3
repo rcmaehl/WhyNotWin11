@@ -65,6 +65,7 @@ If @OSBuild >= 22000 Then
 EndIf
 
 Func ProcessCMDLine()
+	Local $bCheck = False
 	$iParams = $CmdLine[0]
 	For $iLoop = 1 To $iParams Step 1
 		Switch $CmdLine[1]
@@ -84,9 +85,9 @@ Func ProcessCMDLine()
 					"All flags can be shortened to just the first character (e.g. /s)" & @CRLF)
 					Exit 0
 			Case "/s", "/silent"
-				ChecksOnly()
+				$bCheck = True
 				_ArrayDelete($CmdLine, 1)
-				If UBound($CmdLine) = 1 Then Exit
+				If UBound($CmdLine) = 1 Then ExitLoop
 				ContinueLoop
 			Case "/f", "/format"
 				Select
@@ -112,6 +113,7 @@ Func ProcessCMDLine()
 				Exit 1
 		EndSwitch
 	Next
+	If $bCheck Then ChecksOnly()
 EndFunc
 
 Func ChecksOnly()
@@ -796,7 +798,7 @@ Func ParseResults($aResults)
 			Local $hFile = FileOpen($sFile, $FO_CREATEPATH+$FO_OVERWRITE)
 			FileWrite($hFile, "Results for " & @ComputerName)
 			For $iLoop = 0 To 10 Step 1
-				FileWrite($hFile, $aLabel[$iLoop] & @TAB & $aResults[$iLoop][0] & $aResults[$iLoop][1] & $aResults[$iLoop][2] & @CRLF)
+				FileWrite($hFile, $aLabel[$iLoop] & @TAB & $aResults[$iLoop][0] & @TAB & $aResults[$iLoop][1] & @TAB & $aResults[$iLoop][2] & @CRLF)
 			Next
 			FileClose($hFile)
 		Case Else
