@@ -109,7 +109,7 @@ Func ProcessCMDLine()
 						EndSwitch
 				EndSelect
 			Case Else
-				If @Compiled Then ; support for running not compiled scirpt - mLipok
+				If @Compiled Then ; support for running non-compiled script - mLipok
 					MsgBox(0, "Invalid", 'Invalid switch - "' & $CmdLine[$iLoop] & "." & @CRLF)
 					Exit 1
 				EndIf
