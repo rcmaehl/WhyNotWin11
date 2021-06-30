@@ -73,7 +73,7 @@ Func ProcessCMDLine()
 				MsgBox(0, "Help and Flags", _
 					"Checks PC for Windows 11 Release Compatibility" & @CRLF & _
 					@CRLF & _
-					"WhyNotWin11 [/format FORMAT FILENAME] [/silent]" & @CRLF & _
+					"WhyNotWin11 [/format FORMAT FILENAME [/silent]]" & @CRLF & _
 					@CRLF & _
 					@TAB & "/format" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
 					@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
@@ -782,8 +782,6 @@ EndFunc
 
 Func ParseResults($aResults)
 
-	MsgBox(0, "", "parse")
-
 	Local $aLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 
 	Switch $aOutput[0]
@@ -794,9 +792,8 @@ Func ParseResults($aResults)
 			Else
 				$sFile = @ScriptDir & "\" & $aOutput[1]
 			EndIf
-			MsgBox(0, "", $sFile)
 			Local $hFile = FileOpen($sFile, $FO_CREATEPATH+$FO_OVERWRITE)
-			FileWrite($hFile, "Results for " & @ComputerName)
+			FileWrite($hFile, "Results for " & @ComputerName & @CRLF)
 			For $iLoop = 0 To 10 Step 1
 				FileWrite($hFile, $aLabel[$iLoop] & @TAB & $aResults[$iLoop][0] & @TAB & $aResults[$iLoop][1] & @TAB & $aResults[$iLoop][2] & @CRLF)
 			Next
