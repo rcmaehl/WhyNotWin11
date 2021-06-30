@@ -452,7 +452,7 @@ Func Main()
 	GUICtrlSetColor(-1, 0xE20012)
 	GUICtrlSetFont(-1, $aFonts[$FontMedium] * _GDIPlus_GraphicsGetDPIRatio()[0])
 
-	GUICtrlCreateLabel("x", 760, 10, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlCreateLabel("❌", 760, 10, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL)
 
 	Local $hCheck[11][3]
