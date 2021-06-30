@@ -45,6 +45,7 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 
 #include ".\Includes\_WMIC.au3"
 #include ".\Includes\_Checks.au3"
+;Script for accessibility:
 #include "includes\WhyNotWin11_accessibility.au3"
 Opt("TrayIconHide",1)
 Opt("TrayAutoPause",0)
