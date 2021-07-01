@@ -7,9 +7,9 @@
 [![My Twitter](https://img.shields.io/badge/twitter-545454.svg?logo=twitter)](https://twitter.com/WhyNotWin11)
 
 # WhyNotWin11
-Detection Script to help identify why your PC isn't Windows 11 Release Ready
+Detection Script to help identify why your PC isn't Windows 11 Release Ready.
 
-![image](https://user-images.githubusercontent.com/716581/123796852-91b16600-d8b3-11eb-869f-b5f6c67a6de8.png)
+![image](https://user-images.githubusercontent.com/716581/124056367-941ad980-d9f3-11eb-8dc2-9febc7e8f2d4.png)
 
 ----
 

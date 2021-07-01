@@ -5,7 +5,7 @@
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready
-#AutoIt3Wrapper_Res_Fileversion=2.3.0.1
+#AutoIt3Wrapper_Res_Fileversion=2.3.0.3
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
 #AutoIt3Wrapper_Res_ProductVersion=2.3.0
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
@@ -20,7 +20,7 @@
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 Global $aResults[11][3]
-Global $sVersion = "2.3.0.1"
+Global $sVersion = "2.3.0.3"
 Global $aOutput[2] = ["", ""]
 
 FileChangeDir(@SystemDir)
@@ -335,15 +335,14 @@ Func Main()
 
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 
-	Local $BKC = _WinAPI_GetSysColor($COLOR_WINDOW)
-	#forceref $BKC
-
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
 	GUISetBkColor(_HighContrast(0xF8F8F8))
 	GUISetFont($aFonts[$FontSmall] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_BOLD, "", "Arial")
 
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
 	GUICtrlSetDefBkColor(_HighContrast(0xF8F8F8))
+
+	If Not RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme") Then GUICtrlSetDefColor(0xFFFFFF)
 
 	Local $hDumpLang = GUICtrlCreateDummy()
 
@@ -366,19 +365,19 @@ Func Main()
 	GUICtrlSetCursor(-1, 0)
 
 	; Top Most Interaction for Socials
-	Local $hGithub = GUICtrlCreateLabel("", 12, 110, 32, 32)
+	Local $hGithub = GUICtrlCreateLabel("", 34, 110, 32, 32)
 	GUICtrlSetTip(-1, "GitHub")
 	GUICtrlSetCursor(-1, 0)
 
-	Local $hDonate = GUICtrlCreateLabel("", 56, 110, 32, 32)
+	Local $hDonate = GUICtrlCreateLabel("", 34, 160, 32, 32)
 	GUICtrlSetTip(-1, _Translate($iMUI, "Donate"))
 	GUICtrlSetCursor(-1, 0)
 
-	Local $hDiscord = GUICtrlCreateLabel("", 12, 154, 32, 32)
+	Local $hDiscord = GUICtrlCreateLabel("", 34, 210, 32, 32)
 	GUICtrlSetTip(-1, "Discord")
 	GUICtrlSetCursor(-1, 0)
 
-	Local $hLTT = GUICtrlCreateLabel("", 56, 154, 32, 32)
+	Local $hLTT = GUICtrlCreateLabel("", 34, 260, 32, 32)
 	GUICtrlSetTip(-1, "LTT")
 	GUICtrlSetCursor(-1, 0)
 
@@ -391,22 +390,22 @@ Func Main()
 	_GDIPlus_Startup()
 	Local $aIcons[4]
 	If @Compiled Then
-		$aIcons[0] = GUICtrlCreateIcon(@ScriptFullPath, 201, 12, 110, 32, 32)
+		$aIcons[0] = GUICtrlCreateIcon(@ScriptFullPath, 201, 34, 110, 32, 32)
 		_SetBkIcon($aIcons[0], 0xE6E6E6, @ScriptFullPath, 201, 32, 32)
-		$aIcons[1] = GUICtrlCreateIcon(@ScriptFullPath, 202, 56, 110, 32, 32)
+		$aIcons[1] = GUICtrlCreateIcon(@ScriptFullPath, 202, 34, 160, 32, 32)
 		_SetBkIcon($aIcons[1], 0xE6E6E6, @ScriptFullPath, 202, 32, 32)
-		$aIcons[2] = GUICtrlCreateIcon(@ScriptFullPath, 203, 12, 154, 32, 32)
+		$aIcons[2] = GUICtrlCreateIcon(@ScriptFullPath, 203, 34, 210, 32, 32)
 		_SetBkIcon($aIcons[2], 0xE6E6E6, @ScriptFullPath, 203, 32, 32)
-		$aIcons[3] = GUICtrlCreateIcon(@ScriptFullPath, 204, 56, 154, 32, 32)
+		$aIcons[3] = GUICtrlCreateIcon(@ScriptFullPath, 204, 34, 260, 32, 32)
 		_SetBkIcon($aIcons[3], 0xE6E6E6, @ScriptFullPath, 204, 32, 32)
 	Else
-		GUICtrlCreateIcon("", -1, 12, 110, 32, 32)
+		GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & "\assets\Git.ico", -1, 32, 32)
-		GUICtrlCreateIcon("", -1, 56, 110, 32, 32)
+		GUICtrlCreateIcon("", -1, 34, 160, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\PP.ico", -1, 32, 32)
-		GUICtrlCreateIcon("", -1, 12, 154, 32, 32)
+		GUICtrlCreateIcon("", -1, 34, 210, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\dis.ico", -1, 32, 32)
-		GUICtrlCreateIcon("", -1, 56, 154, 32, 32)
+		GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\Web.ico", -1, 32, 32)
 	EndIf
 	_GDIPlus_Shutdown()
@@ -429,12 +428,12 @@ Func Main()
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
 	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 
-#cs
-	If Not (@MUILang = "0409") Then
-		GUICtrlCreateLabel(_Translate($iMUI, "Translation by") & " " & _GetTranslationCredit(), 130, 560, 310, 40)
-		GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
-	EndIf
-#ce
+	#cs
+		If Not (@MUILang = "0409") Then
+			GUICtrlCreateLabel(_Translate($iMUI, "Translation by") & " " & _GetTranslationCredit(), 130, 560, 310, 40)
+			GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
+		EndIf
+	#ce
 
 
 	GUICtrlCreateLabel(_GetCPUInfo(2), 470, 560, 300, 20, $SS_CENTERIMAGE)
@@ -895,10 +894,10 @@ Func _GDIPlus_GraphicsGetDPIRatio($iDPIDef = 96)
 
 	If @error Then Return SetError(2, @extended, 0)
 	Local $iDPI = $aResult[2]
-	Local $aresults[2] = [$iDPIDef / $iDPI, $iDPI / $iDPIDef]
+	Local $aResults[2] = [$iDPIDef / $iDPI, $iDPI / $iDPIDef]
 	_GDIPlus_GraphicsDispose($hGfx)
 	_GDIPlus_Shutdown()
-	Return $aresults
+	Return $aResults
 EndFunc   ;==>_GDIPlus_GraphicsGetDPIRatio
 
 Func _GetFile($sFile, $sFormat = $FO_READ)
@@ -931,11 +930,14 @@ Func _HighContrast($sColor)
 
 	If Not $sSysWin <> "" Then $sSysWin = _WinAPI_GetSysColor($COLOR_WINDOW)
 
-	If $sSysWin = 0 Then
-		Return 16777215 - $sColor
-	Else
-		Return $sSysWin + $sColor + 1
-	EndIf
+	Select
+		Case $sSysWin = 0
+			ContinueCase
+		Case $sSysWin = 16777215 And Not RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
+			Return 16777215 - $sColor
+		Case Else
+			Return $sSysWin + $sColor + 1
+	EndSelect
 
 EndFunc   ;==>_HighContrast
 
@@ -969,7 +971,7 @@ Func _SetBannerText($hBannerText, $hBanner)
 			Return "https://archlinux.org/"
 			GUICtrlSetCursor($hBannerText, 0)
 			GUICtrlSetCursor($hBanner, 0)
-		Case @LogonDomain <> @ComputerName And IsAdmin()
+		Case @LogonDomain <> @ComputerName
 			GUICtrlSetData($hBannerText, "I'M FOR HIRE")
 			Return "https://fcofix.org/rcmaehl/wiki/I'M-FOR-HIRE"
 			GUICtrlSetCursor($hBannerText, 0)

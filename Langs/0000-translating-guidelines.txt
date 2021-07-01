@@ -4,6 +4,7 @@ https://www.autoitscript.com/autoit3/docs/appendix/OSLangCodes.htm
 Requirements:
 Always use the latest template (0000.lang)
 Use hex code(number) of your language
+Please use your GitHub username as Translator in MetaData section.
 All strings must be filled out to be accepted
 Due to space restrictions, translations do not have to be 1:1
 Please do not use slang, due to it being hard to judge/approve
