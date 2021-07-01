@@ -1,7 +1,12 @@
 [MetaData]
 Language=Estonian - Estonia (et-EE)
 Translator=Priit Uring
-Version=2.3.0.1
+Version=2.3.0.4
+[Font]
+Extra Large=24
+Large=18
+Medium=10
+Small=8.5
 [Strings]
 Donate=Anneta
 Check for Updates=Kontrolli Uuendusi
@@ -9,7 +14,7 @@ Your Windows 11 Compatibility Results are Below=Sinu Windows 11 ühilduvuse arua
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Nüüd saadaval lehekülg https://www.whynotwin11.org/
 Results Based on Currently Known Requirements!=Aruanne põhineb hetkel teadaolevast ühilduvuse nõuetest!
 Translation by=Tõlkija
-Architecture (CPU + OS)=Arhitektuur(CPU + OS)
+Architecture (CPU + OS)=Arhitektuur (CPU + OS)
 Boot Method=Käivitamise meetod
 CPU Compatibility=CPU ühilduvus
 CPU Core Count=CPU tuumade arv
@@ -30,7 +35,7 @@ Unable to Check List=Ei saanud nimekirja kontrollida
 Error Accessing List=Viga nimekirja avamisel
 Not Currently Listed as Compatible=Hetkel ei ole ühilduv
 Listed as Compatible=Nimekirjas märgitud ühilduvaks
-Cores=Tuumi
+Cores=Tuuma
 Threads=Lõime
 GPT Detected=GPT tuvastatud
 GPT Not Detected=GPT'ed ei tuvastatud
