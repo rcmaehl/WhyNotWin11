@@ -1,7 +1,12 @@
 [MetaData]
 Language=Russian - Russia
 Translator=c0de_6 (@Agc0de6)
-Version=2.2.5.0
+Version=2.3.0.3
+[Font]
+Extra Large=24
+Large=18
+Medium=10
+Small=8.5
 [Strings]
 Donate=Поддержать
 Check for Updates=Обновить версию
