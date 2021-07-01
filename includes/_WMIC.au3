@@ -18,7 +18,7 @@ Func _GetCPUInfo($iFlag = 0)
 			For $Obj_Item In $Col_Items
 				$sCores = $Obj_Item.NumberOfCores
 				$sThreads = $Obj_Item.NumberOfLogicalProcessors
-				$vName = $obj_Item.Name
+				$vName = $Obj_Item.Name
 				$sSpeed = $Obj_Item.MaxClockSpeed
 				$sArch = $Obj_Item.AddressWidth
 			Next
@@ -100,7 +100,7 @@ Func _GetGPUInfo($iFlag = 0)
 			Local $Obj_Item
 			For $Obj_Item In $Col_Items
 				$sName &= $Obj_Item.Name & ", "
-				$sMemory = $obj_Item.AdapterRAM
+				$sMemory = $Obj_Item.AdapterRAM
 			Next
 		Else
 			Return 0
@@ -129,7 +129,7 @@ Func _GetTPMInfo($iFlag = 0)
 				For $Obj_Item In $Col_Items
 					$sActivated = $Obj_Item.IsActivated_InitialValue
 					$sEnabled = $Obj_Item.IsEnabled_InitialValue
-					$sVersion = $obj_Item.SpecVersion
+					$sVersion = $Obj_Item.SpecVersion
 				Next
 			Else
 				Return 0
