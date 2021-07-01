@@ -5,7 +5,7 @@
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready
-#AutoIt3Wrapper_Res_Fileversion=2.3.0.3
+#AutoIt3Wrapper_Res_Fileversion=2.3.0.4
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
 #AutoIt3Wrapper_Res_ProductVersion=2.3.0
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
@@ -20,7 +20,7 @@
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 Global $aResults[11][3]
-Global $sVersion = "2.3.0.3"
+Global $sVersion = "2.3.0.4"
 Global $aOutput[2] = ["", ""]
 
 FileChangeDir(@SystemDir)
@@ -338,11 +338,17 @@ Func Main()
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
 	GUISetBkColor(_HighContrast(0xF8F8F8))
 	GUISetFont($aFonts[$FontSmall] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_BOLD, "", "Arial")
+	_Security()
 
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
 	GUICtrlSetDefBkColor(_HighContrast(0xF8F8F8))
 
-	If Not RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme") Then GUICtrlSetDefColor(0xFFFFFF)
+	Local $sCheck = RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
+	If @error Then
+		;;;
+	ElseIf Not $sCheck Then
+		GUICtrlSetDefColor(0xFFFFFF)
+	EndIf
 
 	Local $hDumpLang = GUICtrlCreateDummy()
 
@@ -957,6 +963,15 @@ Func _INIUnicode($sINI)
 		Return $fReturn
 	EndIf
 EndFunc   ;==>_INIUnicode
+
+Func _Security()
+	If WinExists("WhyNotWin11 - Check Why Your PC Can't Run Windows 11") Then
+		MsgBox($MB_TOPMOST+$MB_ICONWARNING, "Alert", _
+			"WhyNotWin11 has detected that it may have been downloaded from a suspicious site. " & _
+			"The owner of this site has refused to contact us and has hosted suspect files trying" & _
+			" to hide they fact they are not affiliated before. Please see GitHub issue #66.")
+	EndIf
+EndFunc
 
 Func _SetBannerText($hBannerText, $hBanner)
 
