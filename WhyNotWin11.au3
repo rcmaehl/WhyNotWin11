@@ -5,7 +5,7 @@
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready
-#AutoIt3Wrapper_Res_Fileversion=2.3.0.1
+#AutoIt3Wrapper_Res_Fileversion=2.3.0.3
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
 #AutoIt3Wrapper_Res_ProductVersion=2.3.0
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
@@ -20,12 +20,12 @@
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 Global $aResults[11][3]
-Global $sVersion = "2.3.0.1"
+Global $sVersion = "2.3.0.3"
 Global $aOutput[2] = ["", ""]
 
 FileChangeDir(@SystemDir)
 
-If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT"-1)
+If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext", "HWND", "DPI_AWARENESS_CONTEXT" - 1)
 
 #include <File.au3>
 #include <Misc.au3>
@@ -46,8 +46,8 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 #include ".\Includes\_WMIC.au3"
 #include ".\Includes\_Checks.au3"
 
-Opt("TrayIconHide",1)
-Opt("TrayAutoPause",0)
+Opt("TrayIconHide", 1)
+Opt("TrayAutoPause", 0)
 
 If $CmdLine[0] > 0 Then ProcessCMDLine()
 ExtractFiles()
@@ -65,28 +65,29 @@ If @OSBuild >= 22000 Then
 EndIf
 
 Func ProcessCMDLine()
-	$iParams = $CmdLine[0]
+	Local $bCheck = False
+	Local $iParams = $CmdLine[0]
 	For $iLoop = 1 To $iParams Step 1
 		Switch $CmdLine[1]
 			Case "/?", "/h", "/help"
 				MsgBox(0, "Help and Flags", _
-					"Checks PC for Windows 11 Release Compatibility" & @CRLF & _
-					@CRLF & _
-					"WhyNotWin11 [/format FORMAT FILENAME] [/silent]" & @CRLF & _
-					@CRLF & _
-					@TAB & "/format" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
-					@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
-					@TAB & "       " & @TAB & "output. Requires a filename if used." & @CRLF & _
-					@TAB & "formats" & @TAB & "TXT" & @CRLF & _
-					@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systems will Exit" & @CRLF & _
-					@TAB & "       " & @TAB & "with ERROR_SUCCESS." & @CRLF & _
-					@CRLF & _
-					"All flags can be shortened to just the first character (e.g. /s)" & @CRLF)
-					Exit 0
+						"Checks PC for Windows 11 Release Compatibility" & @CRLF & _
+						@CRLF & _
+						"WhyNotWin11 [/format FORMAT FILENAME [/silent]]" & @CRLF & _
+						@CRLF & _
+						@TAB & "/format" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
+						@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
+						@TAB & "       " & @TAB & "output. Requires a filename if used." & @CRLF & _
+						@TAB & "formats" & @TAB & "TXT" & @CRLF & _
+						@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systems will Exit" & @CRLF & _
+						@TAB & "       " & @TAB & "with ERROR_SUCCESS." & @CRLF & _
+						@CRLF & _
+						"All flags can be shortened to just the first character (e.g. /s)" & @CRLF)
+				Exit 0
 			Case "/s", "/silent"
-				ChecksOnly()
+				$bCheck = True
 				_ArrayDelete($CmdLine, 1)
-				If UBound($CmdLine) = 1 Then Exit
+				If UBound($CmdLine) = 1 Then ExitLoop
 				ContinueLoop
 			Case "/f", "/format"
 				Select
@@ -103,16 +104,19 @@ Func ProcessCMDLine()
 								$aOutput[1] = $CmdLine[3]
 								_ArrayDelete($CmdLine, "1-3")
 							Case Else
-								MsgBox(0, "Invalid", "Missing FORMAT paramter for /format." & @CRLF)
+								MsgBox(0, "Invalid", "Missing FORMAT parameter for /format." & @CRLF)
 								Exit 1
 						EndSwitch
 				EndSelect
 			Case Else
-				MsgBox(0, "Invalid", 'Invalid switch - "' & $CmdLine[$iLoop] & "." & @CRLF)
-				Exit 1
+				If @Compiled Then ; support for running non-compiled script - mLipok
+					MsgBox(0, "Invalid", 'Invalid switch - "' & $CmdLine[$iLoop] & "." & @CRLF)
+					Exit 1
+				EndIf
 		EndSwitch
 	Next
-EndFunc
+	If $bCheck Then ChecksOnly()
+EndFunc   ;==>ProcessCMDLine
 
 Func ChecksOnly()
 
@@ -186,19 +190,22 @@ Func ChecksOnly()
 	Next
 	Exit 1
 
-EndFunc
+EndFunc   ;==>ChecksOnly
 
 Func ExtractFiles()
 	If FileExists(@LocalAppDataDir & "\WhyNotWin11\langs\version") Then
 		If _VersionCompare($sVersion, FileReadLine(@LocalAppDataDir & "\WhyNotWin11\langs\version", 1)) = 1 Then
 			FileInstall(".\langs\0004.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0004.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0C01.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0C01.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0C0A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0C0A.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0401.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0401.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0404.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0404.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0405.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0405.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0407.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0407.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0408.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0408.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0409.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0409.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\040A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040A.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\040B.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040B.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\040C.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040C.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\040D.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040D.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\040E.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040E.lang", $FC_OVERWRITE)
@@ -206,24 +213,46 @@ Func ExtractFiles()
 			FileInstall(".\langs\0411.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0411.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0412.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0412.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0413.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0413.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0414.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0414.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0415.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0415.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0416.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0416.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0418.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0418.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0419.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0419.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\041B.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041B.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\041D.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041D.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\041F.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041F.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0422.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0422.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0425.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0425.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\0429.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0429.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\042A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\042A.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0804.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0804.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\080A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\080A.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\0816.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0816.lang", $FC_OVERWRITE)
-			FileInstall(".\langs\1034.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1034.lang", $FC_OVERWRITE)
-			FileInstall(".\langs\1053.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1053.lang", $FC_OVERWRITE)
-			FileInstall(".\langs\1055.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1055.lang", $FC_OVERWRITE)
-			FileInstall(".\langs\1065.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1065.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\100A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\100A.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\1038.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1038.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\140A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\140A.lang", $FC_OVERWRITE)
 			FileInstall(".\langs\1801.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1801.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\180A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\180A.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\1C0A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1C0A.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\200A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\200A.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\240A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\240A.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\280A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\280A.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\2C0A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\2C0A.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\300A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\300A.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\340A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\340A.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\380A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\380A.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\3C0A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\3C0A.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\440A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\440A.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\480A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\480A.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\4C0A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\4C0A.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\500A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\500A.lang", $FC_OVERWRITE)
+			FileInstall(".\langs\540A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\540A.lang", $FC_OVERWRITE)
 			FileDelete(@LocalAppDataDir & "\WhyNotWin11\langs\version")
 			FileWrite(@LocalAppDataDir & "\WhyNotWin11\langs\version", $sVersion)
 		EndIf
 	EndIf
 	If FileExists(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt") Then
-		If _VersionCompare($sVersion, FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt",1)) = 1 Then
+		If _VersionCompare($sVersion, FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", 1)) = 1 Then
 			FileInstall(".\includes\SupportedProcessorsAMD.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $FC_OVERWRITE)
 			FileInstall(".\includes\SupportedProcessorsIntel.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $FC_OVERWRITE)
 			FileInstall(".\includes\SupportedProcessorsQualcomm.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $FC_OVERWRITE)
@@ -237,12 +266,15 @@ Func ExtractFiles()
 			DirCreate(@LocalAppDataDir & "\WhyNotWin11\Langs\")
 			FileInstall(".\langs\0004.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0004.lang")
 			FileInstall(".\langs\0C01.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0C01.lang")
+			FileInstall(".\langs\0C0A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0C0A.lang")
 			FileInstall(".\langs\0401.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0401.lang")
 			FileInstall(".\langs\0404.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0404.lang")
 			FileInstall(".\langs\0405.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0405.lang")
 			FileInstall(".\langs\0407.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0407.lang")
 			FileInstall(".\langs\0408.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0408.lang")
 			FileInstall(".\langs\0409.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0409.lang")
+			FileInstall(".\langs\040A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040A.lang")
+			FileInstall(".\langs\040B.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040B.lang")
 			FileInstall(".\langs\040C.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040C.lang")
 			FileInstall(".\langs\040D.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040D.lang")
 			FileInstall(".\langs\040E.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\040E.lang")
@@ -250,18 +282,40 @@ Func ExtractFiles()
 			FileInstall(".\langs\0411.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0411.lang")
 			FileInstall(".\langs\0412.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0412.lang")
 			FileInstall(".\langs\0413.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0413.lang")
+			FileInstall(".\langs\0414.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0414.lang")
 			FileInstall(".\langs\0415.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0415.lang")
 			FileInstall(".\langs\0416.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0416.lang")
 			FileInstall(".\langs\0418.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0418.lang")
 			FileInstall(".\langs\0419.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0419.lang")
 			FileInstall(".\langs\041B.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041B.lang")
+			FileInstall(".\langs\041D.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041D.lang")
+			FileInstall(".\langs\041F.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\041F.lang")
+			FileInstall(".\langs\0422.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0422.lang")
+			FileInstall(".\langs\0425.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0425.lang")
+			FileInstall(".\langs\0429.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0429.lang")
+			FileInstall(".\langs\042A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\042A.lang")
 			FileInstall(".\langs\0804.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0804.lang")
+			FileInstall(".\langs\080A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\080A.lang")
 			FileInstall(".\langs\0816.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0816.lang")
-			FileInstall(".\langs\1034.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1034.lang")
-			FileInstall(".\langs\1053.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1053.lang")
-			FileInstall(".\langs\1055.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1055.lang")
-			FileInstall(".\langs\1065.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1065.lang")
+			FileInstall(".\langs\100A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\100A.lang")
+			FileInstall(".\langs\1038.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1038.lang")
+			FileInstall(".\langs\140A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\140A.lang")
 			FileInstall(".\langs\1801.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1801.lang")
+			FileInstall(".\langs\180A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\180A.lang")
+			FileInstall(".\langs\1C0A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\1C0A.lang")
+			FileInstall(".\langs\200A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\200A.lang")
+			FileInstall(".\langs\240A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\240A.lang")
+			FileInstall(".\langs\280A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\280A.lang")
+			FileInstall(".\langs\2C0A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\2C0A.lang")
+			FileInstall(".\langs\300A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\300A.lang")
+			FileInstall(".\langs\340A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\340A.lang")
+			FileInstall(".\langs\380A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\380A.lang")
+			FileInstall(".\langs\3C0A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\3C0A.lang")
+			FileInstall(".\langs\440A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\440A.lang")
+			FileInstall(".\langs\480A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\480A.lang")
+			FileInstall(".\langs\4C0A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\4C0A.lang")
+			FileInstall(".\langs\500A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\500A.lang")
+			FileInstall(".\langs\540A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\540A.lang")
 			FileWrite(@LocalAppDataDir & "\WhyNotWin11\langs\version", $sVersion)
 			ContinueCase
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
@@ -271,7 +325,7 @@ Func ExtractFiles()
 		Case Else
 			;;;
 	EndSelect
-EndFunc
+EndFunc   ;==>ExtractFiles
 
 Func Main()
 
@@ -281,43 +335,49 @@ Func Main()
 
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 
-	$BKC = _WinAPI_GetSysColor($COLOR_WINDOW)
-
-	$hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOr($WS_POPUP,$WS_BORDER))
+	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
 	GUISetBkColor(_HighContrast(0xF8F8F8))
-	GUISetFont($aFonts[$FontSmall] * _GDIPlus_GraphicsGetDPIRatio()[0],$FW_BOLD,"","Arial")
+	GUISetFont($aFonts[$FontSmall] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_BOLD, "", "Arial")
 
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
-	GUICtrlSetDefBKColor(_HighContrast(0xF8F8F8))
+	GUICtrlSetDefBkColor(_HighContrast(0xF8F8F8))
+
+	If Not RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme") Then GUICtrlSetDefColor(0xFFFFFF)
+
+	Local $hDumpLang = GUICtrlCreateDummy()
+
+	; Debug Key
+	Local $aAccel[1][2] = [["{DEL}", $hDumpLang]]
+	GUISetAccelerators($aAccel)
 
 	; Top Most Interaction for Update Text
-	$hUpdate = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
+	Local $hUpdate = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 	GUICtrlSetCursor(-1, 0)
 
 	; Top Most Interaction for Banner
-	$hBanner = GUICtrlCreateLabel("", 5, 540, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
+	Local $hBanner = GUICtrlCreateLabel("", 5, 540, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	; Top Most Interaction for Closing Window
-	$hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
+	Local $hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontExtraLarge] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_MEDIUM)
 	GUICtrlSetCursor(-1, 0)
 
 	; Top Most Interaction for Socials
-	$hGithub = GUICtrlCreateLabel("", 12, 100, 32, 32)
+	Local $hGithub = GUICtrlCreateLabel("", 12, 110, 32, 32)
 	GUICtrlSetTip(-1, "GitHub")
 	GUICtrlSetCursor(-1, 0)
 
-	$hDonate = GUICtrlCreateLabel("", 56, 100, 32, 32)
+	Local $hDonate = GUICtrlCreateLabel("", 56, 110, 32, 32)
 	GUICtrlSetTip(-1, _Translate($iMUI, "Donate"))
 	GUICtrlSetCursor(-1, 0)
 
-	$hDiscord = GUICtrlCreateLabel("", 12, 144, 32, 32)
+	Local $hDiscord = GUICtrlCreateLabel("", 12, 154, 32, 32)
 	GUICtrlSetTip(-1, "Discord")
 	GUICtrlSetCursor(-1, 0)
 
-	$hLTT = GUICtrlCreateLabel("", 56, 144, 32, 32)
+	Local $hLTT = GUICtrlCreateLabel("", 56, 154, 32, 32)
 	GUICtrlSetTip(-1, "LTT")
 	GUICtrlSetCursor(-1, 0)
 
@@ -330,81 +390,84 @@ Func Main()
 	_GDIPlus_Startup()
 	Local $aIcons[4]
 	If @Compiled Then
-		$aIcons[0] = GUICtrlCreateIcon(@ScriptFullPath, 201, 12, 100, 32, 32)
+		$aIcons[0] = GUICtrlCreateIcon(@ScriptFullPath, 201, 12, 110, 32, 32)
 		_SetBkIcon($aIcons[0], 0xE6E6E6, @ScriptFullPath, 201, 32, 32)
-		$aIcons[1] = GUICtrlCreateIcon(@ScriptFullPath, 202, 56, 100, 32, 32)
+		$aIcons[1] = GUICtrlCreateIcon(@ScriptFullPath, 202, 56, 110, 32, 32)
 		_SetBkIcon($aIcons[1], 0xE6E6E6, @ScriptFullPath, 202, 32, 32)
-		$aIcons[2] = GUICtrlCreateIcon(@ScriptFullPath, 203, 12, 144, 32, 32)
+		$aIcons[2] = GUICtrlCreateIcon(@ScriptFullPath, 203, 12, 154, 32, 32)
 		_SetBkIcon($aIcons[2], 0xE6E6E6, @ScriptFullPath, 203, 32, 32)
-		$aIcons[3] = GUICtrlCreateIcon(@ScriptFullPath, 204, 56, 144, 32, 32)
+		$aIcons[3] = GUICtrlCreateIcon(@ScriptFullPath, 204, 56, 154, 32, 32)
 		_SetBkIcon($aIcons[3], 0xE6E6E6, @ScriptFullPath, 204, 32, 32)
 	Else
-		GUICtrlCreateIcon("", -1, 12, 100, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, ".\assets\Git.ico", -1, 32, 32)
-		GUICtrlCreateIcon("", -1, 56, 100, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, ".\assets\PP.ico", -1, 32, 32)
-		GUICtrlCreateIcon("", -1, 12, 144, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, ".\assets\dis.ico", -1, 32, 32)
-		GUICtrlCreateIcon("", -1, 56, 144, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, ".\assets\Web.ico", -1, 32, 32)
+		GUICtrlCreateIcon("", -1, 12, 110, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & "\assets\Git.ico", -1, 32, 32)
+		GUICtrlCreateIcon("", -1, 56, 110, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\PP.ico", -1, 32, 32)
+		GUICtrlCreateIcon("", -1, 12, 154, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\dis.ico", -1, 32, 32)
+		GUICtrlCreateIcon("", -1, 56, 154, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\Web.ico", -1, 32, 32)
 	EndIf
 	_GDIPlus_Shutdown()
 
-	$hBannerText = GUICtrlCreateLabel("", 5, 540, 90, 20, $SS_CENTER+$SS_CENTERIMAGE)
+	Local $hBannerText = GUICtrlCreateLabel("", 5, 540, 90, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
-	$sBannerURL = _SetBannerText($hBannerText, $hBanner)
+	Local $sBannerURL = _SetBannerText($hBannerText, $hBanner)
 
-	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 5, 560, 90, 40, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
-	GUICtrlCreateLabel("WhyNotWin11", 10, 10, 80, 20, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlCreateLabel("WhyNotWin11", 10, 10, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
-	GUICtrlCreateLabel("v " & $sVersion, 10, 30, 80, 20, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlCreateLabel("v " & $sVersion, 10, 30, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
 	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 
+#cs
 	If Not (@MUILang = "0409") Then
 		GUICtrlCreateLabel(_Translate($iMUI, "Translation by") & " " & _GetTranslationCredit(), 130, 560, 310, 40)
 		GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 	EndIf
+#ce
+
 
 	GUICtrlCreateLabel(_GetCPUInfo(2), 470, 560, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 	GUICtrlCreateLabel(_GetGPUInfo(0), 470, 580, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 
-	GUICtrlCreateLabel(_Translate($iMUI, "Your Windows 11 Compatibility Results are Below"), 130, 30, 640, 40, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlCreateLabel(_Translate($iMUI, "Your Windows 11 Compatibility Results are Below"), 130, 15, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
 
-	GUICtrlCreateLabel(_Translate($iMUI, "Now Reach WhyNotWin11 via https://www.whynotwin11.org/"), 130, 60, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlCreateLabel(_Translate($iMUI, "Now Reach WhyNotWin11 via https://www.whynotwin11.org/"), 130, 45, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontMedium] * _GDIPlus_GraphicsGetDPIRatio()[0])
 
-	GUICtrlCreateLabel(_Translate($iMUI, "Results Based on Currently Known Requirements!"), 130, 80, 640, 20, $SS_CENTER+$SS_CENTERIMAGE)
+	GUICtrlCreateLabel(_Translate($iMUI, "Results Based on Currently Known Requirements!"), 130, 65, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetColor(-1, 0xE20012)
 	GUICtrlSetFont(-1, $aFonts[$FontMedium] * _GDIPlus_GraphicsGetDPIRatio()[0])
 
-	GUICtrlCreateLabel("X", 760, 10, 30, 30, $SS_CENTER+$SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, $aFonts[$FontExtraLarge] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL)
+	GUICtrlCreateLabel("❌", 760, 10, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlSetFont(-1, $aFonts[$FontLarge] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL)
 
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 
 	For $iRow = 0 To 10 Step 1
-		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 130, 110 + $iRow * 40, 40, 40, $SS_CENTER+$SS_SUNKEN+$SS_CENTERIMAGE)
+		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 130, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, 0xE6E6E6)
 		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hLabel[$iRow]), 170, 110 + $iRow * 40, 300, 40, $SS_CENTERIMAGE)
 		GUICtrlSetFont(-1, $aFonts[$FontLarge] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL)
-		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 470, 110 + $iRow * 40, 300, 40, $SS_CENTER+$SS_SUNKEN+$SS_CENTERIMAGE)
-		If $iRow = 0 Or $iRow = 3 Or $iRow = 6 Or $iRow = 9 Then GUICtrlSetStyle(-1, $SS_CENTER+$SS_SUNKEN)
+		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 470, 110 + $iRow * 40, 300, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
+		If $iRow = 0 Or $iRow = 3 Or $iRow = 6 Or $iRow = 9 Then GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN)
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_SEMIBOLD)
 	Next
 
-	$hDXFile = _TempFile(@TempDir, "dxdiag")
+	Local $hDXFile = _TempFile(@TempDir, "dxdiag")
 	Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
 
 	Select
@@ -424,7 +487,7 @@ Func Main()
 			GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "32 Bit CPU") & @CRLF & _Translate($iMUI, "32 Bit OS"))
 	EndSelect
 
-	$sFirmware = EnvGet("firmware_type")
+	Local $sFirmware = EnvGet("firmware_type")
 	Switch $sFirmware
 		Case "UEFI"
 			GUICtrlSetData($hCheck[1][0], "OK")
@@ -440,6 +503,7 @@ Func Main()
 			GUICtrlSetData($hCheck[1][2], $sFirmware)
 	EndSwitch
 
+	Local $iLines, $sLine
 	Select
 		Case StringInStr(_GetCPUInfo(2), "AMD")
 			$iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
@@ -448,7 +512,7 @@ Func Main()
 				GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
 				GUICtrlSetTip($hCheck[2][0], _Translate($iMUI, "Unable to Check List"))
 			EndIf
-			For $iLine = 1 to $iLines Step 1
+			For $iLine = 1 To $iLines Step 1
 				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $iLine)
 				Select
 					Case @error = -1
@@ -475,7 +539,7 @@ Func Main()
 				GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
 				GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Unable to Check List"))
 			EndIf
-			For $iLine = 1 to $iLines Step 1
+			For $iLine = 1 To $iLines Step 1
 				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $iLine)
 				Select
 					Case @error = -1
@@ -502,7 +566,7 @@ Func Main()
 				GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
 				GUICtrlSetTip($hCheck[2][0], _Translate($iMUI, "Unable to Check List"))
 			EndIf
-			For $iLine = 1 to $iLines Step 1
+			For $iLine = 1 To $iLines Step 1
 				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $iLine)
 				Select
 					Case @error = -1
@@ -546,7 +610,7 @@ Func Main()
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	EndIf
 
-	$aDisks = _GetDiskInfo(1)
+	Local $aDisks = _GetDiskInfo(1)
 	Switch _GetDiskInfo(0)
 		Case "GPT"
 			If $aDisks[0] = $aDisks[1] Then
@@ -567,17 +631,17 @@ Func Main()
 			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected"))
 	EndSwitch
 
-	$aMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
+	Local $aMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
 	If @error Then
 		$aMem = MemGetStats()
-		$aMem = Round($aMem[1]/1048576, 1)
+		$aMem = Round($aMem[1] / 1048576, 1)
 		$aMem = Ceiling($aMem)
 	Else
-		$aMem = Round($aMem[1]/1048576, 1)
+		$aMem = Round($aMem[1] / 1048576, 1)
 	EndIf
 	If $aMem = 0 Then
 		$aMem = MemGetStats()
-		$aMem = Round($aMem[1]/1048576, 1)
+		$aMem = Round($aMem[1] / 1048576, 1)
 		$aMem = Ceiling($aMem)
 	EndIf
 
@@ -591,7 +655,7 @@ Func Main()
 		GUICtrlSetData($hCheck[7][2], $aMem & " GB")
 	EndIf
 
-	$sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
+	Local $sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
 	If @error Then $sSecureBoot = 999
 	Switch $sSecureBoot
 		Case 0
@@ -609,22 +673,22 @@ Func Main()
 	EndSwitch
 
 
-	$aDrives = DriveGetDrive($DT_FIXED)
-	$iDrives = 0
+	Local $aDrives = DriveGetDrive($DT_FIXED)
+	Local $iDrives = 0
 
-	For $iLoop = 1 to $aDrives[0] Step 1
-		If Round(DriveSpaceTotal($aDrives[$iLoop])/1024, 0) >= 64 Then $iDrives += 1
+	For $iLoop = 1 To $aDrives[0] Step 1
+		If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 64 Then $iDrives += 1
 	Next
 
 
-	If Round(DriveSpaceTotal("C:\")/1024, 0) >= 64 Then
+	If Round(DriveSpaceTotal("C:\") / 1024, 0) >= 64 Then
 		GUICtrlSetData($hCheck[9][0], "OK")
 		GUICtrlSetBkColor($hCheck[9][0], 0x4CC355)
 	Else
 		GUICtrlSetData($hCheck[9][0], "X")
 		GUICtrlSetBkColor($hCheck[9][0], 0xFA113D)
 	EndIf
-	GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\")/1024, 0) & " GB C:\" & @CRLF & $iDrives & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
+	GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\") / 1024, 0) & " GB C:\" & @CRLF & $iDrives & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
 
 	Select
 		Case Not IsAdmin() And _GetTPMInfo(0) = True
@@ -663,6 +727,7 @@ Func Main()
 
 	GUISetState(@SW_SHOW, $hGUI)
 
+	Local $hMsg, $sDXFile
 	While 1
 		$hMsg = GUIGetMsg()
 
@@ -672,31 +737,31 @@ Func Main()
 				GUIDelete($hGUI)
 				Exit
 
-			; DirectX 12 takes a while. Grab the result once done
+				; DirectX 12 takes a while. Grab the result once done
 			Case Not ProcessExists("dxdiag.exe") And FileExists($hDXFile)
 				$sDXFile = StringStripWS(StringStripCR(FileRead($hDXFile)), $STR_STRIPALL)
 				Select
-					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "3") ; Non-English Languages
+					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "3") ; Non-English Languages
 						ContinueCase
-					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:3") ; Non-English Languages
+					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:3") ; Non-English Languages
 						ContinueCase
-					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM3")
+					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM3")
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
 						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")
-					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "2") ; Non-English Languages
+					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "2") ; Non-English Languages
 						ContinueCase
-					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:2") ; Non-English Languages
+					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:2") ; Non-English Languages
 						ContinueCase
-					Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
+					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 						GUICtrlSetData($hCheck[5][0], "OK")
 						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
 						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")
-					Case Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
+					Case Not StringInStr($sDXFile, "FeatureLevels:12") Or Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 						GUICtrlSetData($hCheck[5][0], "X")
 						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
 						GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12, but WDDM2"))
-					Case StringInStr($sDXFile, "DDIVersion:12") And Not StringInStr($sDXFile, "DriverModel:WDDM2")
+					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And Not StringInStr($sDXFile, "DriverModel:WDDM2")
 						GUICtrlSetData($hCheck[5][0], "X")
 						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
 						GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DirectX 12, but no WDDM2"))
@@ -706,6 +771,9 @@ Func Main()
 						GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12 or WDDM2"))
 				EndSelect
 				FileDelete($hDXFile)
+
+			Case $hMsg = $hDumpLang
+				FileDelete(@LocalAppDataDir & "\WhyNotWin11\langs\")
 
 			Case $hMsg = $hBanner
 				ShellExecute($sBannerURL)
@@ -725,25 +793,25 @@ Func Main()
 			Case $hMsg = $hUpdate
 				Switch _GetLatestRelease($sVersion)
 					Case -1
-						MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, _Translate($iMUI, "Test Build?"), _Translate($iMUI, "You're running a newer build than publicly Available!"), 10)
+						MsgBox($MB_OK + $MB_ICONWARNING + $MB_TOPMOST, _Translate($iMUI, "Test Build?"), _Translate($iMUI, "You're running a newer build than publicly Available!"), 10)
 					Case 0
 						Switch @error
 							Case 0
-								MsgBox($MB_OK+$MB_ICONINFORMATION+$MB_TOPMOST, _Translate($iMUI, "Up to Date"), _Translate($iMUI, "You're running the latest build!"), 10)
+								MsgBox($MB_OK + $MB_ICONINFORMATION + $MB_TOPMOST, _Translate($iMUI, "Up to Date"), _Translate($iMUI, "You're running the latest build!"), 10)
 							Case 1
-								MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, _Translate($iMUI, "Unable to Check for Updates"), _Translate($iMUI, "Unable to load release data."), 10)
+								MsgBox($MB_OK + $MB_ICONWARNING + $MB_TOPMOST, _Translate($iMUI, "Unable to Check for Updates"), _Translate($iMUI, "Unable to load release data."), 10)
 							Case 2
-								MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, _Translate($iMUI, "Unable to Check for Updates"), _Translate($iMUI, "Invalid Data Received!"), 10)
+								MsgBox($MB_OK + $MB_ICONWARNING + $MB_TOPMOST, _Translate($iMUI, "Unable to Check for Updates"), _Translate($iMUI, "Invalid Data Received!"), 10)
 							Case 3
 								Switch @extended
 									Case 0
-										MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, _Translate($iMUI, "Unable to Check for Updates"), _Translate($iMUI, "Invalid Release Tags Received!"), 10)
+										MsgBox($MB_OK + $MB_ICONWARNING + $MB_TOPMOST, _Translate($iMUI, "Unable to Check for Updates"), _Translate($iMUI, "Invalid Release Tags Received!"), 10)
 									Case 1
-										MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST, _Translate($iMUI, "Unable to Check for Updates"), _Translate($iMUI, "Invalid Release Types Received!"), 10)
+										MsgBox($MB_OK + $MB_ICONWARNING + $MB_TOPMOST, _Translate($iMUI, "Unable to Check for Updates"), _Translate($iMUI, "Invalid Release Types Received!"), 10)
 								EndSwitch
 						EndSwitch
 					Case 1
-						If MsgBox($MB_YESNO+$MB_ICONINFORMATION+$MB_TOPMOST, _Translate($iMUI, "Update Available"), _Translate($iMUI, "An Update is Available, would you like to download it?"), 10) = $IDYES Then ShellExecute("https://fcofix.org/WhyNotWin11/releases")
+						If MsgBox($MB_YESNO + $MB_ICONINFORMATION + $MB_TOPMOST, _Translate($iMUI, "Update Available"), _Translate($iMUI, "An Update is Available, would you like to download it?"), 10) = $IDYES Then ShellExecute("https://fcofix.org/WhyNotWin11/releases")
 				EndSwitch
 
 			Case Else
@@ -751,7 +819,7 @@ Func Main()
 
 		EndSelect
 	WEnd
-EndFunc
+EndFunc   ;==>Main
 
 Func _GetLatestRelease($sCurrent)
 
@@ -776,11 +844,9 @@ Func _GetLatestRelease($sCurrent)
 
 	Return _VersionCompare($aCombined[0][0], $sCurrent)
 
-EndFunc
+EndFunc   ;==>_GetLatestRelease
 
 Func ParseResults($aResults)
-
-	MsgBox(0, "", "parse")
 
 	Local $aLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 
@@ -792,18 +858,17 @@ Func ParseResults($aResults)
 			Else
 				$sFile = @ScriptDir & "\" & $aOutput[1]
 			EndIf
-			MsgBox(0, "", $sFile)
-			Local $hFile = FileOpen($sFile, $FO_CREATEPATH+$FO_OVERWRITE)
-			FileWrite($hFile, "Results for " & @ComputerName)
+			Local $hFile = FileOpen($sFile, $FO_CREATEPATH + $FO_OVERWRITE)
+			FileWrite($hFile, "Results for " & @ComputerName & @CRLF)
 			For $iLoop = 0 To 10 Step 1
-				FileWrite($hFile, $aLabel[$iLoop] & @TAB & $aResults[$iLoop][0] & $aResults[$iLoop][1] & $aResults[$iLoop][2] & @CRLF)
+				FileWrite($hFile, $aLabel[$iLoop] & @TAB & $aResults[$iLoop][0] & @TAB & $aResults[$iLoop][1] & @TAB & $aResults[$iLoop][2] & @CRLF)
 			Next
 			FileClose($hFile)
 		Case Else
 			;;;
 	EndSwitch
 
-EndFunc
+EndFunc   ;==>ParseResults
 
 ;######################################################################################################################################
 ; #FUNCTION# ====================================================================================================================
@@ -820,75 +885,77 @@ EndFunc
 ; Example .......: No
 ; ===============================================================================================================================
 Func _GDIPlus_GraphicsGetDPIRatio($iDPIDef = 96)
-    _GDIPlus_Startup()
-    Local $hGfx = _GDIPlus_GraphicsCreateFromHWND(0)
-    If @error Then Return SetError(1, @extended, 0)
-    Local $aResult
-    #forcedef $__g_hGDIPDll, $ghGDIPDll
+	_GDIPlus_Startup()
+	Local $hGfx = _GDIPlus_GraphicsCreateFromHWND(0)
+	If @error Then Return SetError(1, @extended, 0)
+	#forcedef $__g_hGDIPDll
 
-    $aResult = DllCall($__g_hGDIPDll, "int", "GdipGetDpiX", "handle", $hGfx, "float*", 0)
+	Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipGetDpiX", "handle", $hGfx, "float*", 0)
 
-    If @error Then Return SetError(2, @extended, 0)
-    Local $iDPI = $aResult[2]
-    Local $aresults[2] = [$iDPIDef / $iDPI, $iDPI / $iDPIDef]
-    _GDIPlus_GraphicsDispose($hGfx)
-    _GDIPlus_Shutdown()
-    Return $aresults
+	If @error Then Return SetError(2, @extended, 0)
+	Local $iDPI = $aResult[2]
+	Local $aresults[2] = [$iDPIDef / $iDPI, $iDPI / $iDPIDef]
+	_GDIPlus_GraphicsDispose($hGfx)
+	_GDIPlus_Shutdown()
+	Return $aresults
 EndFunc   ;==>_GDIPlus_GraphicsGetDPIRatio
 
 Func _GetFile($sFile, $sFormat = $FO_READ)
-    Local Const $hFileOpen = FileOpen($sFile, $sFormat)
-    If $hFileOpen = -1 Then
-        Return SetError(1, 0, '')
-    EndIf
-    Local Const $sData = FileRead($hFileOpen)
-    FileClose($hFileOpen)
-    Return $sData
+	Local Const $hFileOpen = FileOpen($sFile, $sFormat)
+	If $hFileOpen = -1 Then
+		Return SetError(1, 0, '')
+	EndIf
+	Local Const $sData = FileRead($hFileOpen)
+	FileClose($hFileOpen)
+	Return $sData
 EndFunc   ;==>_GetFile
 
 Func _GetTranslationCredit()
-	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang", "MetaData", "Translator", "???")
-EndFunc
+	Return IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang", "MetaData", "Translator", "???")
+EndFunc   ;==>_GetTranslationCredit
 
 Func _GetTranslationFonts($iMUI)
 	Local $aFonts[4] = [8.5, 10, 18, 24]
 
-	$aFonts[0] = INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Small", $aFonts[0])
-	$aFonts[1] = INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Medium", $aFonts[1])
-	$aFonts[2] = INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Large", $aFonts[2])
-	$aFonts[3] = INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Extra Large", $aFonts[3])
+	$aFonts[0] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Small", $aFonts[0])
+	$aFonts[1] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Medium", $aFonts[1])
+	$aFonts[2] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Large", $aFonts[2])
+	$aFonts[3] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Extra Large", $aFonts[3])
 
 	Return $aFonts
-EndFunc
+EndFunc   ;==>_GetTranslationFonts
 
 Func _HighContrast($sColor)
 	Local Static $sSysWin
 
 	If Not $sSysWin <> "" Then $sSysWin = _WinAPI_GetSysColor($COLOR_WINDOW)
 
-	If $sSysWin = 0 Then
-		Return 16777215 - $sColor
-	Else
-		Return $sSysWin + $sColor + 1
-	EndIf
+	Select
+		Case $sSysWin = 0
+			ContinueCase
+		Case $sSysWin = 16777215 And Not RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
+			Return 16777215 - $sColor
+		Case Else
+			Return $sSysWin + $sColor + 1
+	EndSelect
 
-EndFunc
+EndFunc   ;==>_HighContrast
 
 Func _INIUnicode($sINI)
-    If FileExists($sINI) = 0 Then
-        Return FileClose(FileOpen($sINI, $FO_OVERWRITE + $FO_UNICODE))
-    Else
-        Local Const $iEncoding = FileGetEncoding($sINI)
-        Local $fReturn = True
-        If Not ($iEncoding = $FO_UNICODE) Then
-            Local $sData = _GetFile($sINI, $iEncoding)
-            If @error Then
-                $fReturn = False
-            EndIf
-            _SetFile($sData, $sINI, $FO_APPEND + $FO_UNICODE)
-        EndIf
-        Return $fReturn
-    EndIf
+	If FileExists($sINI) = 0 Then
+		Return FileClose(FileOpen($sINI, $FO_OVERWRITE + $FO_UNICODE))
+	Else
+		Local Const $iEncoding = FileGetEncoding($sINI)
+		Local $fReturn = True
+		If Not ($iEncoding = $FO_UNICODE) Then
+			Local $sData = _GetFile($sINI, $iEncoding)
+			If @error Then
+				$fReturn = False
+			EndIf
+			_SetFile($sData, $sINI, $FO_APPEND + $FO_UNICODE)
+		EndIf
+		Return $fReturn
+	EndIf
 EndFunc   ;==>_INIUnicode
 
 Func _SetBannerText($hBannerText, $hBanner)
@@ -913,58 +980,58 @@ Func _SetBannerText($hBannerText, $hBanner)
 			GUICtrlSetCursor($hBanner, 2)
 	EndSelect
 
-EndFunc
+EndFunc   ;==>_SetBannerText
 
 Func _SetBkIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
 
-    Local Static $STM_SETIMAGE = 0x0172
-    Local $tIcon, $tID, $hDC, $hBackDC, $hBackSv, $hBitmap, $hImage, $hIcon, $hBkIcon
+	Local Static $STM_SETIMAGE = 0x0172
+	Local $tIcon, $tID, $hDC, $hBackDC, $hBackSv, $hBitmap, $hImage, $hIcon, $hBkIcon
 
-    $tIcon = DllStructCreate('hwnd')
-    $tID = DllStructCreate('hwnd')
-    $hIcon = DllCall(@SystemDir & '\user32.dll', 'int', 'PrivateExtractIcons', 'str', $sIcon, 'int', $iIndex, 'int', $iWidth, 'int', $iHeight, 'ptr', DllStructGetPtr($tIcon), 'ptr', DllStructGetPtr($tID), 'int', 1, 'int', 0)
-    If (@error) Or ($hIcon[0] = 0) Then
-        Return SetError(1, 0, 0)
-    EndIf
-    $hIcon = DllStructGetData($tIcon, 1)
-    $tIcon = 0
-    $tID = 0
+	$tIcon = DllStructCreate('hwnd')
+	$tID = DllStructCreate('hwnd')
+	$hIcon = DllCall(@SystemDir & '\user32.dll', 'int', 'PrivateExtractIcons', 'str', $sIcon, 'int', $iIndex, 'int', $iWidth, 'int', $iHeight, 'ptr', DllStructGetPtr($tIcon), 'ptr', DllStructGetPtr($tID), 'int', 1, 'int', 0)
+	If (@error) Or ($hIcon[0] = 0) Then
+		Return SetError(1, 0, 0)
+	EndIf
+	$hIcon = DllStructGetData($tIcon, 1)
+	$tIcon = 0
+	$tID = 0
 
-    $hDC = _WinAPI_GetDC(0)
-    $hBackDC = _WinAPI_CreateCompatibleDC($hDC)
-    $hBitmap = _WinAPI_CreateSolidBitmap(0, $iBackground, $iWidth, $iHeight)
-    $hBackSv = _WinAPI_SelectObject($hBackDC, $hBitmap)
-    _WinAPI_DrawIconEx($hBackDC, 0, 0, $hIcon, 0, 0, 0, 0, $DI_NORMAL)
+	$hDC = _WinAPI_GetDC(0)
+	$hBackDC = _WinAPI_CreateCompatibleDC($hDC)
+	$hBitmap = _WinAPI_CreateSolidBitmap(0, $iBackground, $iWidth, $iHeight)
+	$hBackSv = _WinAPI_SelectObject($hBackDC, $hBitmap)
+	_WinAPI_DrawIconEx($hBackDC, 0, 0, $hIcon, 0, 0, 0, 0, $DI_NORMAL)
 
-    $hImage = _GDIPlus_BitmapCreateFromHBITMAP($hBitmap)
-    $hBkIcon = DllCall($__g_hGDIPDll, 'int', 'GdipCreateHICONFromBitmap', 'hWnd', $hImage, 'int*', 0)
-    $hBkIcon = $hBkIcon[2]
-    _GDIPlus_ImageDispose($hImage)
+	$hImage = _GDIPlus_BitmapCreateFromHBITMAP($hBitmap)
+	$hBkIcon = DllCall($__g_hGDIPDll, 'int', 'GdipCreateHICONFromBitmap', 'hWnd', $hImage, 'int*', 0)
+	$hBkIcon = $hBkIcon[2]
+	_GDIPlus_ImageDispose($hImage)
 
-    GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, _WinAPI_CopyIcon($hBkIcon))
-    _WinAPI_RedrawWindow(GUICtrlGetHandle($ControlID))
+	GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, _WinAPI_CopyIcon($hBkIcon))
+	_WinAPI_RedrawWindow(GUICtrlGetHandle($ControlID))
 
-    _WinAPI_SelectObject($hBackDC, $hBackSv)
-    _WinAPI_DeleteDC($hBackDC)
-    _WinAPI_ReleaseDC(0, $hDC)
-    _WinAPI_DeleteObject($hBkIcon)
-    _WinAPI_DeleteObject($hBitmap)
-    _WinAPI_DeleteObject($hIcon)
+	_WinAPI_SelectObject($hBackDC, $hBackSv)
+	_WinAPI_DeleteDC($hBackDC)
+	_WinAPI_ReleaseDC(0, $hDC)
+	_WinAPI_DeleteObject($hBkIcon)
+	_WinAPI_DeleteObject($hBitmap)
+	_WinAPI_DeleteObject($hIcon)
 
-    Return SetError(0, 0, 1)
+	Return SetError(0, 0, 1)
 EndFunc   ;==>_SetBkIcon
 
 Func _SetFile($sString, $sFile, $iOverwrite = $FO_READ)
-    Local Const $hFileOpen = FileOpen($sFile, $iOverwrite + $FO_APPEND)
-    FileWrite($hFileOpen, $sString)
-    FileClose($hFileOpen)
-    If @error Then
-        Return SetError(1, 0, False)
-    EndIf
-    Return True
+	Local Const $hFileOpen = FileOpen($sFile, $iOverwrite + $FO_APPEND)
+	FileWrite($hFileOpen, $sString)
+	FileClose($hFileOpen)
+	If @error Then
+		Return SetError(1, 0, False)
+	EndIf
+	Return True
 EndFunc   ;==>_SetFile
 
 Func _Translate($iMUI, $sString)
 	_INIUnicode(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang")
-	Return INIRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Strings", $sString, $sString)
-EndFunc
+	Return IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Strings", $sString, $sString)
+EndFunc   ;==>_Translate
