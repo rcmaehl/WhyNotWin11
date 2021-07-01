@@ -538,80 +538,45 @@ Func Main()
 			GUICtrlSetData($hCheck[1][2], $sFirmware)
 	EndSwitch
 
-	Local $iLines, $sLine
+	; CPU Compatibility List
+	Local $iLines, $sLine, $ListFile
 	Select
 		Case StringInStr(_GetCPUInfo(2), "AMD")
-			$iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
-			If @error Then
-				_GUICtrlSetWarn($hCheck[2][0])
-				GUICtrlSetTip($hCheck[2][0], _Translate($iMUI, "Unable to Check List"))
-			EndIf
-			For $iLine = 1 To $iLines Step 1
-				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $iLine)
-				Select
-					Case @error = -1
-						_GUICtrlSetWarn($hCheck[2][0])
-						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Error Accessing List"))
-						ExitLoop
-					Case $iLine = $iLines
-						_GUICtrlSetWarn($hCheck[2][0])
-						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Not Currently Listed as Compatible"))
-						ExitLoop
-					Case StringInStr(_GetCPUInfo(2), $sLine)
-						 _GUICtrlSetPass($hCheck[2][0])
-						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Listed as Compatible"))
-						ExitLoop
-				EndSelect
-			Next
+			$ListFile = "\WhyNotWin11\SupportedProcessorsAMD.txt"
 		Case StringInStr(_GetCPUInfo(2), "Intel")
-			$iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt")
-			If @error Then
-				_GUICtrlSetWarn($hCheck[2][0])
-				GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Unable to Check List"))
-			EndIf
-			For $iLine = 1 To $iLines Step 1
-				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $iLine)
-				Select
-					Case @error = -1
-						_GUICtrlSetWarn($hCheck[2][0])
-						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Error Accessing List"))
-						ExitLoop
-					Case $iLine = $iLines
-						_GUICtrlSetWarn($hCheck[2][0])
-						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Not Currently Listed as Compatible"))
-						ExitLoop
-					Case StringInStr(_GetCPUInfo(2), $sLine)
-						 _GUICtrlSetPass($hCheck[2][0])
-						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Listed as Compatible"))
-						ExitLoop
-				EndSelect
-			Next
+			$ListFile = "\WhyNotWin11\SupportedProcessorsIntel.txt"
 		Case StringInStr(_GetCPUInfo(2), "SnapDragon") Or StringInStr(_GetCPUInfo(2), "Microsoft")
-			$iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt")
-			If @error Then
-				_GUICtrlSetWarn($hCheck[2][0])
-				GUICtrlSetTip($hCheck[2][0], _Translate($iMUI, "Unable to Check List"))
-			EndIf
-			For $iLine = 1 To $iLines Step 1
-				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $iLine)
-				Select
-					Case @error = -1
-						_GUICtrlSetWarn($hCheck[2][0])
-						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Error Accessing List"))
-						ExitLoop
-					Case $iLine = $iLines
-						_GUICtrlSetWarn($hCheck[2][0])
-						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Not Currently Listed as Compatible"))
-						ExitLoop
-					Case StringInStr(_GetCPUInfo(2), $sLine)
-						 _GUICtrlSetPass($hCheck[2][0])
-						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Listed as Compatible"))
-						ExitLoop
-				EndSelect
-			Next
-		Case Else
-			_GUICtrlSetWarn($hCheck[2][0])
+			$ListFile = "\WhyNotWin11\SupportedProcessorsQualcomm.txt"
 	EndSelect
+	
+	If $ListFile = Null Then
+		_GUICtrlSetWarn($hCheck[2][0])
+		GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Not Currently Listed as Compatible"))
+	Else
+		$iLines = _FileCountLines(@LocalAppDataDir & $ListFile)
+		If @error Then
+			_GUICtrlSetWarn($hCheck[2][0])
+			GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Unable to Check List"))
+		EndIf
+
+		For $iLine = 1 To $iLines Step 1
+			$sLine = FileReadLine(@LocalAppDataDir & $ListFile, $iLine)
+			Select
+				Case @error
+					_GUICtrlSetWarn($hCheck[2][0])
+					GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Error Accessing List"))
+					ExitLoop
+				Case $iLine = $iLines
+					_GUICtrlSetWarn($hCheck[2][0])
+					GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Not Currently Listed as Compatible"))
+					ExitLoop
+				Case StringInStr(_GetCPUInfo(2), $sLine)
+					_GUICtrlSetPass($hCheck[2][0])
+					GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Listed as Compatible"))
+					ExitLoop
+			EndSelect
+		Next
+	EndIf
 
 	If _GetCPUInfo(0) >= 2 Or _GetCPUInfo(1) >= 2 Then
 		 _GUICtrlSetPass($hCheck[3][0])
