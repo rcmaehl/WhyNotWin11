@@ -1,7 +1,12 @@
 [MetaData]
 Language=Ukrainian - Ukraine
 Translator= Oleg Chashko
-Version=
+Version=2.3.0.3
+[Font]
+Extra Large=24
+Large=18
+Medium=10
+Small=8.5
 [Strings]
 Donate=Підтримати
 Check for Updates=Оновити версію
