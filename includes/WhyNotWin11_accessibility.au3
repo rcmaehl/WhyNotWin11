@@ -4,12 +4,12 @@
 #include "reader.au3"
 $LastResult = ""
 If FileExists("Config") then
-DirCreate("Config")
+DirCreate(@scriptDir &"\Config")
 ;This folder will be used to store the settings.
 EndIf
 firstlaunch()
 Func firstlaunch()
-$accessibility = iniRead ("config\config.st", "accessibility", "Enable enanced accessibility", "")
+$accessibility = iniRead (@ScriptDir &"\config\config.st", "accessibility", "Enable enanced accessibility", "")
 select
 case $accessibility ="yes"
 accessibility()
@@ -21,13 +21,14 @@ EndFunc
 func ConfigureAccessibility()
 $Question=MsgBox(4, _Translate(@MUILang, "Enable enanced accessibility?"), _Translate(@MUILang, "This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?"))
 if $question == 6 then
-IniWrite("config\config.st", "accessibility", "Enable enanced accessibility", "Yes")
+IniWrite(@ScriptDir &"\config\config.st", "accessibility", "Enable enanced accessibility", "Yes")
+accessibility()
 else
-IniWrite("config\config.st", "accessibility", "Enable enanced accessibility", "No")
+IniWrite(@ScriptDir &"\config\config.st", "accessibility", "Enable enanced accessibility", "No")
 endif
 endfunc
 Func accessibility()
-$sRead = iniRead ("config\config.st", "accessibility", "Enable enanced accessibility", "")
+$sRead = iniRead (@ScriptDir &"\config\config.st", "accessibility", "Enable enanced accessibility", "")
 select
 case $sRead ="Yes"
 SetKeys()
