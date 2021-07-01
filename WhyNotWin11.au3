@@ -5,7 +5,7 @@
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready
-#AutoIt3Wrapper_Res_Fileversion=2.3.0.2
+#AutoIt3Wrapper_Res_Fileversion=2.3.0.3
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
 #AutoIt3Wrapper_Res_ProductVersion=2.3.0
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
@@ -20,7 +20,7 @@
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 Global $aResults[11][3]
-Global $sVersion = "2.3.0.2"
+Global $sVersion = "2.3.0.3"
 Global $aOutput[2] = ["", ""]
 
 FileChangeDir(@SystemDir)
@@ -335,15 +335,14 @@ Func Main()
 
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 
-	Local $BKC = _WinAPI_GetSysColor($COLOR_WINDOW)
-	#forceref $BKC
-
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
 	GUISetBkColor(_HighContrast(0xF8F8F8))
 	GUISetFont($aFonts[$FontSmall] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_BOLD, "", "Arial")
 
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
 	GUICtrlSetDefBkColor(_HighContrast(0xF8F8F8))
+
+	If Not RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme") Then GUICtrlSetDefColor(0xFFFFFF)
 
 	Local $hDumpLang = GUICtrlCreateDummy()
 
@@ -931,11 +930,14 @@ Func _HighContrast($sColor)
 
 	If Not $sSysWin <> "" Then $sSysWin = _WinAPI_GetSysColor($COLOR_WINDOW)
 
-	If $sSysWin = 0 Then
-		Return 16777215 - $sColor
-	Else
-		Return $sSysWin + $sColor + 1
-	EndIf
+	Select
+		Case $sSysWin = 0
+			ContinueCase
+		Case $sSysWin = 16777215 And Not RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
+			Return 16777215 - $sColor
+		Case Else
+			Return $sSysWin + $sColor + 1
+	EndSelect
 
 EndFunc   ;==>_HighContrast
 
