@@ -194,6 +194,7 @@ EndFunc   ;==>ChecksOnly
 
 Func ExtractFiles()
 	FileChangeDir(@ScriptDir)
+	; This is need for uncompiled versions, relative path is not used once compiled
 	If FileExists(@LocalAppDataDir & "\WhyNotWin11\langs\version") Then
 		If _VersionCompare($sVersion, FileReadLine(@LocalAppDataDir & "\WhyNotWin11\langs\version", 1)) = 1 Then
 			FileInstall(".\langs\0004.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0004.lang", $FC_OVERWRITE)
