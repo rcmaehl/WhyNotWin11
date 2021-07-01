@@ -193,6 +193,7 @@ Func ChecksOnly()
 EndFunc   ;==>ChecksOnly
 
 Func ExtractFiles()
+	FileChangeDir(@ScriptDir)
 	If FileExists(@LocalAppDataDir & "\WhyNotWin11\langs\version") Then
 		If _VersionCompare($sVersion, FileReadLine(@LocalAppDataDir & "\WhyNotWin11\langs\version", 1)) = 1 Then
 			FileInstall(".\langs\0004.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0004.lang", $FC_OVERWRITE)
@@ -325,6 +326,7 @@ Func ExtractFiles()
 		Case Else
 			;;;
 	EndSelect
+	FileChangeDir(@SystemDir)
 EndFunc   ;==>ExtractFiles
 
 Func Main()
