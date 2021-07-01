@@ -364,7 +364,7 @@ Func Main()
 	GUICtrlSetFont(-1, $aFonts[$FontExtraLarge] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_MEDIUM)
 	GUICtrlSetCursor(-1, 0)
 
-; Top Most Interaction for Socials
+	; Top Most Interaction for Socials
 	Local $hGithub = GUICtrlCreateLabel("", 34, 110, 32, 32)
 	GUICtrlSetTip(-1, "GitHub")
 	GUICtrlSetCursor(-1, 0)
@@ -428,12 +428,12 @@ Func Main()
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
 	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 
-#cs
-	If Not (@MUILang = "0409") Then
-		GUICtrlCreateLabel(_Translate($iMUI, "Translation by") & " " & _GetTranslationCredit(), 130, 560, 310, 40)
-		GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
-	EndIf
-#ce
+	#cs
+		If Not (@MUILang = "0409") Then
+			GUICtrlCreateLabel(_Translate($iMUI, "Translation by") & " " & _GetTranslationCredit(), 130, 560, 310, 40)
+			GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
+		EndIf
+	#ce
 
 
 	GUICtrlCreateLabel(_GetCPUInfo(2), 470, 560, 300, 20, $SS_CENTERIMAGE)
@@ -894,10 +894,10 @@ Func _GDIPlus_GraphicsGetDPIRatio($iDPIDef = 96)
 
 	If @error Then Return SetError(2, @extended, 0)
 	Local $iDPI = $aResult[2]
-	Local $aresults[2] = [$iDPIDef / $iDPI, $iDPI / $iDPIDef]
+	Local $aResults[2] = [$iDPIDef / $iDPI, $iDPI / $iDPIDef]
 	_GDIPlus_GraphicsDispose($hGfx)
 	_GDIPlus_Shutdown()
-	Return $aresults
+	Return $aResults
 EndFunc   ;==>_GDIPlus_GraphicsGetDPIRatio
 
 Func _GetFile($sFile, $sFormat = $FO_READ)
