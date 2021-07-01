@@ -364,20 +364,20 @@ Func Main()
 	GUICtrlSetFont(-1, $aFonts[$FontExtraLarge] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_MEDIUM)
 	GUICtrlSetCursor(-1, 0)
 
-	; Top Most Interaction for Socials
-	Local $hGithub = GUICtrlCreateLabel("", 12, 110, 32, 32)
+; Top Most Interaction for Socials
+	Local $hGithub = GUICtrlCreateLabel("", 30, 110, 32, 32)
 	GUICtrlSetTip(-1, "GitHub")
 	GUICtrlSetCursor(-1, 0)
 
-	Local $hDonate = GUICtrlCreateLabel("", 56, 110, 32, 32)
+	Local $hDonate = GUICtrlCreateLabel("", 30, 160, 32, 32)
 	GUICtrlSetTip(-1, _Translate($iMUI, "Donate"))
 	GUICtrlSetCursor(-1, 0)
 
-	Local $hDiscord = GUICtrlCreateLabel("", 12, 154, 32, 32)
+	Local $hDiscord = GUICtrlCreateLabel("", 30, 210, 32, 32)
 	GUICtrlSetTip(-1, "Discord")
 	GUICtrlSetCursor(-1, 0)
 
-	Local $hLTT = GUICtrlCreateLabel("", 56, 154, 32, 32)
+	Local $hLTT = GUICtrlCreateLabel("", 30, 260, 32, 32)
 	GUICtrlSetTip(-1, "LTT")
 	GUICtrlSetCursor(-1, 0)
 
@@ -390,22 +390,22 @@ Func Main()
 	_GDIPlus_Startup()
 	Local $aIcons[4]
 	If @Compiled Then
-		$aIcons[0] = GUICtrlCreateIcon(@ScriptFullPath, 201, 12, 110, 32, 32)
+		$aIcons[0] = GUICtrlCreateIcon(@ScriptFullPath, 201, 30, 110, 32, 32)
 		_SetBkIcon($aIcons[0], 0xE6E6E6, @ScriptFullPath, 201, 32, 32)
-		$aIcons[1] = GUICtrlCreateIcon(@ScriptFullPath, 202, 56, 110, 32, 32)
+		$aIcons[1] = GUICtrlCreateIcon(@ScriptFullPath, 202, 30, 160, 32, 32)
 		_SetBkIcon($aIcons[1], 0xE6E6E6, @ScriptFullPath, 202, 32, 32)
-		$aIcons[2] = GUICtrlCreateIcon(@ScriptFullPath, 203, 12, 154, 32, 32)
+		$aIcons[2] = GUICtrlCreateIcon(@ScriptFullPath, 203, 30, 210, 32, 32)
 		_SetBkIcon($aIcons[2], 0xE6E6E6, @ScriptFullPath, 203, 32, 32)
-		$aIcons[3] = GUICtrlCreateIcon(@ScriptFullPath, 204, 56, 154, 32, 32)
+		$aIcons[3] = GUICtrlCreateIcon(@ScriptFullPath, 204, 30, 260, 32, 32)
 		_SetBkIcon($aIcons[3], 0xE6E6E6, @ScriptFullPath, 204, 32, 32)
 	Else
-		GUICtrlCreateIcon("", -1, 12, 110, 32, 32)
+		GUICtrlCreateIcon("", -1, 30, 110, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & "\assets\Git.ico", -1, 32, 32)
-		GUICtrlCreateIcon("", -1, 56, 110, 32, 32)
+		GUICtrlCreateIcon("", -1, 30, 160, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\PP.ico", -1, 32, 32)
-		GUICtrlCreateIcon("", -1, 12, 154, 32, 32)
+		GUICtrlCreateIcon("", -1, 30, 210, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\dis.ico", -1, 32, 32)
-		GUICtrlCreateIcon("", -1, 56, 154, 32, 32)
+		GUICtrlCreateIcon("", -1, 30, 260, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\Web.ico", -1, 32, 32)
 	EndIf
 	_GDIPlus_Shutdown()
