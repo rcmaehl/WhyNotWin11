@@ -1,11 +1,17 @@
 [MetaData]
 Language=Polish - Poland
 Translator=B.O.S.S (BxOxSxS)
-Version=2.3.0.0
+Version=2.3.0.3
+[Font]
+Extra Large=24
+Large=18
+Medium=10
+Small=8.5
 [Strings]
 Donate=Wesprzyj
 Check for Updates=Sprawdź aktualizacje
-Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Teraz WhyNotWin11 dostępne na https://www.whynotwin11.org/
+Your Windows 11 Compatibility Results are Below=Twoje wyniki kompatybilności Windows 11 są poniżej
+Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Teraz WhyNotWin11 jest dostępne na https://www.whynotwin11.org/
 Results Based on Currently Known Requirements!=Wyniki na podstawie obecnie znanych wymaganiach!
 Translation by=Tłumaczenie przez
 Architecture (CPU + OS)=Architektura (CPU + OS)
@@ -33,10 +39,10 @@ Cores=Rdzenie
 Threads=Wątki
 GPT Detected=Wykryto GPT
 GPT Not Detected=Nie wykryto GPT
-Enabled=Włączone
-Supported=Wspierane
-Not Supported=Niewspierane
-Disabled / Not Detected=Wyłączone / Niewykryte
+Enabled=Włączony
+Supported=Wspierany
+Not Supported=Niewspierany
+Disabled / Not Detected=Wyłączony / Niewykryty
 Drive(s) Meet Requirements=Dysk(i) Spełniają Wymagania
 TPM Missing / Disabled=Brak / Wyłączone TPM
 Detected=Wykryto
