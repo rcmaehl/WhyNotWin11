@@ -971,7 +971,7 @@ Func _SetBannerText($hBannerText, $hBanner)
 			Return "https://archlinux.org/"
 			GUICtrlSetCursor($hBannerText, 0)
 			GUICtrlSetCursor($hBanner, 0)
-		Case @LogonDomain <> @ComputerName And IsAdmin()
+		Case @LogonDomain <> @ComputerName
 			GUICtrlSetData($hBannerText, "I'M FOR HIRE")
 			Return "https://fcofix.org/rcmaehl/wiki/I'M-FOR-HIRE"
 			GUICtrlSetCursor($hBannerText, 0)
