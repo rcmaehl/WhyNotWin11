@@ -339,9 +339,8 @@ EndFunc   ;==>ExtractFiles
 
 Func Main()
 
-	Local Static $iMUI = @MUILang
-	Local Static $aFonts[4]
-	$aFonts = _GetTranslationFonts($iMUI)
+	Local Const $iMUI = @MUILang
+	Local Const $aFonts = _GetTranslationFonts($iMUI)
 
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 
