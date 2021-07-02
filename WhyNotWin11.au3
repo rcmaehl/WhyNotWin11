@@ -37,6 +37,7 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 #include <WinAPISysWin.au3>
 #include <EditConstants.au3>
 #include <FontConstants.au3>
+#include <WinAPIShellEx.au3>
 #include <GUIConstantsEx.au3>
 #include <AutoItConstants.au3>
 #include <StaticConstants.au3>
@@ -45,6 +46,7 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 
 #include ".\Includes\_WMIC.au3"
 #include ".\Includes\_Checks.au3"
+#include ".\Includes\ResourcesEx.au3"
 
 Opt("TrayIconHide", 1)
 Opt("TrayAutoPause", 0)
@@ -397,16 +399,15 @@ Func Main()
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	_GDIPlus_Startup()
-	Local $aIcons[4]
 	If @Compiled Then
-		$aIcons[0] = GUICtrlCreateIcon(@ScriptFullPath, 201, 34, 110, 32, 32)
-		_SetBkIcon($aIcons[0], 0xE6E6E6, @ScriptFullPath, 201, 32, 32)
-		$aIcons[1] = GUICtrlCreateIcon(@ScriptFullPath, 202, 34, 160, 32, 32)
-		_SetBkIcon($aIcons[1], 0xE6E6E6, @ScriptFullPath, 202, 32, 32)
-		$aIcons[2] = GUICtrlCreateIcon(@ScriptFullPath, 203, 34, 210, 32, 32)
-		_SetBkIcon($aIcons[2], 0xE6E6E6, @ScriptFullPath, 203, 32, 32)
-		$aIcons[3] = GUICtrlCreateIcon(@ScriptFullPath, 204, 34, 260, 32, 32)
-		_SetBkIcon($aIcons[3], 0xE6E6E6, @ScriptFullPath, 204, 32, 32)
+		GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
+		_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 201, 32, 32)
+		GUICtrlCreateIcon("", -1, 34, 160, 32, 32)
+		_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 202, 32, 32)
+		GUICtrlCreateIcon("", -1, 34, 210, 32, 32)
+		_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 203, 32, 32)
+		GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
+		_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 204, 32, 32)
 	Else
 		GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & "\assets\Git.ico", -1, 32, 32)
@@ -735,6 +736,7 @@ Func Main()
 	EndSelect
 
 	GUISetState(@SW_SHOW, $hGUI)
+	_WinAPI_RedrawWindow($hGUI)
 
 	Local $hMsg, $sDXFile
 	While 1
@@ -1002,41 +1004,64 @@ EndFunc   ;==>_SetBannerText
 
 Func _SetBkIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
 
-	Local Static $STM_SETIMAGE = 0x0172
-	Local $tIcon, $tID, $hDC, $hBackDC, $hBackSv, $hBitmap, $hImage, $hIcon, $hBkIcon
+    Local Static $STM_SETIMAGE = 0x0172
+    Local $hDC, $hBackDC, $hBackSv, $hBitmap, $hImage, $hIcon, $hBkIcon
 
-	$tIcon = DllStructCreate('hwnd')
-	$tID = DllStructCreate('hwnd')
-	$hIcon = DllCall(@SystemDir & '\user32.dll', 'int', 'PrivateExtractIcons', 'str', $sIcon, 'int', $iIndex, 'int', $iWidth, 'int', $iHeight, 'ptr', DllStructGetPtr($tIcon), 'ptr', DllStructGetPtr($tID), 'int', 1, 'int', 0)
-	If (@error) Or ($hIcon[0] = 0) Then
-		Return SetError(1, 0, 0)
-	EndIf
-	$hIcon = DllStructGetData($tIcon, 1)
-	$tIcon = 0
-	$tID = 0
+	$hIcon = _WinAPI_ShellExtractIcon($sIcon, $iIndex, $iWidth, $iHeight)
 
-	$hDC = _WinAPI_GetDC(0)
-	$hBackDC = _WinAPI_CreateCompatibleDC($hDC)
-	$hBitmap = _WinAPI_CreateSolidBitmap(0, $iBackground, $iWidth, $iHeight)
-	$hBackSv = _WinAPI_SelectObject($hBackDC, $hBitmap)
-	_WinAPI_DrawIconEx($hBackDC, 0, 0, $hIcon, 0, 0, 0, 0, $DI_NORMAL)
+    $hDC = _WinAPI_GetDC(0)
+    $hBackDC = _WinAPI_CreateCompatibleDC($hDC)
+    $hBitmap = _WinAPI_CreateSolidBitmap(0, $iBackground, $iWidth, $iHeight)
+    $hBackSv = _WinAPI_SelectObject($hBackDC, $hBitmap)
+    _WinAPI_DrawIconEx($hBackDC, 0, 0, $hIcon, 0, 0, 0, 0, $DI_NORMAL)
 
-	$hImage = _GDIPlus_BitmapCreateFromHBITMAP($hBitmap)
-	$hBkIcon = DllCall($__g_hGDIPDll, 'int', 'GdipCreateHICONFromBitmap', 'hWnd', $hImage, 'int*', 0)
-	$hBkIcon = $hBkIcon[2]
-	_GDIPlus_ImageDispose($hImage)
+    $hImage = _GDIPlus_BitmapCreateFromHBITMAP($hBitmap)
+    $hBkIcon = DllCall($__g_hGDIPDll, 'int', 'GdipCreateHICONFromBitmap', 'hWnd', $hImage, 'int*', 0)
+    $hBkIcon = $hBkIcon[2]
+    _GDIPlus_ImageDispose($hImage)
 
-	GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, _WinAPI_CopyIcon($hBkIcon))
-	_WinAPI_RedrawWindow(GUICtrlGetHandle($ControlID))
+    GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, _WinAPI_CopyIcon($hBkIcon))
+    _WinAPI_RedrawWindow(GUICtrlGetHandle($ControlID))
 
-	_WinAPI_SelectObject($hBackDC, $hBackSv)
-	_WinAPI_DeleteDC($hBackDC)
-	_WinAPI_ReleaseDC(0, $hDC)
-	_WinAPI_DeleteObject($hBkIcon)
-	_WinAPI_DeleteObject($hBitmap)
-	_WinAPI_DeleteObject($hIcon)
+    _WinAPI_SelectObject($hBackDC, $hBackSv)
+    _WinAPI_DeleteDC($hBackDC)
+    _WinAPI_ReleaseDC(0, $hDC)
+    _WinAPI_DeleteObject($hBkIcon)
+    _WinAPI_DeleteObject($hBitmap)
+    _WinAPI_DeleteObject($hIcon)
 
-	Return SetError(0, 0, 1)
+    Return SetError(0, 0, 1)
+EndFunc   ;==>_SetBkIcon
+
+Func _SetBkSelfIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
+
+    Local Static $STM_SETIMAGE = 0x0172
+    Local $hDC, $hBackDC, $hBackSv, $hBitmap, $hImage, $hIcon, $hBkIcon
+
+	$hIcon =  _Resource_GetAsIcon($iIndex, "RC_DATA", $sIcon)
+
+    $hDC = _WinAPI_GetDC(0)
+    $hBackDC = _WinAPI_CreateCompatibleDC($hDC)
+    $hBitmap = _WinAPI_CreateSolidBitmap(0, $iBackground, $iWidth, $iHeight)
+    $hBackSv = _WinAPI_SelectObject($hBackDC, $hBitmap)
+    _WinAPI_DrawIconEx($hBackDC, 0, 0, $hIcon, 0, 0, 0, 0, $DI_NORMAL)
+
+    $hImage = _GDIPlus_BitmapCreateFromHBITMAP($hBitmap)
+    $hBkIcon = DllCall($__g_hGDIPDll, 'int', 'GdipCreateHICONFromBitmap', 'hWnd', $hImage, 'int*', 0)
+    $hBkIcon = $hBkIcon[2]
+    _GDIPlus_ImageDispose($hImage)
+
+    GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, _WinAPI_CopyIcon($hBkIcon))
+    _WinAPI_RedrawWindow(GUICtrlGetHandle($ControlID))
+
+    _WinAPI_SelectObject($hBackDC, $hBackSv)
+    _WinAPI_DeleteDC($hBackDC)
+    _WinAPI_ReleaseDC(0, $hDC)
+    _WinAPI_DeleteObject($hBkIcon)
+    _WinAPI_DeleteObject($hBitmap)
+    _WinAPI_DeleteObject($hIcon)
+
+    Return SetError(0, 0, 1)
 EndFunc   ;==>_SetBkIcon
 
 Func _SetFile($sString, $sFile, $iOverwrite = $FO_READ)
