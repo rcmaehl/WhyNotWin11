@@ -784,7 +784,7 @@ Func _Resource_SetToCtrlID($iCtrlID, $sResNameOrID, $iResType = $RT_RCDATA, $sDl
 					$iError = @error
 
 					If $bReturn Then
-						If $__WINVER >= 0x0600 Then
+						If _WinAPI_GetVersion() >= 0x0600 Then
 							$bReturn = _WinAPI_DeleteObject($hHBITMAP) > 0 ; Delete if Vista or above
 							$vReturn = $bReturn
 						Else
