@@ -15,6 +15,8 @@
 #AutoIt3Wrapper_Res_Icon_Add=assets\pp.ico
 #AutoIt3Wrapper_Res_Icon_Add=assets\dis.ico
 #AutoIt3Wrapper_Res_Icon_Add=assets\web.ico
+#AutoIt3Wrapper_Res_Icon_Add=assets\job.ico
+#AutoIt3Wrapper_Res_Icon_Add=assets\set.ico
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #Au3Stripper_Parameters=/so
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
@@ -62,7 +64,7 @@ Switch @OSVersion
 		;;;
 EndSwitch
 
-If @OSBuild >= 22000 Then
+If @OSBuild >= 22000 Or _WinAPI_GetProcAddress($hModule, "wine_get_host_version") Then
 	MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Your Windows 11 Compatibility Results are Below"), _Translate(@MUILang, "You're running the latest build!"))
 EndIf
 
@@ -362,13 +364,15 @@ Func Main()
 	GUISetAccelerators($aAccel)
 
 	; Top Most Interaction for Update Text
-	Local $hUpdate = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
+	Local $hUpdate = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 	GUICtrlSetCursor(-1, 0)
 
+	#cs Maybe Readd Later
 	; Top Most Interaction for Banner
-	Local $hBanner = GUICtrlCreateLabel("", 5, 540, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
+	Local $hBanner = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
+	#ce
 
 	; Top Most Interaction for Closing Window
 	Local $hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
@@ -392,6 +396,18 @@ Func Main()
 	GUICtrlSetTip(-1, "LTT")
 	GUICtrlSetCursor(-1, 0)
 
+	If @LogonDomain <> @ComputerName Then
+		Local $hJob = GUICtrlCreateLabel("", 34, 310, 32, 32)
+		GUICtrlSetTip(-1, "I'm For Hire")
+		GUICtrlSetCursor(-1, 0)
+	Else
+		Local $hJob = GUICtrlCreateDummy()
+	EndIf
+
+	Local $hToggle = GUICtrlCreateLabel("", 34, 518, 32, 32)
+	GUICtrlSetTip(-1, "Settings")
+	GUICtrlSetCursor(-1, 0)
+
 	; Allow Dragging of Window
 	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
 
@@ -408,23 +424,29 @@ Func Main()
 		_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 203, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
 		_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 204, 32, 32)
+		If @LogonDomain <> @ComputerName Then
+			GUICtrlCreateIcon("", -1, 34, 310, 32, 32)
+			_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 205, 32, 32)
+		EndIf
+		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
+		_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 206, 32, 32)
 	Else
 		GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & "\assets\Git.ico", -1, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & "\assets\git.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 160, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\PP.ico", -1, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\pp.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 210, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\dis.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\Web.ico", -1, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\web.ico", -1, 32, 32)
+		If @LogonDomain <> @ComputerName Then
+			GUICtrlCreateIcon("", -1, 34, 310, 32, 32)
+			_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\job.ico", -1, 32, 32)
+		EndIf
+		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
+		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\set.ico", -1, 32, 32)
 	EndIf
 	_GDIPlus_Shutdown()
-
-	Local $hBannerText = GUICtrlCreateLabel("", 5, 540, 90, 20, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, $aFonts[$FontSmall] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL, $GUI_FONTUNDER)
-	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
-
-	Local $sBannerURL = _SetBannerText($hBannerText, $hBanner)
 
 	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL, $GUI_FONTUNDER)
@@ -437,6 +459,14 @@ Func Main()
 
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
 	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
+
+	#cs Maybe Readd Later
+	Local $hBannerText = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlSetFont(-1, $aFonts[$FontSmall] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL, $GUI_FONTUNDER)
+	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
+
+	Local $sBannerURL = _SetBannerText($hBannerText, $hBanner)
+	#ce
 
 	#cs
 		If Not (@MUILang = "0409") Then
@@ -461,7 +491,7 @@ Func Main()
 	GUICtrlSetColor(-1, 0xE20012)
 	GUICtrlSetFont(-1, $aFonts[$FontMedium] * _GDIPlus_GraphicsGetDPIRatio()[0])
 
-	GUICtrlCreateLabel(ChrW(0x274C), 760, 10, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlCreateLabel(ChrW(0x274C), 765, 5, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL)
 
 	Local $hCheck[11][3]
@@ -687,8 +717,22 @@ Func Main()
 			GUICtrlSetData($hCheck[10][2], _GetTPMInfo(0) & " " & _GetTPMInfo(1) & " " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]))
 	EndSelect
 
+	#Region Settings GUI
+	Local $hSettings = GUICreate(_Translate($iMUI, "Settings"), 670, 558, 102, 2, $WS_POPUP, $WS_EX_MDICHILD, $hGUI)
+	Local $bSettings = False
+	GUISetBkColor(_HighContrast(0xF8F8F8))
+	GUISetFont($aFonts[$FontSmall] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_BOLD, "", "Arial")
+
+	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
+	GUICtrlSetDefBkColor(_HighContrast(0xF8F8F8))
+
+	GUICtrlCreateGroup("", 30, 30, 640, 100)
+
+	#EndRegion
+
+	GUISwitch($hGUI)
+
 	GUISetState(@SW_SHOW, $hGUI)
-	_WinAPI_RedrawWindow($hGUI)
 
 	Local $hMsg, $sDXFile
 	While 1
@@ -733,8 +777,8 @@ Func Main()
 			Case $hMsg = $hDumpLang
 				FileDelete(@LocalAppDataDir & "\WhyNotWin11\langs\")
 
-			Case $hMsg = $hBanner
-				ShellExecute($sBannerURL)
+			Case $hMsg = $hJob
+				ShellExecute("https://fcofix.org/rcmaehl/wiki/I'M-FOR-HIRE")
 
 			Case $hMsg = $hGithub
 				ShellExecute("https://fcofix.org/WhyNotWin11")
@@ -747,6 +791,14 @@ Func Main()
 
 			Case $hMsg = $hLTT
 				ShellExecute("https://linustechtips.com/topic/1350354-windows-11-readiness-check-whynotwin11/")
+
+			Case $hMsg = $hToggle
+				If $bSettings Then
+					GUISetState(@SW_HIDE, $hSettings)
+				Else
+					GUISetState(@SW_SHOW, $hSettings)
+				EndIf
+				$bSettings = Not $bSettings
 
 			Case $hMsg = $hUpdate
 				Switch _GetLatestRelease($sVersion)
@@ -944,6 +996,8 @@ Func _SetBannerText($hBannerText, $hBanner)
 			GUICtrlSetCursor($hBannerText, 0)
 			GUICtrlSetCursor($hBanner, 0)
 		Case Else
+			GUICtrlSetState($hBanner, $GUI_HIDE)
+			GUICtrlSetState($hBannerText, $GUI_HIDE)
 			GUICtrlSetCursor($hBanner, 2)
 	EndSelect
 
@@ -1026,17 +1080,17 @@ Func _Translate($iMUI, $sString)
 	Return IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Strings", $sString, $sString)
 EndFunc   ;==>_Translate
 
-Func  _GUICtrlSetPass($id)
-	GUICtrlSetData($id, "OK")
-	GUICtrlSetBkColor($id, 0x4CC355)
+Func  _GUICtrlSetPass($hCtrl)
+	GUICtrlSetData($hCtrl, "OK")
+	GUICtrlSetBkColor($hCtrl, 0x4CC355)
 EndFunc   ;==> _GUICtrlSetPass
 
-Func _GUICtrlSetFail($id)
-	GUICtrlSetData($id, "X")
-	GUICtrlSetBkColor($id, 0xFA113D)
+Func _GUICtrlSetFail($hCtrl)
+	GUICtrlSetData($hCtrl, "X")
+	GUICtrlSetBkColor($hCtrl, 0xFA113D)
 EndFunc   ;==>_GUICtrlSetFail
 
-Func _GUICtrlSetWarn($id, $symbol = "?")
-	GUICtrlSetData($id, $symbol)
-	GUICtrlSetBkColor($id, 0xF4C141)
+Func _GUICtrlSetWarn($hCtrl, $symbol = "?")
+	GUICtrlSetData($hCtrl, $symbol)
+	GUICtrlSetBkColor($hCtrl, 0xF4C141)
 EndFunc   ;==>_GUICtrlSetWarn
