@@ -375,7 +375,7 @@ Func Main()
 	; Top Most Interaction for Banner
 	Local $hBanner = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
-	#ce
+	#ce Maybe Readd Later
 
 	; Top Most Interaction for Closing Window
 	Local $hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
@@ -468,9 +468,9 @@ Func Main()
 	Local $hBannerText = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
-
+	
 	Local $sBannerURL = _SetBannerText($hBannerText, $hBanner)
-	#ce
+	#ce Maybe Readd Later
 
 	#cs
 		If Not (@MUILang = "0409") Then
@@ -519,7 +519,7 @@ Func Main()
 		Case @CPUArch = "X64" And @OSArch = "IA64"
 			ContinueCase
 		Case @CPUArch = "X64" And @OSArch = "X64"
-			 _GUICtrlSetPass($hCheck[0][0])
+			_GUICtrlSetPass($hCheck[0][0])
 			GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "64 Bit CPU") & @CRLF & _Translate($iMUI, "64 Bit OS"))
 		Case @CPUArch = "X64" And @OSArch = "X86"
 			_GUICtrlSetWarn($hCheck[0][0], "!")
@@ -532,7 +532,7 @@ Func Main()
 	Local $sFirmware = EnvGet("firmware_type")
 	Switch $sFirmware
 		Case "UEFI"
-			 _GUICtrlSetPass($hCheck[1][0])
+			_GUICtrlSetPass($hCheck[1][0])
 			GUICtrlSetData($hCheck[1][2], $sFirmware)
 		Case "Legacy"
 			_GUICtrlSetFail($hCheck[1][0])
@@ -552,7 +552,7 @@ Func Main()
 		Case StringInStr(_GetCPUInfo(2), "SnapDragon") Or StringInStr(_GetCPUInfo(2), "Microsoft")
 			$ListFile = "\WhyNotWin11\SupportedProcessorsQualcomm.txt"
 	EndSelect
-	
+
 	If $ListFile = Null Then
 		_GUICtrlSetWarn($hCheck[2][0])
 		GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Not Currently Listed as Compatible"))
@@ -583,14 +583,14 @@ Func Main()
 	EndIf
 
 	If _GetCPUInfo(0) >= 2 Or _GetCPUInfo(1) >= 2 Then
-		 _GUICtrlSetPass($hCheck[3][0])
+		_GUICtrlSetPass($hCheck[3][0])
 	Else
 		_GUICtrlSetFail($hCheck[3][0])
 	EndIf
 	GUICtrlSetData($hCheck[3][2], _GetCPUInfo(0) & " " & _Translate($iMUI, "Cores") & @CRLF & _GetCPUInfo(1) & " " & _Translate($iMUI, "Threads"))
 
 	If _GetCPUInfo(3) >= 1000 Then
-		 _GUICtrlSetPass($hCheck[4][0])
+		_GUICtrlSetPass($hCheck[4][0])
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	Else
 		_GUICtrlSetFail($hCheck[4][0])
@@ -602,7 +602,7 @@ Func Main()
 		Case "GPT"
 			If $aDisks[0] = $aDisks[1] Then
 				_GUICtrlSetPass($hCheck[6][0])
-				GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected") & @CRLF & $aDisks[0] & " " & _Translate($iMUI, "Drive(s) Meet Requirements")) 
+				GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected") & @CRLF & $aDisks[0] & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
 			ElseIf $aDisks[0] = 0 Then
 				_GUICtrlSetFail($hCheck[6][0])
 				GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected") & @CRLF & "0 " & _Translate($iMUI, "Drive(s) Meet Requirements"))
@@ -630,7 +630,7 @@ Func Main()
 	EndIf
 
 	If $aMem >= 4 Then
-		 _GUICtrlSetPass($hCheck[7][0])
+		_GUICtrlSetPass($hCheck[7][0])
 		GUICtrlSetData($hCheck[7][2], $aMem & " GB")
 	Else
 		_GUICtrlSetFail($hCheck[7][0])
@@ -641,10 +641,10 @@ Func Main()
 	If @error Then $sSecureBoot = 999
 	Switch $sSecureBoot
 		Case 0
-			 _GUICtrlSetPass($hCheck[8][0])
+			_GUICtrlSetPass($hCheck[8][0])
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Supported"))
 		Case 1
-			 _GUICtrlSetPass($hCheck[8][0])
+			_GUICtrlSetPass($hCheck[8][0])
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Enabled"))
 		Case Else
 			_GUICtrlSetFail($hCheck[8][0])
@@ -661,7 +661,7 @@ Func Main()
 
 
 	If Round(DriveSpaceTotal("C:\") / 1024, 0) >= 64 Then
-		 _GUICtrlSetPass($hCheck[9][0])
+		_GUICtrlSetPass($hCheck[9][0])
 	Else
 		_GUICtrlSetFail($hCheck[9][0])
 	EndIf
@@ -677,7 +677,7 @@ Func Main()
 			_GUICtrlSetFail($hCheck[10][0])
 			GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Not Supported"))
 		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 2.0
-			 _GUICtrlSetPass($hCheck[10][0])
+			_GUICtrlSetPass($hCheck[10][0])
 			GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Detected"))
 		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
 			;_GUICtrlSetWarn($hCheck[10][0], "OK")
@@ -699,7 +699,7 @@ Func Main()
 
 	GUICtrlCreateGroup("", 30, 30, 640, 100)
 
-	#EndRegion
+	#EndRegion Settings GUI
 
 	GUISwitch($hGUI)
 
@@ -727,14 +727,14 @@ Func Main()
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:3") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM3")
-						 _GUICtrlSetPass($hCheck[5][0])
+						_GUICtrlSetPass($hCheck[5][0])
 						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")   ; <== No translation, "DirectX 12 and WDDM 3" in LANG-file
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "2") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:2") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
-						 _GUICtrlSetPass($hCheck[5][0])
+						_GUICtrlSetPass($hCheck[5][0])
 						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")   ; <== No translation, "DirectX 12 and WDDM 2" in LANG-file
 					Case Not StringInStr($sDXFile, "FeatureLevels:12") Or Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 						_GUICtrlSetFail($hCheck[5][0])
@@ -944,12 +944,12 @@ EndFunc   ;==>_INIUnicode
 
 Func _Security()
 	If WinExists("WhyNotWin11 - Check Why Your PC Can't Run Windows 11") Then
-		MsgBox($MB_TOPMOST+$MB_ICONWARNING, "Alert", _
-			"WhyNotWin11 has detected that it may have been downloaded from a suspicious site. " & _
-			"The owner of this site has refused to contact us and has hosted suspect files trying" & _
-			" to hide they fact they are not affiliated before. Please see GitHub issue #66.")
+		MsgBox($MB_TOPMOST + $MB_ICONWARNING, "Alert", _
+				"WhyNotWin11 has detected that it may have been downloaded from a suspicious site. " & _
+				"The owner of this site has refused to contact us and has hosted suspect files trying" & _
+				" to hide they fact they are not affiliated before. Please see GitHub issue #66.")
 	EndIf
-EndFunc
+EndFunc   ;==>_Security
 
 Func _SetBannerText($hBannerText, $hBanner)
 
@@ -979,65 +979,65 @@ EndFunc   ;==>_SetBannerText
 
 Func _SetBkIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
 
-    Local Static $STM_SETIMAGE = 0x0172
-    Local $hDC, $hBackDC, $hBackSv, $hBitmap, $hImage, $hIcon, $hBkIcon
+	Local Static $STM_SETIMAGE = 0x0172
+	Local $hDC, $hBackDC, $hBackSv, $hBitmap, $hImage, $hIcon, $hBkIcon
 
 	$hIcon = _WinAPI_ShellExtractIcon($sIcon, $iIndex, $iWidth, $iHeight)
 
-    $hDC = _WinAPI_GetDC(0)
-    $hBackDC = _WinAPI_CreateCompatibleDC($hDC)
-    $hBitmap = _WinAPI_CreateSolidBitmap(0, $iBackground, $iWidth, $iHeight)
-    $hBackSv = _WinAPI_SelectObject($hBackDC, $hBitmap)
-    _WinAPI_DrawIconEx($hBackDC, 0, 0, $hIcon, 0, 0, 0, 0, $DI_NORMAL)
+	$hDC = _WinAPI_GetDC(0)
+	$hBackDC = _WinAPI_CreateCompatibleDC($hDC)
+	$hBitmap = _WinAPI_CreateSolidBitmap(0, $iBackground, $iWidth, $iHeight)
+	$hBackSv = _WinAPI_SelectObject($hBackDC, $hBitmap)
+	_WinAPI_DrawIconEx($hBackDC, 0, 0, $hIcon, 0, 0, 0, 0, $DI_NORMAL)
 
-    $hImage = _GDIPlus_BitmapCreateFromHBITMAP($hBitmap)
-    $hBkIcon = DllCall($__g_hGDIPDll, 'int', 'GdipCreateHICONFromBitmap', 'hWnd', $hImage, 'int*', 0)
-    $hBkIcon = $hBkIcon[2]
-    _GDIPlus_ImageDispose($hImage)
+	$hImage = _GDIPlus_BitmapCreateFromHBITMAP($hBitmap)
+	$hBkIcon = DllCall($__g_hGDIPDll, 'int', 'GdipCreateHICONFromBitmap', 'hWnd', $hImage, 'int*', 0)
+	$hBkIcon = $hBkIcon[2]
+	_GDIPlus_ImageDispose($hImage)
 
-    GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, _WinAPI_CopyIcon($hBkIcon))
-    _WinAPI_RedrawWindow(GUICtrlGetHandle($ControlID))
+	GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, _WinAPI_CopyIcon($hBkIcon))
+	_WinAPI_RedrawWindow(GUICtrlGetHandle($ControlID))
 
-    _WinAPI_SelectObject($hBackDC, $hBackSv)
-    _WinAPI_DeleteDC($hBackDC)
-    _WinAPI_ReleaseDC(0, $hDC)
-    _WinAPI_DeleteObject($hBkIcon)
-    _WinAPI_DeleteObject($hBitmap)
-    _WinAPI_DeleteObject($hIcon)
+	_WinAPI_SelectObject($hBackDC, $hBackSv)
+	_WinAPI_DeleteDC($hBackDC)
+	_WinAPI_ReleaseDC(0, $hDC)
+	_WinAPI_DeleteObject($hBkIcon)
+	_WinAPI_DeleteObject($hBitmap)
+	_WinAPI_DeleteObject($hIcon)
 
-    Return SetError(0, 0, 1)
+	Return SetError(0, 0, 1)
 EndFunc   ;==>_SetBkIcon
 
 Func _SetBkSelfIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
 
-    Local Static $STM_SETIMAGE = 0x0172
-    Local $hDC, $hBackDC, $hBackSv, $hBitmap, $hImage, $hIcon, $hBkIcon
+	Local Static $STM_SETIMAGE = 0x0172
+	Local $hDC, $hBackDC, $hBackSv, $hBitmap, $hImage, $hIcon, $hBkIcon
 
-	$hIcon =  _Resource_GetAsIcon($iIndex, "RC_DATA", $sIcon)
+	$hIcon = _Resource_GetAsIcon($iIndex, "RC_DATA", $sIcon)
 
-    $hDC = _WinAPI_GetDC(0)
-    $hBackDC = _WinAPI_CreateCompatibleDC($hDC)
-    $hBitmap = _WinAPI_CreateSolidBitmap(0, $iBackground, $iWidth, $iHeight)
-    $hBackSv = _WinAPI_SelectObject($hBackDC, $hBitmap)
-    _WinAPI_DrawIconEx($hBackDC, 0, 0, $hIcon, 0, 0, 0, 0, $DI_NORMAL)
+	$hDC = _WinAPI_GetDC(0)
+	$hBackDC = _WinAPI_CreateCompatibleDC($hDC)
+	$hBitmap = _WinAPI_CreateSolidBitmap(0, $iBackground, $iWidth, $iHeight)
+	$hBackSv = _WinAPI_SelectObject($hBackDC, $hBitmap)
+	_WinAPI_DrawIconEx($hBackDC, 0, 0, $hIcon, 0, 0, 0, 0, $DI_NORMAL)
 
-    $hImage = _GDIPlus_BitmapCreateFromHBITMAP($hBitmap)
-    $hBkIcon = DllCall($__g_hGDIPDll, 'int', 'GdipCreateHICONFromBitmap', 'hWnd', $hImage, 'int*', 0)
-    $hBkIcon = $hBkIcon[2]
-    _GDIPlus_ImageDispose($hImage)
+	$hImage = _GDIPlus_BitmapCreateFromHBITMAP($hBitmap)
+	$hBkIcon = DllCall($__g_hGDIPDll, 'int', 'GdipCreateHICONFromBitmap', 'hWnd', $hImage, 'int*', 0)
+	$hBkIcon = $hBkIcon[2]
+	_GDIPlus_ImageDispose($hImage)
 
-    GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, _WinAPI_CopyIcon($hBkIcon))
-    _WinAPI_RedrawWindow(GUICtrlGetHandle($ControlID))
+	GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, _WinAPI_CopyIcon($hBkIcon))
+	_WinAPI_RedrawWindow(GUICtrlGetHandle($ControlID))
 
-    _WinAPI_SelectObject($hBackDC, $hBackSv)
-    _WinAPI_DeleteDC($hBackDC)
-    _WinAPI_ReleaseDC(0, $hDC)
-    _WinAPI_DeleteObject($hBkIcon)
-    _WinAPI_DeleteObject($hBitmap)
-    _WinAPI_DeleteObject($hIcon)
+	_WinAPI_SelectObject($hBackDC, $hBackSv)
+	_WinAPI_DeleteDC($hBackDC)
+	_WinAPI_ReleaseDC(0, $hDC)
+	_WinAPI_DeleteObject($hBkIcon)
+	_WinAPI_DeleteObject($hBitmap)
+	_WinAPI_DeleteObject($hIcon)
 
-    Return SetError(0, 0, 1)
-EndFunc   ;==>_SetBkIcon
+	Return SetError(0, 0, 1)
+EndFunc   ;==>_SetBkSelfIcon
 
 Func _SetFile($sString, $sFile, $iOverwrite = $FO_READ)
 	Local Const $hFileOpen = FileOpen($sFile, $iOverwrite + $FO_APPEND)
@@ -1054,10 +1054,10 @@ Func _Translate($iMUI, $sString)
 	Return IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Strings", $sString, $sString)
 EndFunc   ;==>_Translate
 
-Func  _GUICtrlSetPass($hCtrl)
+Func _GUICtrlSetPass($hCtrl)
 	GUICtrlSetData($hCtrl, "OK")
 	GUICtrlSetBkColor($hCtrl, 0x4CC355)
-EndFunc   ;==> _GUICtrlSetPass
+EndFunc   ;==>_GUICtrlSetPass
 
 Func _GUICtrlSetFail($hCtrl)
 	GUICtrlSetData($hCtrl, "X")
