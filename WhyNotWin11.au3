@@ -399,12 +399,13 @@ Func Main()
 	GUICtrlSetTip(-1, "LTT")
 	GUICtrlSetCursor(-1, 0)
 
+	Local $hJob
 	If @LogonDomain <> @ComputerName Then
-		Local $hJob = GUICtrlCreateLabel("", 34, 310, 32, 32)
+		$hJob = GUICtrlCreateLabel("", 34, 310, 32, 32)
 		GUICtrlSetTip(-1, "I'm For Hire")
 		GUICtrlSetCursor(-1, 0)
 	Else
-		Local $hJob = GUICtrlCreateDummy()
+		$hJob = GUICtrlCreateDummy()
 	EndIf
 
 	Local $hToggle = GUICtrlCreateLabel("", 34, 518, 32, 32)
