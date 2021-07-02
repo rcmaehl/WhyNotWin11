@@ -604,7 +604,7 @@ Func Main()
 				 _GUICtrlSetPass($hCheck[6][0])
 			ElseIf $aDisks[0] = 0 Then
 				_GUICtrlSetFail($hCheck[6][0])
-				GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected") & @CRLF & _Translate($iMUI, "0 Drives Meet Requirements"))
+				GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected") & @CRLF & "0 " & _Translate($iMUI, "Drive(s) Meet Requirements"))
 			Else
 				_GUICtrlSetWarn($hCheck[6][0], "!")
 			EndIf
@@ -1038,6 +1038,5 @@ EndFunc   ;==>_GUICtrlSetFail
 
 Func _GUICtrlSetWarn($id, $symbol = "?")
 	GUICtrlSetData($id, $symbol)
-	GUICtrlSetBkColor($id, 
-    )
+	GUICtrlSetBkColor($id, 0xF4C141)
 EndFunc   ;==>_GUICtrlSetWarn
