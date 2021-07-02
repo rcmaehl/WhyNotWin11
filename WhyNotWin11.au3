@@ -54,17 +54,16 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 
 Opt("TrayIconHide", 1)
 Opt("TrayAutoPause", 0)
-
-If $CmdLine[0] > 0 Then ProcessCMDLine()
-ExtractFiles()
-Main()
-
 Switch @OSVersion
 	Case "WIN_7", "WIN_VISTA", "WIN_XP", "WIN_XPe"
 		MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Not Supported"), @OSVersion & " " & _Translate(@MUILang, "Not Supported"))
 	Case Else
 		;;;
 EndSwitch
+
+If $CmdLine[0] > 0 Then ProcessCMDLine()
+ExtractFiles()
+Main()
 
 Global $__g_hModule = _WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll")
 If @OSBuild >= 22000 Or _WinAPI_GetProcAddress($__g_hModule, "wine_get_host_version") Then
