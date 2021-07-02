@@ -701,14 +701,6 @@ Func Main()
 	GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\") / 1024, 0) & " GB C:\" & @CRLF & $iDrives & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
 
 	Select
-		Case Not IsAdmin() And _GetTPMInfo(0) = True
-			GUICtrlSetData($hCheck[10][0], "OK")
-			GUICtrlSetBkColor($hCheck[10][0], 0x4CC355)
-			GUICtrlSetData($hCheck[10][2], "TPM 2.0 " & _Translate($iMUI, "Detected"))
-		Case Not IsAdmin() And _GetTPMInfo <> True
-			GUICtrlSetData($hCheck[10][0], "X")
-			GUICtrlSetBkColor($hCheck[10][0], 0xFA113D)
-			GUICtrlSetData($hCheck[10][2], _Translate($iMUI, "TPM Missing / Disabled"))
 		Case _GetTPMInfo(0) = False
 			ContinueCase
 		Case _GetTPMInfo(1) = False
