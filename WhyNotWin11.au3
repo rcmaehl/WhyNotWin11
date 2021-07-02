@@ -461,7 +461,7 @@ Func Main()
 	GUICtrlSetColor(-1, 0xE20012)
 	GUICtrlSetFont(-1, $aFonts[$FontMedium] * _GDIPlus_GraphicsGetDPIRatio()[0])
 
-	GUICtrlCreateLabel("❌", 760, 10, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlCreateLabel(ChrW(0x274C), 760, 10, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * _GDIPlus_GraphicsGetDPIRatio()[0], $FW_NORMAL)
 
 	Local $hCheck[11][3]
@@ -484,32 +484,26 @@ Func Main()
 		Case @CPUArch = "X64" And @OSArch = "IA64"
 			ContinueCase
 		Case @CPUArch = "X64" And @OSArch = "X64"
-			GUICtrlSetData($hCheck[0][0], "OK")
-			GUICtrlSetBkColor($hCheck[0][0], 0x4CC355)
+			 _GUICtrlSetPass($hCheck[0][0])
 			GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "64 Bit CPU") & @CRLF & _Translate($iMUI, "64 Bit OS"))
 		Case @CPUArch = "X64" And @OSArch = "X86"
-			GUICtrlSetData($hCheck[0][0], "!")
-			GUICtrlSetBkColor($hCheck[0][0], 0xF4C141)
+			_GUICtrlSetWarn($hCheck[0][0], "!")
 			GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "64 Bit CPU") & @CRLF & _Translate($iMUI, "32 bit OS"))
 		Case Else
-			GUICtrlSetData($hCheck[0][0], "X")
-			GUICtrlSetBkColor($hCheck[0][0], 0xFA113D)
+			_GUICtrlSetFail($hCheck[0][0])
 			GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "32 Bit CPU") & @CRLF & _Translate($iMUI, "32 Bit OS"))
 	EndSelect
 
 	Local $sFirmware = EnvGet("firmware_type")
 	Switch $sFirmware
 		Case "UEFI"
-			GUICtrlSetData($hCheck[1][0], "OK")
-			GUICtrlSetBkColor($hCheck[1][0], 0x4CC355)
+			 _GUICtrlSetPass($hCheck[1][0])
 			GUICtrlSetData($hCheck[1][2], $sFirmware)
 		Case "Legacy"
-			GUICtrlSetData($hCheck[1][0], "X")
-			GUICtrlSetBkColor($hCheck[1][0], 0xFA113D)
+			_GUICtrlSetFail($hCheck[1][0])
 			GUICtrlSetData($hCheck[1][2], $sFirmware)
 		Case Else
-			GUICtrlSetData($hCheck[1][0], "?")
-			GUICtrlSetBkColor($hCheck[1][0], 0xF4C141)
+			_GUICtrlSetWarn($hCheck[1][0])
 			GUICtrlSetData($hCheck[1][2], $sFirmware)
 	EndSwitch
 
@@ -518,26 +512,22 @@ Func Main()
 		Case StringInStr(_GetCPUInfo(2), "AMD")
 			$iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
 			If @error Then
-				GUICtrlSetData($hCheck[2][0], "?")
-				GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+				_GUICtrlSetWarn($hCheck[2][0])
 				GUICtrlSetTip($hCheck[2][0], _Translate($iMUI, "Unable to Check List"))
 			EndIf
 			For $iLine = 1 To $iLines Step 1
 				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $iLine)
 				Select
 					Case @error = -1
-						GUICtrlSetData($hCheck[2][0], "?")
-						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						_GUICtrlSetWarn($hCheck[2][0])
 						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Error Accessing List"))
 						ExitLoop
 					Case $iLine = $iLines
-						GUICtrlSetData($hCheck[2][0], "?")
-						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						_GUICtrlSetWarn($hCheck[2][0])
 						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Not Currently Listed as Compatible"))
 						ExitLoop
 					Case StringInStr(_GetCPUInfo(2), $sLine)
-						GUICtrlSetData($hCheck[2][0], "OK")
-						GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
+						 _GUICtrlSetPass($hCheck[2][0])
 						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Listed as Compatible"))
 						ExitLoop
 				EndSelect
@@ -545,26 +535,22 @@ Func Main()
 		Case StringInStr(_GetCPUInfo(2), "Intel")
 			$iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt")
 			If @error Then
-				GUICtrlSetData($hCheck[2][0], "?")
-				GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+				_GUICtrlSetWarn($hCheck[2][0])
 				GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Unable to Check List"))
 			EndIf
 			For $iLine = 1 To $iLines Step 1
 				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $iLine)
 				Select
 					Case @error = -1
-						GUICtrlSetData($hCheck[2][0], "?")
-						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						_GUICtrlSetWarn($hCheck[2][0])
 						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Error Accessing List"))
 						ExitLoop
 					Case $iLine = $iLines
-						GUICtrlSetData($hCheck[2][0], "?")
-						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						_GUICtrlSetWarn($hCheck[2][0])
 						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Not Currently Listed as Compatible"))
 						ExitLoop
 					Case StringInStr(_GetCPUInfo(2), $sLine)
-						GUICtrlSetData($hCheck[2][0], "OK")
-						GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
+						 _GUICtrlSetPass($hCheck[2][0])
 						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Listed as Compatible"))
 						ExitLoop
 				EndSelect
@@ -572,51 +558,42 @@ Func Main()
 		Case StringInStr(_GetCPUInfo(2), "SnapDragon") Or StringInStr(_GetCPUInfo(2), "Microsoft")
 			$iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt")
 			If @error Then
-				GUICtrlSetData($hCheck[2][0], "?")
-				GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+				_GUICtrlSetWarn($hCheck[2][0])
 				GUICtrlSetTip($hCheck[2][0], _Translate($iMUI, "Unable to Check List"))
 			EndIf
 			For $iLine = 1 To $iLines Step 1
 				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $iLine)
 				Select
 					Case @error = -1
-						GUICtrlSetData($hCheck[2][0], "?")
-						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						_GUICtrlSetWarn($hCheck[2][0])
 						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Error Accessing List"))
 						ExitLoop
 					Case $iLine = $iLines
-						GUICtrlSetData($hCheck[2][0], "?")
-						GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+						_GUICtrlSetWarn($hCheck[2][0])
 						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Not Currently Listed as Compatible"))
 						ExitLoop
 					Case StringInStr(_GetCPUInfo(2), $sLine)
-						GUICtrlSetData($hCheck[2][0], "OK")
-						GUICtrlSetBkColor($hCheck[2][0], 0x4CC355)
+						 _GUICtrlSetPass($hCheck[2][0])
 						GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Listed as Compatible"))
 						ExitLoop
 				EndSelect
 			Next
 		Case Else
-			GUICtrlSetData($hCheck[2][0], "?")
-			GUICtrlSetBkColor($hCheck[2][0], 0xF4C141)
+			_GUICtrlSetWarn($hCheck[2][0])
 	EndSelect
 
 	If _GetCPUInfo(0) >= 2 Or _GetCPUInfo(1) >= 2 Then
-		GUICtrlSetData($hCheck[3][0], "OK")
-		GUICtrlSetBkColor($hCheck[3][0], 0x4CC355)
+		 _GUICtrlSetPass($hCheck[3][0])
 	Else
-		GUICtrlSetData($hCheck[3][0], "X")
-		GUICtrlSetBkColor($hCheck[3][0], 0xFA113D)
+		_GUICtrlSetFail($hCheck[3][0])
 	EndIf
 	GUICtrlSetData($hCheck[3][2], _GetCPUInfo(0) & " " & _Translate($iMUI, "Cores") & @CRLF & _GetCPUInfo(1) & " " & _Translate($iMUI, "Threads"))
 
 	If _GetCPUInfo(3) >= 1000 Then
-		GUICtrlSetData($hCheck[4][0], "OK")
-		GUICtrlSetBkColor($hCheck[4][0], 0x4CC355)
+		 _GUICtrlSetPass($hCheck[4][0])
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	Else
-		GUICtrlSetData($hCheck[4][0], "X")
-		GUICtrlSetBkColor($hCheck[4][0], 0xFA113D)
+		_GUICtrlSetFail($hCheck[4][0])
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	EndIf
 
@@ -624,20 +601,16 @@ Func Main()
 	Switch _GetDiskInfo(0)
 		Case "GPT"
 			If $aDisks[0] = $aDisks[1] Then
-				GUICtrlSetData($hCheck[6][0], "OK")
-				GUICtrlSetBkColor($hCheck[6][0], 0x4CC355)
+				 _GUICtrlSetPass($hCheck[6][0])
 			ElseIf $aDisks[0] = 0 Then
-				GUICtrlSetData($hCheck[6][0], "X")
-				GUICtrlSetBkColor($hCheck[6][0], 0xFA113D)
-				GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected" & @CRLF & "0 Drives Meet Requirements"))
+				_GUICtrlSetFail($hCheck[6][0])
+				GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected") & @CRLF & "0 " & _Translate($iMUI, "Drive(s) Meet Requirements"))
 			Else
-				GUICtrlSetData($hCheck[6][0], "!")
-				GUICtrlSetBkColor($hCheck[6][0], 0xF4C141)
+				_GUICtrlSetWarn($hCheck[6][0], "!")
 			EndIf
 			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected") & @CRLF & $aDisks[1] & "/" & $aDisks[0] & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
 		Case Else
-			GUICtrlSetData($hCheck[6][0], "X")
-			GUICtrlSetBkColor($hCheck[6][0], 0xFA113D)
+			_GUICtrlSetFail($hCheck[6][0])
 			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected"))
 	EndSwitch
 
@@ -656,12 +629,10 @@ Func Main()
 	EndIf
 
 	If $aMem >= 4 Then
-		GUICtrlSetData($hCheck[7][0], "OK")
-		GUICtrlSetBkColor($hCheck[7][0], 0x4CC355)
+		 _GUICtrlSetPass($hCheck[7][0])
 		GUICtrlSetData($hCheck[7][2], $aMem & " GB")
 	Else
-		GUICtrlSetData($hCheck[7][0], "X")
-		GUICtrlSetBkColor($hCheck[7][0], 0xFA113D)
+		_GUICtrlSetFail($hCheck[7][0])
 		GUICtrlSetData($hCheck[7][2], $aMem & " GB")
 	EndIf
 
@@ -669,16 +640,13 @@ Func Main()
 	If @error Then $sSecureBoot = 999
 	Switch $sSecureBoot
 		Case 0
-			GUICtrlSetData($hCheck[8][0], "OK")
-			GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
+			 _GUICtrlSetPass($hCheck[8][0])
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Supported"))
 		Case 1
-			GUICtrlSetData($hCheck[8][0], "OK")
-			GUICtrlSetBkColor($hCheck[8][0], 0x4CC355)
+			 _GUICtrlSetPass($hCheck[8][0])
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Enabled"))
 		Case Else
-			GUICtrlSetData($hCheck[8][0], "X")
-			GUICtrlSetBkColor($hCheck[8][0], 0xFA113D)
+			_GUICtrlSetFail($hCheck[8][0])
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Disabled / Not Detected"))
 	EndSwitch
 
@@ -692,11 +660,9 @@ Func Main()
 
 
 	If Round(DriveSpaceTotal("C:\") / 1024, 0) >= 64 Then
-		GUICtrlSetData($hCheck[9][0], "OK")
-		GUICtrlSetBkColor($hCheck[9][0], 0x4CC355)
+		 _GUICtrlSetPass($hCheck[9][0])
 	Else
-		GUICtrlSetData($hCheck[9][0], "X")
-		GUICtrlSetBkColor($hCheck[9][0], 0xFA113D)
+		_GUICtrlSetFail($hCheck[9][0])
 	EndIf
 	GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\") / 1024, 0) & " GB C:\" & @CRLF & $iDrives & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
 
@@ -704,26 +670,20 @@ Func Main()
 		Case _GetTPMInfo(0) = False
 			ContinueCase
 		Case _GetTPMInfo(1) = False
-			GUICtrlSetData($hCheck[10][0], "X")
-			GUICtrlSetBkColor($hCheck[10][0], 0xFA113D)
+			_GUICtrlSetFail($hCheck[10][0])
 			GUICtrlSetData($hCheck[10][2], _Translate($iMUI, "TPM Missing / Disabled"))
 		Case Not Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
-			GUICtrlSetData($hCheck[10][0], "X")
-			GUICtrlSetBkColor($hCheck[10][0], 0xFA113D)
+			_GUICtrlSetFail($hCheck[10][0])
 			GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Not Supported"))
 		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 2.0
-			GUICtrlSetData($hCheck[10][0], "OK")
-			GUICtrlSetBkColor($hCheck[10][0], 0x4CC355)
+			 _GUICtrlSetPass($hCheck[10][0])
 			GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Detected"))
 		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
-			;GUICtrlSetData($hCheck[10][0], "OK")
-			;GUICtrlSetBkColor($hCheck[10][0], 0xF4C141)
-			GUICtrlSetData($hCheck[10][0], "X")
-			GUICtrlSetBkColor($hCheck[10][0], 0xFA113D)
+			;_GUICtrlSetWarn($hCheck[10][0], "OK")
+			_GUICtrlSetFail($hCheck[10][0])
 			GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Detected"))
 		Case Else
-			GUICtrlSetData($hCheck[10][0], "X")
-			GUICtrlSetBkColor($hCheck[10][0], 0xFA113D)
+			_GUICtrlSetFail($hCheck[10][0])
 			GUICtrlSetData($hCheck[10][2], _GetTPMInfo(0) & " " & _GetTPMInfo(1) & " " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]))
 	EndSelect
 
@@ -749,28 +709,23 @@ Func Main()
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:3") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM3")
-						GUICtrlSetData($hCheck[5][0], "OK")
-						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
-						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")
+						 _GUICtrlSetPass($hCheck[5][0])
+						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")   ; <== No translatin, "DirectX 12 and WDDM 3" in LANG-file
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "2") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:2") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
-						GUICtrlSetData($hCheck[5][0], "OK")
-						GUICtrlSetBkColor($hCheck[5][0], 0x4CC355)
-						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")
+						 _GUICtrlSetPass($hCheck[5][0])
+						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")   ; <== No translatin, "DirectX 12 and WDDM 2" in LANG-file
 					Case Not StringInStr($sDXFile, "FeatureLevels:12") Or Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
-						GUICtrlSetData($hCheck[5][0], "X")
-						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
+						_GUICtrlSetFail($hCheck[5][0])
 						GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12, but WDDM2"))
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And Not StringInStr($sDXFile, "DriverModel:WDDM2")
-						GUICtrlSetData($hCheck[5][0], "X")
-						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
+						_GUICtrlSetFail($hCheck[5][0])
 						GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DirectX 12, but no WDDM2"))
 					Case Else
-						GUICtrlSetData($hCheck[5][0], "X")
-						GUICtrlSetBkColor($hCheck[5][0], 0xFA113D)
+						_GUICtrlSetFail($hCheck[5][0])
 						GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12 or WDDM2"))
 				EndSelect
 				FileDelete($hDXFile)
@@ -1070,3 +1025,18 @@ Func _Translate($iMUI, $sString)
 	_INIUnicode(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang")
 	Return IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Strings", $sString, $sString)
 EndFunc   ;==>_Translate
+
+Func  _GUICtrlSetPass($id)
+	GUICtrlSetData($id, "OK")
+	GUICtrlSetBkColor($id, 0x4CC355)
+EndFunc   ;==> _GUICtrlSetPass
+
+Func _GUICtrlSetFail($id)
+	GUICtrlSetData($id, "X")
+	GUICtrlSetBkColor($id, 0xFA113D)
+EndFunc   ;==>_GUICtrlSetFail
+
+Func _GUICtrlSetWarn($id, $symbol = "?")
+	GUICtrlSetData($id, $symbol)
+	GUICtrlSetBkColor($id, 0xF4C141)
+EndFunc   ;==>_GUICtrlSetWarn
