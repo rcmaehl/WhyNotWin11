@@ -24,7 +24,7 @@ Detection Script to help identify why your PC isn't Windows 11 Release Ready.
  |Minimum Requirements|Recommended
 ----|----|----
 OS|Windows 8.1|Latest Windows 10 Build
-CPU|32-bit|64-bit
+CPU|32-bit Single Core|64-bit Dual Core or Higher
 RAM (Memory)|40MB Free|100MB Free
 Disk (Storage)|5MB Free|100MB Free
 
