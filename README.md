@@ -20,25 +20,13 @@ Detection Script to help identify why your PC isn't Windows 11 Release Ready.
 [Download latest testing release](https://nightly.link/rcmaehl/WhyNotWin11/workflows/wnw11/main/WNW11.zip)\
 **Keep in mind that you will have to update testing releases manually**
 
-## To-Do
-
-- [x] Hard Floor Checks:
-    - [x] Cores >= 2
-    - [x] CPU Freq >= 1 GHZ
-    - [X] CPU Arch = 64
-    - [x] RAM >= 4 GB
-    - [x] Storage >= 64 GB
-    - [x] ~~TPM >= 1.2~~ (Removed with recent changes from Microsoft)
-    - [x] SecureBoot
-    - [x] ~~SMode~~ (WhyNotWin11 is not compatible with S Mode Devices)
-- [x] Soft Floor Checks:
-    - [x] TPM >= 2.0
-    - [x] CPU Compatibility list
-- [ ] Other Checks:
-    - [x] DirectX 12
-    - [x] WDDM 2
-    - [ ] Screen Resolution
-- [x] A fancier GUI
+## System Requirements
+ |Minimum Requirements|Recommended
+----|----|----
+OS|Windows 8.1|Latest Windows 10 Build
+CPU|32-bit Single Core|64-bit Dual Core or Higher
+RAM (Memory)|40MB Free|100MB Free
+Disk (Storage)|5MB Free|100MB Free
 
 ## Compiling
 

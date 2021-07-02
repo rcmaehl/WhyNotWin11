@@ -1,7 +1,7 @@
 [MetaData]
 Language=Japanese - Japan
-Translator=Takayuki ITO, Nishide Itaru (goahi), syobon-tech
-Version=2.2.5.0
+Translator=yuki-gh, goahi, syobon-tech, arakim
+Version=2.3.0.4
 [Strings]
 Donate=寄付
 Check for Updates=更新をチェック
@@ -42,7 +42,7 @@ Drive(s) Meet Requirements=個のドライブが要件に適合
 TPM Missing / Disabled=TPMなし / 無効
 Detected=検出
 DirectX 12 and WDDM 3=DirectX 12とWDDM3あり
-DirectX 12 and WDDM 2=DirectX 12とWDDM3あり
+DirectX 12 and WDDM 2=DirectX 12とWDDM2あり
 No DirectX 12, but WDDM2=DirectX 12なし、WDDM2あり
 DirectX 12, but no WDDM2=DirectX 12あり、WDDM2なし
 No DirectX 12 or WDDM2=DirectX 12とWDDM2なし

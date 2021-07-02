@@ -1,7 +1,12 @@
 [MetaData]
 Language=Czech - Czech Republic
-Translator=Qazy, Sap1k
-Version=2.3.0.1
+Translator=Qazy147, Sap1k
+Version=2.3.0.4
+[Font]
+Extra Large=24
+Large=18
+Medium=10
+Small=8.5
 [Strings]
 Donate=Přispět
 Check for Updates=Zkontrolovat aktualizace
@@ -38,6 +43,7 @@ Enabled=Povoleno
 Supported=Podporováno
 Disabled / Not Detected=Vypnuto / Nepodporováno
 Drive(s) Meet Requirements=disk(y) splňující požadavky
+0 Drives Meet Requirements=Žádný disk nesplňuje požadavky
 TPM Missing / Disabled=TPM chybí / vypnut
 Not Supported=Nepodporováno
 Detected=detekován

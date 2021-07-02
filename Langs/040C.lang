@@ -1,7 +1,12 @@
 [MetaData]
 Language=Français - France
-Translator=Pierre Grillet; Nits77; Clément VILLISEK; BSoD38
-Version=2.2.3.1
+Translator=PierreGrillet; Nits77; villisek; BSoD38
+Version=2.3.0.4
+[Font]
+Extra Large=24
+Large=14
+Medium=10
+Small=8.5
 [Strings]
 Donate=Faire un don
 Check for Updates=Mettre à jour
@@ -11,9 +16,9 @@ Results Based on Currently Known Requirements!=Attention, ces résultats sont ba
 Translation by=Traduction par
 Architecture (CPU + OS)=Architecture (CPU + OS)
 Boot Method=Méthode de démarrage
-CPU Compatibility=Compatibilité du CPU
-CPU Core Count=Nombre de coeurs du CPU
-CPU Frequency=Fréquence du CPU
+CPU Compatibility=Compatibilité du processeur
+CPU Core Count=Nombre de coeurs du processeur
+CPU Frequency=Fréquence du processeur
 DirectX + WDDM2=DirectX + WDDM2
 Disk Partition Type=Type de partitionnement
 RAM Installed=Quantité de RAM installée
@@ -21,14 +26,14 @@ Secure Boot=Secure Boot
 Storage Available=Stockage disponible
 TPM Version=Version du TPM
 Checking...=Vérification...
-64 Bit CPU=CPU 64 bits
-64 Bit OS=OS 64 bits
-32 Bit CPU=CPU 32 bits
-32 Bit OS=OS 32 bits
+64 Bit CPU=Processeur 64 bits
+64 Bit OS=Système d'exploitation 64 bits
+32 Bit CPU=Processeur 32 bits
+32 Bit OS=Système d'exploitation 32 bits
 Unable to Determine=N'a pas pu être déterminé
 Unable to Check List=N'a pas pu vérifier la liste
 Error Accessing List=Erreur lors de l'accès à la liste
-Not Currently Listed as Compatible=Ne figure pas pour l'instant sur la liste de compatibilité
+Not Currently Listed as Compatible=Actuellement non compatible
 Listed as Compatible=Listé comme compatible
 Cores=Cœurs Physiques
 Threads=Cœurs Logiques
