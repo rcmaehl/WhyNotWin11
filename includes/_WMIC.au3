@@ -148,6 +148,7 @@ Func _GetTPMInfo($iFlag = 0)
 	Else
 		Local Static $sName
 		Local Static $sPresent
+		Local Static $sVersion
 
 		If Not $sPresent <> "" Then
 			$Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2') ;
@@ -163,11 +164,11 @@ Func _GetTPMInfo($iFlag = 0)
 		EndIf
 		Switch $iFlag
 			Case 0
-				If StringInStr($sName, "2.0") Then
-					Return String($sPresent)
-				Else
-					ContinueCase
-				EndIf
+				ContinueCase
+			Case 1
+				If $sName <> "" Then Return 1
+			Case 2
+				Return StringRegExp($sName, "\d+\.\d+", $STR_REGEXPARRAYMATCH)[0]
 			Case Else
 				Return 0
 		EndSwitch
