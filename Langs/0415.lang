@@ -1,6 +1,6 @@
 [MetaData]
 Language=Polish - Poland
-Translator=BxOxSxS, micwoj92
+Translator=BxOxSxS, micwoj92, mLipok
 Version=2.3.0.4
 [Font]
 Extra Large=24
@@ -43,7 +43,8 @@ Enabled=Włączony
 Supported=Wspierany
 Not Supported=Niewspierany
 Disabled / Not Detected=Wyłączony / Niewykryty
-Drive(s) Meet Requirements=Dysk(i) Spełniają Wymagania
+Drive(s) Meet Requirements=Dysk(i) spełniają wymagania
+0 Drives Meet Requirements=Żaden dysk nie spełnia wymagań
 TPM Missing / Disabled=Brak / Wyłączone TPM
 Detected=Wykryto
 DirectX 12 and WDDM 3=DirectX 12 i WDDM 3
