@@ -1,7 +1,7 @@
 [MetaData]
 Language=Spanish - Colombia
 Translator=JeffersonRussell
-Version=2.3.0.1
+Version=2.3.0.4
 [Font]
 Extra Large=24
 Large=18
@@ -9,6 +9,7 @@ Medium=10
 Small=8.5
 [Strings]
 Donate=Donar
+Settings=Configuración
 Check for Updates=Actualizar
 Your Windows 11 Compatibility Results are Below=Resultados de Compatibilidad con Windows 11
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Obten ahora WhyNotWin11 a través de https://www.whynotwin11.org/
@@ -44,6 +45,7 @@ Supported=Soportado
 Not Supported=No Soportado
 Disabled / Not Detected=Desactivado / No Detectado
 Drive(s) Meet Requirements=Unidad(es) Compatible(s)
+0 Drives Meet Requirements=0 Unidades Compatibles
 TPM Missing / Disabled=Falta TPM / Desactivado
 Detected=Detectado
 DirectX 12 and WDDM 3=DirectX 12 y WDDM 3
