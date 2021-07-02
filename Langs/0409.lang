@@ -1,9 +1,10 @@
 [MetaData]
 Language=English - United States
 Translator=Robert C. Maehl (rcmaehl)
-Version=2.2.5.0
+Version=2.3.0.4
 [Strings]
 Donate=Donate
+Settings=Settings
 Check for Updates=Check for Updates
 Your Windows 11 Compatibility Results are Below=Your Windows 11 Compatibility Results are Below
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Now Reach WhyNotWin11 via https://www.whynotwin11.org/
