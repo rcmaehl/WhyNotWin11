@@ -1,12 +1,12 @@
 [MetaData]
 Language=Polish - Poland
-Translator=BxOxSxS
+Translator=BxOxSxS, micwoj92
 Version=2.3.0.4
 [Font]
 Extra Large=24
 Large=18
 Medium=10
-Small=8.5
+Small=7.4
 [Strings]
 Donate=Wesprzyj
 Check for Updates=Sprawdź aktualizacje
