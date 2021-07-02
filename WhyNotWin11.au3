@@ -631,14 +631,15 @@ Func Main()
 	Switch _GetDiskInfo(0)
 		Case "GPT"
 			If $aDisks[0] = $aDisks[1] Then
-				 _GUICtrlSetPass($hCheck[6][0])
+				_GUICtrlSetPass($hCheck[6][0])
+				GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected") & @CRLF & $aDisks[0] & " " & _Translate($iMUI, "Drive(s) Meet Requirements")) 
 			ElseIf $aDisks[0] = 0 Then
 				_GUICtrlSetFail($hCheck[6][0])
 				GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected") & @CRLF & "0 " & _Translate($iMUI, "Drive(s) Meet Requirements"))
 			Else
 				_GUICtrlSetWarn($hCheck[6][0], "!")
+				GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected") & @CRLF & $aDisks[1] & "/" & $aDisks[0] & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
 			EndIf
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected") & @CRLF & $aDisks[1] & "/" & $aDisks[0] & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
 		Case Else
 			_GUICtrlSetFail($hCheck[6][0])
 			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected"))
