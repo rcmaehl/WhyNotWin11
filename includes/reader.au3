@@ -3,99 +3,102 @@
 #include "sapi.au3"
 ;este es un script para los lectores de pantalla. this is a script for screen readers.
 ;Autor: Mateo Cedillo.
-func speaking($text)
-$speak = iniRead (@ScriptDir &"\config\config.st", "accessibility", "Speak Whit", "")
-select
-case $speak ="Sapi"
-speak($text, 3)
-case $speak ="JAWS"
-JFWSpeak($text)
-Case Else
-autoDetect()
-endselect
-endfunc
-func autodetect()
-If ProcessExists("JFW.exe") Then
-IniWrite(@ScriptDir &"\config\config.st", "accessibility", "Speak Whit", "JAWS")
-endif
-If not ProcessExists("JFW.exe") Then
-IniWrite(@ScriptDir &"\config\config.st", "accessibility", "Speak Whit", "Sapi")
-EndIf
-endfunc
-func TTsDialog($text, $ttsString = " press enter to continue, space to repeat information.")
-$pressed = 0
-$repeatinfo = 0
-speaking($text &@lf &$ttsString)
-While 1
-$active_window = WinGetProcess("")
-If $active_window = @AutoItPid Then
-Sleep(10)
-;ContinueLoop
-EndIf
-If NOT _ispressed($spacebar) or NOT _ispressed($up) or NOT _ispressed($down) or NOT _ispressed($left) or NOT _ispressed($right) Then $repeatinfo = 0
-If _ispressed($spacebar) or _ispressed($up) or _ispressed($down) or _ispressed($left) or _ispressed($right) AND $repeatinfo = 0 Then
-$repeatinfo = 1
-speaking($text &@lf &$ttsString)
-EndIf
-If not _ispressed($control) AND _ispressed($c) Then $pressed = 0
-If _ispressed($control) AND _ispressed($c) AND $pressed = 0 Then
-ClipPut($text)
-speaking($text &"Copied to clipboard.")
-EndIf
-If NOT _ispressed($enter) Then $pressed = 0
-If _ispressed($enter) AND $pressed = 0 Then
-$pressed = 1
-speaking("ok")
-ExitLoop
-endIf
-Sleep(50)
-wend
-endFunc
-func createTtsOutput($filetoread,$title)
-$move_doc = 0
-Local $r_file = FileReadToArray($filetoread)
-Local $iCountLines = @extended
-$not = 0
-If @error Then
-speaking("Error reading file...")
-Else
-speaking($title)
-endIf
-While 1
-$active_window = WinGetProcess("")
-If $active_window = @AutoItPid Then
-Else
-Sleep(10)
-ContinueLoop
-EndIf
-If NOT _ispressed($up) Then $not = 1
-If _ispressed($up) AND $move_doc = 0 Then
-return $move_doc
-speaking("home.")
-endIf
-Sleep(15)
-If NOT _ispressed($up) Then $not = 1
-If _ispressed($up) AND $move_doc > 0 Then
-$move_doc = $move_doc -1
-speaking($R_File[$MOVE_DOC])
-endIf
-Sleep(15)
-If NOT _ispressed($down) Then $not = 1
-If _ispressed($down) AND $move_doc = $iCountLines then
-return $move_doc
-speaking("document end. Press enter to back.")
-If NOT _ispressed($enter) Then $not = 0
-If _ispressed($enter) AND $not = 0 Then
-$not = 0
-ExitLoop
-endIf
-endIf
-sleep(15)
-If NOT _ispressed($down) Then $not = 1
-If _ispressed($down) then; AND $move_doc > 0 Then
-$move_doc = $move_doc +1
-speaking($R_File[$MOVE_DOC])
-endIf
-Sleep(15)
-Wend
-EndFunc
+Func speaking($text)
+	$speak = IniRead(@ScriptDir & "\config\config.st", "accessibility", "Speak Whit", "")
+	Select
+		Case $speak = "Sapi"
+			speak($text, 3)
+		Case $speak = "JAWS"
+			JFWSpeak($text)
+		Case Else
+			autodetect()
+	EndSelect
+EndFunc   ;==>speaking
+
+Func autodetect()
+	If ProcessExists("JFW.exe") Then
+		IniWrite(@ScriptDir & "\config\config.st", "accessibility", "Speak Whit", "JAWS")
+	EndIf
+	If Not ProcessExists("JFW.exe") Then
+		IniWrite(@ScriptDir & "\config\config.st", "accessibility", "Speak Whit", "Sapi")
+	EndIf
+EndFunc   ;==>autodetect
+
+Func TTsDialog($text, $ttsString = " press enter to continue, space to repeat information.")
+	$pressed = 0
+	$repeatinfo = 0
+	speaking($text & @LF & $ttsString)
+	While 1
+		$active_window = WinGetProcess("")
+		If $active_window = @AutoItPID Then
+			Sleep(10)
+			;ContinueLoop
+		EndIf
+		If Not _IsPressed($spacebar) Or Not _IsPressed($up) Or Not _IsPressed($down) Or Not _IsPressed($left) Or Not _IsPressed($right) Then $repeatinfo = 0
+		If _IsPressed($spacebar) Or _IsPressed($up) Or _IsPressed($down) Or _IsPressed($left) Or _IsPressed($right) And $repeatinfo = 0 Then
+			$repeatinfo = 1
+			speaking($text & @LF & $ttsString)
+		EndIf
+		If Not _IsPressed($control) And _IsPressed($c) Then $pressed = 0
+		If _IsPressed($control) And _IsPressed($c) And $pressed = 0 Then
+			ClipPut($text)
+			speaking($text & "Copied to clipboard.")
+		EndIf
+		If Not _IsPressed($enter) Then $pressed = 0
+		If _IsPressed($enter) And $pressed = 0 Then
+			$pressed = 1
+			speaking("ok")
+			ExitLoop
+		EndIf
+		Sleep(50)
+	WEnd
+EndFunc   ;==>TTsDialog
+
+Func createTtsOutput($filetoread, $title)
+	$move_doc = 0
+	Local $r_file = FileReadToArray($filetoread)
+	Local $iCountLines = @extended
+	$not = 0
+	If @error Then
+		speaking("Error reading file...")
+	Else
+		speaking($title)
+	EndIf
+	While 1
+		$active_window = WinGetProcess("")
+		If $active_window = @AutoItPID Then
+		Else
+			Sleep(10)
+			ContinueLoop
+		EndIf
+		If Not _IsPressed($up) Then $not = 1
+		If _IsPressed($up) And $move_doc = 0 Then
+			Return $move_doc
+			speaking("home.")
+		EndIf
+		Sleep(15)
+		If Not _IsPressed($up) Then $not = 1
+		If _IsPressed($up) And $move_doc > 0 Then
+			$move_doc = $move_doc - 1
+			speaking($r_file[$move_doc])
+		EndIf
+		Sleep(15)
+		If Not _IsPressed($down) Then $not = 1
+		If _IsPressed($down) And $move_doc = $iCountLines Then
+			Return $move_doc
+			speaking("document end. Press enter to back.")
+			If Not _IsPressed($enter) Then $not = 0
+			If _IsPressed($enter) And $not = 0 Then
+				$not = 0
+				ExitLoop
+			EndIf
+		EndIf
+		Sleep(15)
+		If Not _IsPressed($down) Then $not = 1
+		If _IsPressed($down) Then ; AND $move_doc > 0 Then
+			$move_doc = $move_doc + 1
+			speaking($r_file[$move_doc])
+		EndIf
+		Sleep(15)
+	WEnd
+EndFunc   ;==>createTtsOutput
