@@ -54,17 +54,16 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 
 Opt("TrayIconHide", 1)
 Opt("TrayAutoPause", 0)
-
-If $CmdLine[0] > 0 Then ProcessCMDLine()
-ExtractFiles()
-Main()
-
 Switch @OSVersion
 	Case "WIN_7", "WIN_VISTA", "WIN_XP", "WIN_XPe"
 		MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Not Supported"), @OSVersion & " " & _Translate(@MUILang, "Not Supported"))
 	Case Else
 		;;;
 EndSwitch
+
+If $CmdLine[0] > 0 Then ProcessCMDLine()
+ExtractFiles()
+Main()
 
 Global $__g_hModule = _WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll")
 If @OSBuild >= 22000 Or _WinAPI_GetProcAddress($__g_hModule, "wine_get_host_version") Then
@@ -400,12 +399,13 @@ Func Main()
 	GUICtrlSetTip(-1, "LTT")
 	GUICtrlSetCursor(-1, 0)
 
+	Local $hJob
 	If @LogonDomain <> @ComputerName Then
-		Local $hJob = GUICtrlCreateLabel("", 34, 310, 32, 32)
+		$hJob = GUICtrlCreateLabel("", 34, 310, 32, 32)
 		GUICtrlSetTip(-1, "I'm For Hire")
 		GUICtrlSetCursor(-1, 0)
 	Else
-		Local $hJob = GUICtrlCreateDummy()
+		$hJob = GUICtrlCreateDummy()
 	EndIf
 
 	Local $hToggle = GUICtrlCreateLabel("", 34, 518, 32, 32)
@@ -488,8 +488,9 @@ Func Main()
 	GUICtrlCreateLabel(_Translate($iMUI, "Your Windows 11 Compatibility Results are Below"), 130, 15, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
 
-	GUICtrlCreateLabel(_Translate($iMUI, "Now Reach WhyNotWin11 via https://www.whynotwin11.org/"), 130, 45, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
+	Local $h_WWW = GUICtrlCreateLabel(_Translate($iMUI, "Now Reach WhyNotWin11 via https://www.whynotwin11.org/"), 130, 45, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO)
+	GUICtrlSetCursor(-1, 0)
 
 	GUICtrlCreateLabel(_Translate($iMUI, "Results Based on Currently Known Requirements!"), 130, 65, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetColor(-1, 0xE20012)
@@ -747,6 +748,9 @@ Func Main()
 			Case $hMsg = $GUI_EVENT_CLOSE Or $hMsg = $hExit
 				GUIDelete($hGUI)
 				Exit
+
+			Case $hMsg = $h_WWW
+				ShellExecute("https://www.whynotwin11.org/")
 
 				; DirectX 12 takes a while. Grab the result once done
 			Case Not ProcessExists("dxdiag.exe") And FileExists($hDXFile)
