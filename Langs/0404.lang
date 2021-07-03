@@ -2,8 +2,14 @@
 Language=Chinese (Traditional) - Taiwan
 Translator=SiderealArt, chiyi4488
 Version=2.2.5.0
+[Font]
+Extra Large=24
+Large=18
+Medium=10
+Small=8.5
 [Strings]
 Donate=贊助
+Settings=設定
 Check for Updates=檢查更新
 Your Windows 11 Compatibility Results are Below=以下是您的 Windows 11 相容性結果
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=透過 https://www.whynotwin11.org/ 前往 WhyNotWin11
@@ -39,6 +45,7 @@ Supported=支援
 Not Supported=不支援
 Disabled / Not Detected=停用/未偵測到
 Drive(s) Meet Requirements=顆硬碟符合要求
+0 Drives Meet Requirements=沒有任何一顆硬碟符合要求
 TPM Missing / Disabled=TPM 遺失/停用
 Detected=已偵測
 DirectX 12 and WDDM 3=DirectX 12 和 WDDM 3
