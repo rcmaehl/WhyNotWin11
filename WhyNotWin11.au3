@@ -5,9 +5,9 @@
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready
-#AutoIt3Wrapper_Res_Fileversion=2.3.0.5
+#AutoIt3Wrapper_Res_Fileversion=2.3.1
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
-#AutoIt3Wrapper_Res_ProductVersion=2.3.0
+#AutoIt3Wrapper_Res_ProductVersion=2.3.1
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
@@ -51,6 +51,7 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 #include ".\Includes\_WMIC.au3"
 #include ".\Includes\_Checks.au3"
 #include ".\Includes\ResourcesEx.au3"
+#include ".\Includes\GetDiskInfo.au3"
 
 Opt("TrayIconHide", 1)
 Opt("TrayAutoPause", 0)
@@ -577,23 +578,22 @@ Func Main()
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	EndIf
 
-	Local $aDisks = _GetDiskInfo(1)
-	Switch _GetDiskInfo(0)
-		Case "GPT"
-			If $aDisks[0] = $aDisks[1] Then
-				_GUICtrlSetPass($hCheck[6][0])
-				GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected") & @CRLF & $aDisks[0] & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
-			ElseIf $aDisks[0] = 0 Then
-				_GUICtrlSetFail($hCheck[6][0])
-				GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected") & @CRLF & "0 " & _Translate($iMUI, "Drive(s) Meet Requirements"))
-			Else
-				_GUICtrlSetWarn($hCheck[6][0], "!")
-				GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected") & @CRLF & $aDisks[1] & "/" & $aDisks[0] & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
-			EndIf
-		Case Else
-			_GUICtrlSetFail($hCheck[6][0])
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected"))
-	EndSwitch
+	Local $aDisks
+	Local $aPartitions
+	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
+
+	For $iLoop = 0 To UBound($aDisks) - 1
+		If $aDisks[$iLoop][11] = "True" Then
+			Switch $aDisks[$iLoop][9]
+				Case "GPT"
+					_GUICtrlSetPass($hCheck[6][0])
+					GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected"))
+				Case Else
+					_GUICtrlSetFail($hCheck[6][0])
+					GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected") & @CRLF & $aDisks[$iLoop][9])
+			EndSwitch
+		EndIf
+	Next
 
 	Local $aMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
 	If @error Then
