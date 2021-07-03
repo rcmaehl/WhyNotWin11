@@ -479,10 +479,9 @@ Func Main()
 		EndIf
 	#ce
 
-
-	GUICtrlCreateLabel(_GetCPUInfo(2), 470, 560, 300, 20, $SS_CENTERIMAGE)
+    	Local $hCPUinfo = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 470, 560, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
-	GUICtrlCreateLabel(_GetGPUInfo(0), 470, 580, 300, 20, $SS_CENTERIMAGE)
+	Local $hGPUinfo = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 470, 580, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 
 	GUICtrlCreateLabel(_Translate($iMUI, "Your Windows 11 Compatibility Results are Below"), 130, 15, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
@@ -512,8 +511,10 @@ Func Main()
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
 	Next
 
+	GUISetState(@SW_SHOW, $hGUI)
+
 	Local $hDXFile = _TempFile(@TempDir, "dxdiag")
-	Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
+	Local $DXPID = Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
 
 	Select
 		Case @CPUArch = "X64" And @OSArch = "IA64"
@@ -542,7 +543,11 @@ Func Main()
 			GUICtrlSetData($hCheck[1][2], $sFirmware)
 	EndSwitch
 
-	; CPU Compatibility List
+	 
+	GUICtrlSetData($hCPUinfo, _GetCPUInfo(2))
+	GUICtrlSetData($hGPUinfo, _GetGPUInfo(0))
+ 
+    ; CPU Compatibility List
 	Local $iLines, $sLine, $ListFile
 	Select
 		Case StringInStr(_GetCPUInfo(2), "AMD")
@@ -703,8 +708,6 @@ Func Main()
 
 	GUISwitch($hGUI)
 
-	GUISetState(@SW_SHOW, $hGUI)
-
 	Local $hMsg, $sDXFile
 	While 1
 		$hMsg = GUIGetMsg()
@@ -719,7 +722,7 @@ Func Main()
 				ShellExecute("https://www.whynotwin11.org/")
 
 				; DirectX 12 takes a while. Grab the result once done
-			Case Not ProcessExists("dxdiag.exe") And FileExists($hDXFile)
+			Case Not ProcessExists($DXPID) And FileExists($hDXFile)
 				$sDXFile = StringStripWS(StringStripCR(FileRead($hDXFile)), $STR_STRIPALL)
 				Select
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "3") ; Non-English Languages
