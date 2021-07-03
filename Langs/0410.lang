@@ -1,7 +1,12 @@
 [MetaData]
 Language=Italian - Italy
 Translator=Mario (@MarioMarietto)
-Version=2.3.0.1
+Version=2.3.0.4
+[Font]
+Extra Large=24
+Large=18
+Medium=10
+Small=8.5
 [Strings]
 Donate=Dona
 Check for Updates=Verifica aggiornamenti
