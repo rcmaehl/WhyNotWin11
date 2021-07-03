@@ -61,6 +61,7 @@ Switch @OSVersion
 		;;;
 EndSwitch
 
+Global $WINDOWS_DRIVE = StringLeft(@WindowsDir,3)
 If $CmdLine[0] > 0 Then ProcessCMDLine()
 ExtractFiles()
 Main()
@@ -679,13 +680,12 @@ Func Main()
 		If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 64 Then $iDrives += 1
 	Next
 
-
-	If Round(DriveSpaceTotal("C:\") / 1024, 0) >= 64 Then
+	If Round(DriveSpaceTotal($WINDOWS_DRIVE) / 1024, 0) >= 64 Then
 		_GUICtrlSetPass($hCheck[9][0])
 	Else
 		_GUICtrlSetFail($hCheck[9][0])
 	EndIf
-	GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\") / 1024, 0) & " GB C:\" & @CRLF & $iDrives & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
+	GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal($WINDOWS_DRIVE) / 1024, 0) & " GB " & $WINDOWS_DRIVE & @CRLF & $iDrives & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
 
 	Select
 		Case _GetTPMInfo(0) = False
