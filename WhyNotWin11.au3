@@ -374,7 +374,7 @@ Func Main()
 	If @error Then
 		;;;
 	ElseIf Not $sCheck Then
-		GUICtrlSetDefColor(0x000000)
+		GUICtrlSetDefColor(0xFFFFFF)
 	EndIf
 
 	Local $hDumpLang = GUICtrlCreateDummy()
