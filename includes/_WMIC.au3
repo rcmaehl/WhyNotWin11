@@ -75,7 +75,9 @@ Func _GetDiskInfo($iFlag = 0)
 			Next
 			If $aDisks[0] > 0 Then $sType = "GPT"
 		Else
-			Return 0
+			$aDisks[0] = 0
+			$aDisks[1] = "?"
+			Return $aDisks
 		EndIf
 	EndIf
 	Switch $iFlag
