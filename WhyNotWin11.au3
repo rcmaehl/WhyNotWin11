@@ -61,7 +61,7 @@ Switch @OSVersion
 		;;;
 EndSwitch
 
-Global $WINDOWS_DRIVE = StringLeft(@WindowsDir, 3)
+Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
 If $CmdLine[0] > 0 Then ProcessCMDLine()
 ExtractFiles()
 Main()
