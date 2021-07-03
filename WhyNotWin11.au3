@@ -61,6 +61,7 @@ Switch @OSVersion
 		;;;
 EndSwitch
 
+Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
 If $CmdLine[0] > 0 Then ProcessCMDLine()
 ExtractFiles()
 Main()
@@ -383,6 +384,11 @@ Func Main()
 	Local $aAccel[1][2] = [["{DEL}", $hDumpLang]]
 	GUISetAccelerators($aAccel)
 
+	; Top Most Interaction for Update Text
+	Local $hUpdate = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
+	GUICtrlSetCursor(-1, 0)
+
 	#cs Maybe Readd Later
 	; Top Most Interaction for Banner
 	Local $hBanner = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
@@ -478,6 +484,10 @@ Func Main()
 	GUICtrlCreateLabel("v " & $sVersion, 10, 30, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
+	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
+	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
+
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
 	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 
@@ -495,7 +505,6 @@ Func Main()
 			GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 		EndIf
 	#ce
-
 
 	GUICtrlCreateLabel(_GetCPUInfo(2), 470, 560, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
@@ -675,12 +684,13 @@ Func Main()
 		If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 64 Then $iDrives += 1
 	Next
 
-	If Round(DriveSpaceTotal("C:\") / 1024, 0) >= 64 Then
+
+	If Round(DriveSpaceTotal($WINDOWS_DRIVE) / 1024, 0) >= 64 Then
 		_GUICtrlSetPass($hCheck[9][0])
 	Else
 		_GUICtrlSetFail($hCheck[9][0])
 	EndIf
-	GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal("C:\") / 1024, 0) & " GB C:\" & @CRLF & $iDrives & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
+	GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal($WINDOWS_DRIVE) / 1024, 0) & " GB " & $WINDOWS_DRIVE & @CRLF & $iDrives & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
 
 	Select
 		Case _GetTPMInfo(0) = False
