@@ -383,11 +383,6 @@ Func Main()
 	Local $aAccel[1][2] = [["{DEL}", $hDumpLang]]
 	GUISetAccelerators($aAccel)
 
-	; Top Most Interaction for Update Text
-	Local $hUpdate = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
-	GUICtrlSetCursor(-1, 0)
-
 	#cs Maybe Readd Later
 	; Top Most Interaction for Banner
 	Local $hBanner = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
@@ -433,8 +428,14 @@ Func Main()
 	; Allow Dragging of Window
 	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
 
-	GUICtrlCreateLabel("", 0, 0, 100, 600)
+	GUICtrlCreateLabel("", 0, 0, 100, 570)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
+
+	Local $hUpdate = GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 0, 570, 100, 30, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
+	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
+	GUICtrlSetTip(-1, "Update")
+	GUICtrlSetCursor(-1, 0)
 
 	_GDIPlus_Startup()
 	If @Compiled Then
@@ -471,10 +472,6 @@ Func Main()
 		GUICtrlSetState(-1, $GUI_HIDE)
 	EndIf
 	_GDIPlus_Shutdown()
-
-	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
-	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	GUICtrlCreateLabel("WhyNotWin11", 10, 10, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
@@ -671,14 +668,12 @@ Func Main()
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Disabled / Not Detected"))
 	EndSwitch
 
-
 	Local $aDrives = DriveGetDrive($DT_FIXED)
 	Local $iDrives = 0
 
 	For $iLoop = 1 To $aDrives[0] Step 1
 		If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 64 Then $iDrives += 1
 	Next
-
 
 	If Round(DriveSpaceTotal("C:\") / 1024, 0) >= 64 Then
 		_GUICtrlSetPass($hCheck[9][0])
