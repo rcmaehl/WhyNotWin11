@@ -56,7 +56,7 @@ _GDIPlus_Startup()
 	Fixed: @error and @extended not be passed back in nested functions e.g. _Resource_GetAsRaw()
 
 	2014/07/19
-	Added: _Resource_SetBitmapToCtrlID() formely known as _Resource_SetImageToCtrlID()
+	Added: _Resource_SetBitmapToCtrlID() formerly known as _Resource_SetImageToCtrlID()
 	Added: Note about using #AutoIt3Wrapper_Res_Icon_Add to the example. (Thanks Zedna)
 	Added: Passing a blank string to _Resource_SetToCtrlID() through the $sResNameOrID parameter, will delete the image and previous handle
 	Changed: _Resource_SetImageToCtrlID() now accepts a hBitmap not a HBITMAP object
@@ -68,7 +68,7 @@ _GDIPlus_Startup()
 	Fixed: Regression from loading the current of external module. (Thanks UEZ)
 
 	2014/07/17
-	Added: Additonal checks to destroy cursors and icons
+	Added: Additional checks to destroy cursors and icons
 	Added: Checking if the dll or exe filepath has a valid extension
 	Added: Example of using an icon and image on a button control
 	Fixed: Icons and cursors (finally) being re-sized to a control
@@ -128,10 +128,10 @@ _GDIPlus_Startup()
 	Changed: Re-size the storage array when destroyed or on shutdown
 	Fixed: _Resource_GetAsString() with default encoding of ANSI
 	Fixed: Calltips API referencing Resources.au3 and not ResourcesEx.au3
-	Removed: _Resource_Shudown() due to the addition of _Resource_Destroy() and _Resource_DestroyAll()
+	Removed: _Resource_Shutdown() due to the addition of _Resource_Destroy() and _Resource_DestroyAll()
 
 	2014/07/06:
-	Added: _Resource_Shudown() to free up those resources which aren't loaded using _WinAPI_LockResource(). UnlockResource is obsolete
+	Added: _Resource_Shutdown() to free up those resources which aren't loaded using _WinAPI_LockResource(). UnlockResource is obsolete
 	Added: Support for using $RT_STRING
 	Changed: _Resource_GetAsString() now works correctly for most encodings. (Thanks Jos)
 	Changed: _Resource_GetAsString() will now load as a string if the resource type requested is $RT_STRING
