@@ -384,7 +384,7 @@ Func Main()
 	GUISetAccelerators($aAccel)
 
 	; Top Most Interaction for Update Text
-	Local $hUpdate = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
+	Local $hUpdate = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 	GUICtrlSetCursor(-1, 0)
 
