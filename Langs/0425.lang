@@ -1,7 +1,7 @@
 [MetaData]
 Language=Estonian - Estonia (et-EE)
 Translator=PriitUring
-Version=2.3.0.4
+Version=2.3.0.6
 [Font]
 Extra Large=24
 Large=18
@@ -9,6 +9,7 @@ Medium=10
 Small=8.5
 [Strings]
 Donate=Anneta
+Settings=Seaded
 Check for Updates=Kontrolli Uuendusi
 Your Windows 11 Compatibility Results are Below=Sinu Windows 11 ühilduvuse aruanne on allapool
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Nüüd saadaval lehekülg https://www.whynotwin11.org/
@@ -44,6 +45,7 @@ Supported=Toetatud
 Not Supported=Ei toetata
 Disabled / Not Detected=Keelatud / Ei tuvastatud
 Drive(s) Meet Requirements=Kettad vastavad nõuetele
+0 Drives Meet Requirements=0 ketast ühildub
 TPM Missing / Disabled=TPM puudub / Välja lülitatud
 Detected=Tuvastati
 DirectX 12 and WDDM 3=DirectX 12 ja WDDM 3
