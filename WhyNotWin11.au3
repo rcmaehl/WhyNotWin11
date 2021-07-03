@@ -61,7 +61,7 @@ Switch @OSVersion
 		;;;
 EndSwitch
 
-Global $WINDOWS_DRIVE = StringLeft(@WindowsDir,3)
+Global $WINDOWS_DRIVE = StringLeft(@WindowsDir, 3)
 If $CmdLine[0] > 0 Then ProcessCMDLine()
 ExtractFiles()
 Main()
@@ -473,13 +473,13 @@ Func Main()
 	EndIf
 	_GDIPlus_Shutdown()
 
-	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
-	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
-
 	GUICtrlCreateLabel("WhyNotWin11", 10, 10, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 	GUICtrlCreateLabel("v " & $sVersion, 10, 30, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
+
+	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
 
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
@@ -499,7 +499,6 @@ Func Main()
 			GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 		EndIf
 	#ce
-
 
 	GUICtrlCreateLabel(_GetCPUInfo(2), 470, 560, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
@@ -671,7 +670,6 @@ Func Main()
 			_GUICtrlSetFail($hCheck[8][0])
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Disabled / Not Detected"))
 	EndSwitch
-
 
 	Local $aDrives = DriveGetDrive($DT_FIXED)
 	Local $iDrives = 0
