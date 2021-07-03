@@ -514,7 +514,7 @@ Func Main()
 	GUISetState(@SW_SHOW, $hGUI)
 
 	Local $hDXFile = _TempFile(@TempDir, "dxdiag")
-	Local $DXPID = Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
+	Local $hDXPID = Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
 
 	Select
 		Case @CPUArch = "X64" And @OSArch = "IA64"
@@ -722,7 +722,7 @@ Func Main()
 				ShellExecute("https://www.whynotwin11.org/")
 
 				; DirectX 12 takes a while. Grab the result once done
-			Case Not ProcessExists($DXPID) And FileExists($hDXFile)
+			Case Not ProcessExists($hDXPID) And FileExists($hDXFile)
 				$sDXFile = StringStripWS(StringStripCR(FileRead($hDXFile)), $STR_STRIPALL)
 				Select
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "3") ; Non-English Languages
