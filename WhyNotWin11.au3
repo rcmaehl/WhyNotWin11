@@ -388,8 +388,14 @@ Func Main()
 	; Allow Dragging of Window
 	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
 
-	GUICtrlCreateLabel("", 0, 0, 100, 600)
+	GUICtrlCreateLabel("", 0, 0, 100, 570)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
+
+	Local $hUpdate = GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 0, 570, 100, 30, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
+	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
+	GUICtrlSetTip(-1, "Update")
+	GUICtrlSetCursor(-1, 0)
 
 	_GDIPlus_Startup()
 	If @Compiled Then
@@ -631,6 +637,7 @@ Func Main()
 	For $iLoop = 1 To $aDrives[0] Step 1
 		If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 64 Then $iDrives += 1
 	Next
+
 
 	If Round(DriveSpaceTotal($WINDOWS_DRIVE) / 1024, 0) >= 64 Then
 		_GUICtrlSetPass($hCheck[9][0])
