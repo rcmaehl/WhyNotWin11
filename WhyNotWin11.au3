@@ -24,7 +24,7 @@
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 Global $aResults[11][3]
-Global $sVersion = "2.3.0.5"
+Global $sVersion = "2.3.1.0"
 Global $aOutput[2] = ["", ""]
 
 FileChangeDir(@SystemDir)
@@ -304,19 +304,20 @@ Func Main()
 
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 	Local Const $DPI_RATIO = _GDIPlus_GraphicsGetDPIRatio()[0]
+	Local $aDisks, $aPartitions
 
 	ProgressOn("WhyNotWin11", "Loading WMIC")
 	ProgressSet(0, "_GetCPUInfo()")
 	_GetCPUInfo()
-	ProgressSet(25, "_GetDiskInfo()")
+	ProgressSet(20, "_GetDiskInfo()")
 	_GetDiskInfo()
-	ProgressSet(50, "_GetGPUInfo()")
+	ProgressSet(40, "_GetGPUInfo()")
 	_GetGPUInfo()
-	ProgressSet(75, "_GetTPMInfo()")
+	ProgressSet(60, "_GetTPMInfo()")
 	_GetTPMInfo()
+	ProgressSet(80, "_GetDiskInfoFromWmi")
+	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
 	ProgressSet(100, "Done")
-	Sleep(250)
-	ProgressOff()
 
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
 	GUISetBkColor(_HighContrast(0xF8F8F8))
@@ -491,7 +492,7 @@ Func Main()
 	Next
 
 	Local $hDXFile = _TempFile(@TempDir, "dxdiag")
-	Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
+	Local $hDXPID = Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
 
 	Select
 		Case @CPUArch = "X64" And @OSArch = "IA64"
@@ -574,10 +575,6 @@ Func Main()
 		_GUICtrlSetFail($hCheck[4][0])
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	EndIf
-
-	Local $aDisks
-	Local $aPartitions
-	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
 
 	For $iLoop = 0 To UBound($aDisks) - 1
 		If $aDisks[$iLoop][11] = "True" Then
@@ -679,6 +676,7 @@ Func Main()
 
 	GUISwitch($hGUI)
 
+	ProgressOff()
 	GUISetState(@SW_SHOW, $hGUI)
 
 	Local $hMsg, $sDXFile
@@ -695,7 +693,7 @@ Func Main()
 				ShellExecute("https://www.whynotwin11.org/")
 
 				; DirectX 12 takes a while. Grab the result once done
-			Case Not ProcessExists("dxdiag.exe") And FileExists($hDXFile)
+			Case (Not ProcessExists($hDXPID)) And FileExists($hDXFile)
 				$sDXFile = StringStripWS(StringStripCR(FileRead($hDXFile)), $STR_STRIPALL)
 				Select
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "3") ; Non-English Languages
