@@ -62,15 +62,15 @@ Switch @OSVersion
 		;;;
 EndSwitch
 
-Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
-If $CmdLine[0] > 0 Then ProcessCMDLine()
-ExtractFiles()
-Main()
-
 Global $__g_hModule = _WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll")
 If @OSBuild >= 22000 Or _WinAPI_GetProcAddress($__g_hModule, "wine_get_host_version") Then
 	MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Your Windows 11 Compatibility Results are Below"), _Translate(@MUILang, "You're running the latest build!"))
 EndIf
+
+Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
+If $CmdLine[0] > 0 Then ProcessCMDLine()
+ExtractFiles()
+Main()
 
 Func ProcessCMDLine()
 	Local $bCheck = False
@@ -384,7 +384,6 @@ Func Main()
 	Local $hToggle = GUICtrlCreateLabel("", 34, 518, 32, 32)
 	GUICtrlSetTip(-1, "Settings")
 	GUICtrlSetCursor(-1, 0)
-	GUICtrlSetState(-1, $GUI_HIDE)
 
 	; Allow Dragging of Window
 	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
@@ -414,7 +413,6 @@ Func Main()
 		EndIf
 		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
 		_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 206, 32, 32)
-		GUICtrlSetState(-1, $GUI_HIDE)
 	Else
 		GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & "\assets\git.ico", -1, 32, 32)
@@ -430,7 +428,6 @@ Func Main()
 		EndIf
 		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\set.ico", -1, 32, 32)
-		GUICtrlSetState(-1, $GUI_HIDE)
 	EndIf
 	_GDIPlus_Shutdown()
 
