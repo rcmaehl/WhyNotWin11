@@ -75,7 +75,9 @@ Func _GetDiskInfo($iFlag = 0)
 			Next
 			If $aDisks[0] > 0 Then $sType = "GPT"
 		Else
-			Return 0
+			$aDisks[0] = 0
+			$aDisks[1] = "?"
+			Return $aDisks
 		EndIf
 	EndIf
 	Switch $iFlag
@@ -117,10 +119,12 @@ Func _GetGPUInfo($iFlag = 0)
 EndFunc   ;==>_GetGPUInfo
 
 Func _GetTPMInfo($iFlag = 0)
+	Local Static $sActivated
+	Local Static $sEnabled
+	Local Static $sVersion
+	Local Static $sName
+	Local Static $sPresent
 	If IsAdmin() Then
-		Local Static $sActivated
-		Local Static $sEnabled
-		Local Static $sVersion
 		Local $Obj_WMIService, $Col_Items
 		If Not $sActivated <> "" Then
 			$Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2\Security\MicrosoftTPM') ;
@@ -146,9 +150,6 @@ Func _GetTPMInfo($iFlag = 0)
 				Return 0
 		EndSwitch
 	Else
-		Local Static $sName
-		Local Static $sPresent
-		Local Static $sVersion
 
 		If Not $sPresent <> "" Then
 			$Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2') ;
