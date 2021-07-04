@@ -1,7 +1,7 @@
 [MetaData]
 Language=Slovenščina
 Translator=sagudev
-Version=2.3.0.5
+Version=2.3.1.0
 [Font]
 Extra Large=24
 Large=18
@@ -9,9 +9,9 @@ Medium=10
 Small=8.5
 [Strings]
 Donate=Doniraj
-Settings=Nastavirve
+Settings=Nastavitve
 Check for Updates=Preveri za posodobitve
-Your Windows 11 Compatibility Results are Below=Vaši 
+Your Windows 11 Compatibility Results are Below=Rezultati za združljivosti z Windows 11 so sledeči
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Sedaj nas lahko obiščete preko https://www.whynotwin11.org/
 Results Based on Currently Known Requirements!=Rezultati temeljijo na trenutno znanih informacijah
 Translation by=Prevedel
@@ -19,7 +19,7 @@ Architecture (CPU + OS)=Arhitektura (CPE + OS)
 Boot Method=Način zagona
 CPU Compatibility=CPE združljivost
 CPU Core Count=število CPE jeder
-CPU Frequency=ferkvenca CPE
+CPU Frequency=frekvenca CPE
 DirectX + WDDM2=DirectX + WDDM2
 Disk Partition Type=Vrsta particije
 RAM Installed=Vgrajeni RAM
