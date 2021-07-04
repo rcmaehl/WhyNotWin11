@@ -9,5 +9,6 @@
 ## Pull Request Guidelines
 
 * One change per pull request
-* DLLs, EXEs, and other executibles may not be included 
+* DLLs, EXEs, and other executables may not be included
 * Pull Request title must give a brief overview of the change
+* When you change something in GUI, include before and after screenshot
