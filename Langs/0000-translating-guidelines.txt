@@ -10,6 +10,11 @@ Due to space restrictions, translations do not have to be 1:1
 Please do not use slang, due to it being hard to judge/approve
 File must be UTF-8 encoded, use GitHub editor and it should take care of that
 
+Testing translations locally:
+Go to folder: %localappdata%\WhyNotWin11\langs
+Find your language code
+Edit file and relaunch application
+
 Submitting:
 Open issue or pull request
 In the title please include language name and whether you add a new one or update existing
