@@ -449,7 +449,7 @@ Func Main()
 	Local $hBannerText = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
-
+	
 	Local $sBannerURL = _SetBannerText($hBannerText, $hBanner)
 	#ce Maybe Readd Later
 
@@ -709,10 +709,10 @@ Func Main()
 				GUIDelete($hGUI)
 				Exit
 
-			#cs
-			Case $hMsg = $h_WWW
-				ShellExecute("https://www.whynotwin11.org/")
-			#ce
+				#cs
+				Case $hMsg = $h_WWW
+					ShellExecute("https://www.whynotwin11.org/")
+				#ce
 
 				; DirectX 12 takes a while. Grab the result once done
 			Case (Not ProcessExists($hDXPID)) And FileExists($hDXFile)
@@ -852,11 +852,11 @@ EndFunc   ;==>ParseResults
 
 Func _CheckAppsUseLightTheme()
 	Local $sUseLightTheme = RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
-	if @error then
+	If @error Then
 		$sUseLightTheme = "1"
 	EndIf
 	Return Int($sUseLightTheme)
-EndFunc   ;==>_AppsUseLightTheme
+EndFunc   ;==>_CheckAppsUseLightTheme
 
 ;######################################################################################################################################
 ; #FUNCTION# ====================================================================================================================
