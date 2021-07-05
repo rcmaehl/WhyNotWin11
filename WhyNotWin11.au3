@@ -58,6 +58,7 @@ Opt("TrayAutoPause", 0)
 Switch @OSVersion
 	Case "WIN_7", "WIN_VISTA", "WIN_XP", "WIN_XPe"
 		MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Not Supported"), @OSVersion & " " & _Translate(@MUILang, "Not Supported"))
+		Exit 1
 	Case Else
 		;;;
 EndSwitch
@@ -65,6 +66,7 @@ EndSwitch
 Global $__g_hModule = _WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll")
 If @OSBuild >= 22000 Or _WinAPI_GetProcAddress($__g_hModule, "wine_get_host_version") Then
 	MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Your Windows 11 Compatibility Results are Below"), _Translate(@MUILang, "You're running the latest build!"))
+	Exit 1
 EndIf
 
 Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
@@ -322,7 +324,6 @@ Func Main()
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
 	GUISetBkColor(_HighContrast(0xF8F8F8))
 	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", "Arial")
-	_Security()
 
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
 	GUICtrlSetDefBkColor(_HighContrast(0xF8F8F8))
@@ -479,7 +480,7 @@ Func Main()
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
 
 	Local $hCheck[11][3]
-	Local $hLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
+	Local $hLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 
 	_GDIPlus_Startup()
 	For $iRow = 0 To 10 Step 1
@@ -487,15 +488,15 @@ Func Main()
 		GUICtrlSetBkColor(-1, 0xE6E6E6)
 		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hLabel[$iRow]), 170, 110 + $iRow * 40, 300, 40, $SS_CENTERIMAGE)
 		GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
-		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 470, 110 + $iRow * 40, 300, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
+		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
 		If $iRow = 0 Or $iRow = 3 Or $iRow = 6 Or $iRow = 9 Then GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN)
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
 		If @Compiled Then
-			GUICtrlCreateIcon("", -1, 110, 110 + $iRow * 40, 40, 40, $SS_CENTERIMAGE + $SS_CENTER)
-			_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 201, 32, 32)
+			GUICtrlCreateIcon("", -1, 746, 118 + $iRow * 40, 24, 40, $SS_CENTERIMAGE + $SS_CENTER)
+			_SetBkSelfIcon(-1, _HighContrast(0xF8F8F8), @ScriptFullPath, 201, 24, 24)
 		Else
-			GUICtrlCreateIcon("", -1, 110, 110 + $iRow * 40, 40, 40, $SS_CENTERIMAGE + $SS_CENTER)
-			_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & "\assets\qes.ico", -1, 32, 32)
+			GUICtrlCreateIcon("", -1, 746, 118 + $iRow * 40, 24, 40)
+			_SetBkIcon(-1, _HighContrast(0xF8F8F8), @ScriptDir & "\assets\inf.ico", -1, 24, 24)
 		EndIf
 	Next
 	_GDIPlus_Shutdown()
@@ -939,15 +940,6 @@ Func _INIUnicode($sINI)
 		Return $fReturn
 	EndIf
 EndFunc   ;==>_INIUnicode
-
-Func _Security()
-	If WinExists("WhyNotWin11 - Check Why Your PC Can't Run Windows 11") Then
-		MsgBox($MB_TOPMOST + $MB_ICONWARNING, "Alert", _
-				"WhyNotWin11 has detected that it may have been downloaded from a suspicious site. " & _
-				"The owner of this site has refused to contact us and has hosted suspect files trying" & _
-				" to hide they fact they are not affiliated before. Please see GitHub issue #66.")
-	EndIf
-EndFunc   ;==>_Security
 
 Func _SetBannerText($hBannerText, $hBanner)
 
