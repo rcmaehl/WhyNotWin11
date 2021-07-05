@@ -468,11 +468,13 @@ Func Main()
 	GUICtrlCreateLabel(_Translate($iMUI, "Your Windows 11 Compatibility Results are Below"), 130, 15, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
 
+	#cs
 	Local $h_WWW = GUICtrlCreateLabel(_Translate($iMUI, "Now Reach WhyNotWin11 via https://www.whynotwin11.org/"), 130, 45, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO)
 	GUICtrlSetCursor(-1, 0)
+	#ce
 
-	GUICtrlCreateLabel(_Translate($iMUI, "Results Based on Currently Known Requirements!"), 130, 65, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlCreateLabel(_Translate($iMUI, "Results Based on Currently Known Requirements!"), 130, 45, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetColor(-1, 0xE20012)
 	GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO)
 
@@ -481,22 +483,23 @@ Func Main()
 
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
+	Local $hInfo[11]
 
 	_GDIPlus_Startup()
 	For $iRow = 0 To 10 Step 1
-		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 130, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
+		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 113, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, 0xE6E6E6)
-		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hLabel[$iRow]), 170, 110 + $iRow * 40, 300, 40, $SS_CENTERIMAGE)
+		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40, $SS_CENTERIMAGE)
 		GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
 		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
 		If $iRow = 0 Or $iRow = 3 Or $iRow = 6 Or $iRow = 9 Then GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN)
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
 		If @Compiled Then
-			GUICtrlCreateIcon("", -1, 746, 118 + $iRow * 40, 24, 40, $SS_CENTERIMAGE + $SS_CENTER)
-			_SetBkSelfIcon(-1, _HighContrast(0xF8F8F8), @ScriptFullPath, 201, 24, 24)
+			$hInfo[$iRow] = GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40, $SS_CENTERIMAGE + $SS_CENTER)
+			_SetBkSelfIcon(-1, 0xF8F8F8, @ScriptFullPath, 201, 24, 24)
 		Else
-			GUICtrlCreateIcon("", -1, 746, 118 + $iRow * 40, 24, 40)
-			_SetBkIcon(-1, _HighContrast(0xF8F8F8), @ScriptDir & "\assets\inf.ico", -1, 24, 24)
+			$hInfo[$iRow] = GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
+			_SetBkIcon(-1, 0xF8F8F8, @ScriptDir & "\assets\inf.ico", -1, 24, 24)
 		EndIf
 	Next
 	_GDIPlus_Shutdown()
@@ -706,8 +709,10 @@ Func Main()
 				GUIDelete($hGUI)
 				Exit
 
+			#cs
 			Case $hMsg = $h_WWW
 				ShellExecute("https://www.whynotwin11.org/")
+			#ce
 
 				; DirectX 12 takes a while. Grab the result once done
 			Case (Not ProcessExists($hDXPID)) And FileExists($hDXFile)
