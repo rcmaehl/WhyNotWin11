@@ -258,13 +258,13 @@ Func CopyLangFiles()
 	FileInstall(".\langs\4C0A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\4C0A.lang", $FC_OVERWRITE)
 	FileInstall(".\langs\500A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\500A.lang", $FC_OVERWRITE)
 	FileInstall(".\langs\540A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\540A.lang", $FC_OVERWRITE)
-EndFunc	  ;==>CopyLangFiles
+EndFunc   ;==>CopyLangFiles
 
 Func CopySupportedProcessorsFiles()
 	FileInstall(".\includes\SupportedProcessorsAMD.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $FC_OVERWRITE)
 	FileInstall(".\includes\SupportedProcessorsIntel.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $FC_OVERWRITE)
 	FileInstall(".\includes\SupportedProcessorsQualcomm.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $FC_OVERWRITE)
-EndFunc	  ;==>CopySupportedProcessorsFiles
+EndFunc   ;==>CopySupportedProcessorsFiles
 
 Func ExtractFiles()
 	FileChangeDir(@ScriptDir)
@@ -449,7 +449,7 @@ Func Main()
 	Local $hBannerText = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
-
+	
 	Local $sBannerURL = _SetBannerText($hBannerText, $hBanner)
 	#ce Maybe Readd Later
 
@@ -709,10 +709,10 @@ Func Main()
 				GUIDelete($hGUI)
 				Exit
 
-			#cs
-			Case $hMsg = $h_WWW
-				ShellExecute("https://www.whynotwin11.org/")
-			#ce
+				#cs
+				Case $hMsg = $h_WWW
+					ShellExecute("https://www.whynotwin11.org/")
+				#ce
 
 				; DirectX 12 takes a while. Grab the result once done
 			Case (Not ProcessExists($hDXPID)) And FileExists($hDXFile)
@@ -852,11 +852,11 @@ EndFunc   ;==>ParseResults
 
 Func _CheckAppsUseLightTheme()
 	Local $sUseLightTheme = RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
-	if @error then
+	If @error Then
 		$sUseLightTheme = "1"
 	EndIf
 	Return Int($sUseLightTheme)
-EndFunc	;==>_AppsUseLightTheme
+EndFunc   ;==>_CheckAppsUseLightTheme
 
 ;######################################################################################################################################
 ; #FUNCTION# ====================================================================================================================
