@@ -561,12 +561,18 @@ Func Main()
 		Next
 	EndIf
 
+	#Region - Determining CPU properties
 	If _GetCPUInfo(0) >= 2 Or _GetCPUInfo(1) >= 2 Then
 		_GUICtrlSetPass($hCheck[3][0])
 	Else
 		_GUICtrlSetFail($hCheck[3][0])
 	EndIf
-	GUICtrlSetData($hCheck[3][2], _GetCPUInfo(0) & " " & _Translate($iMUI, "Cores") & @CRLF & _GetCPUInfo(1) & " " & _Translate($iMUI, "Threads"))
+
+	Local $sCores = StringReplace(_Translate($iMUI, "Cores"), '#', _GetCPUInfo(0))
+	If @extended = 0 Then $sCores = _GetCPUInfo(0) & " " & $sCores
+	Local $sThreads = StringReplace(_Translate($iMUI, "Threads"), '#', _GetCPUInfo(1))
+	If @extended = 0 Then $sThreads = _GetCPUInfo(1) & " " & $sThreads
+	GUICtrlSetData($hCheck[3][2], $sCores & @CRLF & $sThreads)
 
 	If _GetCPUInfo(3) >= 1000 Then
 		_GUICtrlSetPass($hCheck[4][0])
@@ -575,6 +581,7 @@ Func Main()
 		_GUICtrlSetFail($hCheck[4][0])
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	EndIf
+	#EndRegion - Determining CPU properties
 
 	For $iLoop = 0 To UBound($aDisks) - 1
 		If $aDisks[$iLoop][11] = "True" Then
