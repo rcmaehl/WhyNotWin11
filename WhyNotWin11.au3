@@ -23,7 +23,7 @@
 #Au3Stripper_Parameters=/so
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
-Global $aResults[11][3]
+Global $aResults[11][4]
 Global $sVersion = "2.3.1.0"
 Global $aOutput[2] = ["", ""]
 
@@ -327,7 +327,7 @@ Func Main()
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
 	GUICtrlSetDefBkColor(_HighContrast(0xF8F8F8))
 
-	Local $sCheck = RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
+	Local $sCheck = _CheckAppsUseLightTheme()
 	If @error Then
 		;;;
 	ElseIf Not $sCheck Then
@@ -481,6 +481,7 @@ Func Main()
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 
+	_GDIPlus_Startup()
 	For $iRow = 0 To 10 Step 1
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 130, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, 0xE6E6E6)
@@ -489,7 +490,15 @@ Func Main()
 		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 470, 110 + $iRow * 40, 300, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
 		If $iRow = 0 Or $iRow = 3 Or $iRow = 6 Or $iRow = 9 Then GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN)
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
+		If @Compiled Then
+			GUICtrlCreateIcon("", -1, 110, 110 + $iRow * 40, 40, 40, $SS_CENTERIMAGE + $SS_CENTER)
+			_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 201, 32, 32)
+		Else
+			GUICtrlCreateIcon("", -1, 110, 110 + $iRow * 40, 40, 40, $SS_CENTERIMAGE + $SS_CENTER)
+			_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & "\assets\qes.ico", -1, 32, 32)
+		EndIf
 	Next
+	_GDIPlus_Shutdown()
 
 	Local $hDXFile = _TempFile(@TempDir, "dxdiag")
 	Local $hDXPID = Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
@@ -828,6 +837,14 @@ Func ParseResults($aResults)
 
 EndFunc   ;==>ParseResults
 
+Func _CheckAppsUseLightTheme()
+	Local $sUseLightTheme = RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
+	if @error then
+		$sUseLightTheme = "1"
+	EndIf
+	Return Int($sUseLightTheme)
+EndFunc	;==>_AppsUseLightTheme
+
 ;######################################################################################################################################
 ; #FUNCTION# ====================================================================================================================
 ; Name ..........: _GDIPlus_GraphicsGetDPIRatio
@@ -891,7 +908,7 @@ Func _HighContrast($sColor)
 	Select
 		Case $sSysWin = 0
 			ContinueCase
-		Case $sSysWin = 16777215 And Not RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
+		Case $sSysWin = 16777215 And Not _CheckAppsUseLightTheme()
 			Return 16777215 - $sColor
 		Case Else
 			Return $sSysWin + $sColor + 1
