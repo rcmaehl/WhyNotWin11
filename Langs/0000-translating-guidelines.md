@@ -13,13 +13,13 @@
 
 ## Testing Translations Locally
 1. Go to folder: *%localappdata%\WhyNotWin11\langs*
-2. Find your language code
-3. Edit file and relaunch application
+1. Find your language code
+1. Edit file and relaunch application
 
 ## Submitting
 
 1. Open issue or pull request
-2. In the title please include language name and whether you add a new one or update existing
+1. In the title please include language name and whether you add a new one or update existing
 
 ## Review Process
 
