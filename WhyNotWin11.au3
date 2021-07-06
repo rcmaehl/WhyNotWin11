@@ -414,31 +414,37 @@ Func Main()
 	Local $hDXFile = _TempFile(@TempDir, "dxdiag")
 	Local $hDXPID = Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
 
-	Select
-		Case @CPUArch = "X64" And @OSArch = "IA64"
-			ContinueCase
-		Case @CPUArch = "X64" And @OSArch = "X64"
+	Switch _ArchCheck()
+		Case True
 			_GUICtrlSetPass($hCheck[0][0])
 			GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "64 Bit CPU") & @CRLF & _Translate($iMUI, "64 Bit OS"))
-		Case @CPUArch = "X64" And @OSArch = "X86"
-			_GUICtrlSetWarn($hCheck[0][0], "!")
-			GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "64 Bit CPU") & @CRLF & _Translate($iMUI, "32 bit OS"))
 		Case Else
-			_GUICtrlSetFail($hCheck[0][0])
-			GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "32 Bit CPU") & @CRLF & _Translate($iMUI, "32 Bit OS"))
-	EndSelect
+			Switch @error
+				Case 1
+					_GUICtrlSetWarn($hCheck[0][0], "!")
+					GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "64 Bit CPU") & @CRLF & _Translate($iMUI, "32 bit OS"))
+				Case 2
+					_GUICtrlSetFail($hCheck[0][0])
+					GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "32 Bit CPU") & @CRLF & _Translate($iMUI, "32 Bit OS"))
+				Case Else
+					_GUICtrlSetFail($hCheck[0][0])
+					GUICtrlSetData($hCheck[0][2], "?")
+			EndSwitch
+	EndSwitch
 
-	Local $sFirmware = EnvGet("firmware_type")
-	Switch $sFirmware
-		Case "UEFI"
+	Switch _BootCheck()
+		Case True
 			_GUICtrlSetPass($hCheck[1][0])
-			GUICtrlSetData($hCheck[1][2], $sFirmware)
-		Case "Legacy"
-			_GUICtrlSetFail($hCheck[1][0])
-			GUICtrlSetData($hCheck[1][2], $sFirmware)
-		Case Else
-			_GUICtrlSetWarn($hCheck[1][0])
-			GUICtrlSetData($hCheck[1][2], $sFirmware)
+			GUICtrlSetData($hCheck[1][2], "UEFI")
+		Case False
+			Switch @error
+				Case 0
+					_GUICtrlSetFail($hCheck[1][0])
+					GUICtrlSetData($hCheck[1][2], "Legacy")
+				Case Else
+					GUICtrlSetData($hCheck[1][2], @extended)
+					_GUICtrlSetWarn($hCheck[1][0])
+			EndSwitch
 	EndSwitch
 
 	; CPU Compatibility List
@@ -516,38 +522,22 @@ Func Main()
 		EndIf
 	Next
 
-	Local $aMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
-	If @error Then
-		$aMem = MemGetStats()
-		$aMem = Round($aMem[1] / 1048576, 1)
-		$aMem = Ceiling($aMem)
-	Else
-		$aMem = Round($aMem[1] / 1048576, 1)
-	EndIf
-	If $aMem = 0 Then
-		$aMem = MemGetStats()
-		$aMem = Round($aMem[1] / 1048576, 1)
-		$aMem = Ceiling($aMem)
-	EndIf
-
-	If $aMem >= 4 Then
+	If _MemCheck() Then
 		_GUICtrlSetPass($hCheck[7][0])
-		GUICtrlSetData($hCheck[7][2], $aMem & " GB")
+		GUICtrlSetData($hCheck[7][2], _MemCheck() & " GB")
 	Else
 		_GUICtrlSetFail($hCheck[7][0])
-		GUICtrlSetData($hCheck[7][2], $aMem & " GB")
+		GUICtrlSetData($hCheck[7][2], _MemCheck() & " GB")
 	EndIf
 
-	Local $sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
-	If @error Then $sSecureBoot = 999
-	Switch $sSecureBoot
-		Case 0
-			_GUICtrlSetPass($hCheck[8][0])
-			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Supported"))
-		Case 1
+	Switch _SecureBootCheck()
+		Case 2
 			_GUICtrlSetPass($hCheck[8][0])
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Enabled"))
-		Case Else
+		Case True
+			_GUICtrlSetPass($hCheck[8][0])
+			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Supported"))
+		Case False
 			_GUICtrlSetFail($hCheck[8][0])
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Disabled / Not Detected"))
 	EndSwitch

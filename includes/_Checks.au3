@@ -22,7 +22,7 @@ Func _BootCheck()
 		Case "Legacy"
 			Return False
 		Case Else
-			SetError(1, 0, False)
+			SetError(1, $sFirmware, False)
 	EndSwitch
 EndFunc   ;==>_BootCheck
 
@@ -160,18 +160,22 @@ Func _GPTCheck()
 EndFunc   ;==>_GPTCheck
 
 Func _MemCheck()
-	Local $aMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
-	If @error Then
-		$aMem = MemGetStats()
-		$aMem = Round($aMem[1] / 1048576, 1)
-		$aMem = Ceiling($aMem)
-	Else
-		$aMem = Round($aMem[1] / 1048576, 1)
-	EndIf
-	If $aMem = 0 Then
-		$aMem = MemGetStats()
-		$aMem = $aMem[1]
-		$aMem = Ceiling($aMem)
+	Local Static $aMem
+
+	If Not $aMem <> "" Then
+		$aMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
+		If @error Then
+			$aMem = MemGetStats()
+			$aMem = Round($aMem[1] / 1048576, 1)
+			$aMem = Ceiling($aMem)
+		Else
+			$aMem = Round($aMem[1] / 1048576, 1)
+		EndIf
+		If $aMem = 0 Then
+			$aMem = MemGetStats()
+			$aMem = Round($aMem[1] / 1048576, 1)
+			$aMem = Ceiling($aMem)
+		EndIf
 	EndIf
 
 	If $aMem >= 4 Then
