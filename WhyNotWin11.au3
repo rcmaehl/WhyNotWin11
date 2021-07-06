@@ -48,6 +48,8 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 #include <StringConstants.au3>
 #include <WindowsConstants.au3>
 
+Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
+
 #include ".\Includes\_WMIC.au3"
 #include ".\Includes\_Checks.au3"
 #include ".\Includes\Resources.au3"
@@ -72,7 +74,6 @@ If @OSBuild >= 22000 Or _WinAPI_GetProcAddress($__g_hModule, "wine_get_host_vers
 	Exit 1
 EndIf
 
-Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
 If $CmdLine[0] > 0 Then ProcessCMDLine()
 ExtractFiles()
 Main()
@@ -147,7 +148,7 @@ Func ChecksOnly()
 	$aResults[2][1] = @error
 	$aResults[2][2] = @extended
 
-	$aResults[3][0] = _CPUCoresCheck()
+	$aResults[3][0] = _CPUCoresCheck(_GetCPUInfo(0), _GetCPUInfo(1))
 	$aResults[3][1] = @error
 	$aResults[3][2] = @extended
 
@@ -488,7 +489,7 @@ Func Main()
 	EndIf
 
 	#Region - Determining CPU properties
-	If _GetCPUInfo(0) >= 2 Or _GetCPUInfo(1) >= 2 Then
+	If _CPUCoresCheck(_GetCPUInfo(0), _GetCPUInfo(1)) Then
 		_GUICtrlSetPass($hCheck[3][0])
 	Else
 		_GUICtrlSetFail($hCheck[3][0])
@@ -542,20 +543,12 @@ Func Main()
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Disabled / Not Detected"))
 	EndSwitch
 
-	Local $aDrives = DriveGetDrive($DT_FIXED)
-	Local $iDrives = 0
-
-	For $iLoop = 1 To $aDrives[0] Step 1
-		If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 64 Then $iDrives += 1
-	Next
-
-
-	If Round(DriveSpaceTotal($WINDOWS_DRIVE) / 1024, 0) >= 64 Then
+	If _SpaceCheck() Then
 		_GUICtrlSetPass($hCheck[9][0])
 	Else
 		_GUICtrlSetFail($hCheck[9][0])
 	EndIf
-	GUICtrlSetData($hCheck[9][2], Round(DriveSpaceTotal($WINDOWS_DRIVE) / 1024, 0) & " GB " & $WINDOWS_DRIVE & @CRLF & $iDrives & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
+	GUICtrlSetData($hCheck[9][2], @error & " GB " & $WINDOWS_DRIVE & @CRLF & @extended & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
 
 	Select
 		Case _GetTPMInfo(0) = False
@@ -579,7 +572,7 @@ Func Main()
 	EndSelect
 
 	#Region Settings GUI
-	Local $hSettings = GUICreate(_Translate($iMUI, "Settings"), 670, 558, 102, 2, $WS_POPUP, $WS_EX_MDICHILD, $hGUI)
+	Local $hSettings = GUICreate(_Translate($iMUI, "Settings"), 698, 528, 102, 32, $WS_POPUP, $WS_EX_MDICHILD, $hGUI)
 	Local $bSettings = False
 	GUISetBkColor(_HighContrast(0xF8F8F8))
 	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", "Arial")
