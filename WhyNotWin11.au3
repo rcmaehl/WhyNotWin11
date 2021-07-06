@@ -585,7 +585,7 @@ Func Main()
 	If @Compiled Then
 		GUICtrlCreateIcon(@ScriptFullPath, 99, 50, 30, 40, 40)
 	Else
-		GUICtrlCreateIcon(@ScriptDir & "\assets\windows11-logo.ico", -1, 50, 30, 40, 40)
+		GUICtrlCreateIcon(@ScriptDir & "\assets\windows11-logo.ico", -1, 50, 50, 40, 40)
 	EndIf
 
 	#EndRegion Settings GUI
