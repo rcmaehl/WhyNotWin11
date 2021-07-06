@@ -543,12 +543,13 @@ Func Main()
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Disabled / Not Detected"))
 	EndSwitch
 
+	_SpaceCheck()
+	GUICtrlSetData($hCheck[9][2], @error & " GB " & $WINDOWS_DRIVE & @CRLF & @extended & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
 	If _SpaceCheck() Then
 		_GUICtrlSetPass($hCheck[9][0])
 	Else
 		_GUICtrlSetFail($hCheck[9][0])
 	EndIf
-	GUICtrlSetData($hCheck[9][2], @error & " GB " & $WINDOWS_DRIVE & @CRLF & @extended & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
 
 	Select
 		Case _GetTPMInfo(0) = False
@@ -580,7 +581,12 @@ Func Main()
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
 	GUICtrlSetDefBkColor(_HighContrast(0xF8F8F8))
 
-	GUICtrlCreateGroup("", 30, 30, 640, 100)
+	GUICtrlCreateGroup("Info", 30, 20, 638, 100)
+	If @Compiled Then
+		GUICtrlCreateIcon(@ScriptFullPath, 99, 50, 30, 40, 40)
+	Else
+		GUICtrlCreateIcon(@ScriptDir & "\assets\windows11-logo.ico", -1, 50, 30, 40, 40)
+	EndIf
 
 	#EndRegion Settings GUI
 

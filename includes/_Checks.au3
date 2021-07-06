@@ -167,7 +167,9 @@ Func _SecureBootCheck()
 EndFunc   ;==>_SecureBootCheck
 
 Func _SpaceCheck()
-	Local $iFree = Round(DriveSpaceTotal($WINDOWS_DRIVE) / 1024, 0) >= 64
+	Local $sWindows = EnvGet("SystemDrive")
+
+	Local $iFree = Round(DriveSpaceTotal($sWindows) / 1024, 0)
 	Local $aDrives = DriveGetDrive($DT_FIXED)
 	Local $iDrives = 0
 
@@ -176,9 +178,9 @@ Func _SpaceCheck()
 	Next
 
 	If $iFree >= 64 Then
-		Return $iDrives
+		Return SetError($iFree, $iDrives, True)
 	Else
-		SetError($iFree, $iDrives, 0)
+		Return SetError($iFree, $iDrives, False)
 	EndIf
 EndFunc   ;==>_SpaceCheck
 
