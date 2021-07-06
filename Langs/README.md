@@ -1,6 +1,7 @@
 # Guidelines
 
 ## Requirements
+
 - **Find Your Language Code Here:** https://www.autoitscript.com/autoit3/docs/appendix/OSLangCodes.htm
 - Always use the latest template (0000.lang)
 - Use hex code(number) of your language.
@@ -16,18 +17,22 @@
 3. Edit file and relaunch application
 
 ## Submitting
+
 1. Open issue or pull request
 2. In the title please include language name and whether you add a new one or update existing
 
 ## Translator Role
+
 1. Link your GitHub to your Discord
 1. Tag rcmaehl#2289 on the Official Discord for translator role
 
 ## Review Process
 
-### When New Translation
+##### When New Translation
+
 Translation will (most likely) be checked using mechanical translation.
 
-### When Existing Translations
+##### When Existing Translations
+
 Previous translators will be notified and will have 24h to reply.
 After all parties agree, translation will be updated.
