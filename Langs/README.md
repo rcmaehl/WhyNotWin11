@@ -21,11 +21,6 @@
 1. Open issue or pull request
 2. In the title please include language name and whether you add a new one or update existing
 
-## Translator Role
-
-1. Link your GitHub to your Discord
-1. Tag rcmaehl#2289 on the Official Discord for translator role
-
 ## Review Process
 
 ##### When New Translation
@@ -36,3 +31,8 @@ Translation will (most likely) be checked using mechanical translation.
 
 Previous translators will be notified and will have 24h to reply.
 After all parties agree, translation will be updated.
+
+## Getting Translator Role on the Community
+
+1. Link your GitHub to your Discord
+1. Tag rcmaehl#2289 on the Official Discord for translator role
