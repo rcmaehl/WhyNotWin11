@@ -2,8 +2,8 @@
 
 ## Requirements
 
-- **Find Your Language Code Here:** https://www.autoitscript.com/autoit3/docs/appendix/OSLangCodes.htm
-- Always use the latest template (0000.lang)
+- Find Your Language Code [here](https://www.autoitscript.com/autoit3/docs/appendix/OSLangCodes.htm).
+- Always use the latest template (0000.lang).
 - Use hex code(number) of your language.
 - Please use your GitHub username as Translator in MetaData section.
 - All strings must be filled out to be accepted.
@@ -23,11 +23,11 @@
 
 ## Review Process
 
-##### When New Translation
+### New Translations
 
 Translation will (most likely) be checked using mechanical translation.
 
-##### When Existing Translations
+### Existing Translations
 
 Previous translators will be notified and will have 24h to reply.
 After all parties agree, translation will be updated.
