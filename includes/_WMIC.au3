@@ -93,7 +93,8 @@ Func _GetDiskProperties($iFlag = 0)
 			For $i = 0 To UBound($aDiskArray) - 1 Step 1
 				; If windows is bootet from disk...
 				If $aDiskArray[$i][11] = True Then
-					Return $aDiskArray[$i]
+					; Return row as 1D-Array
+					Return _ArrayExtract($aDiskArray, $i, $i)
 				EndIf
 			Next
 		Case 4
@@ -101,7 +102,7 @@ Func _GetDiskProperties($iFlag = 0)
 			For $i = 0 To UBound($aPartitionArray) - 1 Step 1
 				; If windows is bootet from partition...
 				If $aPartitionArray[$i][12] = True Then
-					Return $aPartitionArray[$i]
+					Return _ArrayExtract($aPartitionArray, $i, $i)
 				EndIf
 			Next
 		Case Else

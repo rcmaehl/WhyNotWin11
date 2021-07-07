@@ -123,7 +123,7 @@ Func _GPTCheck()
 	If @error = 1 Then Return SetError(1, 1, "Error_CheckFailed")
 
 	; Check DiskInitType
-	Switch _GetDiskProperties(3)[9] ; 9 = Array field for DiskInitType
+	Switch _GetDiskProperties(3)[0][9] ; 9 = Array field for DiskInitType
 		Case "GPT"
 			Return True
 		Case "MBR"
@@ -183,9 +183,9 @@ Func _SpaceCheck($iFlag)
 	_GetDiskProperties(4)
 	If @error = 1 Then Return SetError(1, 1, "Error_CheckFailed")
 
-	; Get size
-	Local $iDiskSize = Round(_GetDiskProperties(3)[8] / 1024 / 1024 / 1024)
-	Local $iPartitionSize = Round(_GetDiskProperties(4)[9] / 1024 / 1024 / 1024)
+	; Get size (Arrays form _GetDiskProperties is a 2D-Array.)
+	Local $iDiskSize = Round(_GetDiskProperties(3)[0][8] / 1024 / 1024 / 1024)
+	Local $iPartitionSize = Round(_GetDiskProperties(4)[0][9] / 1024 / 1024 / 1024)
 
 	Switch $iFlag
 		Case 0

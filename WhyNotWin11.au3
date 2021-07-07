@@ -226,17 +226,16 @@ Func Main()
 	Local Const $DPI_RATIO = _GDIPlus_GraphicsGetDPIRatio()[0]
 
 	#Region Init WMI data
-	ProgressOn("WhyNotWin11", "Loading WMIC")
+	ProgressOn("WhyNotWin11", "Loading ...")
 	ProgressSet(0, "_GetCPUInfo()")
 	_GetCPUInfo()
-	ProgressSet(25, "_GetDiskProperties()")
+	ProgressSet(20, "_GetDiskProperties()")
 	_GetDiskProperties()
-	ProgressSet(50, "_GetGPUInfo()")
+	ProgressSet(40, "_GetGPUInfo()")
 	_GetGPUInfo()
-	ProgressSet(75, "_GetTPMInfo()")
+	ProgressSet(60, "_GetTPMInfo()")
 	_GetTPMInfo()
-	ProgressSet(100, "Done")
-	ProgressOff()
+	ProgressSet(80, "Loading Gui...")
 	#EndRegion Init WMI data
 
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
@@ -504,10 +503,10 @@ Func Main()
 
 	#Region - GPTCheck
 	Switch _GPTCheck()
-		Case "GPT"
+		Case True
 			_GUICtrlSetPass($hCheck[6][0])
 			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System drive: GPT") & @CRLF & _Translate($iMUI, "Drive meets requirement."))
-		Case "MBR"
+		Case False
 			_GUICtrlSetFail($hCheck[6][0])
 			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System drive: MBR") & @CRLF & _Translate($iMUI, "Drive does not meet requirement."))
 		Case Else
@@ -536,18 +535,18 @@ Func Main()
 	EndSwitch
 
 	#Region - SpaceCheck
-	If _SpaceCheck(2) >= 64 And _SpaceCheck(1) >= 64 Then
+	If _SpaceCheck(2) >=  64 And _SpaceCheck(1) >= 64 Then
 		; Partition and Disk >= 64 GB
-		_GUICtrlSetPass($hCheck[8][0])
-		GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Both passed."))
+		_GUICtrlSetState($hCheck[9][0], $iPass)
+		GUICtrlSetData($hCheck[9][2], _Translate($iMUI, "Both passed."))
 	ElseIf _SpaceCheck(2) < 64 And _SpaceCheck(1) >= 64 Then
 		; Partition < 64 GB and Disk >= 64 GB
-		_GUICtrlSetWarn($hCheck[8][0])
-		GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Partition failed."))
+		_GUICtrlSetState($hCheck[9][0], $iWarn)
+		GUICtrlSetData($hCheck[9][2], _Translate($iMUI, "Partition failed."))
 	ElseIf _SpaceCheck(2) < 64 And _SpaceCheck(1) < 64 Then
 		; Partition and Disk < 64 GB
-		_GUICtrlSetFail($hCheck[8][0])
-		GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Both Failed."))
+		_GUICtrlSetState($hCheck[9][0], $iFail)
+		GUICtrlSetData($hCheck[9][2], _Translate($iMUI, "Both Failed."))
 	EndIf
 	#EndRegion - SpaceCheck
 
@@ -589,6 +588,9 @@ Func Main()
 	EndIf
 
 	#EndRegion Settings GUI
+	
+	ProgressSet(100)
+	ProgressOff()
 
 	GUISwitch($hGUI)
 	GUISetState(@SW_SHOW, $hGUI)
