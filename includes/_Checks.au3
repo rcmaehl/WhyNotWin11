@@ -1,6 +1,6 @@
 #include-once
 #include <File.au3>
-#include ".\_WMIC.au3"
+#include "_WMIC.au3"
 
 Func _ArchCheck()
 	Select

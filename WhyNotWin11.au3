@@ -31,6 +31,8 @@ FileChangeDir(@SystemDir)
 
 If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext", "HWND", "DPI_AWARENESS_CONTEXT" - 1)
 
+#Region Includes
+; Default UDF includes
 #include <File.au3>
 #include <Misc.au3>
 #include <Array.au3>
@@ -48,10 +50,10 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 #include <StringConstants.au3>
 #include <WindowsConstants.au3>
 
-Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
-
+; Include external functions
 #include "Includes\ResourcesEx.au3"
 
+; Internals internal scripts
 #include "Includes\_WMIC.au3"
 #include "Includes\_Checks.au3"
 #include "Includes\_Theming.au3"
@@ -59,6 +61,7 @@ Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
 #include "Includes\_GetDiskInfo.au3"
 #include "Includes\_Translations.au3"
 ; #include "includes\WhyNotWin11_accessibility.au3"
+#EndRegion
 
 Opt("TrayIconHide", 1)
 Opt("TrayAutoPause", 0)
@@ -224,6 +227,7 @@ Func Main()
 	Local Const $DPI_RATIO = _GDIPlus_GraphicsGetDPIRatio()[0]
 	Local $aDisks, $aPartitions
 
+	#Region Init WMI data
 	ProgressOn("WhyNotWin11", "Loading WMIC")
 	ProgressSet(0, "_GetCPUInfo()")
 	_GetCPUInfo()
@@ -236,6 +240,8 @@ Func Main()
 	ProgressSet(80, "_GetDiskInfoFromWmi")
 	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
 	ProgressSet(100, "Done")
+	ProgressOff()
+	#EndRegion
 
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
 	GUISetBkColor(_HighContrast(0xF8F8F8))
@@ -581,8 +587,6 @@ Func Main()
 	#EndRegion Settings GUI
 
 	GUISwitch($hGUI)
-
-	ProgressOff()
 	GUISetState(@SW_SHOW, $hGUI)
 
 	Local $hMsg, $sDXFile
