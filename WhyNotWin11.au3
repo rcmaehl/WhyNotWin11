@@ -50,11 +50,14 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 
 Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
 
+#include ".\Includes\ResourcesEx.au3"
+
 #include ".\Includes\_WMIC.au3"
 #include ".\Includes\_Checks.au3"
-#include ".\Includes\Resources.au3"
-#include ".\Includes\ResourcesEx.au3"
-#include ".\Includes\GetDiskInfo.au3"
+#include ".\Includes\_Theming.au3"
+#include ".\Includes\_Resources.au3"
+#include ".\Includes\_GetDiskInfo.au3"
+#include ".\Includes\_Translations.au3"
 
 Opt("TrayIconHide", 1)
 Opt("TrayAutoPause", 0)
@@ -448,45 +451,24 @@ Func Main()
 			EndSwitch
 	EndSwitch
 
-	; CPU Compatibility List
-	Local $iLines, $sLine, $ListFile
-	Select
-		Case StringInStr(_GetCPUInfo(2), "AMD")
-			$ListFile = "\WhyNotWin11\SupportedProcessorsAMD.txt"
-		Case StringInStr(_GetCPUInfo(2), "Intel")
-			$ListFile = "\WhyNotWin11\SupportedProcessorsIntel.txt"
-		Case StringInStr(_GetCPUInfo(2), "SnapDragon") Or StringInStr(_GetCPUInfo(2), "Microsoft")
-			$ListFile = "\WhyNotWin11\SupportedProcessorsQualcomm.txt"
-	EndSelect
 
-	If $ListFile = Null Then
-		_GUICtrlSetWarn($hCheck[2][0])
-		GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Not Currently Listed as Compatible"))
-	Else
-		$iLines = _FileCountLines(@LocalAppDataDir & $ListFile)
-		If @error Then
-			_GUICtrlSetWarn($hCheck[2][0])
-			GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Unable to Check List"))
-		EndIf
-
-		For $iLine = 1 To $iLines Step 1
-			$sLine = FileReadLine(@LocalAppDataDir & $ListFile, $iLine)
-			Select
-				Case @error
+	Switch _CPUNameCheck(_GetCPUInfo(2))
+		Case False
+			Switch @error
+				Case 1
+					_GUICtrlSetWarn($hCheck[2][0])
+					GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Unable to Check List"))
+				Case 2
 					_GUICtrlSetWarn($hCheck[2][0])
 					GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Error Accessing List"))
-					ExitLoop
-				Case $iLine = $iLines
+				Case 3
 					_GUICtrlSetWarn($hCheck[2][0])
 					GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Not Currently Listed as Compatible"))
-					ExitLoop
-				Case StringInStr(_GetCPUInfo(2), $sLine)
-					_GUICtrlSetPass($hCheck[2][0])
-					GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Listed as Compatible"))
-					ExitLoop
-			EndSelect
-		Next
-	EndIf
+			EndSwitch
+		Case Else
+			_GUICtrlSetPass($hCheck[2][0])
+			GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Listed as Compatible"))
+	EndSwitch
 
 	#Region - Determining CPU properties
 	If _CPUCoresCheck(_GetCPUInfo(0), _GetCPUInfo(1)) Then
@@ -746,102 +728,6 @@ Func ParseResults($aResults)
 
 EndFunc   ;==>ParseResults
 
-Func _CheckAppsUseLightTheme()
-	Local $sUseLightTheme = RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
-	If @error Then
-		$sUseLightTheme = "1"
-	EndIf
-	Return Int($sUseLightTheme)
-EndFunc   ;==>_CheckAppsUseLightTheme
-
-;######################################################################################################################################
-; #FUNCTION# ====================================================================================================================
-; Name ..........: _GDIPlus_GraphicsGetDPIRatio
-; Description ...:
-; Syntax ........: _GDIPlus_GraphicsGetDPIRatio([$iDPIDef = 96])
-; Parameters ....: $iDPIDef             - [optional] An integer value. Default is 96.
-; Return values .: None
-; Author ........: UEZ
-; Modified ......:
-; Remarks .......:
-; Related .......:
-; Link ..........: http://www.autoitscript.com/forum/topic/159612-dpi-resolution-problem/?hl=%2Bdpi#entry1158317
-; Example .......: No
-; ===============================================================================================================================
-Func _GDIPlus_GraphicsGetDPIRatio($iDPIDef = 96)
-	_GDIPlus_Startup()
-	Local $hGfx = _GDIPlus_GraphicsCreateFromHWND(0)
-	If @error Then Return SetError(1, @extended, 0)
-	#forcedef $__g_hGDIPDll
-
-	Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipGetDpiX", "handle", $hGfx, "float*", 0)
-
-	If @error Then Return SetError(2, @extended, 0)
-	Local $iDPI = $aResult[2]
-	Local $aResults[2] = [$iDPIDef / $iDPI, $iDPI / $iDPIDef]
-	_GDIPlus_GraphicsDispose($hGfx)
-	_GDIPlus_Shutdown()
-	Return $aResults
-EndFunc   ;==>_GDIPlus_GraphicsGetDPIRatio
-
-Func _GetFile($sFile, $sFormat = $FO_READ)
-	Local Const $hFileOpen = FileOpen($sFile, $sFormat)
-	If $hFileOpen = -1 Then
-		Return SetError(1, 0, '')
-	EndIf
-	Local Const $sData = FileRead($hFileOpen)
-	FileClose($hFileOpen)
-	Return $sData
-EndFunc   ;==>_GetFile
-
-Func _GetTranslationCredit()
-	Return IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang", "MetaData", "Translator", "???")
-EndFunc   ;==>_GetTranslationCredit
-
-Func _GetTranslationFonts($iMUI)
-	Local $aFonts[4] = [8.5, 10, 18, 24]
-
-	$aFonts[0] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Small", $aFonts[0])
-	$aFonts[1] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Medium", $aFonts[1])
-	$aFonts[2] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Large", $aFonts[2])
-	$aFonts[3] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Extra Large", $aFonts[3])
-
-	Return $aFonts
-EndFunc   ;==>_GetTranslationFonts
-
-Func _HighContrast($sColor)
-	Local Static $sSysWin
-
-	If Not $sSysWin <> "" Then $sSysWin = _WinAPI_GetSysColor($COLOR_WINDOW)
-
-	Select
-		Case $sSysWin = 0
-			ContinueCase
-		Case $sSysWin = 16777215 And Not _CheckAppsUseLightTheme()
-			Return 16777215 - $sColor
-		Case Else
-			Return $sSysWin + $sColor + 1
-	EndSelect
-
-EndFunc   ;==>_HighContrast
-
-Func _INIUnicode($sINI)
-	If FileExists($sINI) = 0 Then
-		Return FileClose(FileOpen($sINI, $FO_OVERWRITE + $FO_UNICODE))
-	Else
-		Local Const $iEncoding = FileGetEncoding($sINI)
-		Local $fReturn = True
-		If Not ($iEncoding = $FO_UNICODE) Then
-			Local $sData = _GetFile($sINI, $iEncoding)
-			If @error Then
-				$fReturn = False
-			EndIf
-			_SetFile($sData, $sINI, $FO_APPEND + $FO_UNICODE)
-		EndIf
-		Return $fReturn
-	EndIf
-EndFunc   ;==>_INIUnicode
-
 Func _SetBannerText($hBannerText, $hBanner)
 
 	Local $bLinux = False
@@ -867,83 +753,6 @@ Func _SetBannerText($hBannerText, $hBanner)
 	EndSelect
 
 EndFunc   ;==>_SetBannerText
-
-Func _SetBkIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
-
-	Local Static $STM_SETIMAGE = 0x0172
-	Local $hDC, $hBackDC, $hBackSv, $hBitmap, $hImage, $hIcon, $hBkIcon
-
-	$hIcon = _WinAPI_ShellExtractIcon($sIcon, $iIndex, $iWidth, $iHeight)
-
-	$hDC = _WinAPI_GetDC(0)
-	$hBackDC = _WinAPI_CreateCompatibleDC($hDC)
-	$hBitmap = _WinAPI_CreateSolidBitmap(0, $iBackground, $iWidth, $iHeight)
-	$hBackSv = _WinAPI_SelectObject($hBackDC, $hBitmap)
-	_WinAPI_DrawIconEx($hBackDC, 0, 0, $hIcon, 0, 0, 0, 0, $DI_NORMAL)
-
-	$hImage = _GDIPlus_BitmapCreateFromHBITMAP($hBitmap)
-	$hBkIcon = DllCall($__g_hGDIPDll, 'int', 'GdipCreateHICONFromBitmap', 'hWnd', $hImage, 'int*', 0)
-	$hBkIcon = $hBkIcon[2]
-	_GDIPlus_ImageDispose($hImage)
-
-	GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, _WinAPI_CopyIcon($hBkIcon))
-	_WinAPI_RedrawWindow(GUICtrlGetHandle($ControlID))
-
-	_WinAPI_SelectObject($hBackDC, $hBackSv)
-	_WinAPI_DeleteDC($hBackDC)
-	_WinAPI_ReleaseDC(0, $hDC)
-	_WinAPI_DeleteObject($hBkIcon)
-	_WinAPI_DeleteObject($hBitmap)
-	_WinAPI_DeleteObject($hIcon)
-
-	Return SetError(0, 0, 1)
-EndFunc   ;==>_SetBkIcon
-
-Func _SetBkSelfIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
-
-	Local Static $STM_SETIMAGE = 0x0172
-	Local $hDC, $hBackDC, $hBackSv, $hBitmap, $hImage, $hIcon, $hBkIcon
-
-	$hIcon = _Resource_GetAsIcon($iIndex, "RC_DATA", $sIcon)
-
-	$hDC = _WinAPI_GetDC(0)
-	$hBackDC = _WinAPI_CreateCompatibleDC($hDC)
-	$hBitmap = _WinAPI_CreateSolidBitmap(0, $iBackground, $iWidth, $iHeight)
-	$hBackSv = _WinAPI_SelectObject($hBackDC, $hBitmap)
-	_WinAPI_DrawIconEx($hBackDC, 0, 0, $hIcon, 0, 0, 0, 0, $DI_NORMAL)
-
-	$hImage = _GDIPlus_BitmapCreateFromHBITMAP($hBitmap)
-	$hBkIcon = DllCall($__g_hGDIPDll, 'int', 'GdipCreateHICONFromBitmap', 'hWnd', $hImage, 'int*', 0)
-	$hBkIcon = $hBkIcon[2]
-	_GDIPlus_ImageDispose($hImage)
-
-	GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, _WinAPI_CopyIcon($hBkIcon))
-	_WinAPI_RedrawWindow(GUICtrlGetHandle($ControlID))
-
-	_WinAPI_SelectObject($hBackDC, $hBackSv)
-	_WinAPI_DeleteDC($hBackDC)
-	_WinAPI_ReleaseDC(0, $hDC)
-	_WinAPI_DeleteObject($hBkIcon)
-	_WinAPI_DeleteObject($hBitmap)
-	_WinAPI_DeleteObject($hIcon)
-
-	Return SetError(0, 0, 1)
-EndFunc   ;==>_SetBkSelfIcon
-
-Func _SetFile($sString, $sFile, $iOverwrite = $FO_READ)
-	Local Const $hFileOpen = FileOpen($sFile, $iOverwrite + $FO_APPEND)
-	FileWrite($hFileOpen, $sString)
-	FileClose($hFileOpen)
-	If @error Then
-		Return SetError(1, 0, False)
-	EndIf
-	Return True
-EndFunc   ;==>_SetFile
-
-Func _Translate($iMUI, $sString)
-	_INIUnicode(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang")
-	Return IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Strings", $sString, $sString)
-EndFunc   ;==>_Translate
 
 Func _GUICtrlSetPass($hCtrl)
 	GUICtrlSetData($hCtrl, "OK")

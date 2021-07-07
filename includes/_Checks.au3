@@ -42,7 +42,7 @@ Func _CPUNameCheck($sCPU)
 		Return False
 	Else
 		$iLines = _FileCountLines(@LocalAppDataDir & $ListFile)
-		If @error Then Return SetError(1, 0, 0)
+		If @error Then Return SetError(1, 0, False)
 		For $iLine = 1 To $iLines Step 1
 			$sLine = FileReadLine(@LocalAppDataDir & $ListFile, $iLine)
 			Select
