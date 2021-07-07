@@ -163,7 +163,7 @@ Func ChecksOnly()
 	$aDirectX = _DirectXStartCheck()
 
 	Local $aDisks, $aPartitions
-	GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
+	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
 	$aResults[6][0] = _GPTCheck($aDisks)
 	$aResults[6][1] = @error
 	$aResults[6][2] = @extended
@@ -763,7 +763,7 @@ Func _SetBannerText($hBannerText, $hBanner)
 
 EndFunc   ;==>_SetBannerText
 
-_GUICtrlSetState($hCtrl, $iState)
+Func _GUICtrlSetState($hCtrl, $iState)
 	Switch $iState
 		Case 0
 			GUICtrlSetData($hCtrl, "X")
