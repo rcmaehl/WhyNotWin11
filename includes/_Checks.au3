@@ -114,16 +114,7 @@ Func _GetDirectXCheck($aArray)
 EndFunc   ;==>_GetDirectXCheck
 
 Func _GPTCheck($aDisks)
-	For $iLoop = 0 To UBound($aDisks) - 1
-		If $aDisks[$iLoop][11] = "True" Then
-			Switch $aDisks[$iLoop][9]
-				Case "GPT"
-					Return True
-				Case Else
-					Return SetError($aDisks[$iLoop][9], 0, False)
-			EndSwitch
-		EndIf
-	Next
+;~ 	// ToDo: Update this part
 EndFunc   ;==>_GPTCheck
 
 Func _MemCheck()
@@ -166,21 +157,7 @@ Func _SecureBootCheck()
 EndFunc   ;==>_SecureBootCheck
 
 Func _SpaceCheck()
-	Local $sWindows = EnvGet("SystemDrive")
-
-	Local $iFree = Round(DriveSpaceTotal($sWindows) / 1024, 0)
-	Local $aDrives = DriveGetDrive($DT_FIXED)
-	Local $iDrives = 0
-
-	For $iLoop = 1 To $aDrives[0] Step 1
-		If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 64 Then $iDrives += 1
-	Next
-
-	If $iFree >= 64 Then
-		Return SetError($iFree, $iDrives, True)
-	Else
-		Return SetError($iFree, $iDrives, False)
-	EndIf
+;~	// ToDo: Update this part
 EndFunc   ;==>_SpaceCheck
 
 Func _TPMCheck()

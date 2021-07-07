@@ -165,11 +165,12 @@ Func ChecksOnly()
 
 	$aDirectX = _DirectXStartCheck()
 
-	Local $aDisks, $aPartitions
-	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
-	$aResults[6][0] = _GPTCheck($aDisks)
-	$aResults[6][1] = @error
-	$aResults[6][2] = @extended
+;~	// ToDo: Update this part
+;~ 	Local $aDisks, $aPartitions
+;~ 	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
+;~ 	$aResults[6][0] = _GPTCheck($aDisks)
+;~ 	$aResults[6][1] = @error
+;~ 	$aResults[6][2] = @extended
 
 	$aResults[7][0] = _MemCheck()
 	$aResults[7][1] = @error
@@ -179,9 +180,10 @@ Func ChecksOnly()
 	$aResults[8][1] = @error
 	$aResults[8][2] = @extended
 
-	$aResults[9][0] = _SpaceCheck()
-	$aResults[9][1] = @error
-	$aResults[9][2] = @extended
+;~	// ToDo: Update this part
+;~ 	$aResults[9][0] = _SpaceCheck()
+;~ 	$aResults[9][1] = @error
+;~ 	$aResults[9][2] = @extended
 
 	$aResults[10][0] = _TPMCheck()
 	$aResults[10][1] = @error
@@ -228,19 +230,20 @@ Func Main()
 	Local $aDisks, $aPartitions
 
 	#Region Init WMI data
-	ProgressOn("WhyNotWin11", "Loading WMIC")
-	ProgressSet(0, "_GetCPUInfo()")
-	_GetCPUInfo()
-	ProgressSet(20, "_GetDiskInfo()")
-	_GetDiskInfo()
-	ProgressSet(40, "_GetGPUInfo()")
-	_GetGPUInfo()
-	ProgressSet(60, "_GetTPMInfo()")
-	_GetTPMInfo()
-	ProgressSet(80, "_GetDiskInfoFromWmi")
-	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
-	ProgressSet(100, "Done")
-	ProgressOff()
+;~	// ToDo: Update this part
+;~ 	ProgressOn("WhyNotWin11", "Loading WMIC")
+;~ 	ProgressSet(0, "_GetCPUInfo()")
+;~ 	_GetCPUInfo()
+;~ 	ProgressSet(20, "_GetDiskInfo()")
+;~ 	_GetDiskInfo()
+;~ 	ProgressSet(40, "_GetGPUInfo()")
+;~ 	_GetGPUInfo()
+;~ 	ProgressSet(60, "_GetTPMInfo()")
+;~ 	_GetTPMInfo()
+;~ 	ProgressSet(80, "_GetDiskInfoFromWmi")
+;~ 	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
+;~ 	ProgressSet(100, "Done")
+;~ 	ProgressOff()
 	#EndRegion
 
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
@@ -506,18 +509,9 @@ Func Main()
 	Local $aDirectX
 	$aDirectX = _DirectXStartCheck()
 
-	If _GPTCheck($aDisks) Then
-		If @error Then
-			_GUICtrlSetState($hCheck[6][0], $iPass)
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected"))
-		Else
-			_GUICtrlSetState($hCheck[6][0], $iPass)
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected"))
-		EndIf
-	Else
-		GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected") & @CRLF & @error)
-		_GUICtrlSetState($hCheck[6][0], $iFail)
-	EndIf
+	#Region - GPTCheck
+	;~	// ToDo: Update this part
+	#EndRegion
 
 	If _MemCheck() Then
 		_GUICtrlSetState($hCheck[7][0], $iPass)
@@ -539,13 +533,9 @@ Func Main()
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Disabled / Not Detected"))
 	EndSwitch
 
-	_SpaceCheck()
-	GUICtrlSetData($hCheck[9][2], @error & " GB " & $WINDOWS_DRIVE & @CRLF & @extended & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
-	If _SpaceCheck() Then
-		_GUICtrlSetPass($hCheck[9][0])
-	Else
-		_GUICtrlSetFail($hCheck[9][0])
-	EndIf
+	#Region - SpaceCheck
+	;~	// ToDo: Update this part
+	#EndRegion - SpaceCheck
 
 	Select
 		Case _GetTPMInfo(0) = False
