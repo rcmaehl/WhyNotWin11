@@ -61,7 +61,7 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 #include "Includes\_Resources.au3"
 #include "Includes\_Translations.au3"
 ; #include "includes\WhyNotWin11_accessibility.au3"
-#EndRegion
+#EndRegion Includes
 
 Opt("TrayIconHide", 1)
 Opt("TrayAutoPause", 0)
@@ -237,7 +237,7 @@ Func Main()
 	_GetTPMInfo()
 	ProgressSet(100, "Done")
 	ProgressOff()
-	#EndRegion
+	#EndRegion Init WMI data
 
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
 	GUISetBkColor(_HighContrast(0xF8F8F8))
@@ -367,7 +367,7 @@ Func Main()
 	Local $hBannerText = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
-
+	
 	Local $sBannerURL = _SetBannerText($hBannerText, $hBanner)
 	#ce Maybe Readd Later
 
@@ -503,7 +503,7 @@ Func Main()
 	$aDirectX = _DirectXStartCheck()
 
 	#Region - GPTCheck
-		Switch _GPTCheck()
+	Switch _GPTCheck()
 		Case "GPT"
 			_GUICtrlSetPass($hCheck[6][0])
 			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System drive: GPT") & @CRLF & _Translate($iMUI, "Drive meets requirement."))
@@ -512,8 +512,8 @@ Func Main()
 			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System drive: MBR") & @CRLF & _Translate($iMUI, "Drive does not meet requirement."))
 		Case Else
 			; Do Nothing!!
-		EndSwitch
-	#EndRegion
+	EndSwitch
+	#EndRegion - GPTCheck
 
 	If _MemCheck() Then
 		_GUICtrlSetState($hCheck[7][0], $iPass)
@@ -536,19 +536,19 @@ Func Main()
 	EndSwitch
 
 	#Region - SpaceCheck
-		if _SpaceCheck(2) >= 64 and _SpaceCheck(1) >= 64 Then
-			; Partition and Disk >= 64 GB
-			_GUICtrlSetPass($hCheck[8][0])
-			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Both passed."))
-		ElseIf _SpaceCheck(2) < 64 and _SpaceCheck(1) >= 64 Then
-			; Partition < 64 GB and Disk >= 64 GB
-			_GUICtrlSetWarn($hCheck[8][0])
-			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Partition failed."))
-		ElseIf _SpaceCheck(2) < 64 and _SpaceCheck(1) < 64 Then
-			; Partition and Disk < 64 GB
-			_GUICtrlSetFail($hCheck[8][0])
-			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Both Failed."))
-		EndIf
+	If _SpaceCheck(2) >= 64 And _SpaceCheck(1) >= 64 Then
+		; Partition and Disk >= 64 GB
+		_GUICtrlSetPass($hCheck[8][0])
+		GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Both passed."))
+	ElseIf _SpaceCheck(2) < 64 And _SpaceCheck(1) >= 64 Then
+		; Partition < 64 GB and Disk >= 64 GB
+		_GUICtrlSetWarn($hCheck[8][0])
+		GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Partition failed."))
+	ElseIf _SpaceCheck(2) < 64 And _SpaceCheck(1) < 64 Then
+		; Partition and Disk < 64 GB
+		_GUICtrlSetFail($hCheck[8][0])
+		GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Both Failed."))
+	EndIf
 	#EndRegion - SpaceCheck
 
 	Select

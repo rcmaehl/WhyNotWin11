@@ -120,7 +120,7 @@ Func _GPTCheck()
 
 	; Check for error
 	_GetDiskProperties(3) ; 3 = SystemDisk properties
-	if @error =  1 Then Return SetError(1, 1, "Error_CheckFailed")
+	If @error = 1 Then Return SetError(1, 1, "Error_CheckFailed")
 
 	; Check DiskInitType
 	Switch _GetDiskProperties(3)[9] ; 9 = Array field for DiskInitType
@@ -181,16 +181,16 @@ Func _SpaceCheck($iFlag)
 
 	; Check for error
 	_GetDiskProperties(4)
-	if @error =  1 Then Return SetError(1, 1, "Error_CheckFailed")
+	If @error = 1 Then Return SetError(1, 1, "Error_CheckFailed")
 
 	; Get size
-	Local $iDiskSize =  Round(_GetDiskProperties(3)[8] / 1024 / 1024 / 1024)
-	Local $iPartitionSize =  Round(_GetDiskProperties(4)[9] / 1024 / 1024 / 1024)
+	Local $iDiskSize = Round(_GetDiskProperties(3)[8] / 1024 / 1024 / 1024)
+	Local $iPartitionSize = Round(_GetDiskProperties(4)[9] / 1024 / 1024 / 1024)
 
 	Switch $iFlag
 		Case 0
 			; Return readiness state
-			return ($iDiskSize >= 64 AND $iPartitionSize >= 64) ? True : False
+			Return ($iDiskSize >= 64 And $iPartitionSize >= 64) ? True : False
 		Case 1
 			; Return size of disk
 			Return $iDiskSize
@@ -202,7 +202,7 @@ Func _SpaceCheck($iFlag)
 			Local $aDisks = _GetDiskProperties(1)
 			Local $iDiskCount = 0
 			For $i = 0 To UBound($aDisks) - 1
-				if _GetDiskProperties(1)[$i][8] >= 64 Then
+				If _GetDiskProperties(1)[$i][8] >= 64 Then
 					$iDiskCount += 1
 				EndIf
 			Next
