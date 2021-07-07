@@ -52,13 +52,13 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 
 ; Include external functions
 #include "Includes\ResourcesEx.au3"
+#include "Includes\GetDiskInfoFromWmi.au3"
 
 ; Internals internal scripts
 #include "Includes\_WMIC.au3"
 #include "Includes\_Checks.au3"
 #include "Includes\_Theming.au3"
 #include "Includes\_Resources.au3"
-#include "Includes\_GetDiskInfo.au3"
 #include "Includes\_Translations.au3"
 ; #include "includes\WhyNotWin11_accessibility.au3"
 #EndRegion
