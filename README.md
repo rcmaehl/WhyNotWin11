@@ -39,7 +39,7 @@ Disk (Storage)|5MB Free|100MB Free
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for rules of coding and pull requests.
 
-If you want to help with translations check [translating guidelines](Langs/0000-translating-guidelines.txt).
+If you want to help with translations check [translating guidelines](Langs/0000-translating-guidelines.md).
 
 ## License
 
