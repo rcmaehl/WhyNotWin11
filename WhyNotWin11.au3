@@ -1,5 +1,5 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
-#AutoIt3Wrapper_Icon=.\assets\windows11-logo.ico
+#AutoIt3Wrapper_Icon=Assets\windows11-logo.ico
 #AutoIt3Wrapper_Outfile=WhyNotWin11_x86.exe
 #AutoIt3Wrapper_Outfile_x64=WhyNotWin11.exe
 #AutoIt3Wrapper_Compile_Both=y
@@ -11,12 +11,12 @@
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
-#AutoIt3Wrapper_Res_Icon_Add=assets\git.ico
-#AutoIt3Wrapper_Res_Icon_Add=assets\pp.ico
-#AutoIt3Wrapper_Res_Icon_Add=assets\dis.ico
-#AutoIt3Wrapper_Res_Icon_Add=assets\web.ico
-#AutoIt3Wrapper_Res_Icon_Add=assets\job.ico
-#AutoIt3Wrapper_Res_Icon_Add=assets\set.ico
+#AutoIt3Wrapper_Res_Icon_Add=Assets\git.ico
+#AutoIt3Wrapper_Res_Icon_Add=Assets\pp.ico
+#AutoIt3Wrapper_Res_Icon_Add=Assets\dis.ico
+#AutoIt3Wrapper_Res_Icon_Add=Assets\web.ico
+#AutoIt3Wrapper_Res_Icon_Add=Assets\job.ico
+#AutoIt3Wrapper_Res_Icon_Add=Assets\set.ico
 #AutoIt3Wrapper_Run_AU3Check=Y
 #AutoIt3Wrapper_Au3Check_Parameters=-d -w 1 -w 2 -w 3 -w 4 -w 5 -w 6 -w 7 -v1 -v2 -v3
 #AutoIt3Wrapper_Run_Au3Stripper=y
@@ -50,14 +50,14 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 
 Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
 
-#include ".\Includes\ResourcesEx.au3"
+#include "Includes\ResourcesEx.au3"
 
-#include ".\Includes\_WMIC.au3"
-#include ".\Includes\_Checks.au3"
-#include ".\Includes\_Theming.au3"
-#include ".\Includes\_Resources.au3"
-#include ".\Includes\_GetDiskInfo.au3"
-#include ".\Includes\_Translations.au3"
+#include "Includes\_WMIC.au3"
+#include "Includes\_Checks.au3"
+#include "Includes\_Theming.au3"
+#include "Includes\_Resources.au3"
+#include "Includes\_GetDiskInfo.au3"
+#include "Includes\_Translations.au3"
 
 Opt("TrayIconHide", 1)
 Opt("TrayAutoPause", 0)
