@@ -18,7 +18,7 @@ EndIf
 firstlaunch()
 
 Func firstlaunch()
-	Local $accessibility = IniRead(@ScriptDir & "\config\config.st", "accessibility", "Enable enanced accessibility", "")
+	Local $accessibility = IniRead(@ScriptDir & "\config\config.st", "accessibility", "Enable enhanced accessibility", "")
 	Select
 		Case $accessibility = "yes"
 			accessibility()
@@ -31,15 +31,15 @@ EndFunc   ;==>firstlaunch
 Func ConfigureAccessibility()
 	Local $Question = MsgBox(4, _Translate(@MUILang, "Enable enanced accessibility?"), _Translate(@MUILang, "This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?"))
 	If $Question == 6 Then
-		IniWrite(@ScriptDir & "\config\config.st", "accessibility", "Enable enanced accessibility", "Yes")
+		IniWrite(@ScriptDir & "\config\config.st", "accessibility", "Enable enhanced accessibility", "Yes")
 		accessibility()
 	Else
-		IniWrite(@ScriptDir & "\config\config.st", "accessibility", "Enable enanced accessibility", "No")
+		IniWrite(@ScriptDir & "\config\config.st", "accessibility", "Enable enhanced accessibility", "No")
 	EndIf
 EndFunc   ;==>ConfigureAccessibility
 
 Func accessibility()
-	Local $sRead = IniRead(@ScriptDir & "\config\config.st", "accessibility", "Enable enanced accessibility", "")
+	Local $sRead = IniRead(@ScriptDir & "\config\config.st", "accessibility", "Enable enhanced accessibility", "")
 	Select
 		Case $sRead = "Yes"
 			SetKeys()
