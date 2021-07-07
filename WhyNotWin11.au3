@@ -178,10 +178,9 @@ Func ChecksOnly()
 	$aResults[8][1] = @error
 	$aResults[8][2] = @extended
 
-;~	// ToDo: Update this part
-;~ 	$aResults[9][0] = _SpaceCheck()
-;~ 	$aResults[9][1] = @error
-;~ 	$aResults[9][2] = @extended
+	$aResults[9][0] = _SpaceCheck(0)
+	$aResults[9][1] = (_SpaceCheck(1) <> "Error_CheckFailed") ? _SpaceCheck(1) : "" ; Disk size
+	$aResults[9][2] = (_SpaceCheck(2) <> "Error_CheckFailed") ? _SpaceCheck(2) : "" ; Partiton size
 
 	$aResults[10][0] = _TPMCheck()
 	$aResults[10][1] = @error
@@ -537,7 +536,19 @@ Func Main()
 	EndSwitch
 
 	#Region - SpaceCheck
-	;~	// ToDo: Update this part
+		if _SpaceCheck(2) >= 64 and _SpaceCheck(1) >= 64 Then
+			; Partition and Disk >= 64 GB
+			_GUICtrlSetPass($hCheck[8][0])
+			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Both passed."))
+		ElseIf _SpaceCheck(2) < 64 and _SpaceCheck(1) >= 64 Then
+			; Partition < 64 GB and Disk >= 64 GB
+			_GUICtrlSetWarn($hCheck[8][0])
+			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Partition failed."))
+		ElseIf _SpaceCheck(2) < 64 and _SpaceCheck(1) < 64 Then
+			; Partition and Disk < 64 GB
+			_GUICtrlSetFail($hCheck[8][0])
+			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Both Failed."))
+		EndIf
 	#EndRegion - SpaceCheck
 
 	Select

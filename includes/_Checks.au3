@@ -116,15 +116,18 @@ EndFunc   ;==>_GetDirectXCheck
 Func _GPTCheck()
 	; Desc ......... : Call _GetDiskInfoFromWmi() to get the disk and partition informations. The selected information will be returned.
 	; Parameters ... :
-	; On error ..... : True | False | SetError(1, 1, "Error_CheckFailed")
+	; Return value . : True | False | SetError(1, 1, "Error_CheckFailed")
 
-	Switch _GetDiskProperties(3)[11] ; 3 = SystemDisk properties, 11 = Array field for DiskInitType
+	; Check for error
+	_GetDiskProperties(3) ; 3 = SystemDisk properties
+	if @error =  1 Then Return SetError(1, 1, "Error_CheckFailed")
+
+	; Check DiskInitType
+	Switch _GetDiskProperties(3)[9] ; 9 = Array field for DiskInitType
 		Case "GPT"
 			Return True
 		Case "MBR"
 			Return False
-		Case Else
-			Return SetError(1, 1, "Error_CheckFailed")
 	EndSwitch
 EndFunc   ;==>_GPTCheck
 
@@ -167,8 +170,49 @@ Func _SecureBootCheck()
 	EndSwitch
 EndFunc   ;==>_SecureBootCheck
 
-Func _SpaceCheck()
-;~	// ToDo: Update this part
+Func _SpaceCheck($iFlag)
+	; Desc ......... : Call _GetDiskInfoFromWmi() to get the disk and partition informations. The selected information will be returned.
+	; Parameters ... : $iFlag = 0 => Return if system disk and system partition ready.
+	; Parameters ... : $iFlag = 1 => Return size of system disk in GB.
+	; Parameters ... : $iFlag = 2 => Return size of system partition in GB.
+	; Parameters ... : $iFlag = 3 => Return count of internal Win11 ready disks.
+	; Parameters ... : $iFlag = 4 => Return count of all internal disks.
+	; On error ..... : SetError(1, 1, "Error_CheckFailed")
+
+	; Check for error
+	_GetDiskProperties(4)
+	if @error =  1 Then Return SetError(1, 1, "Error_CheckFailed")
+
+	; Get size
+	Local $iDiskSize =  Round(_GetDiskProperties(3)[8] / 1024 / 1024 / 1024)
+	Local $iPartitionSize =  Round(_GetDiskProperties(4)[9] / 1024 / 1024 / 1024)
+
+	Switch $iFlag
+		Case 0
+			; Return readiness state
+			return ($iDiskSize >= 64 AND $iPartitionSize >= 64) ? True : False
+		Case 1
+			; Return size of disk
+			Return $iDiskSize
+		Case 2
+			; Return size of partiton
+			Return $iPartitionSize
+		Case 3
+			; Count Disk with sie >= 64 GB.
+			Local $aDisks = _GetDiskProperties(1)
+			Local $iDiskCount = 0
+			For $i = 0 To UBound($aDisks) - 1
+				if _GetDiskProperties(1)[$i][8] >= 64 Then
+					$iDiskCount += 1
+				EndIf
+			Next
+			Return $iDiskCount
+		Case 4
+			Return UBound($aDisks)
+		Case Else
+			; $iFlag unknown
+			Return SetError(1, 1, "Error_CheckFailed")
+	EndSwitch
 EndFunc   ;==>_SpaceCheck
 
 Func _TPMCheck()
