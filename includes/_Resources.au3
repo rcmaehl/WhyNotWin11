@@ -54,13 +54,13 @@ Func CopyLangFiles()
 	FileInstall(".\langs\4C0A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\4C0A.lang", $FC_OVERWRITE)
 	FileInstall(".\langs\500A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\500A.lang", $FC_OVERWRITE)
 	FileInstall(".\langs\540A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\540A.lang", $FC_OVERWRITE)
-EndFunc	  ;==>CopyLangFiles
+EndFunc   ;==>CopyLangFiles
 
 Func CopySupportedProcessorsFiles()
 	FileInstall(".\includes\SupportedProcessorsAMD.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $FC_OVERWRITE)
 	FileInstall(".\includes\SupportedProcessorsIntel.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $FC_OVERWRITE)
 	FileInstall(".\includes\SupportedProcessorsQualcomm.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $FC_OVERWRITE)
-EndFunc	  ;==>CopySupportedProcessorsFiles
+EndFunc   ;==>CopySupportedProcessorsFiles
 
 Func ExtractFiles()
 	FileChangeDir(@ScriptDir)
