@@ -1,7 +1,7 @@
 [MetaData]
 Language=Italian - Italy
-Translator=MarioMarietto
-Version=2.3.0.4
+Translator=MarioMarietto, davide93
+Version=2.3.1.0
 [Font]
 Extra Large=24
 Large=18
@@ -12,7 +12,7 @@ Donate=Dona
 Settings=Impostazioni
 Check for Updates=Verifica aggiornamenti
 Your Windows 11 Compatibility Results are Below=Esito della compatibilità con Windows 11
-Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Raggiungi WhyNotWin11 attraverso https://www.whynotwin11.org/
+Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Vai alla repo GitHub di WhyNotWin11 - https://www.whynotwin11.org/
 Results Based on Currently Known Requirements!=Risultati basati sui requisiti di sistema attualmente conosciuti!
 Translation by=Traduzione di
 Architecture (CPU + OS)=Architettura (CPU + SO)
@@ -33,7 +33,7 @@ Checking...=Verifica in corso...
 32 Bit OS=SO a 32 Bit
 Unable to Determine=Impossibile determinare
 Unable to Check List=Impossibile verificare la lista
-Error Accessing List=Errore durante l'accesso della lista
+Error Accessing List=Errore durante l'accesso alla lista
 Not Currently Listed as Compatible=Attualmente non elencato come compatibile
 Listed as Compatible=Elencato come compatibile
 Cores=Core
@@ -61,6 +61,6 @@ Unable to Check for Updates=Impossibile verificare la disponibilità di aggiorna
 Unable to load release data.=Impossibile caricare i dati di rilascio
 Invalid Data Received!=Ricevuti dati non validi!
 Invalid Release Tags Received!=Ricevuti tag di rilascio non validi!
-Invalid Release Types Received!=Ricevuti tipi di rilascio invalidi!
+Invalid Release Types Received!=Ricevuti tipi di rilascio non validi!
 Update Available=Aggiornamento disponibile
 An Update is Available, would you like to download it?=Un aggiornamento è disponibile, vuoi scaricarlo?
