@@ -118,7 +118,7 @@ Func _GPTCheck()
 	; Parameters ... :
 	; On error ..... : True | False | SetError(1, 1, "Error_CheckFailed")
 
-	Switch _GetDiskProperties(1)[11]
+	Switch _GetDiskProperties(3)[11] ; 3 = SystemDisk properties, 11 = Array field for DiskInitType
 		Case "GPT"
 			Return True
 		Case "MBR"
