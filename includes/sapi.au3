@@ -1,6 +1,6 @@
 #include-once
 ;more sapi functions, such as change voice, etc
-$sapi = ObjCreate("sapi.spvoice")
+Global $sapi = ObjCreate("sapi.spvoice")
 If @error Then
 	MsgBox(4096, "Error", "Could not initialize sapi 5 engine.")
 EndIf
@@ -54,8 +54,8 @@ With this flag, punctuation is actually spoken so the "." becomes the word "peri
 
 #ce
 Func changeVoice($id = 0)
-	$voices = $sapi.GetVoices()
-	$number_of_voices = $voices.Count
+	Local $voices = $sapi.GetVoices()
+	Local $number_of_voices = $voices.Count
 	If IsInt($id) Then
 	Else
 		SetError(-1)
@@ -79,8 +79,8 @@ EndFunc   ;==>changeVoice
 ; The number of voices installed, 1 based.
 
 Func getNumberOfVoices()
-	$voices = $sapi.GetVoices()
-	$number_of_voices = $voices.Count
+	Local $voices = $sapi.GetVoices()
+	Local $number_of_voices = $voices.Count
 	Return $number_of_voices
 EndFunc   ;==>getNumberOfVoices
 
@@ -102,14 +102,14 @@ Func getVoiceName($i = 0)
 		SetError(-1)
 		Return 0
 	EndIf
-	$voices = $sapi.GetVoices()
-	$number_of_voices = $voices.Count
+	Local $voices = $sapi.GetVoices()
+	Local $number_of_voices = $voices.Count
 	$number_of_voices = $number_of_voices - 1
 	If $number_of_voices < $i Then
 		SetError(-1)
 		Return 0
 	EndIf
-	$name = "" & $voices.Item($i).GetDescription() & ""
+	Local $name = "" & $voices.Item($i).GetDescription() & ""
 	If $name = "" Then
 		SetError(-1)
 		Return 0

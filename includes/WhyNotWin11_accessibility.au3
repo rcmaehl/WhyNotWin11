@@ -3,7 +3,7 @@
 #include "kbc.au3"
 #include "reader.au3"
 
-$LastResult = ""
+Global $LastResult = ""
 If FileExists("Config") Then
 	DirCreate(@ScriptDir & "\Config")
 	;This folder will be used to store the settings.
@@ -12,7 +12,7 @@ EndIf
 firstlaunch()
 
 Func firstlaunch()
-	$accessibility = IniRead(@ScriptDir & "\config\config.st", "accessibility", "Enable enanced accessibility", "")
+	Local $accessibility = IniRead(@ScriptDir & "\config\config.st", "accessibility", "Enable enanced accessibility", "")
 	Select
 		Case $accessibility = "yes"
 			accessibility()
@@ -23,7 +23,7 @@ EndFunc   ;==>firstlaunch
 
 ;The next func is to activate the improved accessibility, made exclusively and only for people with disability.
 Func ConfigureAccessibility()
-	$Question = MsgBox(4, _Translate(@MUILang, "Enable enanced accessibility?"), _Translate(@MUILang, "This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?"))
+	Local $Question = MsgBox(4, _Translate(@MUILang, "Enable enanced accessibility?"), _Translate(@MUILang, "This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?"))
 	If $Question == 6 Then
 		IniWrite(@ScriptDir & "\config\config.st", "accessibility", "Enable enanced accessibility", "Yes")
 		accessibility()
@@ -33,7 +33,7 @@ Func ConfigureAccessibility()
 EndFunc   ;==>ConfigureAccessibility
 
 Func accessibility()
-	$sRead = IniRead(@ScriptDir & "\config\config.st", "accessibility", "Enable enanced accessibility", "")
+	Local $sRead = IniRead(@ScriptDir & "\config\config.st", "accessibility", "Enable enanced accessibility", "")
 	Select
 		Case $sRead = "Yes"
 			SetKeys()
@@ -67,7 +67,7 @@ EndFunc   ;==>Unsetkeys
 Func SayInfo()
 	Switch @HotKeyPressed
 		Case "^+1"
-			$sFirmware = EnvGet("firmware_type")
+			Local $sFirmware = EnvGet("firmware_type")
 			Switch $sFirmware
 				Case "UEFI"
 					speaking("Firmware: " & $sFirmware & @CRLF & _Translate(@MUILang, "Status: ") & _Translate(@MUILang, "Acceptable"))

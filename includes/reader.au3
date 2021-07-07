@@ -4,7 +4,7 @@
 ;este es un script para los lectores de pantalla. this is a script for screen readers.
 ;Autor: Mateo Cedillo.
 Func speaking($text)
-	$speak = IniRead(@ScriptDir & "\config\config.st", "accessibility", "Speak Whit", "")
+	Local $speak = IniRead(@ScriptDir & "\config\config.st", "accessibility", "Speak Whit", "")
 	Select
 		Case $speak = "Sapi"
 			speak($text, 3)
@@ -25,11 +25,11 @@ Func autodetect()
 EndFunc   ;==>autodetect
 
 Func TTsDialog($text, $ttsString = " press enter to continue, space to repeat information.")
-	$pressed = 0
-	$repeatinfo = 0
+	Local $pressed = 0
+	Local $repeatinfo = 0
 	speaking($text & @LF & $ttsString)
 	While 1
-		$active_window = WinGetProcess("")
+		Local $active_window = WinGetProcess("")
 		If $active_window = @AutoItPID Then
 			Sleep(10)
 			;ContinueLoop
@@ -55,17 +55,17 @@ Func TTsDialog($text, $ttsString = " press enter to continue, space to repeat in
 EndFunc   ;==>TTsDialog
 
 Func createTtsOutput($filetoread, $title)
-	$move_doc = 0
+	Local $move_doc = 0
 	Local $r_file = FileReadToArray($filetoread)
 	Local $iCountLines = @extended
-	$not = 0
+	Local $not = 0
 	If @error Then
 		speaking("Error reading file...")
 	Else
 		speaking($title)
 	EndIf
 	While 1
-		$active_window = WinGetProcess("")
+		Local $active_window = WinGetProcess("")
 		If $active_window = @AutoItPID Then
 		Else
 			Sleep(10)
