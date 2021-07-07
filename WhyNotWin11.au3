@@ -162,7 +162,8 @@ Func ChecksOnly()
 
 	$aDirectX = _DirectXStartCheck()
 
-	$aResults[6][0] = _GPTCheck()
+	GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
+	$aResults[6][0] = _GPTCheck($aDisks)
 	$aResults[6][1] = @error
 	$aResults[6][2] = @extended
 
@@ -215,6 +216,8 @@ Func Main()
 	Local Static $iMUI = @MUILang
 	Local Static $aFonts[4]
 	$aFonts = _GetTranslationFonts($iMUI)
+
+	Local Enum $iFail = 0, $iPass, $iUnsure, $iWarn
 
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 	Local Const $DPI_RATIO = _GDIPlus_GraphicsGetDPIRatio()[0]
@@ -421,34 +424,34 @@ Func Main()
 
 	Switch _ArchCheck()
 		Case True
-			_GUICtrlSetPass($hCheck[0][0])
+			_GUICtrlSetState($hCheck[0][0], $iPass)
 			GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "64 Bit CPU") & @CRLF & _Translate($iMUI, "64 Bit OS"))
 		Case Else
 			Switch @error
 				Case 1
-					_GUICtrlSetWarn($hCheck[0][0], "!")
+					_GUICtrlSetState($hCheck[0][0], $iWarn)
 					GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "64 Bit CPU") & @CRLF & _Translate($iMUI, "32 bit OS"))
 				Case 2
-					_GUICtrlSetFail($hCheck[0][0])
+					_GUICtrlSetState($hCheck[0][0], $iFail)
 					GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "32 Bit CPU") & @CRLF & _Translate($iMUI, "32 Bit OS"))
 				Case Else
-					_GUICtrlSetFail($hCheck[0][0])
+					_GUICtrlSetState($hCheck[0][0], $iFail)
 					GUICtrlSetData($hCheck[0][2], "?")
 			EndSwitch
 	EndSwitch
 
 	Switch _BootCheck()
 		Case True
-			_GUICtrlSetPass($hCheck[1][0])
+			_GUICtrlSetState($hCheck[1][0], $iPass)
 			GUICtrlSetData($hCheck[1][2], "UEFI")
 		Case False
 			Switch @error
 				Case 0
-					_GUICtrlSetFail($hCheck[1][0])
+					_GUICtrlSetState($hCheck[1][0], $iFail)
 					GUICtrlSetData($hCheck[1][2], "Legacy")
 				Case Else
 					GUICtrlSetData($hCheck[1][2], @extended)
-					_GUICtrlSetWarn($hCheck[1][0])
+					_GUICtrlSetState($hCheck[1][0], $iWarn)
 			EndSwitch
 	EndSwitch
 
@@ -457,25 +460,25 @@ Func Main()
 		Case False
 			Switch @error
 				Case 1
-					_GUICtrlSetWarn($hCheck[2][0])
+					_GUICtrlSetState($hCheck[2][0], $iWarn)
 					GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Unable to Check List"))
 				Case 2
-					_GUICtrlSetWarn($hCheck[2][0])
+					_GUICtrlSetState($hCheck[2][0], $iWarn)
 					GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Error Accessing List"))
 				Case 3
-					_GUICtrlSetWarn($hCheck[2][0])
+					_GUICtrlSetState($hCheck[2][0], $iUnsure)
 					GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Not Currently Listed as Compatible"))
 			EndSwitch
 		Case Else
-			_GUICtrlSetPass($hCheck[2][0])
+			_GUICtrlSetState($hCheck[2][0], $iPass)
 			GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Listed as Compatible"))
 	EndSwitch
 
 	#Region - Determining CPU properties
 	If _CPUCoresCheck(_GetCPUInfo(0), _GetCPUInfo(1)) Then
-		_GUICtrlSetPass($hCheck[3][0])
+		_GUICtrlSetState($hCheck[3][0], $iPass)
 	Else
-		_GUICtrlSetFail($hCheck[3][0])
+		_GUICtrlSetState($hCheck[3][0], $iFail)
 	EndIf
 
 	Local $sCores = StringReplace(_Translate($iMUI, "Cores"), '#', _GetCPUInfo(0))
@@ -485,32 +488,35 @@ Func Main()
 	GUICtrlSetData($hCheck[3][2], $sCores & @CRLF & $sThreads)
 
 	If _GetCPUInfo(3) >= 1000 Then
-		_GUICtrlSetPass($hCheck[4][0])
+		_GUICtrlSetState($hCheck[4][0], $iPass)
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	Else
-		_GUICtrlSetFail($hCheck[4][0])
+		_GUICtrlSetState($hCheck[4][0], $iFail)
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	EndIf
 	#EndRegion - Determining CPU properties
 
-	For $iLoop = 0 To UBound($aDisks) - 1
-		If $aDisks[$iLoop][11] = "True" Then
-			Switch $aDisks[$iLoop][9]
-				Case "GPT"
-					_GUICtrlSetPass($hCheck[6][0])
-					GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected"))
-				Case Else
-					_GUICtrlSetFail($hCheck[6][0])
-					GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected") & @CRLF & $aDisks[$iLoop][9])
-			EndSwitch
+	Local $aDirectX[2]
+	$aDirectX[2] = _DirectXStartCheck()
+
+	If _GPTCheck($aDisks) Then
+		If @error Then
+			_GUICtrlSetState($hCheck[6][0], $iPass)
+			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected"))
+		Else
+			_GUICtrlSetState($hCheck[6][0], $iPass)
+			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected"))
 		EndIf
-	Next
+	Else
+		GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected") & @CRLF & @error)
+		_GUICtrlSetState($hCheck[6][0], $iFail)
+	EndIf
 
 	If _MemCheck() Then
-		_GUICtrlSetPass($hCheck[7][0])
+		_GUICtrlSetState($hCheck[7][0], $iPass)
 		GUICtrlSetData($hCheck[7][2], _MemCheck() & " GB")
 	Else
-		_GUICtrlSetFail($hCheck[7][0])
+		_GUICtrlSetState($hCheck[7][0], $iFail)
 		GUICtrlSetData($hCheck[7][2], _MemCheck() & " GB")
 	EndIf
 
@@ -594,6 +600,7 @@ Func Main()
 				#ce
 
 				; DirectX 12 takes a while. Grab the result once done
+			Case _GetDirectXCheck($aDirectX)
 			Case (Not ProcessExists($hDXPID)) And FileExists($hDXFile)
 				$sDXFile = StringStripWS(StringStripCR(FileRead($hDXFile)), $STR_STRIPALL)
 				Select
@@ -754,6 +761,24 @@ Func _SetBannerText($hBannerText, $hBanner)
 	EndSelect
 
 EndFunc   ;==>_SetBannerText
+
+_GUICtrlSetState($hCtrl, $iState)
+	Switch $iState
+		Case 0
+			GUICtrlSetData($hCtrl, "X")
+			GUICtrlSetBkColor($hCtrl, 0xFA113D)
+		Case 1
+			GUICtrlSetData($hCtrl, "OK")
+			GUICtrlSetBkColor($hCtrl, 0x4CC355)
+		Case 2
+			GUICtrlSetData($hCtrl, "?")
+			GUICtrlSetBkColor($hCtrl, 0xF4C141)
+		Case 3
+			GUICtrlSetData($hCtrl, "!")
+			GUICtrlSetBkColor($hCtrl, 0xF4C141)
+	EndSwitch
+EndFunc   ;==>_GUICtrlSetState
+
 
 Func _GUICtrlSetPass($hCtrl)
 	GUICtrlSetData($hCtrl, "OK")
