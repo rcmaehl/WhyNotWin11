@@ -58,7 +58,7 @@ Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
 #include "Includes\_Resources.au3"
 #include "Includes\_GetDiskInfo.au3"
 #include "Includes\_Translations.au3"
-#include "includes\WhyNotWin11_accessibility.au3"
+; #include "includes\WhyNotWin11_accessibility.au3"
 
 Opt("TrayIconHide", 1)
 Opt("TrayAutoPause", 0)
@@ -497,8 +497,8 @@ Func Main()
 	EndIf
 	#EndRegion - Determining CPU properties
 
-	Local $aDirectX[2]
-	$aDirectX[2] = _DirectXStartCheck()
+	Local $aDirectX
+	$aDirectX = _DirectXStartCheck()
 
 	If _GPTCheck($aDisks) Then
 		If @error Then
