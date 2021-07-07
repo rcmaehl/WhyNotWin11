@@ -1,3 +1,7 @@
+#include-once
+
+#include <FileConstants.au3>
+
 Func _GetFile($sFile, $sFormat = $FO_READ)
 	Local Const $hFileOpen = FileOpen($sFile, $sFormat)
 	If $hFileOpen = -1 Then

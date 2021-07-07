@@ -1,7 +1,13 @@
+#include-once
+
 ;Script For accessibility
 ;made by Mateo Cedillo
 #include "kbc.au3"
 #include "reader.au3"
+#include "_WMIC.au3"
+#include "_Translations.au3"
+
+#include <AutoItConstants.au3>
 
 Global $LastResult = ""
 If FileExists("Config") Then
@@ -80,6 +86,7 @@ Func SayInfo()
 					speaking("Firmware: " & $sFirmware & @CRLF & _Translate(@MUILang, "Status: ") & _Translate(@MUILang, "Cannot be determined"))
 			EndSwitch
 		Case "^+2"
+			Local $iLines, $sLine
 			$LastResult = _Translate(@MUILang, "CPU compatibility: ")
 			Speaking(_Translate(@MUILang, "CPU compatibility: "))
 			Select
@@ -175,7 +182,7 @@ Func SayInfo()
 				speaking("Cores: " & _Translate(@MUILang, "Not compatible") & _GetCPUInfo(3) & " MHz")
 			EndIf
 		Case "^+3"
-			$aDisks = _GetDiskInfo(1)
+			Local $aDisks = _GetDiskInfo(1)
 			Switch _GetDiskInfo(0)
 				Case "GPT"
 					If $aDisks[0] = $aDisks[1] Then
@@ -192,7 +199,7 @@ Func SayInfo()
 					speaking(_Translate(@MUILang, "Compatibility: ") & _Translate(@MUILang, "Not compatible") & @CRLF & _Translate(@MUILang, "GPT Not Detected"))
 			EndSwitch
 		Case "^+4"
-			$aMem = DllCall("Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
+			Local $aMem = DllCall("Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
 			If @error Then
 				$aMem = MemGetStats()
 				$aMem = Round($aMem[1] / 1048576, 1)
@@ -213,7 +220,7 @@ Func SayInfo()
 				speaking("Memory: " & _Translate(@MUILang, "Compatibility: ") & _Translate(@MUILang, "Not compatible") & @CRLF & "Sice: " & $aMem & " GB")
 			EndIf
 		Case "^+5"
-			$sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
+			Local $sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
 			If @error Then $sSecureBoot = 999
 			Switch $sSecureBoot
 				Case 0
@@ -227,8 +234,8 @@ Func SayInfo()
 					speaking(_Translate(@MUILang, "Secure Boot") & ": " & _Translate(@MUILang, "Status: ") & "X, " & _Translate(@MUILang, "Disabled / Not Detected"))
 			EndSwitch
 		Case "^+6"
-			$aDrives = DriveGetDrive($DT_FIXED)
-			$iDrives = 0
+			Local $aDrives = DriveGetDrive($DT_FIXED)
+			Local $iDrives = 0
 			For $iLoop = 1 To $aDrives[0] Step 1
 				If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 64 Then $iDrives += 1
 			Next

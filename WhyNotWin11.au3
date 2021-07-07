@@ -162,6 +162,7 @@ Func ChecksOnly()
 
 	$aDirectX = _DirectXStartCheck()
 
+	Local $aDisks, $aPartitions
 	GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
 	$aResults[6][0] = _GPTCheck($aDisks)
 	$aResults[6][1] = @error
