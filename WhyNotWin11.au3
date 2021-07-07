@@ -166,10 +166,9 @@ Func ChecksOnly()
 	$aDirectX = _DirectXStartCheck()
 
 	_GetDiskProperties()
-;~	// ToDo: Update this part
-;~ 	$aResults[6][0] = _GPTCheck($aDisks)
-;~ 	$aResults[6][1] = @error
-;~ 	$aResults[6][2] = @extended
+	$aResults[6][0] = _GPTCheck()
+	$aResults[6][1] = (_GPTCheck() = "GPT") ? "GPT" : (_GPTCheck() = "MBR") ? "MBR" : ""
+	$aResults[6][2] = ""
 
 	$aResults[7][0] = _MemCheck()
 	$aResults[7][1] = @error
@@ -505,7 +504,16 @@ Func Main()
 	$aDirectX = _DirectXStartCheck()
 
 	#Region - GPTCheck
-	;~	// ToDo: Update this part
+		Switch _GPTCheck()
+		Case "GPT"
+			_GUICtrlSetPass($hCheck[6][0])
+			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System drive: GPT") & @CRLF & _Translate($iMUI, "Drive meets requirement."))
+		Case "MBR"
+			_GUICtrlSetFail($hCheck[6][0])
+			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System drive: MBR") & @CRLF & _Translate($iMUI, "Drive does not meet requirement."))
+		Case Else
+			; Do Nothing!!
+		EndSwitch
 	#EndRegion
 
 	If _MemCheck() Then

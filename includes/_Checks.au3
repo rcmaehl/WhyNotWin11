@@ -113,8 +113,19 @@ Func _GetDirectXCheck($aArray)
 	EndIf
 EndFunc   ;==>_GetDirectXCheck
 
-Func _GPTCheck($aDisks)
-;~ 	// ToDo: Update this part
+Func _GPTCheck()
+	; Desc ......... : Call _GetDiskInfoFromWmi() to get the disk and partition informations. The selected information will be returned.
+	; Parameters ... :
+	; On error ..... : True | False | SetError(1, 1, "Error_CheckFailed")
+
+	Switch _GetDiskProperties(1)[11]
+		Case "GPT"
+			Return True
+		Case "MBR"
+			Return False
+		Case Else
+			Return SetError(1, 1, "Error_CheckFailed")
+	EndSwitch
 EndFunc   ;==>_GPTCheck
 
 Func _MemCheck()
