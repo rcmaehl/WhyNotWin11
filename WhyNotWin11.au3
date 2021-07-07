@@ -165,9 +165,8 @@ Func ChecksOnly()
 
 	$aDirectX = _DirectXStartCheck()
 
+	_GetDiskProperties()
 ;~	// ToDo: Update this part
-;~ 	Local $aDisks, $aPartitions
-;~ 	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
 ;~ 	$aResults[6][0] = _GPTCheck($aDisks)
 ;~ 	$aResults[6][1] = @error
 ;~ 	$aResults[6][2] = @extended
@@ -227,23 +226,19 @@ Func Main()
 
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 	Local Const $DPI_RATIO = _GDIPlus_GraphicsGetDPIRatio()[0]
-	Local $aDisks, $aPartitions
 
 	#Region Init WMI data
-;~	// ToDo: Update this part
-;~ 	ProgressOn("WhyNotWin11", "Loading WMIC")
-;~ 	ProgressSet(0, "_GetCPUInfo()")
-;~ 	_GetCPUInfo()
-;~ 	ProgressSet(20, "_GetDiskInfo()")
-;~ 	_GetDiskInfo()
-;~ 	ProgressSet(40, "_GetGPUInfo()")
-;~ 	_GetGPUInfo()
-;~ 	ProgressSet(60, "_GetTPMInfo()")
-;~ 	_GetTPMInfo()
-;~ 	ProgressSet(80, "_GetDiskInfoFromWmi")
-;~ 	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
-;~ 	ProgressSet(100, "Done")
-;~ 	ProgressOff()
+	ProgressOn("WhyNotWin11", "Loading WMIC")
+	ProgressSet(0, "_GetCPUInfo()")
+	_GetCPUInfo()
+	ProgressSet(25, "_GetDiskProperties()")
+	_GetDiskProperties()
+	ProgressSet(50, "_GetGPUInfo()")
+	_GetGPUInfo()
+	ProgressSet(75, "_GetTPMInfo()")
+	_GetTPMInfo()
+	ProgressSet(100, "Done")
+	ProgressOff()
 	#EndRegion
 
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))

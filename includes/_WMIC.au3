@@ -56,8 +56,62 @@ Func _GetCPUInfo($iFlag = 0)
 	EndSwitch
 EndFunc   ;==>_GetCPUInfo
 
-;~	// ToDo: Update this part
-; ...
+Func _GetDiskProperties($iFlag = 0)
+	; Desc ......... : Call _GetDiskInfoFromWmi() to get the disk and partition informations. The selected information will be returned.
+	; Parameters ... : $iFlag = 0 => Init WMI data.
+	; .............. : $iFlag = 1 => Return array with disk information.
+	; .............. : $iFlag = 2 => Return array with partition information.
+	; .............. : $iFlag = 3 => Return information of disk with system (Windows) partition.
+	; .............. : $iFlag = 4 => Return information of system (Windows) partition.
+	; On error ..... : Return SetError(1, 1, "Error_WmiFailed"), if WMI failed.
+	; .............. : Return SetError(1, 2, "Error_IncorrectFlag"), if $iFlag is unknown.
+	; .............. : Return SetError(1, 3, "Error_NoDataReturned"), if not data can be returned.
+
+	Static $aDiskArray
+	Static $aPartitionArray
+
+	; Get WMI data
+	If (Not $aDiskArray) Or (Not $aPartitionArray) Then
+		; Get disk datat for fixed (internal) disks.
+		_GetDiskInfoFromWmi($aDiskArray, $aPartitionArray, $DiskInfoWmi_TableHeader_No, $DiskInfoWmi_DiskType_Fixed)
+		If @error = 1 Then Return SetError(1, 1, "Error_WmiFailed")
+	EndIf
+
+	; Return data based on $iFlag or exit function
+	Switch $iFlag
+		Case 0
+			; Exit function after init WMI data
+			Return
+		Case 1
+			; Return array with disk information.
+			Return $aDiskArray
+		Case 2
+			; Return array with partition information.
+			Return $aPartitionArray
+		Case 3
+			; Return information of disk with system (Windows) partition.
+			For $i = 0 To UBound($aDiskArray) - 1 Step 1
+				; If windows is bootet from disk...
+				If $aDiskArray[$i][11] = True Then
+					Return $aDiskArray[$i]
+				EndIf
+			Next
+		Case 4
+			; Return information of system (Windows) partition.
+			For $i = 0 To UBound($aPartitionArray) - 1 Step 1
+				; If windows is bootet from partition...
+				If $aPartitionArray[$i][12] = True Then
+					Return $aPartitionArray[$i]
+				EndIf
+			Next
+		Case Else
+			; If $iFlag was incorrect...
+			Return SetError(1, 2, "Error_IncorrectFlag")
+	EndSwitch
+
+	; If no data returned before...
+	SetError(1, 3, "Error_NoDataReturned")
+EndFunc   ;==>_GetDiskProperties
 
 Func _GetGPUInfo($iFlag = 0)
 	Local Static $sName
