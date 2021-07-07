@@ -58,6 +58,7 @@ Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
 #include "Includes\_Resources.au3"
 #include "Includes\_GetDiskInfo.au3"
 #include "Includes\_Translations.au3"
+#include "includes\WhyNotWin11_accessibility.au3"
 
 Opt("TrayIconHide", 1)
 Opt("TrayAutoPause", 0)
