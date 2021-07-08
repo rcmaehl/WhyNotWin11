@@ -511,10 +511,10 @@ Func Main()
 	#Region - GPTCheck
 	Switch _GPTCheck()
 		Case True
-			_GUICtrlSetPass($hCheck[6][0])
+			_GUICtrlSetState($hCheck[6][0], $iPass)
 			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: GPT") & @CRLF & _Translate($iMUI, "Disk meets requirement."))
 		Case False
-			_GUICtrlSetFail($hCheck[6][0])
+			_GUICtrlSetState($hCheck[6][0],  $iFail)
 			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: MBR") & @CRLF & _Translate($iMUI, "Disk does not meet requirement."))
 		Case Else
 			; Do Nothing!!
