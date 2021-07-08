@@ -8,9 +8,12 @@ Large=18
 Medium=10
 Small=8.5
 [Strings]
+Enable enanced accessibility?=¿Activar accesibilidad mejorada?
+This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=Esta nueva funciòn de la accesibilidad mejorada está diseñada para las personas con discapacidad visual, en la que la mayor parte de la interfaz del programa se puede utilizar mediante voz y atajos de teclado. ¿Activar?
+The compatibility results were copied to the clipboard.Resultados de compatibilidad del sistema copiados al portapapeles.
 Donate=Donar
 Settings=Configuración
-Check for Updates=Actualizar
+Check for Updates=Buscar actualizaciones
 Your Windows 11 Compatibility Results are Below=Resultados de compatibilidad con Windows 11
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Obtén ahora WhyNotWin11 a través de https://www.whynotwin11.org/
 Results Based on Currently Known Requirements!=¡Resultados basados en requisitos actualmente conocidos!
@@ -64,3 +67,15 @@ Invalid Release Tags Received!=¡Se han recibido etiquetas de versión no válid
 Invalid Release Types Received!=¡Se han recibido tipos de versión no válidos!
 Update Available=Actualización disponible
 An Update is Available, would you like to download it?=Hay una actualización disponible, ¿Le gustaría descargarla?
+[Descriptions]
+Architecture=La cantidad de datos que su CPU y sistema operativo pueden procesar a la vez. El resultado del sistema operativo de 32 bits requiere una limpieza del disco y una nueva instalación de Windows 11. La CPU de 32 bits requiere un reemplazo de la CPU.
+Boot=Un método que usa tu placa base para cargar Windows. Los resultados heredados se pueden corregir en las placas base más modernas en la configuración de BIOS / UEFI. Consulta el manual de tu placa base.
+CPU Name=La CPU que tienes instalada en tu computadora. La compatibilidad está sujeta a cambios. Requiere reemplazo físico en computadoras de escritorio; No reemplazable en laptops.
+CPU Cores=La cantidad de tareas que su CPU puede procesar a la vez. Requiere reemplazo físico en computadoras de escritorio; No reemplazable en laptops.
+CPU Speed=La velocidad a la que su CPU procesa las tareas. Requiere reemplazo físico en computadoras de escritorio; No reemplazable en laptops.
+DirectX=La versión de DirectX DDI / Feature Level que admite su tarjeta. Esto es independiente de la versión del software DirectX. Las tarjetas 'DirectX 12 API' pueden fallar en esta verificación.
+Disk Type=El formato en el que se almacenan sus datos en su disco. Los resultados que no son de GPT se pueden corregir con la herramienta MBR2GPT de Microsoft.
+RAM=La cantidad de memoria ram instalada en su computadora. Físicamente actualizable en escritorios; Físicamente actualizable en portátiles de gama alta.
+Secure Boot=Un método que usa su placa base para cargar Windows. Si no se detecta, se puede arreglar en placas base más nuevas en la configuración de BIOS / UEFI. Consulta el manual de su placa base.
+Storage=La cantidad de espacio para datos en su disco. Físicamente actualizable en portátiles de gama alta.
+TPM=Un módulo de seguridad utilizado por Windows. Todas las CPU AMD modernas contienen una; Algunas CPU Intel modernas contienen uno. Verifique la configuración de su BIOS / UEFI. Consulte el manual de su placa base.
