@@ -9,12 +9,15 @@ Medium=10
 Small=8.5
 Name=Arial
 [Strings]
+Enable enanced accessibility?=
+This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=
 Donate=
 Settings=
 Check for Updates=
 Your Windows 11 Compatibility Results are Below=
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=
 Results Based on Currently Known Requirements!=
+The compatibility results were copied to the clipboard.=
 Translation by=
 Architecture (CPU + OS)=
 Boot Method=
