@@ -512,10 +512,10 @@ Func Main()
 	Switch _GPTCheck()
 		Case True
 			_GUICtrlSetState($hCheck[6][0], $iPass)
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: GPT") & @CRLF & _Translate($iMUI, "Disk meets requirement."))
+			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: GPT") & @CRLF & _Translate($iMUI, "Requirement meet."))
 		Case False
 			_GUICtrlSetState($hCheck[6][0],  $iFail)
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: MBR") & @CRLF & _Translate($iMUI, "Disk does not meet requirement."))
+			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: MBR") & @CRLF & _Translate($iMUI, "Requirement not meet."))
 		Case Else
 			; Do Nothing!!
 	EndSwitch
@@ -546,15 +546,15 @@ Func Main()
 	If _SpaceCheck(4) >=  64 And _SpaceCheck(2) >= 64 Then
 		; Partition and Disk >= 64 GB
 		_GUICtrlSetState($hCheck[9][0], $iPass)
-		GUICtrlSetData($hCheck[9][2], $sSpaceResultFirstLine & @CRLF & _Translate($iMUI, "Both passed."))
+		GUICtrlSetData($hCheck[9][2], $sSpaceResultFirstLine & @CRLF & _Translate($iMUI, "Partition and disk passed."))
 	ElseIf _SpaceCheck(4) < 64 And _SpaceCheck(2) >= 64 Then
 		; Partition < 64 GB and Disk >= 64 GB
 		_GUICtrlSetState($hCheck[9][0], $iWarn)
-		GUICtrlSetData($hCheck[9][2], $sSpaceResultFirstLine & @CRLF & _Translate($iMUI, "Partition not passed. Disk passed."))
+		GUICtrlSetData($hCheck[9][2], $sSpaceResultFirstLine & @CRLF & _Translate($iMUI, "Partition not passed, but disk."))
 	ElseIf _SpaceCheck(4) < 64 And _SpaceCheck(2) < 64 Then
 		; Partition and Disk < 64 GB
 		_GUICtrlSetState($hCheck[9][0], $iFail)
-		GUICtrlSetData($hCheck[9][2], $sSpaceResultFirstLine & @CRLF & _Translate($iMUI, "Both didn't pass."))
+		GUICtrlSetData($hCheck[9][2], $sSpaceResultFirstLine & @CRLF & _Translate($iMUI, "Partition and disk not pass."))
 	EndIf
 	#EndRegion - SpaceCheck
 
