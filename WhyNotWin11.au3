@@ -225,18 +225,18 @@ Func Main()
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 	Local Const $DPI_RATIO = _GDIPlus_GraphicsGetDPIRatio()[0]
 
-;~ 	#Region Init WMI data
-;~ 	ProgressOn("WhyNotWin11", "Loading ...")
-;~ 	ProgressSet(0, "_GetCPUInfo()")
-;~ 	_GetCPUInfo()
-;~ 	ProgressSet(20, "_GetDiskProperties()")
-;~ 	_GetDiskProperties()
-;~ 	ProgressSet(40, "_GetGPUInfo()")
-;~ 	_GetGPUInfo()
-;~ 	ProgressSet(60, "_GetTPMInfo()")
-;~ 	_GetTPMInfo()
-;~ 	ProgressSet(80, "Loading Gui...")
-;~ 	#EndRegion Init WMI data
+	#Region Init WMI data
+	ProgressOn("WhyNotWin11", "Loading ...")
+	ProgressSet(0, "_GetCPUInfo()")
+	_GetCPUInfo()
+	ProgressSet(20, "_GetDiskProperties()")
+	_GetDiskProperties()
+	ProgressSet(40, "_GetGPUInfo()")
+	_GetGPUInfo()
+	ProgressSet(60, "_GetTPMInfo()")
+	_GetTPMInfo()
+	ProgressSet(80, "Loading Gui...")
+	#EndRegion Init WMI data
 
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
 	GUISetBkColor(_HighContrast(0xF8F8F8))
@@ -369,7 +369,7 @@ Func Main()
 	Local $hBannerText = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
-	
+
 	Local $sBannerURL = _SetBannerText($hBannerText, $hBanner)
 	#ce Maybe Readd Later
 

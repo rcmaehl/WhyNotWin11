@@ -153,15 +153,13 @@ Func _GPTCheck($iFlag)
 			; Return count of all int. disks
 			Return UBound($aDisks)
 		Case 3
-			; Return array with all disk inf format Number|Type|Result
+			; Return array with all disk in the format Number|Type|Result
 			For $i = 0 To UBound($aDisks) - 1
 				Local $sDiskRow = $aDisks[$i][0] & "|" & $aDisks[$i][9] & "|" & (($aDisks[$i][9] = "GPT") ? "True" : "False")
 				_ArrayAdd($aReturnDiskArray, $sDiskRow)
 			Next
 			Return $aReturnDiskArray
 	EndSwitch
-	; Check DiskInitType
-
 EndFunc   ;==>_GPTCheck
 
 Func _MemCheck()
