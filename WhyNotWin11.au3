@@ -5,7 +5,7 @@
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready
-#AutoIt3Wrapper_Res_Fileversion=2.3.1
+#AutoIt3Wrapper_Res_Fileversion=2.3.1.0
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
 #AutoIt3Wrapper_Res_ProductVersion=2.3.1
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
@@ -17,8 +17,9 @@
 #AutoIt3Wrapper_Res_Icon_Add=Assets\web.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\job.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\set.ico
+#AutoIt3Wrapper_Res_Icon_Add=Assets\inf.ico
 #AutoIt3Wrapper_Run_AU3Check=Y
-#AutoIt3Wrapper_Au3Check_Parameters=-d -w 1 -w 2 -w 3 -w 4 -w 5 -w 6 -w 7 -v1 -v2 -v3
+#AutoIt3Wrapper_AU3Check_Parameters=-d -w 1 -w 2 -w 3 -w 4 -w 5 -w 6 -w 7 -v1 -v2 -v3
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #Au3Stripper_Parameters=/so
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
@@ -78,7 +79,6 @@ EndSwitch
 Global $__g_hModule = _WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll")
 If @OSBuild >= 22000 Or _WinAPI_GetProcAddress($__g_hModule, "wine_get_host_version") Then
 	MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Your Windows 11 Compatibility Results are Below"), _Translate(@MUILang, "You're running the latest build!"))
-	Exit 1
 EndIf
 
 If $CmdLine[0] > 0 Then ProcessCMDLine()
@@ -217,7 +217,7 @@ EndFunc   ;==>ChecksOnly
 Func Main()
 
 	Local Static $iMUI = @MUILang
-	Local Static $aFonts[4]
+	Local Static $aFonts[5]
 	$aFonts = _GetTranslationFonts($iMUI)
 
 	Local Enum $iFail = 0, $iPass, $iUnsure, $iWarn
@@ -240,7 +240,7 @@ Func Main()
 
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
 	GUISetBkColor(_HighContrast(0xF8F8F8))
-	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", "Arial")
+	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", $aFonts[4])
 
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
 	GUICtrlSetDefBkColor(_HighContrast(0xF8F8F8))
@@ -303,6 +303,7 @@ Func Main()
 	Local $hToggle = GUICtrlCreateLabel("", 34, 518, 32, 32)
 	GUICtrlSetTip(-1, "Settings")
 	GUICtrlSetCursor(-1, 0)
+	GUICtrlSetState(-1, $GUI_HIDE)
 
 	; Allow Dragging of Window
 	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
@@ -332,6 +333,7 @@ Func Main()
 		EndIf
 		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
 		_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 206, 32, 32)
+		GUICtrlSetState(-1, $GUI_HIDE)
 	Else
 		GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & "\assets\git.ico", -1, 32, 32)
@@ -347,6 +349,7 @@ Func Main()
 		EndIf
 		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\set.ico", -1, 32, 32)
+		GUICtrlSetState(-1, $GUI_HIDE)
 	EndIf
 	_GDIPlus_Shutdown()
 
@@ -366,7 +369,7 @@ Func Main()
 	Local $hBannerText = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
-	
+
 	Local $sBannerURL = _SetBannerText($hBannerText, $hBanner)
 	#ce Maybe Readd Later
 
@@ -400,7 +403,7 @@ Func Main()
 
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
-	Local $hInfo[11]
+	Local $aInfo = _GetDescriptions($iMUI)
 
 	_GDIPlus_Startup()
 	For $iRow = 0 To 10 Step 1
@@ -412,17 +415,21 @@ Func Main()
 		If $iRow = 0 Or $iRow = 3 Or $iRow = 6 Or $iRow = 9 Then GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN)
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
 		If @Compiled Then
-			$hInfo[$iRow] = GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40, $SS_CENTERIMAGE + $SS_CENTER)
-			_SetBkSelfIcon(-1, 0xF8F8F8, @ScriptFullPath, 201, 24, 24)
+			GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
+			_SetBkSelfIcon(-1, 0xF8F8F8, @ScriptFullPath, 207, 24, 24)
+			GUICtrlSetTip(-1, $aInfo[$iRow], _Translate($iMUI, "Description"), $TIP_INFOICON, $TIP_BALLOON)
 		Else
-			$hInfo[$iRow] = GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
+			GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
 			_SetBkIcon(-1, 0xF8F8F8, @ScriptDir & "\assets\inf.ico", -1, 24, 24)
+			GUICtrlSetTip(-1, $aInfo[$iRow], _Translate($iMUI, "Description"), $TIP_INFOICON, $TIP_BALLOON)
 		EndIf
 	Next
 	_GDIPlus_Shutdown()
 
+#cs
 	Local $hDXFile = _TempFile(@TempDir, "dxdiag")
 	Local $hDXPID = Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
+#ce
 
 	Switch _ArchCheck()
 		Case True
@@ -452,7 +459,7 @@ Func Main()
 					_GUICtrlSetState($hCheck[1][0], $iFail)
 					GUICtrlSetData($hCheck[1][2], "Legacy")
 				Case Else
-					GUICtrlSetData($hCheck[1][2], @extended)
+					GUICtrlSetData($hCheck[1][2], @error)
 					_GUICtrlSetState($hCheck[1][0], $iWarn)
 			EndSwitch
 	EndSwitch
@@ -524,13 +531,13 @@ Func Main()
 
 	Switch _SecureBootCheck()
 		Case 2
-			_GUICtrlSetPass($hCheck[8][0])
+			_GUICtrlSetState($hCheck[8][0], $iPass)
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Enabled"))
 		Case True
-			_GUICtrlSetPass($hCheck[8][0])
+			_GUICtrlSetState($hCheck[8][0], $iPass)
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Supported"))
 		Case False
-			_GUICtrlSetFail($hCheck[8][0])
+			_GUICtrlSetState($hCheck[8][0], $iFail)
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Disabled / Not Detected"))
 	EndSwitch
 
@@ -555,20 +562,20 @@ Func Main()
 		Case _GetTPMInfo(0) = False
 			ContinueCase
 		Case _GetTPMInfo(1) = False
-			_GUICtrlSetFail($hCheck[10][0])
+			_GUICtrlSetState($hCheck[10][0], $iFail)
 			GUICtrlSetData($hCheck[10][2], _Translate($iMUI, "TPM Missing / Disabled"))
 		Case Not Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
-			_GUICtrlSetFail($hCheck[10][0])
+			_GUICtrlSetState($hCheck[10][0], $iFail)
 			GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Not Supported"))
 		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 2.0
-			_GUICtrlSetPass($hCheck[10][0])
+			_GUICtrlSetState($hCheck[10][0], $iPass)
 			GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Detected"))
 		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
 			;_GUICtrlSetWarn($hCheck[10][0], "OK")
-			_GUICtrlSetFail($hCheck[10][0])
+			_GUICtrlSetState($hCheck[10][0], $iFail)
 			GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Detected"))
 		Case Else
-			_GUICtrlSetFail($hCheck[10][0])
+			_GUICtrlSetState($hCheck[10][0], $iFail)
 			GUICtrlSetData($hCheck[10][2], _GetTPMInfo(0) & " " & _GetTPMInfo(1) & " " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]))
 	EndSelect
 
@@ -596,7 +603,7 @@ Func Main()
 	GUISwitch($hGUI)
 	GUISetState(@SW_SHOW, $hGUI)
 
-	Local $hMsg, $sDXFile
+	Local $hMsg
 	While 1
 		$hMsg = GUIGetMsg()
 
@@ -612,7 +619,29 @@ Func Main()
 				#ce
 
 				; DirectX 12 takes a while. Grab the result once done
-			Case _GetDirectXCheck($aDirectX)
+			Case IsArray($aDirectX) And (Not ProcessExists($aDirectX[1])) And FileExists($aDirectX[0])
+				Switch _GetDirectXCheck($aDirectX)
+					Case 2
+						_GUICtrlSetState($hCheck[5][0], $iPass)
+						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")   ; <== No translation, "DirectX 12 and WDDM 3" in LANG-file
+					Case 1
+						_GUICtrlSetState($hCheck[5][0], $iPass)
+						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")   ; <== No translation, "DirectX 12 and WDDM 2" in LANG-file
+					Case Else
+						Switch @error
+							Case 1
+								_GUICtrlSetState($hCheck[5][0], $iPass)
+								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12, but WDDM2"))
+							Case 2
+								_GUICtrlSetState($hCheck[5][0], $iFail)
+								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DirectX 12, but no WDDM2"))
+							Case Else
+								_GUICtrlSetState($hCheck[5][0], $iFail)
+								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12 or WDDM2"))
+						EndSwitch
+				EndSwitch
+				$aDirectX = Null
+#cs
 			Case (Not ProcessExists($hDXPID)) And FileExists($hDXFile)
 				$sDXFile = StringStripWS(StringStripCR(FileRead($hDXFile)), $STR_STRIPALL)
 				Select
@@ -621,26 +650,27 @@ Func Main()
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:3") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM3")
-						_GUICtrlSetPass($hCheck[5][0])
+						_GUICtrlSetState($hCheck[5][0], $iPass)
 						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")   ; <== No translation, "DirectX 12 and WDDM 3" in LANG-file
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "2") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:2") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
-						_GUICtrlSetPass($hCheck[5][0])
+						_GUICtrlSetState($hCheck[5][0], $iPass)
 						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")   ; <== No translation, "DirectX 12 and WDDM 2" in LANG-file
 					Case Not StringInStr($sDXFile, "FeatureLevels:12") Or Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
-						_GUICtrlSetFail($hCheck[5][0])
+						_GUICtrlSetState($hCheck[5][0], $iPass)
 						GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12, but WDDM2"))
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And Not StringInStr($sDXFile, "DriverModel:WDDM2")
-						_GUICtrlSetFail($hCheck[5][0])
+						_GUICtrlSetState($hCheck[5][0], $iFail)
 						GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DirectX 12, but no WDDM2"))
 					Case Else
-						_GUICtrlSetFail($hCheck[5][0])
+						_GUICtrlSetState($hCheck[5][0], $iFail)
 						GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12 or WDDM2"))
 				EndSelect
 				FileDelete($hDXFile)
+#ce
 
 			Case $hMsg = $hDumpLang
 				FileDelete(@LocalAppDataDir & "\WhyNotWin11\langs\")
@@ -790,19 +820,3 @@ Func _GUICtrlSetState($hCtrl, $iState)
 			GUICtrlSetBkColor($hCtrl, 0xF4C141)
 	EndSwitch
 EndFunc   ;==>_GUICtrlSetState
-
-
-Func _GUICtrlSetPass($hCtrl)
-	GUICtrlSetData($hCtrl, "OK")
-	GUICtrlSetBkColor($hCtrl, 0x4CC355)
-EndFunc   ;==>_GUICtrlSetPass
-
-Func _GUICtrlSetFail($hCtrl)
-	GUICtrlSetData($hCtrl, "X")
-	GUICtrlSetBkColor($hCtrl, 0xFA113D)
-EndFunc   ;==>_GUICtrlSetFail
-
-Func _GUICtrlSetWarn($hCtrl, $symbol = "?")
-	GUICtrlSetData($hCtrl, $symbol)
-	GUICtrlSetBkColor($hCtrl, 0xF4C141)
-EndFunc   ;==>_GUICtrlSetWarn

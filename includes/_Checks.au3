@@ -103,7 +103,7 @@ Func _GetDirectXCheck($aArray)
 			Case Not StringInStr($sDXFile, "FeatureLevels:12") Or Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 				SetError(1, 0, False)
 			Case StringInStr($sDXFile, "DDIVersion:12") And Not StringInStr($sDXFile, "DriverModel:WDDM2")
-				SetError(1, 0, False)
+				SetError(2, 0, False)
 			Case Else
 				Return False
 		EndSelect

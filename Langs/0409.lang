@@ -1,7 +1,13 @@
 [MetaData]
 Language=English - United States
 Translator=rcmaehl
-Version=2.3.0.4
+Version=2.3.1.0
+[Font]
+Extra Large=24
+Large=18
+Medium=10
+Small=8.5
+Name=Arial
 [Strings]
 Donate=Donate
 Settings=Settings
@@ -58,3 +64,15 @@ Invalid Release Tags Received!=Invalid Release Tags Received!
 Invalid Release Types Received!=Invalid Release Types Received!
 Update Available=Update Available
 An Update is Available, would you like to download it?=An Update is Available, would you like to download it?
+[Descriptions]
+Architecture=The amount of data your CPU and OS can process at once. 32-Bit OS result requires a disk wipe and new Windows 11 install. 32-Bit CPU requires a CPU replacement.
+Boot=A method your motherboard uses to load Windows. Legacy results can be fixed on newer motherboards in your BIOS/UEFI settings. Refer to your motherboard manual.
+CPU Name=The CPU you have installed in your computer. Compatibility is subject to change. Requires physical replacement on Desktops; Not replaceable on Laptops.
+CPU Cores=The number of tasks your CPU can process at once. Requires physical replacement on Desktops; Not replaceable on Laptops.
+CPU Speed=The rate that your CPU processes tasks. Requires physical replacement on Desktops; Not replaceable on Laptops.
+DirectX=The version of DirectX DDI/Feature Level your card supports. This is separate from DirectX software version. 'DirectX 12 API' cards may fail this check.
+Disk Type=The format that your data is stored on your Disk. Non-GPT results can be fixed using Microsoft's MBR2GPT tool.
+RAM=The amount of fast memory installed in your computer. Physically upgradeable in Desktops; Physically upgradeable in high end Laptops.
+Secure Boot=A method your motherboard uses to load Windows. If not detected, can be fixed on newer motherboards in your BIOS/UEFI settings. Refer to your motherboard manual.
+Storage=The amount of space for data on your disk. Physically upgradeable in high end Laptops.
+TPM=A security module used by Windows. All modern AMD CPUs contain one; Some modern Intel CPUs contain one. Check your BIOS/UEFI settings. Refer to your motherboard manual.
