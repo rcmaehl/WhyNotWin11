@@ -425,8 +425,10 @@ Func Main()
 	Next
 	_GDIPlus_Shutdown()
 
+#cs
 	Local $hDXFile = _TempFile(@TempDir, "dxdiag")
 	Local $hDXPID = Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
+#ce
 
 	Switch _ArchCheck()
 		Case True
@@ -590,7 +592,7 @@ Func Main()
 	ProgressOff()
 	GUISetState(@SW_SHOW, $hGUI)
 
-	Local $hMsg, $sDXFile
+	Local $hMsg
 	While 1
 		$hMsg = GUIGetMsg()
 
@@ -606,7 +608,29 @@ Func Main()
 				#ce
 
 				; DirectX 12 takes a while. Grab the result once done
-			Case _GetDirectXCheck($aDirectX)
+			Case IsArray($aDirectX) And (Not ProcessExists($aDirectX[1])) And FileExists($aDirectX[0])
+				Switch _GetDirectXCheck($aDirectX)
+					Case 2
+						_GUICtrlSetState($hCheck[5][0], $iPass)
+						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")   ; <== No translation, "DirectX 12 and WDDM 3" in LANG-file
+					Case 1
+						_GUICtrlSetState($hCheck[5][0], $iPass)
+						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")   ; <== No translation, "DirectX 12 and WDDM 2" in LANG-file
+					Case Else
+						Switch @error
+							Case 1
+								_GUICtrlSetState($hCheck[5][0], $iPass)
+								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12, but WDDM2"))
+							Case 2
+								_GUICtrlSetState($hCheck[5][0], $iFail)
+								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DirectX 12, but no WDDM2"))
+							Case Else
+								_GUICtrlSetState($hCheck[5][0], $iFail)
+								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12 or WDDM2"))
+						EndSwitch
+				EndSwitch
+				$aDirectX = Null
+#cs
 			Case (Not ProcessExists($hDXPID)) And FileExists($hDXFile)
 				$sDXFile = StringStripWS(StringStripCR(FileRead($hDXFile)), $STR_STRIPALL)
 				Select
@@ -635,6 +659,7 @@ Func Main()
 						GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12 or WDDM2"))
 				EndSelect
 				FileDelete($hDXFile)
+#ce
 
 			Case $hMsg = $hDumpLang
 				FileDelete(@LocalAppDataDir & "\WhyNotWin11\langs\")
