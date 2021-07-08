@@ -214,15 +214,19 @@ EndFunc   ;==>ChecksOnly
 
 Func Main()
 
-	Local Static $iMUI = @MUILang
 	Local Static $aFonts[5]
+	Local Static $aColors[4]
+	Local Static $iMUI = @MUILang
+
+	$aColors = _SetTheme()
 	$aFonts = _GetTranslationFonts($iMUI)
 
 	Local Enum $iFail = 0, $iPass, $iUnsure, $iWarn
+	Local Enum $iBackground = 0, $iText, $iSidebar, $iFooter
 
-	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
-	Local Const $DPI_RATIO = _GDIPlus_GraphicsGetDPIRatio()[0]
 	Local $aDisks, $aPartitions
+	Local Const $DPI_RATIO = _GDIPlus_GraphicsGetDPIRatio()[0]
+	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 
 	ProgressOn("WhyNotWin11", "Loading WMIC")
 	ProgressSet(0, "_GetCPUInfo()")
@@ -238,18 +242,20 @@ Func Main()
 	ProgressSet(100, "Done")
 
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
-	GUISetBkColor(_HighContrast(0xF8F8F8))
+	GUISetBkColor($aColors[$iBackground])
 	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", $aFonts[4])
 
-	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
-	GUICtrlSetDefBkColor(_HighContrast(0xF8F8F8))
+	GUICtrlSetDefColor($aColors[$iText])
+	GUICtrlSetDefBkColor($aColors[$iBackground])
 
+#cs
 	Local $sCheck = _CheckAppsUseLightTheme()
 	If @error Then
 		;;;
 	ElseIf Not $sCheck Then
 		GUICtrlSetDefColor(0xFFFFFF)
 	EndIf
+#ce
 
 	Local $hDumpLang = GUICtrlCreateDummy()
 
@@ -259,13 +265,13 @@ Func Main()
 
 	; Top Most Interaction for Update Text
 	Local $hUpdate = GUICtrlCreateLabel("", 0, 570, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
+	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 	GUICtrlSetCursor(-1, 0)
 
 	#cs Maybe Readd Later
 	; Top Most Interaction for Banner
 	Local $hBanner = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
+	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 	#ce Maybe Readd Later
 
 	; Top Most Interaction for Closing Window
@@ -308,61 +314,61 @@ Func Main()
 	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
 
 	GUICtrlCreateLabel("", 0, 0, 100, 570)
-	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
+	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 
 	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 0, 570, 100, 30, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
-	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
+	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 	GUICtrlSetTip(-1, "Update")
 	GUICtrlSetCursor(-1, 0)
 
 	_GDIPlus_Startup()
 	If @Compiled Then
 		GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
-		_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 201, 32, 32)
+		_SetBkSelfIcon(-1, $aColors[$iSidebar], @ScriptFullPath, 201, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 160, 32, 32)
-		_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 202, 32, 32)
+		_SetBkSelfIcon(-1, $aColors[$iSidebar], @ScriptFullPath, 202, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 210, 32, 32)
-		_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 203, 32, 32)
+		_SetBkSelfIcon(-1, $aColors[$iSidebar], @ScriptFullPath, 203, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
-		_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 204, 32, 32)
+		_SetBkSelfIcon(-1, $aColors[$iSidebar], @ScriptFullPath, 204, 32, 32)
 		If @LogonDomain <> @ComputerName Then
 			GUICtrlCreateIcon("", -1, 34, 310, 32, 32)
-			_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 205, 32, 32)
+			_SetBkSelfIcon(-1, $aColors[$iSidebar], @ScriptFullPath, 205, 32, 32)
 		EndIf
 		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
-		_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 206, 32, 32)
+		_SetBkSelfIcon(-1, $aColors[$iSidebar], @ScriptFullPath, 206, 32, 32)
 		GUICtrlSetState(-1, $GUI_HIDE)
 	Else
 		GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & "\assets\git.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iSidebar], @ScriptDir & "\assets\git.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 160, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\pp.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iSidebar], @ScriptDir & ".\assets\pp.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 210, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\dis.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iSidebar], @ScriptDir & ".\assets\dis.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\web.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iSidebar], @ScriptDir & ".\assets\web.ico", -1, 32, 32)
 		If @LogonDomain <> @ComputerName Then
 			GUICtrlCreateIcon("", -1, 34, 310, 32, 32)
-			_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\job.ico", -1, 32, 32)
+			_SetBkIcon(-1, $aColors[$iSidebar], @ScriptDir & ".\assets\job.ico", -1, 32, 32)
 		EndIf
 		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
-		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\set.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iSidebar], @ScriptDir & ".\assets\set.ico", -1, 32, 32)
 		GUICtrlSetState(-1, $GUI_HIDE)
 	EndIf
 	_GDIPlus_Shutdown()
 
 	GUICtrlCreateLabel("WhyNotWin11", 10, 10, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
+	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 	GUICtrlCreateLabel("v " & $sVersion, 10, 30, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
+	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 
 	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
-	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
+	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
-	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
+	GUICtrlSetBkColor(-1, $aColors[$iFooter])
 
 	#cs Maybe Readd Later
 	Local $hBannerText = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
@@ -380,9 +386,9 @@ Func Main()
 	#ce
 
 	GUICtrlCreateLabel(_GetCPUInfo(2), 470, 560, 300, 20, $SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
+	GUICtrlSetBkColor(-1, $aColors[$iFooter])
 	GUICtrlCreateLabel(_GetGPUInfo(0), 470, 580, 300, 20, $SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
+	GUICtrlSetBkColor(-1, $aColors[$iFooter])
 
 	GUICtrlCreateLabel(_Translate($iMUI, "Your Windows 11 Compatibility Results are Below"), 130, 10, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
@@ -407,7 +413,7 @@ Func Main()
 	_GDIPlus_Startup()
 	For $iRow = 0 To 10 Step 1
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 113, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
-		GUICtrlSetBkColor(-1, 0xE6E6E6)
+		GUICtrlSetBkColor(-1, $aColors[$iBackground])
 		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40, $SS_CENTERIMAGE)
 		GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
 		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
@@ -415,11 +421,11 @@ Func Main()
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
 		If @Compiled Then
 			GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
-			_SetBkSelfIcon(-1, 0xF8F8F8, @ScriptFullPath, 207, 24, 24)
+			_SetBkSelfIcon(-1, $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
 			GUICtrlSetTip(-1, $aInfo[$iRow], _Translate($iMUI, "Description"), $TIP_INFOICON, $TIP_BALLOON)
 		Else
 			GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
-			_SetBkIcon(-1, 0xF8F8F8, @ScriptDir & "\assets\inf.ico", -1, 24, 24)
+			_SetBkIcon(-1, $aColors[$iBackground], @ScriptDir & "\assets\inf.ico", -1, 24, 24)
 			GUICtrlSetTip(-1, $aInfo[$iRow], _Translate($iMUI, "Description"), $TIP_INFOICON, $TIP_BALLOON)
 		EndIf
 	Next
@@ -572,11 +578,11 @@ Func Main()
 	#Region Settings GUI
 	Local $hSettings = GUICreate(_Translate($iMUI, "Settings"), 698, 528, 102, 32, $WS_POPUP, $WS_EX_MDICHILD, $hGUI)
 	Local $bSettings = False
-	GUISetBkColor(_HighContrast(0xF8F8F8))
+	GUISetBkColor($aColors[$iBackground])
 	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", "Arial")
 
-	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
-	GUICtrlSetDefBkColor(_HighContrast(0xF8F8F8))
+	GUICtrlSetDefColor($aColors[$iText])
+	GUICtrlSetDefBkColor($aColors[$iBackground])
 
 	GUICtrlCreateGroup("Info", 30, 20, 638, 100)
 	If @Compiled Then
