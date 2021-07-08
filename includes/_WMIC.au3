@@ -92,7 +92,7 @@ Func _GetDiskProperties($iFlag = 0)
 			; Return information of disk with system (Windows) partition.
 			For $i = 0 To UBound($aDiskArray) - 1 Step 1
 				; If windows is bootet from disk...
-				If $aDiskArray[$i][11] = True Then
+				If $aDiskArray[$i][11] = "True" Then
 					; Return row as only neede row
 					Return _ArrayExtract($aDiskArray, $i, $i)
 				EndIf
@@ -101,7 +101,7 @@ Func _GetDiskProperties($iFlag = 0)
 			; Return information of system (Windows) partition.
 			For $i = 0 To UBound($aPartitionArray) - 1 Step 1
 				; If windows is bootet from partition...
-				If $aPartitionArray[$i][12] = True Then
+				If $aPartitionArray[$i][12] = "True" Then
 					; Rerturn only neede row
 					Return _ArrayExtract($aPartitionArray, $i, $i)
 				EndIf
