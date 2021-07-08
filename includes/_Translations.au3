@@ -35,12 +35,13 @@ Func _GetTranslationCredit()
 EndFunc   ;==>_GetTranslationCredit
 
 Func _GetTranslationFonts($iMUI)
-	Local $aFonts[4] = [8.5, 10, 18, 24]
+	Local $aFonts[5] = [8.5, 10, 18, 24, ""]
 
 	$aFonts[0] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Small", $aFonts[0])
 	$aFonts[1] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Medium", $aFonts[1])
 	$aFonts[2] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Large", $aFonts[2])
 	$aFonts[3] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Extra Large", $aFonts[3])
+	$aFonts[4] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Font", "Name", "Arial")
 
 	Return $aFonts
 EndFunc   ;==>_GetTranslationFonts

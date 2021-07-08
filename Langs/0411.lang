@@ -1,7 +1,13 @@
 [MetaData]
 Language=Japanese - Japan
 Translator=yuki-gh, goahi, syobon-tech, arakim
-Version=2.3.0.4
+Version=2.3.1.0
+[Font]
+Extra Large=24
+Large=18
+Medium=10
+Small=8.5
+Name=Meiryo
 [Strings]
 Donate=寄付
 Check for Updates=更新をチェック

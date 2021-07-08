@@ -215,7 +215,7 @@ EndFunc   ;==>ChecksOnly
 Func Main()
 
 	Local Static $iMUI = @MUILang
-	Local Static $aFonts[4]
+	Local Static $aFonts[5]
 	$aFonts = _GetTranslationFonts($iMUI)
 
 	Local Enum $iFail = 0, $iPass, $iUnsure, $iWarn
@@ -239,7 +239,7 @@ Func Main()
 
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
 	GUISetBkColor(_HighContrast(0xF8F8F8))
-	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", "Arial")
+	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", $aFonts[5])
 
 	GUICtrlSetDefColor(_WinAPI_GetSysColor($COLOR_WINDOWTEXT))
 	GUICtrlSetDefBkColor(_HighContrast(0xF8F8F8))
