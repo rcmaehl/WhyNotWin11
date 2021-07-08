@@ -414,7 +414,7 @@ Func Main()
 		If $iRow = 0 Or $iRow = 3 Or $iRow = 6 Or $iRow = 9 Then GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN)
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
 		If @Compiled Then
-			GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40, $SS_CENTERIMAGE + $SS_CENTER)
+			GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
 			_SetBkSelfIcon(-1, 0xF8F8F8, @ScriptFullPath, 207, 24, 24)
 			GUICtrlSetTip(-1, $aInfo[$iRow], _Translate($iMUI, "Description"), $TIP_INFOICON, $TIP_BALLOON)
 		Else
