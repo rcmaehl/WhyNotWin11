@@ -67,14 +67,38 @@ Func _GetDiskProperties($iFlag = 0)
 	; .............. : Return SetError(1, 2, "Error_IncorrectFlag"), if $iFlag is unknown.
 	; .............. : Return SetError(1, 3, "Error_NoDataReturned"), if not data can be returned.
 
-	Static $aDiskArray
-	Static $aPartitionArray
+	Local Static $aDiskArray
+	Local Static $aPartitionArray
+	Local Static $iSysDisk
+	Local Static $iSysPartition
 
 	; Get WMI data
 	If (Not $aDiskArray) Or (Not $aPartitionArray) Then
 		; Get disk datat for fixed (internal) disks.
 		_GetDiskInfoFromWmi($aDiskArray, $aPartitionArray, $DiskInfoWmi_TableHeader_No, $DiskInfoWmi_DiskType_Fixed)
 		If @error = 1 Then Return SetError(1, 1, "Error_WmiFailed")
+	EndIf
+
+	; Get sys disk and sys partition num
+	If (Not $iSysDisk) Then
+		For $i = 0 To UBound($aDiskArray) - 1 Step 1
+			; If windows is bootet from disk...
+			If $aDiskArray[$i][11] = "True" Then
+				; Return row as only neede row
+				$iSysDisk = $i
+				ExitLoop
+			EndIf
+		Next
+	EndIf
+	If (Not $iSysPartition) Then
+		For $i = 0 To UBound($aPartitionArray) - 1 Step 1
+			; If windows is bootet from disk...
+			If $aPartitionArray[$i][12] = "True" Then
+				; Return row as only neede row
+				$iSysPartition = $i
+				ExitLoop
+			EndIf
+		Next
 	EndIf
 
 	; Return data based on $iFlag or exit function
@@ -90,22 +114,10 @@ Func _GetDiskProperties($iFlag = 0)
 			Return $aPartitionArray
 		Case 3
 			; Return information of disk with system (Windows) partition.
-			For $i = 0 To UBound($aDiskArray) - 1 Step 1
-				; If windows is bootet from disk...
-				If $aDiskArray[$i][11] = "True" Then
-					; Return row as only neede row
-					Return _ArrayExtract($aDiskArray, $i, $i)
-				EndIf
-			Next
+			Return _ArrayExtract($aDiskArray, $iSysDisk, $iSysDisk)
 		Case 4
 			; Return information of system (Windows) partition.
-			For $i = 0 To UBound($aPartitionArray) - 1 Step 1
-				; If windows is bootet from partition...
-				If $aPartitionArray[$i][12] = "True" Then
-					; Rerturn only neede row
-					Return _ArrayExtract($aPartitionArray, $i, $i)
-				EndIf
-			Next
+			Return _ArrayExtract($aPartitionArray, $iSysPartition, $iSysPartition)
 		Case Else
 			; If $iFlag was incorrect...
 			Return SetError(1, 2, "Error_IncorrectFlag")

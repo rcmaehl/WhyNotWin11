@@ -113,22 +113,55 @@ Func _GetDirectXCheck($aArray)
 	EndIf
 EndFunc   ;==>_GetDirectXCheck
 
-Func _GPTCheck()
+Func _GPTCheck($iFlag)
 	; Desc ......... : Call _GetDiskInfoFromWmi() to get the disk and partition informations. The selected information will be returned.
-	; Parameters ... :
-	; Return value . : True | False | SetError(1, 1, "Error_CheckFailed")
+	; Parameters ... : $iFlag = 0 => Return init type of system disk.
+	; .............. : $iFlag = 1 => Return count of internal GPT disks.
+	; .............. : $iFlag = 2 => Return count of all internal disks.
+	; .............. : $iFlag = 3 => Return array with all disk. (Columns: DiskNum | InitType | CheckResult)
+	; On error ..... : SetError(1, 1, "Error_CheckFailed")
 
-	; Check for error
-	_GetDiskProperties(3) ; 3 = SystemDisk properties
-	If @error = 1 Then Return SetError(1, 1, "Error_CheckFailed")
+	; Vars
+	Local Static $aDisks
+	If (Not $aDisks) Then
+		$aDisks = _GetDiskProperties(1) ; Array with all disks
+		If @error = 1 Then Return SetError(1, 1, "Error_CheckFailed")
+	EndIf
+	Local $aReturnDiskArray[0][3]
+	_ArrayAdd($aReturnDiskArray, "Disk" & "|" & "Type" & "|" & "Check result")
 
-	; Check DiskInitType
-	Switch _GetDiskProperties(3)[0][9] ; 9 = Array field for DiskInitType
-		Case "GPT"
-			Return True
-		Case "MBR"
-			Return False
+	; Return data based on $iFlag
+	Switch $iFlag
+		Case 0
+			; Return data of system disk.
+			Switch _GetDiskProperties(3)[0][9] ; 9 = Array field for DiskInitType
+				Case "GPT"
+					Return True
+				Case "MBR"
+					Return False
+			EndSwitch
+		Case 1
+			; Count int. GPT disks
+			Local $iDiskCount = 0
+			For $i = 0 To UBound($aDisks) - 1
+				If $aDisks[$i][9] = "GPT" Then
+					$iDiskCount += 1
+				EndIf
+			Next
+			Return $iDiskCount
+		Case 2
+			; Return count of all int. disks
+			Return UBound($aDisks)
+		Case 3
+			; Return array with all disk inf format Number|Type|Result
+			For $i = 0 To UBound($aDisks) - 1
+				Local $sDiskRow = $aDisks[$i][0] & "|" & $aDisks[$i][9] & "|" & (($aDisks[$i][9] = "GPT") ? "True" : "False")
+				_ArrayAdd($aReturnDiskArray, $sDiskRow)
+			Next
+			Return $aReturnDiskArray
 	EndSwitch
+	; Check DiskInitType
+
 EndFunc   ;==>_GPTCheck
 
 Func _MemCheck()
@@ -179,16 +212,30 @@ Func _SpaceCheck($iFlag)
 	; .............. : $iFlag = 4 => Return size of system partition in GB.
 	; .............. : $iFlag = 5 => Return count of internal Win11 ready disks.
 	; .............. : $iFlag = 6 => Return count of all internal disks.
+	; .............. : $iFlag = 7 => Return array with all disk. (Columns: DiskNum | Size (GB) | CheckResult)
 	; On error ..... : SetError(1, 1, "Error_CheckFailed")
 
-	; Check for error
-	_GetDiskProperties(4)
-	If @error = 1 Then Return SetError(1, 1, "Error_CheckFailed")
+	; Ini tvars
+	Local Static $bInitDone = False
+	Local Static $iDiskSize
+	Local Static $iPartitionSize
+	Local Static $aDisks
+	Local $aReturnDiskArray[0][3]
+	_ArrayAdd($aReturnDiskArray, "Disk" & "|" & "Size (GB)" & "|" & "Check result")
 
-	; Get size (Arrays form _GetDiskProperties are 2D-Arrays.)
-	Local $iDiskSize = Round(_GetDiskProperties(3)[0][8] / 1024 / 1024 / 1024)
-	Local $iPartitionSize = Round(_GetDiskProperties(4)[0][9] / 1024 / 1024 / 1024)
+	; Init data
+	If (Not $bInitDone = True) Then
+		; Check for error by retriving disk data
+		_GetDiskProperties(4)
+		If @error = 1 Then Return SetError(1, 1, "Error_CheckFailed")
 
+		; Get size (Arrays form _GetDiskProperties are 2D-Arrays.) & vars
+		$iDiskSize = Round(_GetDiskProperties(3)[0][8] / 1024 / 1024 / 1024)
+		$iPartitionSize = Round(_GetDiskProperties(4)[0][9] / 1024 / 1024 / 1024)
+		$aDisks = _GetDiskProperties(1)
+	EndIf
+
+	; Return data based on $iFlag
 	Switch $iFlag
 		Case 0
 			; Return readiness state
@@ -207,16 +254,23 @@ Func _SpaceCheck($iFlag)
 			Return $iPartitionSize
 		Case 5
 			; Count Disk with sie >= 64 GB.
-			Local $aDisks = _GetDiskProperties(1)
 			Local $iDiskCount = 0
 			For $i = 0 To UBound($aDisks) - 1
-				If _GetDiskProperties(1)[$i][8] >= 64 Then
+				If $aDisks[$i][8] >= 64 Then
 					$iDiskCount += 1
 				EndIf
 			Next
 			Return $iDiskCount
 		Case 6
+			; Return count of internal disks
 			Return UBound($aDisks)
+		Case 7
+			; Return array with all disk inf format Number|Syze|Result
+			For $i = 0 To UBound($aDisks) - 1
+				Local $sDiskRow = $aDisks[$i][0] & "|" & Round(_GetDiskProperties(3)[$i][8] / 1024 / 1024 / 1024) & "|" & (($aDisks[$i][8] >= 64) ? "True" : "False")
+				_ArrayAdd($aReturnDiskArray, $sDiskRow)
+			Next
+			Return $aReturnDiskArray
 		Case Else
 			; $iFlag unknown
 			Return SetError(1, 1, "Error_CheckFailed")

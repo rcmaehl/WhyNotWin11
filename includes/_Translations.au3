@@ -18,7 +18,7 @@ Func _GetDescriptions($iMUI)
 	$aDescriptions[10] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Descriptions", "TPM", "A security module used by Windows. All modern AMD CPUs contain one; Some modern Intel CPUs contain one. Check your BIOS/UEFI settings. Refer to your motherboard manual.")
 
 	Return $aDescriptions
-EndFunc
+EndFunc   ;==>_GetDescriptions
 
 Func _GetFile($sFile, $sFormat = $FO_READ)
 	Local Const $hFileOpen = FileOpen($sFile, $sFormat)

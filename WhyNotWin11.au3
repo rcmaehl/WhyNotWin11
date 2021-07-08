@@ -166,8 +166,8 @@ Func ChecksOnly()
 	$aDirectX = _DirectXStartCheck()
 
 	_GetDiskProperties()
-	$aResults[6][0] = _GPTCheck()
-	$aResults[6][1] = (_GPTCheck() = "GPT") ? "GPT" : (_GPTCheck() = "MBR") ? "MBR" : ""
+	$aResults[6][0] = _GPTCheck(0)
+	$aResults[6][1] = (_GPTCheck(0) = "GPT") ? "GPT" : (_GPTCheck(0) = "MBR") ? "MBR" : ""
 	$aResults[6][2] = ""
 
 	$aResults[7][0] = _MemCheck()
@@ -225,18 +225,18 @@ Func Main()
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 	Local Const $DPI_RATIO = _GDIPlus_GraphicsGetDPIRatio()[0]
 
-	#Region Init WMI data
-	ProgressOn("WhyNotWin11", "Loading ...")
-	ProgressSet(0, "_GetCPUInfo()")
-	_GetCPUInfo()
-	ProgressSet(20, "_GetDiskProperties()")
-	_GetDiskProperties()
-	ProgressSet(40, "_GetGPUInfo()")
-	_GetGPUInfo()
-	ProgressSet(60, "_GetTPMInfo()")
-	_GetTPMInfo()
-	ProgressSet(80, "Loading Gui...")
-	#EndRegion Init WMI data
+;~ 	#Region Init WMI data
+;~ 	ProgressOn("WhyNotWin11", "Loading ...")
+;~ 	ProgressSet(0, "_GetCPUInfo()")
+;~ 	_GetCPUInfo()
+;~ 	ProgressSet(20, "_GetDiskProperties()")
+;~ 	_GetDiskProperties()
+;~ 	ProgressSet(40, "_GetGPUInfo()")
+;~ 	_GetGPUInfo()
+;~ 	ProgressSet(60, "_GetTPMInfo()")
+;~ 	_GetTPMInfo()
+;~ 	ProgressSet(80, "Loading Gui...")
+;~ 	#EndRegion Init WMI data
 
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
 	GUISetBkColor(_HighContrast(0xF8F8F8))
@@ -369,7 +369,7 @@ Func Main()
 	Local $hBannerText = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
-
+	
 	Local $sBannerURL = _SetBannerText($hBannerText, $hBanner)
 	#ce Maybe Readd Later
 
@@ -426,10 +426,10 @@ Func Main()
 	Next
 	_GDIPlus_Shutdown()
 
-#cs
-	Local $hDXFile = _TempFile(@TempDir, "dxdiag")
-	Local $hDXPID = Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
-#ce
+	#cs
+		Local $hDXFile = _TempFile(@TempDir, "dxdiag")
+		Local $hDXPID = Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
+	#ce
 
 	Switch _ArchCheck()
 		Case True
@@ -509,12 +509,12 @@ Func Main()
 	$aDirectX = _DirectXStartCheck()
 
 	#Region - GPTCheck
-	Switch _GPTCheck()
+	Switch _GPTCheck(0)
 		Case True
 			_GUICtrlSetState($hCheck[6][0], $iPass)
 			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: GPT") & @CRLF & _Translate($iMUI, "Requirement meet."))
 		Case False
-			_GUICtrlSetState($hCheck[6][0],  $iFail)
+			_GUICtrlSetState($hCheck[6][0], $iFail)
 			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: MBR") & @CRLF & _Translate($iMUI, "Requirement not meet."))
 		Case Else
 			; Do Nothing!!
@@ -542,16 +542,19 @@ Func Main()
 	EndSwitch
 
 	#Region - SpaceCheck
-	$sSpaceResultFirstLine = _SpaceCheck(3) & " " & _SpaceCheck(4) & " GB, " & _Translate($iMUI, "Disk") &  " " & _SpaceCheck(1) & ": " & _SpaceCheck(2) & " GB"
-	If _SpaceCheck(4) >=  64 And _SpaceCheck(2) >= 64 Then
+	Local $iDiskSpace = _SpaceCheck(2)
+	Local $iPartitionSpace = _SpaceCheck(4)
+	Local $sSpaceResultFirstLine = _SpaceCheck(3) & " " & $iPartitionSpace & " GB, " & _Translate($iMUI, "Disk") & " " & _SpaceCheck(1) & ": " & $iDiskSpace & " GB"
+	; -- Check
+	If $iDiskSpace >= 64 And $iPartitionSpace >= 64 Then
 		; Partition and Disk >= 64 GB
 		_GUICtrlSetState($hCheck[9][0], $iPass)
 		GUICtrlSetData($hCheck[9][2], $sSpaceResultFirstLine & @CRLF & _Translate($iMUI, "Partition and disk passed."))
-	ElseIf _SpaceCheck(4) < 64 And _SpaceCheck(2) >= 64 Then
+	ElseIf $iDiskSpace < 64 And $iPartitionSpace >= 64 Then
 		; Partition < 64 GB and Disk >= 64 GB
 		_GUICtrlSetState($hCheck[9][0], $iWarn)
 		GUICtrlSetData($hCheck[9][2], $sSpaceResultFirstLine & @CRLF & _Translate($iMUI, "Partition not passed, but disk."))
-	ElseIf _SpaceCheck(4) < 64 And _SpaceCheck(2) < 64 Then
+	ElseIf $iDiskSpace < 64 And $iPartitionSpace < 64 Then
 		; Partition and Disk < 64 GB
 		_GUICtrlSetState($hCheck[9][0], $iFail)
 		GUICtrlSetData($hCheck[9][2], $sSpaceResultFirstLine & @CRLF & _Translate($iMUI, "Partition and disk not pass."))
@@ -596,7 +599,7 @@ Func Main()
 	EndIf
 
 	#EndRegion Settings GUI
-	
+
 	ProgressSet(100)
 	ProgressOff()
 
@@ -641,36 +644,36 @@ Func Main()
 						EndSwitch
 				EndSwitch
 				$aDirectX = Null
-#cs
-			Case (Not ProcessExists($hDXPID)) And FileExists($hDXFile)
-				$sDXFile = StringStripWS(StringStripCR(FileRead($hDXFile)), $STR_STRIPALL)
-				Select
-					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "3") ; Non-English Languages
-						ContinueCase
-					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:3") ; Non-English Languages
-						ContinueCase
-					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM3")
-						_GUICtrlSetState($hCheck[5][0], $iPass)
-						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")   ; <== No translation, "DirectX 12 and WDDM 3" in LANG-file
-					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "2") ; Non-English Languages
-						ContinueCase
-					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:2") ; Non-English Languages
-						ContinueCase
-					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
-						_GUICtrlSetState($hCheck[5][0], $iPass)
-						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")   ; <== No translation, "DirectX 12 and WDDM 2" in LANG-file
-					Case Not StringInStr($sDXFile, "FeatureLevels:12") Or Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
-						_GUICtrlSetState($hCheck[5][0], $iPass)
-						GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12, but WDDM2"))
-					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And Not StringInStr($sDXFile, "DriverModel:WDDM2")
-						_GUICtrlSetState($hCheck[5][0], $iFail)
-						GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DirectX 12, but no WDDM2"))
-					Case Else
-						_GUICtrlSetState($hCheck[5][0], $iFail)
-						GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12 or WDDM2"))
-				EndSelect
-				FileDelete($hDXFile)
-#ce
+				#cs
+							Case (Not ProcessExists($hDXPID)) And FileExists($hDXFile)
+								$sDXFile = StringStripWS(StringStripCR(FileRead($hDXFile)), $STR_STRIPALL)
+								Select
+									Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "3") ; Non-English Languages
+										ContinueCase
+									Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:3") ; Non-English Languages
+										ContinueCase
+									Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM3")
+										_GUICtrlSetState($hCheck[5][0], $iPass)
+										GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")   ; <== No translation, "DirectX 12 and WDDM 3" in LANG-file
+									Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "2") ; Non-English Languages
+										ContinueCase
+									Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:2") ; Non-English Languages
+										ContinueCase
+									Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
+										_GUICtrlSetState($hCheck[5][0], $iPass)
+										GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")   ; <== No translation, "DirectX 12 and WDDM 2" in LANG-file
+									Case Not StringInStr($sDXFile, "FeatureLevels:12") Or Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
+										_GUICtrlSetState($hCheck[5][0], $iPass)
+										GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12, but WDDM2"))
+									Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And Not StringInStr($sDXFile, "DriverModel:WDDM2")
+										_GUICtrlSetState($hCheck[5][0], $iFail)
+										GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DirectX 12, but no WDDM2"))
+									Case Else
+										_GUICtrlSetState($hCheck[5][0], $iFail)
+										GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12 or WDDM2"))
+								EndSelect
+								FileDelete($hDXFile)
+				#ce
 
 			Case $hMsg = $hDumpLang
 				FileDelete(@LocalAppDataDir & "\WhyNotWin11\langs\")
