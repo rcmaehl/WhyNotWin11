@@ -505,10 +505,10 @@ Func Main()
 	Switch _GPTCheck()
 		Case True
 			_GUICtrlSetPass($hCheck[6][0])
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System drive: GPT") & @CRLF & _Translate($iMUI, "Drive meets requirement."))
+			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: GPT") & @CRLF & _Translate($iMUI, "Disk meets requirement."))
 		Case False
 			_GUICtrlSetFail($hCheck[6][0])
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System drive: MBR") & @CRLF & _Translate($iMUI, "Drive does not meet requirement."))
+			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: MBR") & @CRLF & _Translate($iMUI, "Disk does not meet requirement."))
 		Case Else
 			; Do Nothing!!
 	EndSwitch
@@ -535,18 +535,19 @@ Func Main()
 	EndSwitch
 
 	#Region - SpaceCheck
-	If _SpaceCheck(2) >=  64 And _SpaceCheck(1) >= 64 Then
+	$sSpaceResultFirstLine = _SpaceCheck(3) & " " & _SpaceCheck(4) & " GB, " & _Translate($iMUI, "Disk") &  " " & _SpaceCheck(1) & ": " & _SpaceCheck(2) & " GB"
+	If _SpaceCheck(4) >=  64 And _SpaceCheck(2) >= 64 Then
 		; Partition and Disk >= 64 GB
 		_GUICtrlSetState($hCheck[9][0], $iPass)
-		GUICtrlSetData($hCheck[9][2], _Translate($iMUI, "Both passed."))
-	ElseIf _SpaceCheck(2) < 64 And _SpaceCheck(1) >= 64 Then
+		GUICtrlSetData($hCheck[9][2], $sSpaceResultFirstLine & @CRLF & _Translate($iMUI, "Both passed."))
+	ElseIf _SpaceCheck(4) < 64 And _SpaceCheck(2) >= 64 Then
 		; Partition < 64 GB and Disk >= 64 GB
 		_GUICtrlSetState($hCheck[9][0], $iWarn)
-		GUICtrlSetData($hCheck[9][2], _Translate($iMUI, "Partition failed."))
-	ElseIf _SpaceCheck(2) < 64 And _SpaceCheck(1) < 64 Then
+		GUICtrlSetData($hCheck[9][2], $sSpaceResultFirstLine & @CRLF & _Translate($iMUI, "Partition not passed. Disk passed."))
+	ElseIf _SpaceCheck(4) < 64 And _SpaceCheck(2) < 64 Then
 		; Partition and Disk < 64 GB
 		_GUICtrlSetState($hCheck[9][0], $iFail)
-		GUICtrlSetData($hCheck[9][2], _Translate($iMUI, "Both Failed."))
+		GUICtrlSetData($hCheck[9][2], $sSpaceResultFirstLine & @CRLF & _Translate($iMUI, "Both didn't pass."))
 	EndIf
 	#EndRegion - SpaceCheck
 

@@ -173,17 +173,19 @@ EndFunc   ;==>_SecureBootCheck
 Func _SpaceCheck($iFlag)
 	; Desc ......... : Call _GetDiskInfoFromWmi() to get the disk and partition informations. The selected information will be returned.
 	; Parameters ... : $iFlag = 0 => Return if system disk and system partition ready.
-	; Parameters ... : $iFlag = 1 => Return size of system disk in GB.
-	; Parameters ... : $iFlag = 2 => Return size of system partition in GB.
-	; Parameters ... : $iFlag = 3 => Return count of internal Win11 ready disks.
-	; Parameters ... : $iFlag = 4 => Return count of all internal disks.
+	; .............. : $iFlag = 1 => Number of system disk.
+	; .............. : $iFlag = 2 => Return size of system disk in GB.
+	; .............. : $iFlag = 3 => Letter of system partition.
+	; .............. : $iFlag = 4 => Return size of system partition in GB.
+	; .............. : $iFlag = 5 => Return count of internal Win11 ready disks.
+	; .............. : $iFlag = 6 => Return count of all internal disks.
 	; On error ..... : SetError(1, 1, "Error_CheckFailed")
 
 	; Check for error
 	_GetDiskProperties(4)
 	If @error = 1 Then Return SetError(1, 1, "Error_CheckFailed")
 
-	; Get size (Arrays form _GetDiskProperties is a 2D-Array.)
+	; Get size (Arrays form _GetDiskProperties are 2D-Arrays.)
 	Local $iDiskSize = Round(_GetDiskProperties(3)[0][8] / 1024 / 1024 / 1024)
 	Local $iPartitionSize = Round(_GetDiskProperties(4)[0][9] / 1024 / 1024 / 1024)
 
@@ -192,12 +194,18 @@ Func _SpaceCheck($iFlag)
 			; Return readiness state
 			Return ($iDiskSize >= 64 And $iPartitionSize >= 64) ? True : False
 		Case 1
+			; Return number of System disk
+			Return _GetDiskProperties(3)[0][0] ; (Array form _GetDiskProperties is a 2D-Array.)
+		Case 2
 			; Return size of disk
 			Return $iDiskSize
-		Case 2
+		Case 3
+			; Return letter of system partition
+			Return _GetDiskProperties(4)[0][6] ; (Array form _GetDiskProperties is a 2D-Array.)
+		Case 4
 			; Return size of partiton
 			Return $iPartitionSize
-		Case 3
+		Case 5
 			; Count Disk with sie >= 64 GB.
 			Local $aDisks = _GetDiskProperties(1)
 			Local $iDiskCount = 0
@@ -207,7 +215,7 @@ Func _SpaceCheck($iFlag)
 				EndIf
 			Next
 			Return $iDiskCount
-		Case 4
+		Case 6
 			Return UBound($aDisks)
 		Case Else
 			; $iFlag unknown
