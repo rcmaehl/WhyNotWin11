@@ -64,6 +64,7 @@ Invalid Release Tags Received!=Invalid Release Tags Received!
 Invalid Release Types Received!=Invalid Release Types Received!
 Update Available=Update Available
 An Update is Available, would you like to download it?=An Update is Available, would you like to download it?
+Warning=Warning
 [Descriptions]
 Architecture=The amount of data your CPU and OS can process at once. 32-Bit OS result requires a disk wipe and new Windows 11 install. 32-Bit CPU requires a CPU replacement.
 Boot=A method your motherboard uses to load Windows. Legacy results can be fixed on newer motherboards in your BIOS/UEFI settings. Refer to your motherboard manual.
