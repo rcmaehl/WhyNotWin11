@@ -1,6 +1,6 @@
 [MetaData]
 Language=German - Germany
-Translator=botflakes, JimBim89, schmelto, speedy-pc
+Translator=botflakes, JimBim89, schmelto, speedy-pc, htcfreek
 Version= 2.3.1.0
 [Strings]
 Donate=Spenden
@@ -32,13 +32,16 @@ Not Currently Listed as Compatible=CPU derzeit nicht als kompatibel gelistet
 Listed as Compatible=CPU als kompatibel gelistet
 Cores=Kerne
 Threads=Threads
-GPT Detected=GPT erkannt
-GPT Not Detected=GPT nicht erkannt
+Requirement meet.=Requirement meet.
+Requirement not meet.=Requirement not meet.
 Enabled=aktiviert
 Supported=unterstützt
 Not Supported=nicht unterstützt
 Disabled / Not Detected=deaktiviert oder nicht erkannt
 Drive(s) Meet Requirements=Laufwerk(e) kompatibel
+Partition and disk passed.=Partition and Laufwerk bestanden.
+Partition not passed, but disk.=Partition nicht bestanden, aber Laufwerk.
+Partition and disk passed.=Partition and Platte bestanden.
 TPM Missing / Disabled=TPM fehlt oder deaktiviert
 Detected=erkannt
 DirectX 12 and WDDM 3=DirectX 12 und WDDM 3

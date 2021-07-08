@@ -1,6 +1,6 @@
 [MetaData]
 Language=English - United States
-Translator=rcmaehl
+Translator=rcmaehl, htcfreek
 Version=2.3.1.0
 [Font]
 Extra Large=24
@@ -39,12 +39,15 @@ Not Currently Listed as Compatible=Not Currently Listed as Compatible
 Listed as Compatible=Listed as Compatible
 Cores=# Cores
 Threads=# Threads
-GPT Detected=GPT Detected
-GPT Not Detected=GPT Not Detected
+Requirement meet.=Anforderung erfüllt.
+Requirement not meet.=Anforderung nicht erfüllt.
 Enabled=Enabled
 Supported=Supported
 Disabled / Not Detected=Disabled / Not Detected
 Drive(s) Meet Requirements=Drive(s) Meet Requirements
+Partition and disk passed.=Partition and disk passed.
+Partition not passed, but disk.=Partition not passed, but disk.
+Partition and disk passed.=Partition and disk passed.
 TPM Missing / Disabled=TPM Missing / Disabled
 Not Supported=Not Supported
 Detected=Detected
