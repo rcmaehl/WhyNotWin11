@@ -512,7 +512,7 @@ Func Main()
 			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected"))
 		EndIf
 	Else
-		GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected") & @CRLF & @error)
+		GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected"))
 		_GUICtrlSetState($hCheck[6][0], $iFail)
 	EndIf
 
