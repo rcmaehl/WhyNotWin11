@@ -117,7 +117,7 @@ Func _SetBkSelfIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight
 EndFunc   ;==>_SetBkSelfIcon
 
 Func _SetTheme()
-	Local $aColors = [4]
+	Local $aColors[4]
 
 	Local $dText = _WinAPI_GetSysColor($COLOR_WINDOWTEXT)
 	Local $dWindow = _WinAPI_GetSysColor($COLOR_WINDOW)
