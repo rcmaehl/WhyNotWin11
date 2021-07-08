@@ -17,6 +17,7 @@
 #AutoIt3Wrapper_Res_Icon_Add=Assets\web.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\job.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\set.ico
+#AutoIt3Wrapper_Res_Icon_Add=Assets\inf.ico
 #AutoIt3Wrapper_Run_AU3Check=Y
 #AutoIt3Wrapper_Au3Check_Parameters=-d -w 1 -w 2 -w 3 -w 4 -w 5 -w 6 -w 7 -v1 -v2 -v3
 #AutoIt3Wrapper_Run_Au3Stripper=y
@@ -75,7 +76,6 @@ EndSwitch
 Global $__g_hModule = _WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll")
 If @OSBuild >= 22000 Or _WinAPI_GetProcAddress($__g_hModule, "wine_get_host_version") Then
 	MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Your Windows 11 Compatibility Results are Below"), _Translate(@MUILang, "You're running the latest build!"))
-	Exit 1
 EndIf
 
 If $CmdLine[0] > 0 Then ProcessCMDLine()
@@ -415,7 +415,7 @@ Func Main()
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
 		If @Compiled Then
 			GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40, $SS_CENTERIMAGE + $SS_CENTER)
-			_SetBkSelfIcon(-1, 0xF8F8F8, @ScriptFullPath, 201, 24, 24)
+			_SetBkSelfIcon(-1, 0xF8F8F8, @ScriptFullPath, 207, 24, 24)
 			GUICtrlSetTip(-1, $aInfo[$iRow], _Translate($iMUI, "Description"), $TIP_INFOICON, $TIP_BALLOON)
 		Else
 			GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
