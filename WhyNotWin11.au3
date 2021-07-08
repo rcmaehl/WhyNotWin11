@@ -302,6 +302,7 @@ Func Main()
 	Local $hToggle = GUICtrlCreateLabel("", 34, 518, 32, 32)
 	GUICtrlSetTip(-1, "Settings")
 	GUICtrlSetCursor(-1, 0)
+	GUICtrlSetState(-1, $GUI_HIDE)
 
 	; Allow Dragging of Window
 	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
@@ -331,6 +332,7 @@ Func Main()
 		EndIf
 		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
 		_SetBkSelfIcon(-1, 0xE6E6E6, @ScriptFullPath, 206, 32, 32)
+		GUICtrlSetState(-1, $GUI_HIDE)
 	Else
 		GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & "\assets\git.ico", -1, 32, 32)
@@ -346,6 +348,7 @@ Func Main()
 		EndIf
 		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
 		_SetBkIcon(-1, 0xE6E6E6, @ScriptDir & ".\assets\set.ico", -1, 32, 32)
+		GUICtrlSetState(-1, $GUI_HIDE)
 	EndIf
 	_GDIPlus_Shutdown()
 
@@ -451,7 +454,7 @@ Func Main()
 					_GUICtrlSetState($hCheck[1][0], $iFail)
 					GUICtrlSetData($hCheck[1][2], "Legacy")
 				Case Else
-					GUICtrlSetData($hCheck[1][2], @extended)
+					GUICtrlSetData($hCheck[1][2], @error)
 					_GUICtrlSetState($hCheck[1][0], $iWarn)
 			EndSwitch
 	EndSwitch
@@ -523,42 +526,42 @@ Func Main()
 
 	Switch _SecureBootCheck()
 		Case 2
-			_GUICtrlSetPass($hCheck[8][0])
+			_GUICtrlSetState($hCheck[8][0], $iPass)
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Enabled"))
 		Case True
-			_GUICtrlSetPass($hCheck[8][0])
+			_GUICtrlSetState($hCheck[8][0], $iPass)
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Supported"))
 		Case False
-			_GUICtrlSetFail($hCheck[8][0])
+			_GUICtrlSetState($hCheck[8][0], $iFail)
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Disabled / Not Detected"))
 	EndSwitch
 
 	_SpaceCheck()
 	GUICtrlSetData($hCheck[9][2], @error & " GB " & $WINDOWS_DRIVE & @CRLF & @extended & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
 	If _SpaceCheck() Then
-		_GUICtrlSetPass($hCheck[9][0])
+		_GUICtrlSetState($hCheck[9][0], $iPass)
 	Else
-		_GUICtrlSetFail($hCheck[9][0])
+		_GUICtrlSetState($hCheck[9][0], $iFail)
 	EndIf
 
 	Select
 		Case _GetTPMInfo(0) = False
 			ContinueCase
 		Case _GetTPMInfo(1) = False
-			_GUICtrlSetFail($hCheck[10][0])
+			_GUICtrlSetState($hCheck[10][0], $iFail)
 			GUICtrlSetData($hCheck[10][2], _Translate($iMUI, "TPM Missing / Disabled"))
 		Case Not Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
-			_GUICtrlSetFail($hCheck[10][0])
+			_GUICtrlSetState($hCheck[10][0], $iFail)
 			GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Not Supported"))
 		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 2.0
-			_GUICtrlSetPass($hCheck[10][0])
+			_GUICtrlSetState($hCheck[10][0], $iPass)
 			GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Detected"))
 		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
 			;_GUICtrlSetWarn($hCheck[10][0], "OK")
-			_GUICtrlSetFail($hCheck[10][0])
+			_GUICtrlSetState($hCheck[10][0], $iFail)
 			GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Detected"))
 		Case Else
-			_GUICtrlSetFail($hCheck[10][0])
+			_GUICtrlSetState($hCheck[10][0], $iFail)
 			GUICtrlSetData($hCheck[10][2], _GetTPMInfo(0) & " " & _GetTPMInfo(1) & " " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]))
 	EndSelect
 
@@ -610,23 +613,23 @@ Func Main()
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:3") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM3")
-						_GUICtrlSetPass($hCheck[5][0])
+						_GUICtrlSetState($hCheck[5][0], $iPass)
 						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")   ; <== No translation, "DirectX 12 and WDDM 3" in LANG-file
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "2") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:2") ; Non-English Languages
 						ContinueCase
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
-						_GUICtrlSetPass($hCheck[5][0])
+						_GUICtrlSetState($hCheck[5][0], $iPass)
 						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")   ; <== No translation, "DirectX 12 and WDDM 2" in LANG-file
 					Case Not StringInStr($sDXFile, "FeatureLevels:12") Or Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
-						_GUICtrlSetFail($hCheck[5][0])
+						_GUICtrlSetState($hCheck[5][0], $iPass)
 						GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12, but WDDM2"))
 					Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And Not StringInStr($sDXFile, "DriverModel:WDDM2")
-						_GUICtrlSetFail($hCheck[5][0])
+						_GUICtrlSetState($hCheck[5][0], $iFail)
 						GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DirectX 12, but no WDDM2"))
 					Case Else
-						_GUICtrlSetFail($hCheck[5][0])
+						_GUICtrlSetState($hCheck[5][0], $iFail)
 						GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12 or WDDM2"))
 				EndSelect
 				FileDelete($hDXFile)
@@ -779,19 +782,3 @@ Func _GUICtrlSetState($hCtrl, $iState)
 			GUICtrlSetBkColor($hCtrl, 0xF4C141)
 	EndSwitch
 EndFunc   ;==>_GUICtrlSetState
-
-
-Func _GUICtrlSetPass($hCtrl)
-	GUICtrlSetData($hCtrl, "OK")
-	GUICtrlSetBkColor($hCtrl, 0x4CC355)
-EndFunc   ;==>_GUICtrlSetPass
-
-Func _GUICtrlSetFail($hCtrl)
-	GUICtrlSetData($hCtrl, "X")
-	GUICtrlSetBkColor($hCtrl, 0xFA113D)
-EndFunc   ;==>_GUICtrlSetFail
-
-Func _GUICtrlSetWarn($hCtrl, $symbol = "?")
-	GUICtrlSetData($hCtrl, $symbol)
-	GUICtrlSetBkColor($hCtrl, 0xF4C141)
-EndFunc   ;==>_GUICtrlSetWarn
