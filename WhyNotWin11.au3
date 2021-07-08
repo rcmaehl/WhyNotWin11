@@ -402,7 +402,7 @@ Func Main()
 
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
-	Local $hInfo[11]
+	Local $aInfo = _GetDescriptions($iMUI)
 
 	_GDIPlus_Startup()
 	For $iRow = 0 To 10 Step 1
@@ -414,11 +414,13 @@ Func Main()
 		If $iRow = 0 Or $iRow = 3 Or $iRow = 6 Or $iRow = 9 Then GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN)
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
 		If @Compiled Then
-			$hInfo[$iRow] = GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40, $SS_CENTERIMAGE + $SS_CENTER)
+			GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40, $SS_CENTERIMAGE + $SS_CENTER)
 			_SetBkSelfIcon(-1, 0xF8F8F8, @ScriptFullPath, 201, 24, 24)
+			GUICtrlSetTip(-1, $aInfo[$iRow], _Translate($iMUI, "Description"), $TIP_INFOICON, $TIP_BALLOON)
 		Else
-			$hInfo[$iRow] = GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
+			GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
 			_SetBkIcon(-1, 0xF8F8F8, @ScriptDir & "\assets\inf.ico", -1, 24, 24)
+			GUICtrlSetTip(-1, $aInfo[$iRow], _Translate($iMUI, "Description"), $TIP_INFOICON, $TIP_BALLOON)
 		EndIf
 	Next
 	_GDIPlus_Shutdown()
