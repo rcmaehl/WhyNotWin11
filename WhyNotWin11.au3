@@ -33,7 +33,7 @@ FileChangeDir(@SystemDir)
 If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext", "HWND", "DPI_AWARENESS_CONTEXT" - 1)
 
 #Region Includes
-; Default UDF includes
+; Include default UDFs
 #include <File.au3>
 #include <Misc.au3>
 #include <Array.au3>
@@ -55,7 +55,7 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 #include "Includes\ResourcesEx.au3"
 #include "Includes\GetDiskInfoFromWmi.au3"
 
-; Internals internal scripts
+; Include internal WNW11 scripts
 #include "Includes\_WMIC.au3"
 #include "Includes\_Checks.au3"
 #include "Includes\_Theming.au3"
