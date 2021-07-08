@@ -13,10 +13,9 @@ Func _GetDescriptions($iMUI)
 	$aDescriptions[5] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Descriptions", "DirectX", "The version of DirectX DDI/Feature Level your card supports. This is seperate from DirectX software version. 'DirectX 12 API' cards may fail this check.")
 	$aDescriptions[6] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Descriptions", "Disk Type", "The format that your data is stored on your disk. Non-GPT results can be fixed using Microsoft's MBR2GPT tool.")
 	$aDescriptions[7] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Descriptions", "RAM", "The amount of fast memory installed in your computer. Physically upgradeable in Desktops; Physically upgradeable in high end Laptops.")
-	$aDescriptions[8] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Descriptions", "RAM", "The amount of fast memory installed in your computer. Physically upgradeable in Desktops; Physically upgradeable in high end Laptops.")
-	$aDescriptions[9] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Descriptions", "Secure Boot", "A method your motherboard uses to load Windows. If not detected, can be fixed on newer motherboards in your BIOS/UEFI settings. Refer to your motherboard manual.")
-	$aDescriptions[10] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Descriptions", "Storage", "The amount of space for data on your disk. Physically upgradeable in high end Laptops.")
-	$aDescriptions[11] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Descriptions", "TPM", "A security module used by Windows. All modern AMD CPUs contain one; Some modern Intel CPUs contain one. Check your BIOS/UEFI settings. Refer to your motherboard manual.")
+	$aDescriptions[8] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Descriptions", "Secure Boot", "A method your motherboard uses to load Windows. If not detected, can be fixed on newer motherboards in your BIOS/UEFI settings. Refer to your motherboard manual.")
+	$aDescriptions[9] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Descriptions", "Storage", "The amount of space for data on your disk. Physically upgradeable in high end Laptops.")
+	$aDescriptions[10] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Descriptions", "TPM", "A security module used by Windows. All modern AMD CPUs contain one; Some modern Intel CPUs contain one. Check your BIOS/UEFI settings. Refer to your motherboard manual.")
 
 	Return $aDescriptions
 EndFunc
