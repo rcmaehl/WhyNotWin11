@@ -228,7 +228,7 @@ Func Main()
 	Local Const $DPI_RATIO = _GDIPlus_GraphicsGetDPIRatio()[0]
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 
-	ProgressOn("WhyNotWin11", "Loading WMIC")
+	ProgressOn("WhyNotWin11", _Translate($iMUI, "Loading WMIC"))
 	ProgressSet(0, "_GetCPUInfo()")
 	_GetCPUInfo()
 	ProgressSet(20, "_GetDiskInfo()")
@@ -239,7 +239,7 @@ Func Main()
 	_GetTPMInfo()
 	ProgressSet(80, "_GetDiskInfoFromWmi")
 	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
-	ProgressSet(100, "Done")
+	ProgressSet(100, _Translate($iMUI, "Done"))
 
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
 	GUISetBkColor($aColors[$iBackground])
