@@ -1,6 +1,6 @@
 [MetaData]
 Language=Finnish (FI)
-Translator=NabsiYa, mary-kate
+Translator=NabsiYa, mary-kate, ilkka
 Version=2.3.1.0
 [Strings]
 Donate=Lahjoita
@@ -30,8 +30,8 @@ Unable to Check List=Ei voida katsoa listaa
 Error Accessing List=Ongelma avatessa listaa
 Not Currently Listed as Compatible=Ei tällä hetkellä tuettu
 Listed as Compatible=Listattu tuetuksi
-Cores=Ytimiä
-Threads=Lankoja
+Cores=ydintä
+Threads=lankaa
 GPT Detected=GPT havaittu
 GPT Not Detected=GPT ei havaittu
 Enabled=Päällä
