@@ -689,6 +689,19 @@ Func Main()
 	WEnd
 EndFunc   ;==>Main
 
+; #FUNCTION# ====================================================================================================================
+; Name ..........: _GetLatestRelease
+; Description ...: Checks GitHub for the Latest Release
+; Syntax ........: _GetLatestRelease($sCurrent)
+; Parameters ....: $sCurrent            - a string containing the current program version
+; Return values .: Returns True if Update Available
+; Author ........: rcmaehl
+; Modified ......: 07/09/2021
+; Remarks .......:
+; Related .......:
+; Link ..........:
+; Example .......: No
+; ===============================================================================================================================
 Func _GetLatestRelease($sCurrent)
 
 	Local $dAPIBin
@@ -714,6 +727,19 @@ Func _GetLatestRelease($sCurrent)
 
 EndFunc   ;==>_GetLatestRelease
 
+; #FUNCTION# ====================================================================================================================
+; Name ..........: ParseResults
+; Description ...: Parses an Array of Check Results and formats it to a file based on file setting
+; Syntax ........: ParseResults($aResults)
+; Parameters ....: $aResults            - an array of results
+; Return values .: None
+; Author ........: rcmaehl
+; Modified ......: 07/09/2021
+; Remarks .......:
+; Related .......:
+; Link ..........:
+; Example .......: No
+; ===============================================================================================================================
 Func ParseResults($aResults)
 
 	Local $aLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
@@ -738,6 +764,20 @@ Func ParseResults($aResults)
 
 EndFunc   ;==>ParseResults
 
+; #FUNCTION# ====================================================================================================================
+; Name ..........: _SetBannerText
+; Description ...: Set the Text and Cursor of a GUI Control
+; Syntax ........: _SetBannerText($hBannerText, $hBanner)
+; Parameters ....: $hBannerText         - Handle to a GUI Control
+;                  $hBanner             - Handle to a GUI Control
+; Return values .: URL String
+; Author ........: rcmaehl
+; Modified ......: 07/09/2021
+; Remarks .......:
+; Related .......:
+; Link ..........:
+; Example .......: No
+; ===============================================================================================================================
 Func _SetBannerText($hBannerText, $hBanner)
 
 	Local $bLinux = False
@@ -764,19 +804,33 @@ Func _SetBannerText($hBannerText, $hBanner)
 
 EndFunc   ;==>_SetBannerText
 
+; #FUNCTION# ====================================================================================================================
+; Name ..........: _GUICtrlSetState
+; Description ...: Set the Text and Color of GUI Control to Indicate status
+; Syntax ........: _GUICtrlSetState($hCtrl, $iState)
+; Parameters ....: $hCtrl               - Handle to a GUI Control
+;                  $iState              - State to set the GUI Control
+; Return values .: None
+; Author ........: rcmaehl
+; Modified ......: 07/09/2021
+; Remarks .......:
+; Related .......:
+; Link ..........:
+; Example .......: No
+; ===============================================================================================================================
 Func _GUICtrlSetState($hCtrl, $iState)
 	Switch $iState
 		Case 0
-			GUICtrlSetData($hCtrl, "X")
+			GUICtrlSetData($hCtrl, "X") ; Failed
 			GUICtrlSetBkColor($hCtrl, 0xFA113D)
 		Case 1
-			GUICtrlSetData($hCtrl, ChrW(10003))
+			GUICtrlSetData($hCtrl, ChrW(10003)) ; Passed
 			GUICtrlSetBkColor($hCtrl, 0x4CC355)
 		Case 2
-			GUICtrlSetData($hCtrl, "?")
+			GUICtrlSetData($hCtrl, "?") ; Unsure
 			GUICtrlSetBkColor($hCtrl, 0xF4C141)
 		Case 3
-			GUICtrlSetData($hCtrl, "!")
+			GUICtrlSetData($hCtrl, "!") ; Warn
 			GUICtrlSetBkColor($hCtrl, 0xF4C141)
 	EndSwitch
 EndFunc   ;==>_GUICtrlSetState
