@@ -60,12 +60,12 @@ An Update is Available, would you like to download it?=Ein Update ist verfügbar
 [Descriptions]
 Architecture=Die Datenmenge, die Ihre CPU und Ihr Betriebssystem gleichzeitig verarbeiten können. Sollten Sie ein 32-Bit-Betriebssystem nutzen, erfordert dies eine 64-Bit Neuinstallation von Windows 11 (Ihre Daten gehen dabei verloren!). 32-Bit-CPU erfordert eine neue CPU.
 Boot=Eine Methode, die Ihr Motherboard zum Booten von Windows verwendet. "Legacy" bedeutet, dass ihr System nicht im UEFI-Modus läuft. Dies kann in den BIOS/UEFI-Einstellungen korrigiert werden. Schlagen Sie im Handbuch Ihres Motherboards nach.
-CPU Name=Die CPU, die Sie in Ihrem Computer installiert haben. Die Kompatibilität kann sich ändern. Erfordert physischen Ersatz bei Desktop PC's; Meistens nicht austauschbar bei Laptops.
-CPU Cores=Die Anzahl der Aufgaben, die Ihre CPU gleichzeitig verarbeiten kann. Erfordert physischen Ersatz bei Desktop PC's; Meistens nicht austauschbar bei Laptops.
-CPU Speed=Die Rate, mit der Ihre CPU Aufgaben verarbeitet. Erfordert physischen Ersatz bei Desktop PC's; Meistens nicht austauschbar bei Laptops.
+CPU Name=Die CPU, die Sie in Ihrem Computer installiert haben. Die Kompatibilität kann sich ändern. Bei inkompatibilität, muss die CPU bei Desktop PC's ersetzt werden. Dies ist meistens bei Laptops nicht möglich.
+CPU Cores=Die Anzahl der Aufgaben, die Ihre CPU gleichzeitig verarbeiten kann. Bei inkompatibilität, muss die CPU bei Desktop PC's ersetzt werden. Dies ist meistens bei Laptops nicht möglich.
+CPU Speed=Die Rate, mit der Ihre CPU Aufgaben verarbeitet. Bei inkompatibilität, muss die CPU bei Desktop PC's ersetzt werden. Dies ist meistens bei Laptops nicht möglich.
 DirectX=Die Version von DirectX DDI/Feature Level, die Ihre Karte unterstützt. Dies ist unabhängig von der DirectX-Softwareversion. Es kann vorkommen, dass 'DirectX 12 API'-Karten diese Prüfung nicht bestehen.
 Disk Type=Das Format, in dem Ihre Daten auf Ihrer Festplatte gespeichert sind. Sollten Sie MBR anstatt GPT nutzen, können Sie dies mit dem MBR2GPT-Tool von Microsoft korrigieren.
-RAM=Die Menge des in Ihrem Computer installierten Arbeitsspeichers. Physisch aufrüstbar bei Desktop PC's; Physisch aufrüstbar bei High-End-Laptops.
+RAM=Die Menge des in Ihrem Computer installierten Arbeitsspeichers. Erweiterung bzw. wechseln bei Desktop PC's sowie High-End-Laptops meistens möglich.
 Secure Boot=Eine Methode, die Ihr Motherboard zum Booten von Windows verwendet. Wenn nicht erkannt, kann dies auf neueren Motherboards den BIOS/UEFI-Einstellungen behoben werden. Schlagen Sie im Handbuch Ihres Motherboards nach.
-Storage=Der Speicherplatz Ihrer Festplatte. Physisch aufrüstbar bei Desktop PC's und bei High-End-Laptops.
+Storage=Der Speicherplatz Ihrer Festplatte. Erweiterung bzw. wechseln dieser ist bei Desktop PC's sowie High-End-Laptops meistens möglich.
 TPM=Ein Sicherheitsmodul, das von Windows verwendet wird. In allen modernen AMD-CPUs enthalten (fTPM) sowie in einigen modernen Intel-CPUs enthalten (PTT). Überprüfen die BIOS/UEFI-Einstellungen. Schlagen Sie im Handbuch Ihres Motherboards nach.
