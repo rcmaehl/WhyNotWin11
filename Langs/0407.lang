@@ -59,7 +59,7 @@ Update Available=Update verfügbar
 An Update is Available, would you like to download it?=Ein Update ist verfügbar. Möchten Sie es herunterladen?
 [Descriptions]
 Architecture=Die Datenmenge, die Ihre CPU und Ihr Betriebssystem gleichzeitig verarbeiten können. Sollten Sie ein 32-Bit-Betriebssystem nutzen, erfordert dies eine 64-Bit Neuinstallation von Windows 11 (Ihre Daten gehen dabei verloren und müssen gesichert werden!). 32-Bit-CPU erfordert eine neue CPU.
-Boot=Eine Methode, die Ihr Motherboard zum Booten von Windows verwendet. "Legacy" bedeutet, dass ihr System nicht im UEFI-Modus läuft. Dies kann in den BIOS/UEFI-Einstellungen korrigiert werden. Schlagen Sie im Handbuch Ihres Motherboards nach.
+Boot=Eine Methode, die Ihr Computer zum Starten von Windows verwendet. "Legacy" bedeutet, dass ihr System nicht im UEFI-Modus läuft. Dies kann in den BIOS/UEFI-Einstellungen korrigiert werden. Schlagen Sie im Handbuch Ihres Motherboards nach.
 CPU Name=Die CPU, die Sie in Ihrem Computer installiert haben. Die Kompatibilität kann sich ändern. Bei inkompatibilität, muss die CPU bei Desktop PC's ersetzt werden. Dies ist meistens bei Laptops nicht möglich.
 CPU Cores=Die Anzahl der Aufgaben, die Ihre CPU gleichzeitig verarbeiten kann. Bei inkompatibilität, muss die CPU bei Desktop PC's ersetzt werden. Dies ist meistens bei Laptops nicht möglich.
 CPU Speed=Die Rate, mit der Ihre CPU Aufgaben verarbeitet. Bei inkompatibilität, muss die CPU bei Desktop PC's ersetzt werden. Dies ist meistens bei Laptops nicht möglich.
