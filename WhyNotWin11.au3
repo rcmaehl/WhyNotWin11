@@ -228,7 +228,7 @@ Func Main()
 	Local Const $DPI_RATIO = _GDIPlus_GraphicsGetDPIRatio()[0]
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 
-	ProgressOn("WhyNotWin11", "Loading WMIC")
+	ProgressOn("WhyNotWin11", _Translate($iMUI, "Loading WMIC"))
 	ProgressSet(0, "_GetCPUInfo()")
 	_GetCPUInfo()
 	ProgressSet(20, "_GetDiskInfo()")
@@ -239,7 +239,7 @@ Func Main()
 	_GetTPMInfo()
 	ProgressSet(80, "_GetDiskInfoFromWmi")
 	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
-	ProgressSet(100, "Done")
+	ProgressSet(100, _Translate($iMUI, "Done"))
 
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
 	GUISetBkColor($aColors[$iBackground])
@@ -390,7 +390,7 @@ Func Main()
 	GUICtrlCreateLabel(_GetGPUInfo(0), 470, 580, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
 
-	GUICtrlCreateLabel(_Translate($iMUI, "Your Windows 11 Compatibility Results are Below"), 130, 10, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlCreateLabel(_Translate($iMUI, "Your Windows 11 Compatibility Results Are Below"), 130, 10, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
 
 	#cs
@@ -399,7 +399,7 @@ Func Main()
 	GUICtrlSetCursor(-1, 0)
 	#ce
 
-	GUICtrlCreateLabel(_Translate($iMUI, "Results Based on Currently Known Requirements!"), 130, 45, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlCreateLabel("* " & _Translate($iMUI, "Results based on currently known requirements!"), 130, 45, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetColor(-1, 0xE20012)
 	GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO)
 
@@ -689,6 +689,19 @@ Func Main()
 	WEnd
 EndFunc   ;==>Main
 
+; #FUNCTION# ====================================================================================================================
+; Name ..........: _GetLatestRelease
+; Description ...: Checks GitHub for the Latest Release
+; Syntax ........: _GetLatestRelease($sCurrent)
+; Parameters ....: $sCurrent            - a string containing the current program version
+; Return values .: Returns True if Update Available
+; Author ........: rcmaehl
+; Modified ......: 07/09/2021
+; Remarks .......:
+; Related .......:
+; Link ..........:
+; Example .......: No
+; ===============================================================================================================================
 Func _GetLatestRelease($sCurrent)
 
 	Local $dAPIBin
@@ -714,6 +727,19 @@ Func _GetLatestRelease($sCurrent)
 
 EndFunc   ;==>_GetLatestRelease
 
+; #FUNCTION# ====================================================================================================================
+; Name ..........: ParseResults
+; Description ...: Parses an Array of Check Results and formats it to a file based on file setting
+; Syntax ........: ParseResults($aResults)
+; Parameters ....: $aResults            - an array of results
+; Return values .: None
+; Author ........: rcmaehl
+; Modified ......: 07/09/2021
+; Remarks .......:
+; Related .......:
+; Link ..........:
+; Example .......: No
+; ===============================================================================================================================
 Func ParseResults($aResults)
 
 	Local $aLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
@@ -738,6 +764,20 @@ Func ParseResults($aResults)
 
 EndFunc   ;==>ParseResults
 
+; #FUNCTION# ====================================================================================================================
+; Name ..........: _SetBannerText
+; Description ...: Set the Text and Cursor of a GUI Control
+; Syntax ........: _SetBannerText($hBannerText, $hBanner)
+; Parameters ....: $hBannerText         - Handle to a GUI Control
+;                  $hBanner             - Handle to a GUI Control
+; Return values .: URL String
+; Author ........: rcmaehl
+; Modified ......: 07/09/2021
+; Remarks .......:
+; Related .......:
+; Link ..........:
+; Example .......: No
+; ===============================================================================================================================
 Func _SetBannerText($hBannerText, $hBanner)
 
 	Local $bLinux = False
@@ -764,19 +804,33 @@ Func _SetBannerText($hBannerText, $hBanner)
 
 EndFunc   ;==>_SetBannerText
 
+; #FUNCTION# ====================================================================================================================
+; Name ..........: _GUICtrlSetState
+; Description ...: Set the Text and Color of GUI Control to Indicate status
+; Syntax ........: _GUICtrlSetState($hCtrl, $iState)
+; Parameters ....: $hCtrl               - Handle to a GUI Control
+;                  $iState              - State to set the GUI Control
+; Return values .: None
+; Author ........: rcmaehl
+; Modified ......: 07/09/2021
+; Remarks .......:
+; Related .......:
+; Link ..........:
+; Example .......: No
+; ===============================================================================================================================
 Func _GUICtrlSetState($hCtrl, $iState)
 	Switch $iState
 		Case 0
-			GUICtrlSetData($hCtrl, "X")
+			GUICtrlSetData($hCtrl, "X") ; Failed
 			GUICtrlSetBkColor($hCtrl, 0xFA113D)
 		Case 1
-			GUICtrlSetData($hCtrl, "OK")
+			GUICtrlSetData($hCtrl, ChrW(10003)) ; Passed
 			GUICtrlSetBkColor($hCtrl, 0x4CC355)
 		Case 2
-			GUICtrlSetData($hCtrl, "?")
+			GUICtrlSetData($hCtrl, "?") ; Unsure
 			GUICtrlSetBkColor($hCtrl, 0xF4C141)
 		Case 3
-			GUICtrlSetData($hCtrl, "!")
+			GUICtrlSetData($hCtrl, "!") ; Warn
 			GUICtrlSetBkColor($hCtrl, 0xF4C141)
 	EndSwitch
 EndFunc   ;==>_GUICtrlSetState
