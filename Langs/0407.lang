@@ -1,13 +1,13 @@
 [MetaData]
 Language=German - Germany
-Translator=botflakes, JimBim89, schmelto, speedy-pc
+Translator=botflakes, JimBim89, schmelto, speedy-pc, htcfreek
 Version= 2.3.1.0
 [Strings]
 Donate=Spenden
 Check for Updates=Update suchen
-Your Windows 11 Compatibility Results are Below=Ihre Windows 11-Kompatibilitätsergebnisse
+Your Windows 11 Compatibility Results Are Below=Ihre Windows 11-Kompatibilitätsergebnisse
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Offizielle Homepage https://www.whynotwin11.org/
-Results Based on Currently Known Requirements!=Ergebnisse basierend auf den derzeit bekannten Microsoft-Anforderungen.
+Results based on currently known requirements!=Ergebnisse basierend auf den derzeit bekannten Anforderungen.
 Translation by=Übersetzt von
 Architecture (CPU + OS)=Architektur (CPU + OS)
 Boot Method=Boot Methode
@@ -69,3 +69,6 @@ RAM=Die Menge des in Ihrem Computer installierten Arbeitsspeichers. Erweitern bz
 Secure Boot=Eine Methode, die Ihr Motherboard zum Booten von Windows verwendet. Wenn nicht erkannt, kann dies auf neueren Motherboards den BIOS/UEFI-Einstellungen behoben werden. Schlagen Sie im Handbuch Ihres Motherboards nach.
 Storage=Der Speicherplatz Ihrer Festplatte. Erweitern bzw. wechseln dieser ist bei Desktop PC's sowie High-End-Laptops meistens möglich.
 TPM=Ein Sicherheitsmodul, das von Windows verwendet wird. In allen modernen AMD-CPUs enthalten (fTPM) sowie in einigen modernen Intel-CPUs enthalten (PTT). Überprüfen die BIOS/UEFI-Einstellungen. Schlagen Sie im Handbuch Ihres Motherboards nach.
+Done=Fertig
+Loading WMIC=Lade WMIC
+Warning=Warnung
