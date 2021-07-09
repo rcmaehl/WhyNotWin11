@@ -770,7 +770,7 @@ Func _GUICtrlSetState($hCtrl, $iState)
 			GUICtrlSetData($hCtrl, "X")
 			GUICtrlSetBkColor($hCtrl, 0xFA113D)
 		Case 1
-			GUICtrlSetData($hCtrl, "OK")
+			GUICtrlSetData($hCtrl, ChrW(10003))
 			GUICtrlSetBkColor($hCtrl, 0x4CC355)
 		Case 2
 			GUICtrlSetData($hCtrl, "?")
