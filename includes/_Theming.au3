@@ -1,13 +1,3 @@
-#cs
-Func _CheckAppsUseLightTheme()
-	Local $sUseLightTheme = RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
-	If @error Then
-		$sUseLightTheme = "1"
-	EndIf
-	Return Int($sUseLightTheme)
-EndFunc   ;==>_CheckAppsUseLightTheme
-#ce
-
 ;######################################################################################################################################
 ; #FUNCTION# ====================================================================================================================
 ; Name ..........: _GDIPlus_GraphicsGetDPIRatio
@@ -37,23 +27,7 @@ Func _GDIPlus_GraphicsGetDPIRatio($iDPIDef = 96)
 	_GDIPlus_Shutdown()
 	Return $aResults
 EndFunc   ;==>_GDIPlus_GraphicsGetDPIRatio
-#cs
-Func _HighContrast($sColor)
-	Local Static $sSysWin
 
-	If Not $sSysWin <> "" Then $sSysWin = _WinAPI_GetSysColor($COLOR_WINDOW)
-
-	Select
-		Case $sSysWin = 0
-			ContinueCase
-		Case $sSysWin = 16777215 And Not _CheckAppsUseLightTheme()
-			Return 16777215 - $sColor
-		Case Else
-			Return $sSysWin + $sColor + 1
-	EndSelect
-
-EndFunc   ;==>_HighContrast
-#ce
 Func _SetBkIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
 
 	Local Static $STM_SETIMAGE = 0x0172
@@ -121,6 +95,8 @@ Func _SetTheme()
 
 	Local $dText = _WinAPI_GetSysColor($COLOR_WINDOWTEXT)
 	Local $dWindow = _WinAPI_GetSysColor($COLOR_WINDOW)
+	Local $bLTheme = RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
+	If @error Then $bLTheme = True
 
 	$aColors[0] = 0xF8F8F8 ; Backgrounds
 	$aColors[1] = $dText ;Text
@@ -130,9 +106,9 @@ Func _SetTheme()
 	Select
 		Case $dWindow = 0x000000
 			ContinueCase
-		Case $dWindow = 0xFFFFFF And Not RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
+		Case $dWindow = 0xFFFFFF And Not $bLTheme
 			$aColors[0] = 0x070707
-			$aColors[1] = $dText
+			$aColors[1] = 0xFFFFFF
 			$aColors[2] = 0x191919
 			$aColors[3] = 0x0D0D0D
 		Case 0xFFFFFF > $dWindow > 0x000000
@@ -140,7 +116,7 @@ Func _SetTheme()
 			$aColors[1] = $dText
 			$aColors[2] = $dWindow + 0xE6E6E7
 			$aColors[3] = $dWindow + 0xF2F2F3
-		Case RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
+		Case $bLTheme
 			;;;
 		Case FileExists(@ScriptDir & "\theme.def")
 			$aColors[0] = IniRead(@ScriptDir & "\theme.def", "Colors", "Background", $aColors[0])
