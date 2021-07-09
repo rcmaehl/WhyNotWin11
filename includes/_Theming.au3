@@ -1,11 +1,3 @@
-Func _CheckAppsUseLightTheme()
-	Local $sUseLightTheme = RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
-	If @error Then
-		$sUseLightTheme = "1"
-	EndIf
-	Return Int($sUseLightTheme)
-EndFunc   ;==>_CheckAppsUseLightTheme
-
 ;######################################################################################################################################
 ; #FUNCTION# ====================================================================================================================
 ; Name ..........: _GDIPlus_GraphicsGetDPIRatio
@@ -35,22 +27,6 @@ Func _GDIPlus_GraphicsGetDPIRatio($iDPIDef = 96)
 	_GDIPlus_Shutdown()
 	Return $aResults
 EndFunc   ;==>_GDIPlus_GraphicsGetDPIRatio
-
-Func _HighContrast($sColor)
-	Local Static $sSysWin
-
-	If Not $sSysWin <> "" Then $sSysWin = _WinAPI_GetSysColor($COLOR_WINDOW)
-
-	Select
-		Case $sSysWin = 0
-			ContinueCase
-		Case $sSysWin = 16777215 And Not _CheckAppsUseLightTheme()
-			Return 16777215 - $sColor
-		Case Else
-			Return $sSysWin + $sColor + 1
-	EndSelect
-
-EndFunc   ;==>_HighContrast
 
 Func _SetBkIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
 
@@ -113,3 +89,42 @@ Func _SetBkSelfIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight
 
 	Return SetError(0, 0, 1)
 EndFunc   ;==>_SetBkSelfIcon
+
+Func _SetTheme()
+	Local $aColors[4]
+
+	Local $dText = _WinAPI_GetSysColor($COLOR_WINDOWTEXT)
+	Local $dWindow = _WinAPI_GetSysColor($COLOR_WINDOW)
+	Local $bLTheme = RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
+	If @error Then $bLTheme = True
+
+	$aColors[0] = 0xF8F8F8 ; Backgrounds
+	$aColors[1] = $dText ;Text
+	$aColors[2] = 0xE6E6E6 ; Sidebar
+	$aColors[3] = 0xF2F2F2 ; Footer
+
+	Select
+		Case $dWindow = 0x000000
+			ContinueCase
+		Case $dWindow = 0xFFFFFF And Not $bLTheme
+			$aColors[0] = 0x070707
+			$aColors[1] = 0xFFFFFF
+			$aColors[2] = 0x191919
+			$aColors[3] = 0x0D0D0D
+		Case 0xFFFFFF > $dWindow > 0x000000
+			$aColors[0] = $dWindow + 0xF8F8F9
+			$aColors[1] = $dText
+			$aColors[2] = $dWindow + 0xE6E6E7
+			$aColors[3] = $dWindow + 0xF2F2F3
+		Case $bLTheme
+			;;;
+		Case FileExists(@ScriptDir & "\theme.def")
+			$aColors[0] = IniRead(@ScriptDir & "\theme.def", "Colors", "Background", $aColors[0])
+			$aColors[1] = IniRead(@ScriptDir & "\theme.def", "Colors", "Test", $aColors[1])
+			$aColors[2] = IniRead(@ScriptDir & "\theme.def", "Colors", "Sidebar", $aColors[2])
+			$aColors[3] = IniRead(@ScriptDir & "\theme.def", "Colors", "Footer", $aColors[3])
+		Case Else
+			;;;
+	EndSelect
+	Return $aColors
+EndFunc   ;==>_SetTheme

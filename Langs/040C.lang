@@ -1,12 +1,13 @@
 [MetaData]
 Language=Français - France
 Translator=PierreGrillet; Nits77; villisek; BSoD38
-Version=2.3.0.4
+Version=2.3.1.0
 [Font]
 Extra Large=24
 Large=14
 Medium=10
 Small=8.5
+Name=Arial
 [Strings]
 Donate=Faire un don
 Settings=Paramètres
@@ -64,3 +65,15 @@ Invalid Release Tags Received!=Tags de version reçus invalides !
 Invalid Release Types Received!=Types de version reçus invalides !
 Update Available=Mise à jour disponible
 An Update is Available, would you like to download it?=Une mise à jour est disponible, voulez-vous la télécharger ?
+[Descriptions]
+Architecture=Quantité de données que peut traiter votre ordinateur en un cycle. Un OS 32 bits nécessitera un formatage du disque et une installation de Windows 11. Un processeur 32 bits nécessitera un remplacement.
+Boot=Méthode de démarrage que votre carte mère utilise pour charger Windows. Legacy peut être modifié en UEFI en changeant les paramètres dans le BIOS. Consultez votre manuel de carte mère.
+CPU Name=Processeur installé dans votre ordinateur. La compatibilité est sujette à changement. Dans le cas d’une incompatibilité, un remplacement du processeur est généralement possible sur les tours de bureau mais pas pour les ordinateurs portables.
+CPU Cores=Nombre de tâches que votre processeur peut exécuter en parallèle. Dans le cas d’une incompatibilité, un remplacement physique du processeur est généralement possible sur les tours de bureau mais pas pour les ordinateurs portables.
+CPU Speed=Vitesse d’exécution des tâches par le processeur. Si non compatible, un remplacement physique du processeur est généralement possible sur les tours de bureau mais pas pour les ordinateurs portables.
+DirectX=Version de DirectX supportée par votre carte graphique. Cela ne dépend pas de la version logicielle de DirectX installée. Des cartes supportant une API DirectX 12 peuvent échouer ce test.
+Disk Type=Format dans lequel le disque organise vos données. Les disques MBR (incompatibles) peuvent être convertis avec l’outil Microsoft MBR2GPT.
+RAM=Quantité de mémoire vive installée dans votre ordinateur. Un ajout ou un remplacement de barrettes de mémoire vive est possible sur les tours de bureau et sur certains ordinateurs portables.
+Secure Boot=Fonctionnalité que la carte mère utilise pour démarrer Windows. Si ce paramètre n’est pas détecté ici, il est possible de l’activer via les paramètres du BIOS/UEFI. Consultez votre manuel de carte mère.
+Storage=Quantité de stockage sur le disque principal. Généralement améliorable en remplaçant le disque dans la plupart des ordinateurs.
+TPM=Module de sécurité utilisé par Windows. Tous les processeurs AMD Ryzen en intègrent un (sous le nom fTPM). Chez Intel, les dernières générations le supportent sous le nom Intel PTT. Consultez votre manuel de carte mère.

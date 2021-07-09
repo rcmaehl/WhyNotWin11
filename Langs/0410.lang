@@ -7,6 +7,7 @@ Extra Large=24
 Large=18
 Medium=10
 Small=8.5
+Name=Arial
 [Strings]
 Donate=Dona
 Settings=Impostazioni
@@ -64,3 +65,15 @@ Invalid Release Tags Received!=Ricevuti tag di rilascio non validi!
 Invalid Release Types Received!=Ricevuti tipi di rilascio non validi!
 Update Available=Aggiornamento disponibile
 An Update is Available, would you like to download it?=Un aggiornamento è disponibile, vuoi scaricarlo?
+[Descriptions]
+Architecture=La quantità di dati che la CPU e il SO possono elaborare contemporaneamente. Il risultato: "SO a 32 Bit" richiede una formattazione del disco e una nuova installazione di Windows 11. La CPU a 32 Bit richiede una sostituzione della CPU.
+Boot=Un metodo utilizzato dalla scheda madre per caricare Windows. I risultati "legacy" possono essere corretti sulle schede madri più recenti attraverso le impostazioni BIOS/UEFI. Fai riferimento al manuale della scheda madre.
+CPU Name=La CPU che hai installato nel tuo computer. La compatibilità è soggetta a modifiche. Richiede la sostituzione fisica sui PC Desktop; Non sostituibile sui laptop.
+CPU Cores=Il numero di attività che la tua CPU può elaborare contemporaneamente. Richiede la sostituzione fisica sui PC Desktop; Non sostituibile sui laptop.
+CPU Speed=La velocità con la quale la tua CPU elabora le attività. Richiede la sostituzione fisica sui PC Desktop; Non sostituibile sui laptop.
+DirectX=La versione di DirectX DDI/Feature Level supportata dalla tua scheda. Questo non è relativo alla versione del software DirectX. Le schede "DirectX 12 API" potrebbero non passare questo controllo.
+Disk Type=Il formato con il quale i tuoi dati sono archiviati sul disco. I risultati diversi da GPT possono essere corretti utilizzando lo strumento MBR2GPT di Microsoft.
+RAM=La quantità di memoria veloce installata nel computer. Aggiornabile fisicamente nei PC Desktop; Aggiornabile fisicamente anche nei laptop di fascia alta.
+Secure Boot=Un metodo utilizzato dalla scheda madre per caricare Windows. Se non viene rilevato, può essere risolto sulle schede madri più recenti nelle impostazioni BIOS/UEFI. Fai riferimento al manuale della scheda madre.
+Storage=La quantità di spazio per i dati sul disco. Aggiornabile fisicamente nei laptop di fascia alta.
+TPM=Un modulo di sicurezza utilizzato da Windows. Tutte le CPU moderne AMD ne contengono uno; Anche alcune CPU moderne Intel ne contengono uno. Controlla le impostazioni del BIOS/UEFI. Fai riferimento al manuale della scheda madre.
