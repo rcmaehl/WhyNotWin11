@@ -399,7 +399,7 @@ Func Main()
 	GUICtrlSetCursor(-1, 0)
 	#ce
 
-	GUICtrlCreateLabel(_Translate($iMUI, "Results Based on Currently Known Requirements!"), 130, 45, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlCreateLabel("* " & _Translate($iMUI, "Results Based on Currently Known Requirements!"), 130, 45, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetColor(-1, 0xE20012)
 	GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO)
 
