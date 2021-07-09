@@ -513,10 +513,10 @@ Func Main()
 	Switch _GPTCheck(0)
 		Case True
 			_GUICtrlSetState($hCheck[6][0], $iPass)
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: GPT") & @CRLF & _Translate($iMUI, "Requirement meet."))
+			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: GPT") & @CRLF & _Translate($iMUI, "Requirement met."))
 		Case False
 			_GUICtrlSetState($hCheck[6][0], $iFail)
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: MBR") & @CRLF & _Translate($iMUI, "Requirement not meet."))
+			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: MBR") & @CRLF & _Translate($iMUI, "Requirement not met."))
 		Case Else
 			; Do Nothing!!
 	EndSwitch
