@@ -38,7 +38,6 @@ Enabled=aktiviert
 Supported=unterstützt
 Not Supported=nicht unterstützt
 Disabled / Not Detected=deaktiviert oder nicht erkannt
-Drive(s) Meet Requirements=Laufwerk(e) kompatibel
 Partition and disk passed.=Partition und Laufwerk bestanden.
 Partition not passed, but disk.=Partition nicht bestanden, aber Laufwerk.
 Partition and disk not passed.=Partition und Laufwerk nicht bestanden.
