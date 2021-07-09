@@ -249,14 +249,14 @@ Func Main()
 	GUICtrlSetDefColor($aColors[$iText])
 	GUICtrlSetDefBkColor($aColors[$iBackground])
 
-#cs
-	Local $sCheck = _CheckAppsUseLightTheme()
-	If @error Then
-		;;;
-	ElseIf Not $sCheck Then
-		GUICtrlSetDefColor(0xFFFFFF)
-	EndIf
-#ce
+	#cs
+		Local $sCheck = _CheckAppsUseLightTheme()
+		If @error Then
+			;;;
+		ElseIf Not $sCheck Then
+			GUICtrlSetDefColor(0xFFFFFF)
+		EndIf
+	#ce
 
 	Local $hDumpLang = GUICtrlCreateDummy()
 
@@ -375,7 +375,7 @@ Func Main()
 	Local $hBannerText = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
-
+	
 	Local $sBannerURL = _SetBannerText($hBannerText, $hBanner)
 	#ce Maybe Readd Later
 
