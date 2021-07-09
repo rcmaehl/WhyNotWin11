@@ -68,4 +68,4 @@ Disk Type=Das Format, in dem Ihre Daten auf Ihrer Festplatte gespeichert sind. S
 RAM=Die Menge des in Ihrem Computer installierten Arbeitsspeichers. Physisch aufrüstbar bei Desktop PC's; Physisch aufrüstbar bei High-End-Laptops.
 Secure Boot=Eine Methode, die Ihr Motherboard zum Booten von Windows verwendet. Wenn nicht erkannt, kann dies auf neueren Motherboards den BIOS/UEFI-Einstellungen behoben werden. Schlagen Sie im Handbuch Ihres Motherboards nach.
 Storage=Der Speicherplatz Ihrer Festplatte. Physisch aufrüstbar bei Desktop PC's und bei High-End-Laptops.
-TPM=Ein Sicherheitsmodul, das von Windows verwendet wird. In allen modernen AMD-CPUs enthalten (fTPM) sowie in einigen moderne Intel-CPUs enthalten (PTT). Überprüfen die BIOS/UEFI-Einstellungen. Schlagen Sie im Handbuch Ihres Motherboards nach.
+TPM=Ein Sicherheitsmodul, das von Windows verwendet wird. In allen modernen AMD-CPUs enthalten (fTPM) sowie in einigen modernen Intel-CPUs enthalten (PTT). Überprüfen die BIOS/UEFI-Einstellungen. Schlagen Sie im Handbuch Ihres Motherboards nach.
