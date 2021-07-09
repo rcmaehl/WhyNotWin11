@@ -1,12 +1,13 @@
 [MetaData]
 Language=Indonesian (Indonesia)
 Translator=SamCool939
-Version=2.3.0.5
+Version=2.3.0.6
 [Font]
 Extra Large=24
 Large=18
 Medium=10
 Small=8.5
+Name=Arial
 [Strings]
 Donate=Donasi
 Settings=Setelan
@@ -64,3 +65,15 @@ Invalid Release Tags Received!=Tag Rilis yang Diterima Tidak Valid!
 Invalid Release Types Received!=Tipe Rilis yang Diterima Tidak Valid!
 Update Available=Pembaruan Tersedia
 An Update is Available, would you like to download it?=Pembaruan Tersedia, apakah Anda ingin mengunduhnya?
+[Descriptions]
+Arsitektur=Jumlah data yang dapat diproses oleh CPU dan OS Anda sekaligus. Hasil OS 32-Bit memerlukan penghapusan disk dan instalasi bersih Windows 11. CPU 32-Bit membutuhkan penggantian CPU.
+Boot=Metode yang digunakan motherboard Anda untuk memuat Windows. Hasil lawas dapat diperbaiki pada motherboard yang lebih baru di pengaturan BIOS/UEFI Anda. Lihat manual motherboard Anda.
+Nama CPU=CPU yang telah Anda pasang di komputer Anda. Kompatibilitas dapat berubah. Membutuhkan penggantian fisik di Desktop; Tidak dapat diganti pada Laptop.
+Inti CPU=Jumlah tugas yang dapat diproses CPU Anda sekaligus. Membutuhkan penggantian fisik di Desktop; Tidak dapat diganti pada Laptop.
+Kecepatan CPU=Kecepatan CPU Anda memproses tugas. Membutuhkan penggantian fisik di Desktop; Tidak dapat diganti pada Laptop.
+DirectX=Versi DirectX DDI/Feature Level yang didukung kartu Anda. Ini terpisah dari versi perangkat lunak DirectX. Kartu 'DirectX 12 API' mungkin gagal dalam pemeriksaan ini.
+Tipe Disk=Format data Anda yang disimpan di Disk Anda. Hasil non-GPT dapat diperbaiki menggunakan alat MBR2GPT dari Microsoft.
+RAM=Jumlah memori cepat yang terpasang di komputer Anda. Dapat diupgrade secara fisik di Desktop; Dapat diupgrade secara fisik di Laptop kelas atas.
+Boot Aman=Metode yang digunakan motherboard Anda untuk memuat Windows. Jika tidak terdeteksi, dapat diperbaiki pada motherboard yang lebih baru di pengaturan BIOS/UEFI Anda. Lihat manual motherboard Anda.
+Penyimpanan=Jumlah ruang untuk data di disk Anda. Secara fisik dapat diupgrade di Laptop kelas atas.
+TPM=Modul keamanan yang digunakan oleh Windows. Semua CPU AMD modern punya satu modul; Beberapa CPU Intel modern punya satu modul. Periksa pengaturan BIOS/UEFI Anda. Lihat manual motherboard Anda.
