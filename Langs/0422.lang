@@ -1,7 +1,7 @@
 [MetaData]
 Language=Ukrainian - Ukraine
 Translator=Oleg-Chashko
-Version=2.3.0.4
+Version=2.3.1.0
 [Font]
 Extra Large=24
 Large=14.5
@@ -44,7 +44,7 @@ Enabled=Увімкнено
 Supported=Підтримується
 Not Supported=Не підтримується
 Disabled / Not Detected=Вимкнений або Не знайдено
-Drive(s) Meet Requirements=Диск(і) відповіда(є/ють) вимогам
+Drive(s) Meet Requirements=Диск(а/ів) відповіда(є/ють) вимогам
 0 Drives Meet Requirements=0 Дисків відповідають вимогам
 TPM Missing / Disabled=TPM Відсутня або Відключений
 Detected=Виявлен
