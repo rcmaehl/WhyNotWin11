@@ -108,7 +108,7 @@ Func _SetTheme()
 			ContinueCase
 		Case $dWindow = 0xFFFFFF And Not $bLTheme
 			$aColors[0] = 0x070707
-			$aColors[1] = $dText
+			$aColors[1] = 0xFFFFFF
 			$aColors[2] = 0x191919
 			$aColors[3] = 0x0D0D0D
 		Case 0xFFFFFF > $dWindow > 0x000000
