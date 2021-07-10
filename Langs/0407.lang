@@ -79,4 +79,4 @@ Disk Type=Das Format, in dem Ihre Daten auf Ihrer Festplatte gespeichert sind. S
 RAM=Die Menge des in Ihrem Computer installierten Arbeitsspeichers. Erweitern bzw. wechseln bei Desktop PC's sowie High-End-Laptops meistens möglich.
 Secure Boot=Eine Methode, die Ihr Motherboard zum Booten von Windows verwendet. Wenn nicht erkannt, kann dies auf neueren Motherboards den BIOS/UEFI-Einstellungen behoben werden. Schlagen Sie im Handbuch Ihres Motherboards nach.
 Storage=Der Speicherplatz Ihrer Festplatte. Erweitern bzw. wechseln dieser ist bei Desktop PC's sowie High-End-Laptops meistens möglich.
-TPM=Ein Sicherheitsmodul, das von Windows verwendet wird. In allen modernen AMD-CPUs enthalten (fTPM) sowie in einigen modernen Intel-CPUs enthalten (PTT). Überprüfen die BIOS/UEFI-Einstellungen. Schlagen Sie im Handbuch Ihres Motherboards-
+TPM=Ein Sicherheitsmodul, das von Windows verwendet wird. In allen modernen AMD-CPUs enthalten (fTPM) sowie in einigen modernen Intel-CPUs enthalten (PTT). Überprüfen die BIOS/UEFI-Einstellungen. Schlagen Sie im Handbuch Ihres Motherboards.
