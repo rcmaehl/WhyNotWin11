@@ -16,7 +16,7 @@ Your Windows 11 Compatibility Results Are Below=
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=
 Results based on currently known requirements!=
 Translation by=
-Architecture (CPU + OS)=
+Architecture=
 Boot Method=
 CPU Compatibility=
 CPU Core Count=
@@ -68,6 +68,7 @@ An Update is Available, would you like to download it?=
 Done=
 Loading WMIC=
 Warning=
+Description=
 [Descriptions]
 Architecture=The amount of data your CPU and OS can process at once. 32-Bit OS result requires a disk wipe and new Windows 11 install. 32-Bit CPU requires a CPU replacement.
 Boot=A method your motherboard uses to load Windows. Legacy results can be fixed on newer motherboards in your BIOS/UEFI settings. Refer to your motherboard manual.
