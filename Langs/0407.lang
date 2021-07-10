@@ -60,5 +60,6 @@ Invalid Release Types Received!=Ungültige Release-Types erhalten!
 Update Available=Update verfügbar
 An Update is Available, would you like to download it?=Ein Update ist verfügbar. Möchten Sie es herunterladen?
 Done=Fertig
-Loading WMIC=Lade WMIC
 Warning=Warnung
+Loading ...=Lade ...
+User interface=Benutzeroberfläche

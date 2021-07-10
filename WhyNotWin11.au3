@@ -230,7 +230,7 @@ Func Main()
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 
 	#Region Init WMI data
-	ProgressOn("WhyNotWin11", "Loading ...")
+	ProgressOn("WhyNotWin11", _Translate($iMUI, "Loading ..."))
 	ProgressSet(0, "_GetCPUInfo()")
 	_GetCPUInfo()
 	ProgressSet(20, "_GetDiskProperties()")
@@ -239,7 +239,7 @@ Func Main()
 	_GetGPUInfo()
 	ProgressSet(60, "_GetTPMInfo()")
 	_GetTPMInfo()
-	ProgressSet(80, "Loading Gui...")
+	ProgressSet(80, _Translate($iMUI, "User interface"))
 	#EndRegion Init WMI data
 
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
