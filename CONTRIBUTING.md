@@ -19,7 +19,7 @@
 ### ALL Code Changes
 * Place any Function Information above Function
 * Ideally use *Make UDF Header* function in SciTE
-    * Other headers are fine but will be converted 
+    * Other headers are fine but will be converted
 
 ### GUI Changes
 * Include before and after screenshot
