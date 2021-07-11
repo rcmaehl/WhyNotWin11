@@ -419,15 +419,13 @@ Func Main()
 		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
 		If $iRow = 0 Or $iRow = 3 Or $iRow = 6 Or $iRow = 9 Then GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN)
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
+		GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
 		If @Compiled Then
-			GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
 			_SetBkSelfIcon(-1, $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
-			GUICtrlSetTip(-1, $aInfo[$iRow], _Translate($iMUI, "Description"), $TIP_INFOICON, $TIP_BALLOON)
 		Else
-			GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
 			_SetBkIcon(-1, $aColors[$iBackground], @ScriptDir & "\assets\inf.ico", -1, 24, 24)
-			GUICtrlSetTip(-1, $aInfo[$iRow], _Translate($iMUI, "Description"), $TIP_INFOICON, $TIP_BALLOON)
 		EndIf
+		GUICtrlSetTip(-1, StringReplace($aInfo[$iRow], ".", "." & @CRLF), "", $TIP_NOICON,  $TIP_CENTER)
 	Next
 	_GDIPlus_Shutdown()
 
