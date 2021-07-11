@@ -1,6 +1,6 @@
 [MetaData]
 Language=Finnish (FI)
-Translator=NabsiYa, mary-kate
+Translator=NabsiYa, mary-kate, ilkka
 Version=2.3.1.0
 [Strings]
 Donate=Lahjoita
@@ -9,7 +9,7 @@ Your Windows 11 Compatibility Results are Below=Windows 11 -yhteensopivuustuloks
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Nyt voit löytää WhyNotWin11:n osoitteesta https://www.whynotwin11.org/
 Results Based on Currently Known Requirements!=Tulokset pohjautuvat tämänhetkisiin tiedettyihin vaatimuksiin!
 Translation by=Käännös
-Architecture (CPU + OS)=Arkkitehtuuri (suoritin + käyttöjärjestelmä)
+Architecture=Arkkitehtuuri (suoritin + käyttöjärjestelmä)
 Boot Method=Käynnistystapa
 CPU Compatibility=Suorittimen yhteensopivuus
 CPU Core Count=Suorittimen ytimien määrä
@@ -30,8 +30,8 @@ Unable to Check List=Ei voida katsoa listaa
 Error Accessing List=Ongelma avatessa listaa
 Not Currently Listed as Compatible=Ei tällä hetkellä tuettu
 Listed as Compatible=Listattu tuetuksi
-Cores=Ytimiä
-Threads=Lankoja
+Cores=ydintä
+Threads=lankaa
 GPT Detected=GPT havaittu
 GPT Not Detected=GPT ei havaittu
 Enabled=Päällä

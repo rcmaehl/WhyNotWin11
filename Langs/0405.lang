@@ -1,20 +1,22 @@
 [MetaData]
 Language=Czech - Czech Republic
 Translator=Qazy147, Sap1k
-Version=2.3.0.4
+Version=2.3.1.0
 [Font]
 Extra Large=24
 Large=18
 Medium=10
 Small=8.5
 [Strings]
+Settings=Nastavení
 Donate=Přispět
-Check for Updates=Zkontrolovat aktualizace
+Check for Updates=Ověřit aktualizace
 Your Windows 11 Compatibility Results are Below=Výsledky testu kompatibility s Windows 11
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=WhyNotWin11 dostupný na https://www.whynotwin11.org/
 Results Based on Currently Known Requirements!=Výsledky se zakládají na dosud známých požadavcích!
 Translation by=přeložil
-Architecture (CPU + OS)=Architektura (CPU + OS)
+Architecture=Architektura (CPU + OS)
+Architecture=Architektura
 Boot Method=Způsob bootování
 CPU Compatibility=Kompatibilita CPU
 CPU Core Count=Počet jader CPU
@@ -63,3 +65,16 @@ Invalid Release Tags Received!=Přijata chybná vydání!
 Invalid Release Types Received!=Přijaty chybné druhy vydání!
 Update Available=Je dostupná aktualizace
 An Update is Available, would you like to download it?=Je dostupná aktualizace, chcete ji stáhnout?
+Description=Popis
+[Descriptions]
+Architecture=Objem dat, které CPU a OS zpracuje najednou. 32bitový OS vyžaduje čistou instalaci Windows 11. 32bitový CPU vyžaduje výměnu.
+Boot=Způsob kterým základní deska načítá Windows. Výsledek "Legacy" lze na novějších základních deskách změnit nastavím v BIOSu. Viz manuál k základní desce.
+CPU Name=CPU který máte v počítač. Kompatibilita se může časem měnit. Ve stolních počítačích lze CPU vyměnit, v noteboocích ne.
+CPU Cores=Počet úloh, které dokáže CPU zpracovávat naráz. Ve stolních počítačích lze CPU vyměnit, v noteboocích ne.
+CPU Speed=Rychlost kterou CPU provádí úlohy. Ve stolních počítačích lze CPU vyměnit, v noteboocích ne.
+DirectX=Verze DirectX DDI / úroveň vlastností podporovaná vaší kartou. Liší se od verze DirectX. Karta s "DirectX 12 API" nemusí projít tímto testem.
+Disk Type=Způsob uložení dat na disku. Disk bez GPT lze převést utilitou MBR2GPT od Microsoftu.
+RAM=Množství paměti v počítači. Lze rozšířit / vyměnit ve stolních počítačích a v některých lepších noteboocích.
+Secure Boot=Způsob jakým základní deska načítá Windows. Pokud není detekován, lze to na novějších základních deskách změnit v BIOSu. Viz manuál k základní desce.
+Storage=Místo pro data na disku. Lze rozšířit ve stolních počítačích a v lepších noteboocích.
+TPM=Bezpečností modul využívaný Windows. Obsahují jej všechny novější CPU od AMD a některé od Intelu. Podívejte se do nastavení BIOSu. Viz manuál k základní desce.

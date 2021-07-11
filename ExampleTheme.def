@@ -1,0 +1,6 @@
+#Rename file to theme.def
+[Colors]
+Background=0xFFFFFF
+Text=0x000000
+Sidebar=0xF7A8B8
+Footer=0x55CDFC
