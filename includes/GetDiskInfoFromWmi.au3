@@ -14,12 +14,15 @@
  Language ............: English
  Description .........: Get disk and partition informations from WMI.
  Author ..............: htcfreek (Heiko) - https://github.com/htcfreek [original]
- Modified ............:
+ Modified ............: 2021-07-12 (htcfreek): Temporary fix build warnings until new version is released.
  Required includes ...: Array.au3
  Dll .................:
 ===============================================================================================================================
 
 CHANGELOG:
+	2021-07-12 (v1.4.1 + temporary fix)
+		Fix: Build warings for non declared vars $sDiskHeader, $sPartitionHeader
+
 	2021-07-06 (v1.4.1)
 		Fixed: Code styling
 
@@ -83,9 +86,9 @@ Func _GetDiskInfoFromWmi(ByRef $aDiskList, ByRef $aPartitionList, $bAddTableHead
 
 	; Add Array header
 	If ($bAddTableHeader = 1) Then
-		$sDiskHeader = "DiskNum" & "||" & "DiskDeviceID" & "||" & "DiskManufacturer" & "||" & "DiskModel" & "||" & "DiskInterfaceType" & "||" & "DiskMediaType" & "||" & "DiskSerialNumber" & "||" & "DiskState" & "||" & "DiskSize" & "||" & "DiskInitType" & "||" & "DiskPartitionCount" & "||" & "WindowsRunningOnDisk (SystemDrive)"
+		Local $sDiskHeader = "DiskNum" & "||" & "DiskDeviceID" & "||" & "DiskManufacturer" & "||" & "DiskModel" & "||" & "DiskInterfaceType" & "||" & "DiskMediaType" & "||" & "DiskSerialNumber" & "||" & "DiskState" & "||" & "DiskSize" & "||" & "DiskInitType" & "||" & "DiskPartitionCount" & "||" & "WindowsRunningOnDisk (SystemDrive)"
 		_ArrayAdd($aDisks, $sDiskHeader, 0, "||")
-		$sPartitionHeader = "DiskNum" & "||" & "PartitionNum" & "||" & "PartitionID" & "||" & "PartitionType" & "||" & "PartitionIsPrimary" & "||" & "PartitionIsBootPartition" & "||" & "PartitionLetter" & "||" & "PartitionLabel" & "||" & "PartitionFileSystem" & "||" & "PartitionSizeTotal" & "||" & "PartitionSizeUsed" & "||" & "PartitionSizeFree" & "||" & "PartitionIsSystemDrive"
+		Local $sPartitionHeader = "DiskNum" & "||" & "PartitionNum" & "||" & "PartitionID" & "||" & "PartitionType" & "||" & "PartitionIsPrimary" & "||" & "PartitionIsBootPartition" & "||" & "PartitionLetter" & "||" & "PartitionLabel" & "||" & "PartitionFileSystem" & "||" & "PartitionSizeTotal" & "||" & "PartitionSizeUsed" & "||" & "PartitionSizeFree" & "||" & "PartitionIsSystemDrive"
 		_ArrayAdd($aPartitions, $sPartitionHeader, 0, "||")
 		$iDiskArrayCount += 1
 		$iPartArrayCount += 1
