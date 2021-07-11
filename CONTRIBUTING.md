@@ -8,7 +8,21 @@
 
 ## Pull Request Guidelines
 
-* One change per pull request
+### ALL PRs
+* One "change" per pull request
+    * *Updated Positioning of All Icons* is okay
+    * *Updated TPM Check and Updated Related Includes files and GUI* is okay
+    * *Updated GPU Check, Updated TPM Check, Changed Social Icon Colors* is NOT okay
 * DLLs, EXEs, and other executables may not be included
 * Pull Request title must give a brief overview of the change
-* When you change something in GUI, include before and after screenshot
+
+### GUI Changes
+* Include before and after screenshot
+
+### Check Changes
+* Checks must Return Int values
+    * \>= 1 for True, <= 0 for False.
+    * Return True Warn and Uncertain with @error and @extended set
+
+### WMIC Changes
+* All WMIC calls must be cached using Static Varibles
