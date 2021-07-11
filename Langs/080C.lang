@@ -1,7 +1,7 @@
 [MetaData]
 Language=French - Belgium
 Translator=PierreGrillet; Nits77; villisek; BSoD38
-Version=2.3.1.0
+Version=2.3.1.1
 [Font]
 Extra Large=24
 Large=14
@@ -9,12 +9,14 @@ Medium=10
 Small=8.5
 Name=Arial
 [Strings]
+Enable enhanced accessibility?=Activer le mode accessible ?
+This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=Cette nouvelle fonctionnalité d'accessibilité est conçue pour les personnes malvoyantes, avec laquelle la plupart des fonctions peut être utilisée avec la voie et des raccourcis clavier. Voulez-vous l'activer ?
 Donate=Faire un don
 Settings=Paramètres
 Check for Updates=Mettre à jour
-Your Windows 11 Compatibility Results are Below=Résultat de compatibilité de Windows 11
+Your Windows 11 Compatibility Results Are Below=Résultat de compatibilité de Windows 11
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Rejoignez WhyNotWin11 sur https://www.whynotwin11.org/
-Results Based on Currently Known Requirements!=Attention, ces résultats sont basés sur les dernières exigences connues !
+Results based on Currently Known Requirements!=Attention, ces résultats sont basés sur les dernières exigences connues !
 Translation by=Traduction par
 Architecture=Architecture
 Boot Method=Méthode de démarrage
@@ -65,6 +67,9 @@ Invalid Release Tags Received!=Tags de version reçus invalides !
 Invalid Release Types Received!=Types de version reçus invalides !
 Update Available=Mise à jour disponible
 An Update is Available, would you like to download it?=Une mise à jour est disponible, voulez-vous la télécharger ?
+Done=Terminé
+Loading WMIC=Chargement de WMIC
+Warning=Attention
 [Descriptions]
 Architecture=Quantité de données que peut traiter votre ordinateur en un cycle. Un OS 32 bits nécessitera un formatage du disque et une installation de Windows 11. Un processeur 32 bits nécessitera un remplacement.
 Boot=Méthode de démarrage que votre carte mère utilise pour charger Windows. Legacy peut être modifié en UEFI en changeant les paramètres dans le BIOS. Consultez votre manuel de carte mère.
