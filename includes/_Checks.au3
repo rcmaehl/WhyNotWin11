@@ -113,19 +113,31 @@ Func _GetDirectXCheck($aArray)
 	EndIf
 EndFunc   ;==>_GetDirectXCheck
 
+; #FUNCTION# ====================================================================================================================
+; Name ..........: _GPTCheck
+; Description ...: Call _GetDiskInfoFromWmi() to get the disk and partition informations. The selected information will be returned.
+; Syntax ........: _GPTCheck($iFlag)
+; Parameters ....: $iFlag               - an integer value.
+; .............. : $iFlag = 0 => Return init type of system disk.
+; .............. : $iFlag = 1 => Return count of internal GPT disks.
+; .............. : $iFlag = 2 => Return count of all internal disks.
+; .............. : $iFlag = 3 => Return array with all disk. (Columns: DiskNum | InitType | CheckResult)
+; Return values .: Boolean for Pass or Fail
+; Author ........: htcfreek, rcmaehl
+; Modified ......: 7/11/2021
+; Remarks .......:
+; Related .......:
+; Link ..........:
+; Example .......: No
+; ===============================================================================================================================
 Func _GPTCheck($iFlag)
-	; Desc ......... : Call _GetDiskInfoFromWmi() to get the disk and partition informations. The selected information will be returned.
-	; Parameters ... : $iFlag = 0 => Return init type of system disk.
-	; .............. : $iFlag = 1 => Return count of internal GPT disks.
-	; .............. : $iFlag = 2 => Return count of all internal disks.
-	; .............. : $iFlag = 3 => Return array with all disk. (Columns: DiskNum | InitType | CheckResult)
 	; On error ..... : SetError(1, 1, "Error_CheckFailed")
 
 	; Vars
 	Local Static $aDisks
 	If (Not $aDisks) Then
 		$aDisks = _GetDiskProperties(1) ; Array with all disks
-		If @error = 1 Then Return SetError(1, 1, "Error_CheckFailed")
+		If @error = 1 Then Return SetError(1, 1, 0)
 	EndIf
 	Local $aReturnDiskArray[0][3]
 	_ArrayAdd($aReturnDiskArray, "Disk" & "|" & "Type" & "|" & "Check result")
@@ -201,19 +213,31 @@ Func _SecureBootCheck()
 	EndSwitch
 EndFunc   ;==>_SecureBootCheck
 
+; #FUNCTION# ====================================================================================================================
+; Name ..........: _SpaceCheck
+; Description ...: Call _GetDiskInfoFromWmi() to get the disk and partition informations. The selected information will be returned.
+; Syntax ........: _SpaceCheck($iFlag)
+; Parameters ....: $iFlag               - an integer value.
+; .............. : $iFlag = 0 => Return if system disk and system partition ready.
+; .............. : $iFlag = 1 => Number of system disk.
+; .............. : $iFlag = 2 => Return size of system disk in GB.
+; .............. : $iFlag = 3 => Letter of system partition.
+; .............. : $iFlag = 4 => Return size of system partition in GB.
+; .............. : $iFlag = 5 => Return count of internal Win11 ready disks.
+; .............. : $iFlag = 6 => Return count of all internal disks.
+; .............. : $iFlag = 7 => Return array with all disk. (Columns: DiskNum | Size (GB) | CheckResult)
+; Return values .: Boolean for Pass or Fail
+; Author ........: htcfreek, rcmaehl
+; Modified ......: 7/11/2021
+; Remarks .......:
+; Related .......:
+; Link ..........:
+; Example .......: No
+; ===============================================================================================================================
 Func _SpaceCheck($iFlag)
-	; Desc ......... : Call _GetDiskInfoFromWmi() to get the disk and partition informations. The selected information will be returned.
-	; Parameters ... : $iFlag = 0 => Return if system disk and system partition ready.
-	; .............. : $iFlag = 1 => Number of system disk.
-	; .............. : $iFlag = 2 => Return size of system disk in GB.
-	; .............. : $iFlag = 3 => Letter of system partition.
-	; .............. : $iFlag = 4 => Return size of system partition in GB.
-	; .............. : $iFlag = 5 => Return count of internal Win11 ready disks.
-	; .............. : $iFlag = 6 => Return count of all internal disks.
-	; .............. : $iFlag = 7 => Return array with all disk. (Columns: DiskNum | Size (GB) | CheckResult)
 	; On error ..... : SetError(1, 1, "Error_CheckFailed")
 
-	; Ini tvars
+	; Init vars
 	Local Static $bInitDone = False
 	Local Static $iDiskSize
 	Local Static $iPartitionSize
@@ -225,7 +249,7 @@ Func _SpaceCheck($iFlag)
 	If (Not $bInitDone = True) Then
 		; Check for error by retriving disk data
 		_GetDiskProperties(4)
-		If @error = 1 Then Return SetError(1, 1, "Error_CheckFailed")
+		If @error = 1 Then Return SetError(1, 1, 0)
 
 		; Get size (Arrays form _GetDiskProperties are 2D-Arrays.) & vars
 		$iDiskSize = Round(_GetDiskProperties(3)[0][8] / 1024 / 1024 / 1024)
@@ -271,7 +295,7 @@ Func _SpaceCheck($iFlag)
 			Return $aReturnDiskArray
 		Case Else
 			; $iFlag unknown
-			Return SetError(1, 1, "Error_CheckFailed")
+			Return SetError(1, 1, 0)
 	EndSwitch
 EndFunc   ;==>_SpaceCheck
 

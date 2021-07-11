@@ -375,7 +375,7 @@ Func Main()
 	Local $hBannerText = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
-	
+
 	Local $sBannerURL = _SetBannerText($hBannerText, $hBanner)
 	#ce Maybe Readd Later
 
@@ -415,10 +415,15 @@ Func Main()
 	For $iRow = 0 To 10 Step 1
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 113, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, $aColors[$iBackground])
-		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40, $SS_CENTERIMAGE)
+		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40, $SS_SUNKEN)
 		GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
-		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
-		If $iRow = 0 Or $iRow = 3 Or $iRow = 6 Or $iRow = 9 Then GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN)
+		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_SUNKEN)
+		Switch $iRow
+			Case 0, 3, 9
+				GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN)
+			Case Else
+				GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
+		EndSwitch
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
 		GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
 		If @Compiled Then
@@ -511,12 +516,12 @@ Func Main()
 	Switch _GPTCheck(0)
 		Case True
 			_GUICtrlSetState($hCheck[6][0], $iPass)
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: GPT") & @CRLF & _Translate($iMUI, "Requirement met."))
+			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: GPT"))
 		Case False
 			_GUICtrlSetState($hCheck[6][0], $iFail)
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: MBR") & @CRLF & _Translate($iMUI, "Requirement not met."))
+			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: MBR"))
 		Case Else
-			; Do Nothing!!
+			;;;
 	EndSwitch
 	#EndRegion - GPTCheck
 
@@ -545,6 +550,7 @@ Func Main()
 	Local $iPartitionSpace = _SpaceCheck(4)
 	Local $sSpaceResultFirstLine = _SpaceCheck(3) & " " & $iPartitionSpace & " GB, " & _Translate($iMUI, "Disk") & " " & _SpaceCheck(1) & ": " & $iDiskSpace & " GB"
 	; -- Check
+	; TODO: Int values, Select Case
 	If $iDiskSpace >= 64 And $iPartitionSpace >= 64 Then
 		; Partition and Disk >= 64 GB
 		_GUICtrlSetState($hCheck[9][0], $iPass)

@@ -56,13 +56,26 @@ Func _GetCPUInfo($iFlag = 0)
 	EndSwitch
 EndFunc   ;==>_GetCPUInfo
 
+; #FUNCTION# ====================================================================================================================
+; Name ..........: _GetDiskProperties
+; Description ...: Call _GetDiskInfoFromWmi() to get the disk and partition informations. The selected information will be returned.
+; Syntax ........: _GetDiskProperties([$iFlag = 0])
+; Parameters ....: $iFlag               - [optional] an integer value. Default is 0.
+; .............. : $iFlag = 0 => Init WMI data.
+; .............. : $iFlag = 1 => Return array with disk information.
+; .............. : $iFlag = 2 => Return array with partition information.
+; .............. : $iFlag = 3 => Return information of disk with system (Windows) partition.
+; .............. : $iFlag = 4 => Return information of system (Windows) partition.
+; Return values .: None
+; Author ........: htcfreek, rcmaehl
+; Modified ......: 7/11/2021
+; Remarks .......:
+; Related .......:
+; Link ..........:
+; Example .......: No
+; ===============================================================================================================================
 Func _GetDiskProperties($iFlag = 0)
-	; Desc ......... : Call _GetDiskInfoFromWmi() to get the disk and partition informations. The selected information will be returned.
-	; Parameters ... : $iFlag = 0 => Init WMI data.
-	; .............. : $iFlag = 1 => Return array with disk information.
-	; .............. : $iFlag = 2 => Return array with partition information.
-	; .............. : $iFlag = 3 => Return information of disk with system (Windows) partition.
-	; .............. : $iFlag = 4 => Return information of system (Windows) partition.
+
 	; On error ..... : Return SetError(1, 1, "Error_WmiFailed"), if WMI failed.
 	; .............. : Return SetError(1, 2, "Error_IncorrectFlag"), if $iFlag is unknown.
 	; .............. : Return SetError(1, 3, "Error_NoDataReturned"), if not data can be returned.

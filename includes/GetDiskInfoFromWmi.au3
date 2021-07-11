@@ -83,9 +83,9 @@ Func _GetDiskInfoFromWmi(ByRef $aDiskList, ByRef $aPartitionList, $bAddTableHead
 
 	; Add Array header
 	If ($bAddTableHeader = 1) Then
-		$sDiskHeader = "DiskNum" & "||" & "DiskDeviceID" & "||" & "DiskManufacturer" & "||" & "DiskModel" & "||" & "DiskInterfaceType" & "||" & "DiskMediaType" & "||" & "DiskSerialNumber" & "||" & "DiskState" & "||" & "DiskSize" & "||" & "DiskInitType" & "||" & "DiskPartitionCount" & "||" & "WindowsRunningOnDisk (SystemDrive)"
+		Local $sDiskHeader = "DiskNum" & "||" & "DiskDeviceID" & "||" & "DiskManufacturer" & "||" & "DiskModel" & "||" & "DiskInterfaceType" & "||" & "DiskMediaType" & "||" & "DiskSerialNumber" & "||" & "DiskState" & "||" & "DiskSize" & "||" & "DiskInitType" & "||" & "DiskPartitionCount" & "||" & "WindowsRunningOnDisk (SystemDrive)"
 		_ArrayAdd($aDisks, $sDiskHeader, 0, "||")
-		$sPartitionHeader = "DiskNum" & "||" & "PartitionNum" & "||" & "PartitionID" & "||" & "PartitionType" & "||" & "PartitionIsPrimary" & "||" & "PartitionIsBootPartition" & "||" & "PartitionLetter" & "||" & "PartitionLabel" & "||" & "PartitionFileSystem" & "||" & "PartitionSizeTotal" & "||" & "PartitionSizeUsed" & "||" & "PartitionSizeFree" & "||" & "PartitionIsSystemDrive"
+		Local $sPartitionHeader = "DiskNum" & "||" & "PartitionNum" & "||" & "PartitionID" & "||" & "PartitionType" & "||" & "PartitionIsPrimary" & "||" & "PartitionIsBootPartition" & "||" & "PartitionLetter" & "||" & "PartitionLabel" & "||" & "PartitionFileSystem" & "||" & "PartitionSizeTotal" & "||" & "PartitionSizeUsed" & "||" & "PartitionSizeFree" & "||" & "PartitionIsSystemDrive"
 		_ArrayAdd($aPartitions, $sPartitionHeader, 0, "||")
 		$iDiskArrayCount += 1
 		$iPartArrayCount += 1
