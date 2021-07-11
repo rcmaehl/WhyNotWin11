@@ -244,7 +244,7 @@ EndFunc   ;==>_Resource_Destroy
 
 ; #FUNCTION# ====================================================================================================================
 ; Name ..........: _Resource_DestroyAll
-; Description ...:  Destroy all resources
+; Description ...: Destroy all resources
 ; Syntax ........: _Resource_DestroyAll()
 ; Parameters ....: None
 ; Return values .: Success - True
