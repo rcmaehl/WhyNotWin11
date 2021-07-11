@@ -67,7 +67,7 @@ Func _GetDiskInfoFromWmi(ByRef $aDiskList, ByRef $aPartitionList, $bAddTableHead
 					$aPartitions[$iPartArrayCount][11] = $oLogicalDisk.FreeSpace
 
 					; Detect SystemBootDisk
-					If $oLogicalDisk.DeviceID = Envget("SystemDrive") Then
+					If $oLogicalDisk.DeviceID = EnvGet("SystemDrive") Then
 						$aDisks[$iDiskArrayCount][11] = True
 						$aPartitions[$iPartArrayCount][12] = True
 					EndIf
