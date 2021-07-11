@@ -279,7 +279,7 @@ Func _TPMCheck()
 	Select
 		Case Not IsAdmin() And _GetTPMInfo(0) = True
 			Return True
-		Case Not IsAdmin() And _GetTPMInfo <> True
+		Case Not IsAdmin() And _GetTPMInfo(0) <> True
 			Return False
 		Case _GetTPMInfo(0) = False
 			ContinueCase

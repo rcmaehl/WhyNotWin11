@@ -3,6 +3,5 @@ WhyNot.txt
 WhyNotWin11_stripped.au3
 del.au3
 Config/config.st
-
-# Backup directory from Tidy in "ISN AutoIt Studio"
 **/Backup/*.au3
+theme.def
