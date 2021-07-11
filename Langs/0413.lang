@@ -1,11 +1,17 @@
 [MetaData]
 Language=Nederlands - Nederland
 Translator=arjanvlek
-Version=2.2.5.0
+Version=2.3.1.0
+[Font]
+Extra Large=22
+Large=16
+Medium=10
+Small=8.5
+Name=Arial
 [Strings]
 Donate=Doneren
 Check for Updates=Controleren op updates
-Your Windows 11 Compatibility Results are Below=Je Windows 11-compatibiliteitsresultaten zijn:
+Your Windows 11 Compatibility Results are Below=Dit zijn je Windows 11-compatibiliteitsresultaten:
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=WhyNotWin11 is te verkrijgen via https://www.whynotwin11.org/
 Results Based on Currently Known Requirements!=Resultaten zijn gebaseerd op de momenteel bekende systeemeisen!
 Translation by=Vertaling door
@@ -57,3 +63,18 @@ Invalid Release Tags Received!=Ongeldige release-tags ontvangen!
 Invalid Release Types Received!=Ongeldige release-types ontvangen!
 Update Available=Update beschikbaar
 An Update is Available, would you like to download it?=Er is een update beschikbaar. Wil je deze downloaden?
+Done=Klaar
+Loading WMIC=WMIC laden...
+Warning=Waarschuwing
+[Descriptions]
+Architecture=De gegevenslengte die je processor en besturingssysteem tegelijkertijd kan verwerken. Bij een 32-bits besturingssysteem moet je de schijf wissen en Windows 11 opnieuw installeren. Bij een 32-bits processor zul je deze moeten vervangen (indien mogelijk).
+Boot=De methode die het moederbord gebruikt om Windows op te starten. Een "Legacy" status kun je oplossen door de instellingen van je BIOS/UEFI te veranderen. Zie de handleiding van je moederbord.
+CPU Name=De processor die je in je pc hebt geinstalleerd. Compatibiliteit kan variëren.  Indien niet compatibel, kun je overwegen de processor van een desktop-pc te vervangen. Bij een laptop is dit niet mogelijk.
+CPU Cores=Het aantal kernen / taken dat je processor tegelijkertijd kan verwerken. Indien niet compatibel, kun je overwegen om de processor van een desktop-pc te vervangen. Bij een laptop is dit niet mogelijk.
+CPU Speed=De snelheid waarmee je processor taken kan verwerken. Indien niet compatibel, kun je overwegen om de processor in een desktop-pc te vervangen. Bij een laptop is dit niet mogelijk.
+DirectX=De versie van DirectX (DDI/Feature Level) die jouw videokaart ondersteunt. N.B. dit is niet altijd hetzelfde als de software directX versie. Videokaarten die 'DirectX 12 API' compatibel zijn kunnen niet door deze check heen komen.
+Disk Type=Het formaat waarin gegevens op de schijf zijn opgeslagen. Indien hier niet 'GPT' staat, kun je dit omzetten met de MBR2GPT tool van Microsoft.
+RAM=De hoeveelheid werkgeheugen die in je PC zit. Indien dit te laag is, kun je het bij een desktop-pc zelf upgraden. In sommige laptops kan dit ook, met name de high-end modellen.
+Secure Boot=De methode die het moederbord gebruikt om Windows op te starten. Als dit niet is ingeschakeld, kun je het opnieuwere moederborden inschakelen in de instellingen van het BIOS/UEFI. Zie de handleiding van je moederbord.
+Storage=De hoeveelheid schijfruimte van de computer. Indien dit te laag is, kun je in desktops en high-end laptops de schijf upgraden.
+TPM=Een beveiligingsmodule die door Windows wordt gebruikt. Alle moderne AMD-processoren en sommige Intel-processoren hebben er een ingebouwd. Indien niet gedectecteerd, zie de handleiding van je moederbord hoe dit in te schakelen.
