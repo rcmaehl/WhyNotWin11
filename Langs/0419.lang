@@ -9,7 +9,7 @@ Medium=8.5
 Small=8.2
 Name=Arial
 [Strings]
-Enable enhanced accessibility?=Включить, "Улучшенную видимость"?
+Enable enhanced accessibility?=Включить "Улучшенную видимость"?
 This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=Новая функция "Улучшенная видимость" предназначена для людей с ослабленным зрением, для которых на большей части интерфейса программы могут быть использованы функции: поддержка чтения с экрана и навигация с помощью клавиатуры. Активировать?
 Donate=Поддержать
 Settings=Настройки
