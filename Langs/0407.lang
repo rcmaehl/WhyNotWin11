@@ -2,8 +2,15 @@
 Language=German - Germany
 Translator=botflakes, JimBim89, schmelto, speedy-pc, htcfreek
 Version= 2.3.1.0
+[Font]
+Extra Large=24
+Large=18
+Medium=10
+Small=8.5
+Name=Arial
 [Strings]
 Donate=Spenden
+Settings=Einstellungen
 Check for Updates=Update suchen
 Your Windows 11 Compatibility Results Are Below=Ihre Windows 11-Kompatibilitätsergebnisse
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Offizielle Homepage https://www.whynotwin11.org/
@@ -39,6 +46,7 @@ Supported=unterstützt
 Not Supported=nicht unterstützt
 Disabled / Not Detected=deaktiviert oder nicht erkannt
 Drive(s) Meet Requirements=Laufwerk(e) kompatibel
+0 Drives Meet Requirements=0 Laufwerk(e) kompatibel
 TPM Missing / Disabled=TPM fehlt oder deaktiviert
 Detected=erkannt
 DirectX 12 and WDDM 3=DirectX 12 und WDDM 3
@@ -60,3 +68,15 @@ An Update is Available, would you like to download it?=Ein Update ist verfügbar
 Done=Fertig
 Loading WMIC=Lade WMIC
 Warning=Warnung
+[Descriptions]
+Architecture=Die Datenmenge, die Ihre CPU und Ihr Betriebssystem gleichzeitig verarbeiten können. Sollten Sie ein 32-Bit-Betriebssystem nutzen, erfordert dies eine 64-Bit Neuinstallation von Windows 11 (Ihre Daten gehen dabei verloren und müssen gesichert werden!). 32-Bit-CPU erfordert eine neue CPU.
+Boot=Eine Methode, die Ihr Computer zum Starten von Windows verwendet. "Legacy" bedeutet, dass ihr System nicht im UEFI-Modus läuft. Dies kann in den BIOS/UEFI-Einstellungen korrigiert werden. Schlagen Sie im Handbuch Ihres Motherboards nach.
+CPU Name=Die CPU, die Sie in Ihrem Computer installiert haben. Die Kompatibilität kann sich ändern. Bei Inkompatibilität, muss die CPU bei Desktop PC's ersetzt werden. Dies ist meistens bei Laptops nicht möglich.
+CPU Cores=Die Anzahl der Rechenkernen, die Ihrer CPU zum rechnen zur Verfügung stehen. Bei Inkompatibilität, muss die CPU bei Desktop PC's ersetzt werden. Dies ist meistens bei Laptops nicht möglich.
+CPU Speed=Die Geschwindigkeit, mit der Ihre CPU Aufgaben verarbeitet. Bei Inkompatibilität, muss die CPU bei Desktop PC's ersetzt werden. Dies ist meistens bei Laptops nicht möglich.
+DirectX=Die Version des DirectX-Funktionslevels, den die Grafikkarte unterstützt. Dies ist unabhängig von der DirectX-Softwareversion. Es kann vorkommen, dass 'DirectX 12 API'-Karten diese Prüfung nicht bestehen.
+Disk Type=Das Format, in dem Ihre Daten auf Ihrer Festplatte gespeichert sind. Sollten Sie MBR anstatt GPT nutzen, können Sie dies mit dem MBR2GPT-Tool von Microsoft korrigieren.
+RAM=Die Menge des in Ihrem Computer installierten Arbeitsspeichers. Erweitern bzw. wechseln bei Desktop PC's sowie High-End-Laptops meistens möglich.
+Secure Boot=Eine Methode, die Ihr Motherboard zum Booten von Windows verwendet. Wenn nicht erkannt, kann dies auf neueren Motherboards den BIOS/UEFI-Einstellungen behoben werden. Schlagen Sie im Handbuch Ihres Motherboards nach.
+Storage=Der Speicherplatz Ihrer Festplatte oder SSD. Erweitern bzw. wechseln dieser ist bei Desktop PC's sowie High-End-Laptops meistens möglich.
+TPM=Ein Sicherheitsmodul, das von Windows verwendet wird. In allen modernen AMD-CPUs enthalten (fTPM) sowie in einigen modernen Intel-CPUs enthalten (PTT). Überprüfen die BIOS/UEFI-Einstellungen. Schlagen Sie im Handbuch Ihres Motherboards.
