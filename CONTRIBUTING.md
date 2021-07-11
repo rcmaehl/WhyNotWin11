@@ -28,7 +28,7 @@
 * Checks must Return Int values
     * \>= 1 for True, <= 0 for False.
     * Return True Warn and Uncertain with @error and @extended set
-* For Readiblity, Int Values may be Enum'd to Variable Names
+* For readability, Int Values may be Enum'd to Variable Names
 
 ### WMIC Changes
-* All WMIC calls must be cached using Static Varibles
+* All WMIC calls must be cached using Static Variables
