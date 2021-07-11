@@ -16,6 +16,11 @@
 * DLLs, EXEs, and other executables may not be included
 * Pull Request title must give a brief overview of the change
 
+### ALL Code Changes
+* Place any Function Information above Function
+* Ideally use *Make UDF Header* function in SciTE
+    * Other headers are fine but will be converted 
+
 ### GUI Changes
 * Include before and after screenshot
 
