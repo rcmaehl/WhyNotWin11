@@ -56,39 +56,76 @@ Func _GetCPUInfo($iFlag = 0)
 	EndSwitch
 EndFunc   ;==>_GetCPUInfo
 
-Func _GetDiskInfo($iFlag = 0)
-	Local Static $sType
-	Local Static $aDisks[2]
+Func _GetDiskProperties($iFlag = 0)
+	; Desc ......... : Call _GetDiskInfoFromWmi() to get the disk and partition informations. The selected information will be returned.
+	; Parameters ... : $iFlag = 0 => Init WMI data.
+	; .............. : $iFlag = 1 => Return array with disk information.
+	; .............. : $iFlag = 2 => Return array with partition information.
+	; .............. : $iFlag = 3 => Return information of disk with system (Windows) partition.
+	; .............. : $iFlag = 4 => Return information of system (Windows) partition.
+	; On error ..... : Return SetError(1, 1, "Error_WmiFailed"), if WMI failed.
+	; .............. : Return SetError(1, 2, "Error_IncorrectFlag"), if $iFlag is unknown.
+	; .............. : Return SetError(1, 3, "Error_NoDataReturned"), if not data can be returned.
 
-	If Not $sType <> "" Then
-		Local $Obj_WMIService = ObjGet('winmgmts:\\' & @ComputerName & '\root\cimv2') ;
-		If (IsObj($Obj_WMIService)) And (Not @error) Then
-			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_DiskPartition where BootPartition=True')
+	Local Static $aDiskArray
+	Local Static $aPartitionArray
+	Local Static $iSysDisk
+	Local Static $iSysPartition
 
-			$aDisks[0] = 0
-			$aDisks[1] = 0
-			Local $Obj_Item
-			For $Obj_Item In $Col_Items
-				$aDisks[0] += 1
-				$sType = $Obj_Item.Type
-				If StringLeft($sType, 3) = "GPT" Then $aDisks[1] += 1
-			Next
-			If $aDisks[0] > 0 Then $sType = "GPT"
-		Else
-			$aDisks[0] = 0
-			$aDisks[1] = "?"
-			Return $aDisks
-		EndIf
+	; Get WMI data
+	If (Not $aDiskArray) Or (Not $aPartitionArray) Then
+		; Get disk datat for fixed (internal) disks.
+		_GetDiskInfoFromWmi($aDiskArray, $aPartitionArray, $DiskInfoWmi_TableHeader_No, $DiskInfoWmi_DiskType_Fixed)
+		If @error = 1 Then Return SetError(1, 1, "Error_WmiFailed")
 	EndIf
+
+	; Get sys disk and sys partition num
+	If (Not $iSysDisk) Then
+		For $i = 0 To UBound($aDiskArray) - 1 Step 1
+			; If windows is bootet from disk...
+			If $aDiskArray[$i][11] = "True" Then
+				; Return row as only neede row
+				$iSysDisk = $i
+				ExitLoop
+			EndIf
+		Next
+	EndIf
+	If (Not $iSysPartition) Then
+		For $i = 0 To UBound($aPartitionArray) - 1 Step 1
+			; If windows is bootet from disk...
+			If $aPartitionArray[$i][12] = "True" Then
+				; Return row as only neede row
+				$iSysPartition = $i
+				ExitLoop
+			EndIf
+		Next
+	EndIf
+
+	; Return data based on $iFlag or exit function
 	Switch $iFlag
 		Case 0
-			Return StringLeft($sType, 3)
+			; Exit function after init WMI data
+			Return
 		Case 1
-			Return $aDisks
+			; Return array with disk information.
+			Return $aDiskArray
+		Case 2
+			; Return array with partition information.
+			Return $aPartitionArray
+		Case 3
+			; Return information of disk with system (Windows) partition.
+			Return _ArrayExtract($aDiskArray, $iSysDisk, $iSysDisk)
+		Case 4
+			; Return information of system (Windows) partition.
+			Return _ArrayExtract($aPartitionArray, $iSysPartition, $iSysPartition)
 		Case Else
-			Return 0
+			; If $iFlag was incorrect...
+			Return SetError(1, 2, "Error_IncorrectFlag")
 	EndSwitch
-EndFunc   ;==>_GetDiskInfo
+
+	; If no data returned before...
+	SetError(1, 3, "Error_NoDataReturned")
+EndFunc   ;==>_GetDiskProperties
 
 Func _GetGPUInfo($iFlag = 0)
 	Local Static $sName
