@@ -9,7 +9,7 @@ Medium=9
 Small=8.5
 Name=Arial
 [Strings]
-Enable enhanced accessibility?=Включити, "Покращену видимість"?
+Enable enhanced accessibility?=Включити "Покращену видимість"?
 This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=Нова функція "Покращена видимість" призначена для людей з ослабленим зором, для яких на більшій частині інтерфейсу програми можуть бути використані: підтримка читання з екрану і навігація за допомогою клавіатури. Активувати?
 Donate=Підтримати
 Settings=Налаштування
