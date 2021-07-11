@@ -32,8 +32,6 @@ FileChangeDir(@SystemDir)
 
 If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext", "HWND", "DPI_AWARENESS_CONTEXT" - 1)
 
-#Region Includes
-; Include default UDFs
 #include <File.au3>
 #include <Misc.au3>
 #include <Array.au3>
@@ -51,18 +49,17 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 #include <StringConstants.au3>
 #include <WindowsConstants.au3>
 
-; Include external functions
-#include "Includes\ResourcesEx.au3"
-#include "Includes\GetDiskInfoFromWmi.au3"
+Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
 
-; Include internal WNW11 scripts
+#include "Includes\ResourcesEx.au3"
+
 #include "Includes\_WMIC.au3"
 #include "Includes\_Checks.au3"
 #include "Includes\_Theming.au3"
 #include "Includes\_Resources.au3"
+#include "Includes\_GetDiskInfo.au3"
 #include "Includes\_Translations.au3"
 ; #include "includes\WhyNotWin11_accessibility.au3"
-#EndRegion Includes
 
 Opt("TrayIconHide", 1)
 Opt("TrayAutoPause", 0)
@@ -165,10 +162,11 @@ Func ChecksOnly()
 
 	$aDirectX = _DirectXStartCheck()
 
-	_GetDiskProperties()
-	$aResults[6][0] = _GPTCheck(0)
-	$aResults[6][1] = (_GPTCheck(0) = "GPT") ? "GPT" : (_GPTCheck(0) = "MBR") ? "MBR" : ""
-	$aResults[6][2] = ""
+	Local $aDisks, $aPartitions
+	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
+	$aResults[6][0] = _GPTCheck($aDisks)
+	$aResults[6][1] = @error
+	$aResults[6][2] = @extended
 
 	$aResults[7][0] = _MemCheck()
 	$aResults[7][1] = @error
@@ -178,9 +176,9 @@ Func ChecksOnly()
 	$aResults[8][1] = @error
 	$aResults[8][2] = @extended
 
-	$aResults[9][0] = _SpaceCheck(0)
-	$aResults[9][1] = (_SpaceCheck(1) <> "Error_CheckFailed") ? _SpaceCheck(1) : "" ; Disk size
-	$aResults[9][2] = (_SpaceCheck(2) <> "Error_CheckFailed") ? _SpaceCheck(2) : "" ; Partiton size
+	$aResults[9][0] = _SpaceCheck()
+	$aResults[9][1] = @error
+	$aResults[9][2] = @extended
 
 	$aResults[10][0] = _TPMCheck()
 	$aResults[10][1] = @error
@@ -226,21 +224,22 @@ Func Main()
 	Local Enum $iFail = 0, $iPass, $iUnsure, $iWarn
 	Local Enum $iBackground = 0, $iText, $iSidebar, $iFooter
 
+	Local $aDisks, $aPartitions
 	Local Const $DPI_RATIO = _GDIPlus_GraphicsGetDPIRatio()[0]
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 
-	#Region Init WMI data
-	ProgressOn("WhyNotWin11", _Translate($iMUI, "Loading ..."))
+	ProgressOn("WhyNotWin11", _Translate($iMUI, "Loading WMIC"))
 	ProgressSet(0, "_GetCPUInfo()")
 	_GetCPUInfo()
-	ProgressSet(20, "_GetDiskProperties()")
-	_GetDiskProperties()
+	ProgressSet(20, "_GetDiskInfo()")
+	_GetDiskInfo()
 	ProgressSet(40, "_GetGPUInfo()")
 	_GetGPUInfo()
 	ProgressSet(60, "_GetTPMInfo()")
 	_GetTPMInfo()
-	ProgressSet(80, _Translate($iMUI, "User interface"))
-	#EndRegion Init WMI data
+	ProgressSet(80, "_GetDiskInfoFromWmi")
+	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
+	ProgressSet(100, _Translate($iMUI, "Done"))
 
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
 	GUISetBkColor($aColors[$iBackground])
@@ -249,14 +248,14 @@ Func Main()
 	GUICtrlSetDefColor($aColors[$iText])
 	GUICtrlSetDefBkColor($aColors[$iBackground])
 
-	#cs
-		Local $sCheck = _CheckAppsUseLightTheme()
-		If @error Then
-			;;;
-		ElseIf Not $sCheck Then
-			GUICtrlSetDefColor(0xFFFFFF)
-		EndIf
-	#ce
+#cs
+	Local $sCheck = _CheckAppsUseLightTheme()
+	If @error Then
+		;;;
+	ElseIf Not $sCheck Then
+		GUICtrlSetDefColor(0xFFFFFF)
+	EndIf
+#ce
 
 	Local $hDumpLang = GUICtrlCreateDummy()
 
@@ -512,18 +511,18 @@ Func Main()
 	Local $aDirectX
 	$aDirectX = _DirectXStartCheck()
 
-	#Region - GPTCheck
-	Switch _GPTCheck(0)
-		Case True
+	If _GPTCheck($aDisks) Then
+		If @error Then
 			_GUICtrlSetState($hCheck[6][0], $iPass)
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: GPT"))
-		Case False
-			_GUICtrlSetState($hCheck[6][0], $iFail)
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "System disk: MBR"))
-		Case Else
-			;;;
-	EndSwitch
-	#EndRegion - GPTCheck
+			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected"))
+		Else
+			_GUICtrlSetState($hCheck[6][0], $iPass)
+			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected"))
+		EndIf
+	Else
+		GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected"))
+		_GUICtrlSetState($hCheck[6][0], $iFail)
+	EndIf
 
 	If _MemCheck() Then
 		_GUICtrlSetState($hCheck[7][0], $iPass)
@@ -545,26 +544,13 @@ Func Main()
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Disabled / Not Detected"))
 	EndSwitch
 
-	#Region - SpaceCheck
-	Local $iDiskSpace = _SpaceCheck(2)
-	Local $iPartitionSpace = _SpaceCheck(4)
-	Local $sSpaceResultFirstLine = _SpaceCheck(3) & " " & $iPartitionSpace & " GB, " & _Translate($iMUI, "Disk") & " " & _SpaceCheck(1) & ": " & $iDiskSpace & " GB"
-	; -- Check
-	; TODO: Int values, Select Case
-	If $iDiskSpace >= 64 And $iPartitionSpace >= 64 Then
-		; Partition and Disk >= 64 GB
+	_SpaceCheck()
+	GUICtrlSetData($hCheck[9][2], @error & " GB " & $WINDOWS_DRIVE & @CRLF & @extended & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
+	If _SpaceCheck() Then
 		_GUICtrlSetState($hCheck[9][0], $iPass)
-		GUICtrlSetData($hCheck[9][2], $sSpaceResultFirstLine & @CRLF & _Translate($iMUI, "Partition and disk passed."))
-	ElseIf $iDiskSpace < 64 And $iPartitionSpace >= 64 Then
-		; Partition < 64 GB and Disk >= 64 GB
-		_GUICtrlSetState($hCheck[9][0], $iWarn)
-		GUICtrlSetData($hCheck[9][2], $sSpaceResultFirstLine & @CRLF & _Translate($iMUI, "Partition not passed, but disk."))
-	ElseIf $iDiskSpace < 64 And $iPartitionSpace < 64 Then
-		; Partition and Disk < 64 GB
+	Else
 		_GUICtrlSetState($hCheck[9][0], $iFail)
-		GUICtrlSetData($hCheck[9][2], $sSpaceResultFirstLine & @CRLF & _Translate($iMUI, "Partition and disk not pass."))
 	EndIf
-	#EndRegion - SpaceCheck
 
 	Select
 		Case _GetTPMInfo(0) = False
@@ -605,10 +591,9 @@ Func Main()
 
 	#EndRegion Settings GUI
 
-	ProgressSet(100)
-	ProgressOff()
-
 	GUISwitch($hGUI)
+
+	ProgressOff()
 	GUISetState(@SW_SHOW, $hGUI)
 
 	Local $hMsg
