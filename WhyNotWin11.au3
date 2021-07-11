@@ -637,7 +637,7 @@ Func Main()
 				ShellExecute("https://fcofix.org/rcmaehl/wiki/I'M-FOR-HIRE")
 
 			Case $hMsg = $hGithub
-				ShellExecute("https://fcofix.org/WhyNotWin11")
+				ShellExecute("https://whynotwin11.org")
 
 			Case $hMsg = $hDonate
 				ShellExecute("https://paypal.me/rhsky")
