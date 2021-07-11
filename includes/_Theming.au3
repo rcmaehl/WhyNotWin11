@@ -104,6 +104,11 @@ Func _SetTheme()
 	$aColors[3] = 0xF2F2F2 ; Footer
 
 	Select
+		Case FileExists(@ScriptDir & "\theme.def")
+			$aColors[0] = IniRead(@ScriptDir & "\theme.def", "Colors", "Background", $aColors[0])
+			$aColors[1] = IniRead(@ScriptDir & "\theme.def", "Colors", "Text", $aColors[1])
+			$aColors[2] = IniRead(@ScriptDir & "\theme.def", "Colors", "Sidebar", $aColors[2])
+			$aColors[3] = IniRead(@ScriptDir & "\theme.def", "Colors", "Footer", $aColors[3])
 		Case $dWindow = 0x000000
 			ContinueCase
 		Case $dWindow = 0xFFFFFF And Not $bLTheme
@@ -118,11 +123,6 @@ Func _SetTheme()
 			$aColors[3] = $dWindow + 0xF2F2F3
 		Case $bLTheme
 			;;;
-		Case FileExists(@ScriptDir & "\theme.def")
-			$aColors[0] = IniRead(@ScriptDir & "\theme.def", "Colors", "Background", $aColors[0])
-			$aColors[1] = IniRead(@ScriptDir & "\theme.def", "Colors", "Text", $aColors[1])
-			$aColors[2] = IniRead(@ScriptDir & "\theme.def", "Colors", "Sidebar", $aColors[2])
-			$aColors[3] = IniRead(@ScriptDir & "\theme.def", "Colors", "Footer", $aColors[3])
 		Case Else
 			;;;
 	EndSelect
