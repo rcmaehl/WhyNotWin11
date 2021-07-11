@@ -11,7 +11,7 @@
 ### ALL PRs
 * One "change" per pull request
     * *Updated Positioning of All Icons* is okay
-    * *Updated TPM Check and Updated Related Includes files and GUI* is okay
+    * *Updated TPM Check and Updated Related Includes files* is okay
     * *Updated GPU Check, Updated TPM Check, Changed Social Icon Colors* is NOT okay
 * DLLs, EXEs, and other executables may not be included
 * Pull Request title must give a brief overview of the change
