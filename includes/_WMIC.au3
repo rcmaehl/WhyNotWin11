@@ -69,36 +69,22 @@ Func _GetDiskProperties($iFlag = 0)
 
 	Local Static $aDiskArray
 	Local Static $aPartitionArray
-	Local Static $iSysDisk
-	Local Static $iSysPartition
+	Local Static $aSysDisk
+	Local Static $aSysPartition
 
 	; Get WMI data
-	If (Not $aDiskArray) Or (Not $aPartitionArray) Then
+	If ($aDiskArray = "") Or ($aPartitionArray = "") Then
 		; Get disk datat for fixed (internal) disks.
 		_GetDiskInfoFromWmi($aDiskArray, $aPartitionArray, $DiskInfoWmi_TableHeader_No, $DiskInfoWmi_DiskType_Fixed)
 		If @error = 1 Then Return SetError(1, 1, "Error_WmiFailed")
 	EndIf
 
 	; Get sys disk and sys partition num
-	If (Not $iSysDisk) Then
-		For $i = 0 To UBound($aDiskArray) - 1 Step 1
-			; If windows is bootet from disk...
-			If $aDiskArray[$i][11] = "True" Then
-				; Return row as only neede row
-				$iSysDisk = $i
-				ExitLoop
-			EndIf
-		Next
-	EndIf
-	If (Not $iSysPartition) Then
-		For $i = 0 To UBound($aPartitionArray) - 1 Step 1
-			; If windows is bootet from disk...
-			If $aPartitionArray[$i][12] = "True" Then
-				; Return row as only neede row
-				$iSysPartition = $i
-				ExitLoop
-			EndIf
-		Next
+	If ($aSysDisk = "") Or ($aSysPartition = "") Then
+		Local $iSysDisk = _ArraySearch($aDiskArray, "True", 0, 0, 0, 0, 1, 11) ; Row 11 = IsSysDisk
+		$aSysDisk = _ArrayExtract($aDiskArray, $iSysDisk, $iSysDisk)
+		Local $iSysPartition = _ArraySearch($aPartitionArray, "True", 0, 0, 0, 0, 1, 12) ; Row 12 = IsSysPartition
+		$aSysPartition = _ArrayExtract($aPartitionArray, $iSysPartition, $iSysPartition)
 	EndIf
 
 	; Return data based on $iFlag or exit function
@@ -114,10 +100,10 @@ Func _GetDiskProperties($iFlag = 0)
 			Return $aPartitionArray
 		Case 3
 			; Return information of disk with system (Windows) partition.
-			Return _ArrayExtract($aDiskArray, $iSysDisk, $iSysDisk)
+			Return $aSysDisk
 		Case 4
 			; Return information of system (Windows) partition.
-			Return _ArrayExtract($aPartitionArray, $iSysPartition, $iSysPartition)
+			Return $aSysPartition
 		Case Else
 			; If $iFlag was incorrect...
 			Return SetError(1, 2, "Error_IncorrectFlag")

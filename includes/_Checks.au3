@@ -123,7 +123,7 @@ Func _GPTCheck($iFlag)
 
 	; Vars
 	Local Static $aDisks
-	If (Not $aDisks) Then
+	If ($aDisks = Null) Then
 		$aDisks = _GetDiskProperties(1) ; Array with all disks
 		If @error = 1 Then Return SetError(1, 1, "Error_CheckFailed")
 	EndIf
@@ -214,7 +214,7 @@ Func _SpaceCheck($iFlag)
 	; On error ..... : SetError(1, 1, "Error_CheckFailed")
 
 	; Ini tvars
-	Local Static $bInitDone = False
+	Local Static $bInitDone
 	Local Static $iDiskSize
 	Local Static $iPartitionSize
 	Local Static $aDisks
@@ -222,15 +222,17 @@ Func _SpaceCheck($iFlag)
 	_ArrayAdd($aReturnDiskArray, "Disk" & "|" & "Size (GB)" & "|" & "Check result")
 
 	; Init data
-	If (Not $bInitDone = True) Then
-		; Check for error by retriving disk data
-		_GetDiskProperties(4)
-		If @error = 1 Then Return SetError(1, 1, "Error_CheckFailed")
-
+	If ($bInitDone <> True) Then
 		; Get size (Arrays form _GetDiskProperties are 2D-Arrays.) & vars
 		$iDiskSize = Round(_GetDiskProperties(3)[0][8] / 1024 / 1024 / 1024)
 		$iPartitionSize = Round(_GetDiskProperties(4)[0][9] / 1024 / 1024 / 1024)
 		$aDisks = _GetDiskProperties(1)
+
+		; Check for error
+		If @error = 1 Then Return SetError(1, 1, "Error_CheckFailed")
+
+		; Set init done
+		$bInitDone = True
 	EndIf
 
 	; Return data based on $iFlag
