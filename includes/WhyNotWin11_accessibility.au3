@@ -29,7 +29,7 @@ EndFunc   ;==>firstlaunch
 
 ;The next func is to activate the improved accessibility, made exclusively and only for people with disability.
 Func ConfigureAccessibility()
-	Local $Question = MsgBox(4, _Translate(@MUILang, "Enable enanced accessibility?"), _Translate(@MUILang, "This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?"))
+	Local $Question = MsgBox(4, _Translate(@MUILang, "Enable enhanced accessibility?"), _Translate(@MUILang, "This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?"))
 	If $Question == 6 Then
 		IniWrite(@ScriptDir & "\config\config.st", "accessibility", "Enable enhanced accessibility", "Yes")
 		accessibility()

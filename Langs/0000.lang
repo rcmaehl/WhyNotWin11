@@ -9,6 +9,8 @@ Medium=10
 Small=8.5
 Name=Arial
 [Strings]
+Enable enhanced accessibility?=
+This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=
 Donate=
 Settings=
 Check for Updates=
@@ -16,7 +18,7 @@ Your Windows 11 Compatibility Results Are Below=
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=
 Results based on currently known requirements!=
 Translation by=
-Architecture (CPU + OS)=
+Architecture=
 Boot Method=
 CPU Compatibility=
 CPU Core Count=

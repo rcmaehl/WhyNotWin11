@@ -5,7 +5,7 @@
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready
-#AutoIt3Wrapper_Res_Fileversion=2.3.1.0
+#AutoIt3Wrapper_Res_Fileversion=2.3.1.1
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
 #AutoIt3Wrapper_Res_ProductVersion=2.3.1
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
@@ -25,7 +25,7 @@
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 Global $aResults[11][4]
-Global $sVersion = "2.3.1.0"
+Global $sVersion = "2.3.1.1"
 Global $aOutput[2] = ["", ""]
 
 FileChangeDir(@SystemDir)
@@ -385,9 +385,9 @@ Func Main()
 		EndIf
 	#ce
 
-	GUICtrlCreateLabel(_GetCPUInfo(2), 470, 560, 300, 20, $SS_CENTERIMAGE)
+	GUICtrlCreateLabel(_GetCPUInfo(2), 450, 560, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
-	GUICtrlCreateLabel(_GetGPUInfo(0), 470, 580, 300, 20, $SS_CENTERIMAGE)
+	GUICtrlCreateLabel(_GetGPUInfo(0), 450, 580, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
 
 	GUICtrlCreateLabel(_Translate($iMUI, "Your Windows 11 Compatibility Results Are Below"), 130, 10, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
@@ -414,20 +414,23 @@ Func Main()
 	For $iRow = 0 To 10 Step 1
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 113, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, $aColors[$iBackground])
-		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40, $SS_CENTERIMAGE)
+		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40, $SS_SUNKEN)
 		GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
-		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
-		If $iRow = 0 Or $iRow = 3 Or $iRow = 6 Or $iRow = 9 Then GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN)
+		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_SUNKEN)
+		Switch $iRow
+			Case 0, 3, 9
+				GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN)
+			Case Else
+				GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
+		EndSwitch
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
+		GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
 		If @Compiled Then
-			GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
 			_SetBkSelfIcon(-1, $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
-			GUICtrlSetTip(-1, $aInfo[$iRow], _Translate($iMUI, "Description"), $TIP_INFOICON, $TIP_BALLOON)
 		Else
-			GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
 			_SetBkIcon(-1, $aColors[$iBackground], @ScriptDir & "\assets\inf.ico", -1, 24, 24)
-			GUICtrlSetTip(-1, $aInfo[$iRow], _Translate($iMUI, "Description"), $TIP_INFOICON, $TIP_BALLOON)
 		EndIf
+		GUICtrlSetTip(-1, StringReplace($aInfo[$iRow], ".", "." & @CRLF), "", $TIP_NOICON,  $TIP_CENTER)
 	Next
 	_GDIPlus_Shutdown()
 
@@ -639,7 +642,7 @@ Func Main()
 				ShellExecute("https://fcofix.org/rcmaehl/wiki/I'M-FOR-HIRE")
 
 			Case $hMsg = $hGithub
-				ShellExecute("https://fcofix.org/WhyNotWin11")
+				ShellExecute("https://whynotwin11.org")
 
 			Case $hMsg = $hDonate
 				ShellExecute("https://paypal.me/rhsky")
@@ -742,7 +745,7 @@ EndFunc   ;==>_GetLatestRelease
 ; ===============================================================================================================================
 Func ParseResults($aResults)
 
-	Local $aLabel[11] = ["Architecture (CPU + OS)", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
+	Local $aLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 
 	Switch $aOutput[0]
 		Case "txt"
