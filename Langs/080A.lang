@@ -1,7 +1,7 @@
 [MetaData]
 Language=Spanish - Mexico
 Translator=JeffersonRussell
-Version=2.3.1.0
+Version=2.3.1.1
 [Font]
 Extra Large=24
 Large=18
@@ -9,6 +9,8 @@ Medium=10
 Small=8.5
 Name=Arial
 [Strings]
+Enable enhanced accessibility?=¿Habilitar accesibilidad mejorada?
+This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=Esta nueva funcionalidad de accesibilidad mejorada está diseñada para personas con discapacidad visual, en la que la mayor parte de la interfaz del programa se puede utilizar mediante atajos de voz y de teclado. ¿Activar?
 Donate=Donar
 Settings=Configuración
 Check for Updates=Actualizar
@@ -69,7 +71,7 @@ Done=Listo
 Loading WMIC=Cargando WMIC
 Warning=Alerta
 [Descriptions]
-Architecture=La cantidad de datos que su CPU y SO pueden procesar a la vez. El resultado SO de 32 bits requiere formatear el disco y una instalación limpia de Windows 11. El resultado CPU de 32 bits requiere remplazar la CPU.
+Architecture=La cantidad de datos que su CPU y SO pueden procesar a la vez.El resultado SO de 32 bits requiere formatear el disco y una instalación limpia de Windows 11. El resultado CPU de 32 bits requiere remplazar la CPU.
 Boot=El método que usa su placa base para cargar Windows. El resultado Legacy se puede corregir en las placas base más nuevas en su configuración BIOS/UEFI. Consulte el manual de su placa base.
 CPU Name=La CPU que tiene instalada en su computadora. La compatibilidad está sujeta a cambios. Requiere un reemplazo físico en computadoras de escritorio; No reemplazable en computadoras portátiles.
 CPU Cores=La cantidad de tareas que su CPU puede procesar a la vez. Requiere un reemplazo físico en computadoras de escritorio; No reemplazable en computadoras portátiles.
