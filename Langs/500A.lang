@@ -1,7 +1,7 @@
 [MetaData]
 Language=Spanish - Puerto Rico
 Translator=JeffersonRussell
-Version=2.3.1.0
+Version=2.3.1.1
 [Font]
 Extra Large=24
 Large=18
@@ -9,6 +9,8 @@ Medium=10
 Small=8.5
 Name=Arial
 [Strings]
+Enable enhanced accessibility?=¿Habilitar accesibilidad mejorada?
+This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=Esta nueva funcionalidad de accesibilidad mejorada está diseñada para personas con discapacidad visual, en la que la mayor parte de la interfaz del programa se puede utilizar mediante atajos de voz y de teclado. ¿Activar?
 Donate=Donar
 Settings=Configuración
 Check for Updates=Actualizar
