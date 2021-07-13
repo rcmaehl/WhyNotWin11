@@ -9,8 +9,8 @@ Medium=10
 Small=8.5
 Name=Arial
 [Strings]
-Enable enhanced accessibility?=
-This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=
+Enable enhanced accessibility?=Luba täiustatud hõlbustus?
+This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?= See uus täiustatud hõlbustuse funktsioon on mõeldud vaegnägijatele, milles enamikku programmi liidest saab kasutada hääl- ja kiirklahvide abil. Aktiveeri?
 Donate=Anneta
 Settings=Seaded
 Check for Updates=Kontrolli Uuendusi
