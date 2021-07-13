@@ -1,7 +1,7 @@
 [MetaData]
 Language=Japanese - Japan
-Translator=yuki-gh, goahi, syobon-tech, arakim
-Version=2.3.1.0
+Translator=yuki-gh, goahi, syobon-tech, arakim, micachi
+Version=2.3.1.1
 [Font]
 Extra Large=24
 Large=18
@@ -17,8 +17,8 @@ Now Reach WhyNotWin11 via https://www.whynotwin11.org/=WhyNotWin11 : https://www
 Results based on currently known requirements!=この結果は現時点で判明している要件に基づくものです
 Translation by=翻訳者
 Architecture=アーキテクチャ
-Boot Method=BIOSの種類
-CPU Compatibility=CPU世代
+Boot Method=起動方式
+CPU Compatibility=CPU互換性
 CPU Core Count=CPUコア数
 CPU Frequency=CPU周波数
 DirectX + WDDM2=DirectX + WDDM2
@@ -32,9 +32,9 @@ Checking...=チェック中…
 64 Bit OS=64ビットOS
 32 Bit CPU=32ビットCPU
 32 Bit OS=32ビットOS
-Unable to Determine=判定不能
-Unable to Check List=対応CPUリストの確認に失敗
-Error Accessing List=対応CPUリストへのアクセスに失敗
+Unable to Determine=判定不可
+Unable to Check List=対応CPUリストの確認不可
+Error Accessing List=対応CPUリストへのアクセスエラー
 Not Currently Listed as Compatible=対応CPUリストになし
 Listed as Compatible=対応CPUリストに存在
 Cores=コア
