@@ -2,6 +2,11 @@
 
 #include <FileConstants.au3>
 
+Func _CacheTranslations($iMUI)
+	_INIUnicode(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang")
+	Return IniReadSection(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Strings")
+EndFunc
+
 Func _GetDescriptions($iMUI)
 	Local $aDescriptions[11]
 

@@ -2,14 +2,16 @@
 
 ## Requirements
 
-- Find Your Language Code [here](https://www.autoitscript.com/autoit3/docs/appendix/OSLangCodes.htm).
-- Always use the latest template (0000.lang).
-- Use hex code(number) of your language.
-- Please use your GitHub username as Translator in MetaData section.
-- All strings must be filled out to be accepted.
-- Due to space restrictions, translations do not have to be 1:1.
-- Please do not use slang, due to it being hard to judge/approve.
-- File must be UTF-8 encoded, use GitHub editor and it should take care of that.
+* Find Your Language Code [here](https://www.autoitscript.com/autoit3/docs/appendix/OSLangCodes.htm).
+* Always use the latest template (0000.lang).
+* Use hex code(number) of your language.
+* Please use your GitHub username as Translator in MetaData section.
+* All strings must be filled out to be accepted.
+* Due to space restrictions, translations do not have to be 1:1.
+* Please do not use slang, due to it being hard to judge/approve.
+* Ideally, file must be at least UTF-8 encoded.
+    * Files will be converted to UTF-16 upon usage
+    * The GitHub editor will save this way by default
 
 ## Testing Translations Locally
 1. Go to folder: *%localappdata%\WhyNotWin11\langs*
