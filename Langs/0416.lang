@@ -1,20 +1,22 @@
 [MetaData]
 Language=Portuguese - Brazil
 Translator=DanGM96
-Version=2.3.0.2
+Version=2.3.1.0
 [Font]
 Extra Large=24
 Large=18
 Medium=10
 Small=8.5
+Name=Arial
 [Strings]
 Donate=Doar
+Settings=Configurações
 Check for Updates=Atualizar
-Your Windows 11 Compatibility Results are Below=Seus Resultados de Compatibilidade do Windows 11
+Your Windows 11 Compatibility Results Are Below=Seus Resultados de Compatibilidade do Windows 11
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Acesse WhyNotWin11 através de https://www.whynotwin11.org/
-Results Based on Currently Known Requirements!=Resultados Baseados nos Requisitos Conhecidos até o Momento!
+Results based on currently known requirements!=Resultados baseados nos requisitos conhecidos até o momento!
 Translation by=Tradução por
-Architecture=Arquitetura (CPU + SO)
+Architecture=Arquitetura
 Boot Method=Método de Boot
 CPU Compatibility=Compatibilidade da CPU
 CPU Core Count=Núcleos da CPU
@@ -35,8 +37,8 @@ Unable to Check List=Não foi Possível Checar a Lista
 Error Accessing List=Erro ao Acessar a Lista
 Not Currently Listed as Compatible=Ainda Não Listado como Compatível
 Listed as Compatible=Listado como Compatível
-Cores=Núcleos
-Threads=Threads
+Cores=# Núcleos
+Threads=# Threads
 GPT Detected=GPT Detectado
 GPT Not Detected=GPT Não Detectado
 Enabled=Habilitado
@@ -62,3 +64,18 @@ Invalid Release Tags Received!=As Tags de Release Recebidas são Inválidas!
 Invalid Release Types Received!=Os Tipos de Release Recebidos são Inválidos!
 Update Available=Atualização Disponível
 An Update is Available, would you like to download it?=Há uma Atualização Disponível, você gostaria de fazer o download?
+Done=Concluído
+Loading WMIC=Carregando WMIC
+Warning=Aviso
+[Descriptions]
+Architecture=A quantidade de dados que o seu processador e o sistema operacional podem processar de uma só vez. SO de 32 Bits requer uma formatação completa do disco e uma nova instalação do Windows 11. CPU de 32 Bits requer a substiuição do processador.
+Boot=O método que a sua placa-mãe usa para carregar o Windows. Pode ser configurado em placas-mãe mais novas nas configurações da BIOS/UEFI. Consulte o manual da sua placa-mãe.
+CPU Name=O processador que você tem instalado no seu computador. A compatibilidade está sujeita a mudanças. Requer substituir a peça em Desktops; Não é possível substituir em Notebooks.
+CPU Cores=O número de tarefas que seu processador pode processar de uma só vez. É possível substituir a peça em Desktops, mas não em Notebooks.
+CPU Speed=A taxa em que seu processador processa as tarefas. É possível substituir a peça em Desktops, mas não em Notebooks.
+DirectX=A versão do DirectX DDI/Feature Level que sua placa suporta. Essa é diferente da versão de software do DirectX. As placas 'DirectX 12 API' podem falhar nessa verificação.
+Disk Type=O formato em que os seus dados são armazenados no Disco. GPT Não Detectado pode ser corrigido usando a ferramenta MBR2GPT da Microsoft.
+RAM=A quantidade de memória rápida instalada no seu computador. É possível substituir a peça em Desktops e em Notebooks mais novos.
+Secure Boot=O método que a sua placa-mãe usa para carregar o Windows. Pode ser configurado em placas-mãe mais novas nas configurações da BIOS/UEFI. Consulte o manual da sua placa-mãe.
+Storage=A quantidade de espaço para os seus dados no disco. É possível substituir a peça em Desktops e em Notebooks mais novos.
+TPM=Um módulo de segurança usado pelo Windows. É presente em todos os processadores modernos da AMD e em alguns processadores modernos da Intel. Verifique nas configurações da sua BIOS/UEFI. Consulte o manual da sua placa-mãe.
