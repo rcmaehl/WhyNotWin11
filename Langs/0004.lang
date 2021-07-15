@@ -1,13 +1,22 @@
 [MetaData]
 Language=Chinese - Simplified
-Translator=yide-idles
-Version=2.2.5.0
+Translator=yide-idles, zhujunsan
+Version=2.3.1
+[Font]
+Extra Large=24
+Large=18
+Medium=10
+Small=8.5
+Name=Arial
 [Strings]
+Enable enhanced accessibility?=是否启用增强可访问性？
+This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=新的增强可访问性是为视觉障碍者设计的功能。在启用此功能时，程序的大部分界面可由语音控制或键盘快捷方式控制。是否启用？
 Donate=捐赠
+Settings=设置
 Check for Updates=检查更新
-Your Windows 11 Compatibility Results are Below=以下是您的 Windows 11 兼容性结果
+Your Windows 11 Compatibility Results Are Below=以下是您的 Windows 11 兼容性结果
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=通过 https://www.whynotwin11.org/ 访问 WhyNotWin11
-Results Based on Currently Known Requirements!=结果基于目前已知的系统需求！
+Results based on currently known requirements!=结果基于目前已知的系统需求！
 Translation by=翻译：
 Architecture=架构 (CPU + OS)
 Boot Method=引导方式
@@ -39,6 +48,7 @@ Supported=支持
 Not Supported=不支持
 Disabled / Not Detected=停用/未检测到
 Drive(s) Meet Requirements=硬盘符合要求
+0 Drives Meet Requirements=0 硬盘符合要求
 TPM Missing / Disabled=TPM 遗失/停用
 Detected=已检测到
 DirectX 12 and WDDM 3=DirectX 12 和 WDDM 3
@@ -57,3 +67,18 @@ Invalid Release Tags Received!=接收到的版本标签无效！
 Invalid Release Types Received!=接收到的版本类型无效！
 Update Available=有可用的更新
 An Update is Available, would you like to download it?=有可用的更新，是否下载？
+Done=已完成
+Loading WMIC=载入 WMIC 中
+Warning=警告
+[Descriptions]
+Architecture=您的 CPU 和操作系统可以同时处理的数据量。如果结果为 32 位操作系，则您需要擦除磁盘并安装新的 Windows 11。32 位 CPU 需要更换 CPU。
+Boot=主板用来加载 Windows 的方法。 若结果 Legacy，您可以在较新的主板上的 BIOS/UEFI 设置中调整参数。具体操作请参阅您的主板说明书。
+CPU Name=您在计算机中安装的 CPU。兼容性检查列表可能会发生变化。台式机上需要进行物理更换；笔记本电脑上一般不可更换。
+CPU Cores=您的 CPU 可以同时处理的任务数。台式机上需要进行物理更换；笔记本电脑上一般不可更换。
+CPU Speed=CPU 处理任务的速度。台式机上需要进行物理更换；一些高端的笔记本电脑可进行物理升级。
+DirectX=您的卡支持的 DirectX DDI/功能级别版本。这与 DirectX 软件版本不同。“DirectX 12 API” 显卡可能无法通过此检查。
+Disk Type=您的数据存储在磁盘上的格式。如果检查结果不是 GPT，您可以使用 Microsoft 的 MBR2GPT 工具进行修复。
+RAM=计算机中安装的快速内存大小。台式机上需要进行物理更换；一些高端的笔记本电脑可进行物理升级。
+Secure Boot=主板用来加载 Windows 的方法。如果未检测到，您可以在较新的主板上的 BIOS/UEFI 设置中调整参数。具体操作请参阅您的主板说明书。
+Storage=磁盘上数据使用的空间量。一些高端的笔记本电脑可进行物理升级。
+TPM=Windows 使用的安全模块。所有较新的 AMD CPU 都自带；一些较新的英特尔 CPU 自带。请检查您的 BIOS/UEFI 设置。具体操作请参阅您的主板说明书。
