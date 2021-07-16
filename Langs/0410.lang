@@ -1,7 +1,7 @@
 [MetaData]
 Language=Italian - Italy
 Translator=MarioMarietto, davide93
-Version=2.3.1.0
+Version=2.3.1.1
 [Font]
 Extra Large=24
 Large=18
@@ -9,6 +9,8 @@ Medium=10
 Small=8.5
 Name=Arial
 [Strings]
+Enable enhanced accessibility?=Abilitare l'accessibilità migliorata?
+This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=Questa nuova funzionalità di accessibilità migliorata è progettata per i non vedenti, nella quale la maggior parte dell'interfaccia del programma può essere utilizzata attraverso tasti di scelta rapida e comandi vocali. Vuoi attivarla?
 Donate=Dona
 Settings=Impostazioni
 Check for Updates=Verifica aggiornamenti
@@ -65,6 +67,9 @@ Invalid Release Tags Received!=Ricevuti tag di rilascio non validi!
 Invalid Release Types Received!=Ricevuti tipi di rilascio non validi!
 Update Available=Aggiornamento disponibile
 An Update is Available, would you like to download it?=Un aggiornamento è disponibile, vuoi scaricarlo?
+Done=Fatto
+Loading WMIC=Caricamento WMIC
+Warning=Attenzione
 [Descriptions]
 Architecture=La quantità di dati che la CPU e il SO possono elaborare contemporaneamente. Il risultato: "SO a 32 Bit" richiede una formattazione del disco e una nuova installazione di Windows 11. La CPU a 32 Bit richiede una sostituzione della CPU.
 Boot=Un metodo utilizzato dalla scheda madre per caricare Windows. I risultati "legacy" possono essere corretti sulle schede madri più recenti attraverso le impostazioni BIOS/UEFI. Fai riferimento al manuale della scheda madre.
