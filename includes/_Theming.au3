@@ -1,3 +1,20 @@
+#include-once
+
+#include <GDIPlus.au3>
+#include <WinAPISysWin.au3>
+#include <WinAPIShellEx.au3>
+#include <WindowsConstants.au3>
+
+#include "ResourcesEX.au3"
+
+Global Const $GDIP_COLORCURVEEFFECT = "{DD6A0022-58E4-4a67-9D9B-D48EB881A53D}"
+Global Const $tagCOLORCURVEEFFECTPARAMS = "int type;int channel;int value"
+
+Global Enum $iAdjustExposure = 0, $iAdjustDensity, $iAdjustContrast, $iAdjustHighlight, $iAdjustShadow, _ ;http://msdn.microsoft.com/en-us/library/windows/desktop/ms534098(v=vs.85).aspx
+		$iAdjustMidtone, $iAdjustWhiteSaturation, $iAdjustBlackSaturation
+Global Enum $iCurveChannelAll = 0, $iCurveChannelRed, $iCurveChannelGreen, $iCurveChannelBlue ;http://msdn.microsoft.com/en-us/library/windows/desktop/ms534100(v=vs.85).aspx
+Global $tColorCurve = DllStructCreate($tagCOLORCURVEEFFECTPARAMS), $iType = $iAdjustExposure, $iChannel = $iCurveChannelAll
+
 ;######################################################################################################################################
 ; #FUNCTION# ====================================================================================================================
 ; Name ..........: _GDIPlus_GraphicsGetDPIRatio
@@ -28,10 +45,31 @@ Func _GDIPlus_GraphicsGetDPIRatio($iDPIDef = 96)
 	Return $aResults
 EndFunc   ;==>_GDIPlus_GraphicsGetDPIRatio
 
-Func _SetBkIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
+Func _GDIPlus_ColorCurve($tColorCurve, $iType, $iChannel, $iValue)
+	If Not IsDllStruct($tColorCurve) Then Return SetError(1, @error, 0)
+	DllStructSetData($tColorCurve, "type", $iType)
+	DllStructSetData($tColorCurve, "channel", $iChannel)
+	DllStructSetData($tColorCurve, "value", $iValue)
+	Local $pEffect = _GDIPlus_EffectCreate($GDIP_COLORCURVEEFFECT)
+	If @error Then Return SetError(2, @error, 0)
+	_GDIPlus_EffectsSetParameters($pEffect, $tColorCurve)
+	If @error Then Return SetError(3, @error, 0)
+	Return $pEffect
+EndFunc   ;==>_GDIPlus_ColorCurve
+
+Func _GDIPlus_EffectsSetParameters($pEffectObject, $tEffectParameters, $iSizeAdj = 1)
+	Local $aSize = DllCall($__g_hGDIPDll, "uint", "GdipGetEffectParameterSize", "ptr", $pEffectObject, "uint*", 0)
+	Local $iSize = $aSize[2] * $iSizeAdj
+	Local $aResult = DllCall($__g_hGDIPDll, "uint", "GdipSetEffectParameters", "ptr", $pEffectObject, "struct*", $tEffectParameters, "uint", $iSize)
+	If @error Then Return SetError(@error, @extended, 0)
+	Return SetError($aResult[0], 0, $aResult[3])
+EndFunc   ;==>_GDIPlus_EffectsSetParameters
+
+Func _SetBkIcon($ControlID, $iBackground, $iForeground, $sIcon, $iIndex, $iWidth, $iHeight)
 
 	Local Static $STM_SETIMAGE = 0x0172
 	Local $hDC, $hBackDC, $hBackSv, $hBitmap, $hImage, $hIcon, $hBkIcon
+	Local $hEffect
 
 	$hIcon = _WinAPI_ShellExtractIcon($sIcon, $iIndex, $iWidth, $iHeight)
 
@@ -44,6 +82,28 @@ Func _SetBkIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
 	$hImage = _GDIPlus_BitmapCreateFromHBITMAP($hBitmap)
 	$hBkIcon = DllCall($__g_hGDIPDll, 'int', 'GdipCreateHICONFromBitmap', 'hWnd', $hImage, 'int*', 0)
 	$hBkIcon = $hBkIcon[2]
+
+	Local $sForeground = Hex($iForeground)
+	Local $iRed = Dec(StringRight(StringLeft($sForeground, 4), 2))
+	Local $iGreen = Dec(StringRight(StringLeft($sForeground, 6), 2))
+	Local $iBlue = Dec(StringRight(StringLeft($sForeground, 8), 2))
+
+;	$hEffect = _GDIPlus_ColorCurve($tColorCurve, $iType, $iCurveChannelAll, 255)
+
+;	_GDIPlus_EffectDispose($hEffect)
+
+	$hEffect = _GDIPlus_ColorCurve($tColorCurve, $iType, $iCurveChannelRed, $iRed)
+
+	_GDIPlus_EffectDispose($hEffect)
+
+	$hEffect = _GDIPlus_ColorCurve($tColorCurve, $iType, $iCurveChannelGreen, $iGreen)
+
+	_GDIPlus_EffectDispose($hEffect)
+
+	$hEffect = _GDIPlus_ColorCurve($tColorCurve, $iType, $iCurveChannelBlue, $iBlue)
+
+	_GDIPlus_EffectDispose($hEffect)
+
 	_GDIPlus_ImageDispose($hImage)
 
 	GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, _WinAPI_CopyIcon($hBkIcon))

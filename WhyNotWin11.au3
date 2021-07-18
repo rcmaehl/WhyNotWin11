@@ -341,19 +341,19 @@ Func Main()
 		GUICtrlSetState(-1, $GUI_HIDE)
 	Else
 		GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
-		_SetBkIcon(-1, $aColors[$iSidebar], @ScriptDir & "\assets\git.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iSidebar], $aColors[$iText], @ScriptDir & "\assets\git.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 160, 32, 32)
-		_SetBkIcon(-1, $aColors[$iSidebar], @ScriptDir & ".\assets\pp.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iSidebar], $aColors[$iText], @ScriptDir & ".\assets\pp.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 210, 32, 32)
-		_SetBkIcon(-1, $aColors[$iSidebar], @ScriptDir & ".\assets\dis.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iSidebar], $aColors[$iText], @ScriptDir & ".\assets\dis.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
-		_SetBkIcon(-1, $aColors[$iSidebar], @ScriptDir & ".\assets\web.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iSidebar], $aColors[$iText], @ScriptDir & ".\assets\web.ico", -1, 32, 32)
 		If @LogonDomain <> @ComputerName Then
 			GUICtrlCreateIcon("", -1, 34, 310, 32, 32)
-			_SetBkIcon(-1, $aColors[$iSidebar], @ScriptDir & ".\assets\job.ico", -1, 32, 32)
+			_SetBkIcon(-1, $aColors[$iSidebar], $aColors[$iText], @ScriptDir & ".\assets\job.ico", -1, 32, 32)
 		EndIf
 		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
-		_SetBkIcon(-1, $aColors[$iSidebar], @ScriptDir & ".\assets\set.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iSidebar], $aColors[$iText], @ScriptDir & ".\assets\set.ico", -1, 32, 32)
 		GUICtrlSetState(-1, $GUI_HIDE)
 	EndIf
 	_GDIPlus_Shutdown()
@@ -428,7 +428,7 @@ Func Main()
 		If @Compiled Then
 			_SetBkSelfIcon(-1, $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
 		Else
-			_SetBkIcon(-1, $aColors[$iBackground], @ScriptDir & "\assets\inf.ico", -1, 24, 24)
+			_SetBkIcon(-1, $aColors[$iBackground], $aColors[$iText], @ScriptDir & "\assets\inf.ico", -1, 24, 24)
 		EndIf
 		GUICtrlSetTip(-1, StringReplace($aInfo[$iRow], ".", "." & @CRLF), "", $TIP_NOICON,  $TIP_CENTER)
 	Next
