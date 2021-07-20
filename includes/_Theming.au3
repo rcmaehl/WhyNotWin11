@@ -83,10 +83,10 @@ Func _SetBkIcon($ControlID, $iBackground, $iForeground, $sIcon, $iIndex, $iWidth
 	$hBkIcon = DllCall($__g_hGDIPDll, 'int', 'GdipCreateHICONFromBitmap', 'hWnd', $hImage, 'int*', 0)
 	$hBkIcon = $hBkIcon[2]
 
-	Local $sForeground = Hex($iForeground)
-	Local $iRed = Dec(StringRight(StringLeft($sForeground, 4), 2))
-	Local $iGreen = Dec(StringRight(StringLeft($sForeground, 6), 2))
-	Local $iBlue = Dec(StringRight(StringLeft($sForeground, 8), 2))
+	Local $sForeground = Hex($iForeground, 6)
+	Local $iRed = Dec(StringRight(StringLeft($sForeground, 2), 2))
+	Local $iGreen = Dec(StringRight(StringLeft($sForeground, 4), 2))
+	Local $iBlue = Dec(StringRight(StringLeft($sForeground, 6), 2))
 
 ;	$hEffect = _GDIPlus_ColorCurve($tColorCurve, $iType, $iCurveChannelAll, 255)
 
