@@ -14,9 +14,7 @@ Detection Script to help identify why your PC isn't Windows 11 Release Ready.
 ----
 
 ## Download
-
-[Download latest stable release](https://github.com/rcmaehl/WhyNotWin11/releases/latest/download/WhyNotWin11.exe)
-
+[Download latest stable release](https://github.com/rcmaehl/WhyNotWin11/releases/latest/download/WhyNotWin11.exe)<br>
 [Download latest testing release](https://nightly.link/rcmaehl/WhyNotWin11/workflows/wnw11/main/WNW11.zip)\
 **Keep in mind that you will have to update testing releases manually**
 
@@ -29,20 +27,15 @@ RAM (Memory)|40MB Free|100MB Free
 Disk (Storage)|5MB Free|100MB Free
 
 ## Compiling
-
 1. Download and run "AutoIt Full Installation" from [official website](https://www.autoitscript.com/site/autoit/downloads). 
 1. Get the source code either by [downloading zip](https://github.com/rcmaehl/WhyNotWin11/archive/main.zip) or do `git clone https://github.com/rcmaehl/WhyNotWin11`.
 1. Right click on `WhyNotWin11.au3` in the WhyNotWin11 directory and select "Compile Script (x64) (or x86 if you have 32 bit Windows install).
 1. This will create WhyNotWin11.exe in the same directory.
 
 ## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for rules of coding and pull requests.
-
+See [CONTRIBUTING.md](CONTRIBUTING.md) for rules of coding and pull requests.<br>
 If you want to help with translations check [translating guidelines](Langs/0000-translating-guidelines.md).
 
 ## License
-
-WhyNotWin11 is free and open source software, it is using the LGPL-3.0 license.
-
+WhyNotWin11 is free and open source software, it is using the LGPL-3.0 license.<br>
 See [LICENSE](LICENSE) for the full license text.
