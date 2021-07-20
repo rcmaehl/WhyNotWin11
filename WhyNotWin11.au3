@@ -241,7 +241,7 @@ Func Main()
 	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
 	ProgressSet(100, _Translate($iMUI, "Done"))
 
-	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER))
+	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER), _GetTranslationRTL($iMUI))
 	GUISetBkColor($aColors[$iBackground])
 	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", $aFonts[4])
 
