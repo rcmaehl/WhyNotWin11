@@ -1,6 +1,7 @@
 #include-once
 
 #include <FileConstants.au3>
+#include <WindowsConstants.au3>
 
 Func _CacheTranslations($iMUI)
 	_INIUnicode(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang")
@@ -50,6 +51,13 @@ Func _GetTranslationFonts($iMUI)
 
 	Return $aFonts
 EndFunc   ;==>_GetTranslationFonts
+
+Func _GetTranslationRTL($iMUI)
+	Local $sRTL = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang", "MetaData", "RTL", "False")
+	If $sRTL = "True" Then Return $WS_EX_LAYOUTRTL
+
+	Return -1
+EndFunc   ;==>_GetTranslationRTL
 
 Func _INIUnicode($sINI)
 	If FileExists($sINI) = 0 Then
