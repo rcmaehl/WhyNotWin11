@@ -148,7 +148,7 @@ Func _SetBkSelfIcon($ControlID, $iForeground, $iBackground, $sIcon, $iIndex, $iW
 EndFunc   ;==>_SetBkSelfIcon
 
 Func _SetTheme()
-	Local $aColors[4], $aIcons[8]
+	Local $aColors[4]
 
 	Local $dText = _WinAPI_GetSysColor($COLOR_WINDOWTEXT)
 	Local $dWindow = _WinAPI_GetSysColor($COLOR_WINDOW)
@@ -160,18 +160,12 @@ Func _SetTheme()
 	$aColors[2] = 0xE6E6E6 ; Sidebar
 	$aColors[3] = 0xF2F2F2 ; Footer
 
-	Local Enum $iLightMode, $iDarkMode, $iCustom
-	#forceref $iCustom
-
-	$aIcons[0] = $iLightMode
-
 	Select
 		Case FileExists(@ScriptDir & "\theme.def")
 			$aColors[0] = IniRead(@ScriptDir & "\theme.def", "Colors", "Background", $aColors[0])
 			$aColors[1] = IniRead(@ScriptDir & "\theme.def", "Colors", "Text", $aColors[1])
 			$aColors[2] = IniRead(@ScriptDir & "\theme.def", "Colors", "Sidebar", $aColors[2])
 			$aColors[3] = IniRead(@ScriptDir & "\theme.def", "Colors", "Footer", $aColors[3])
-			$aIcons[0] = IniRead(@ScriptDir & "\theme.def", "Icons", "Type", $aIcons[0])
 		Case $dWindow = 0x000000
 			ContinueCase
 		Case $dWindow = 0xFFFFFF And Not $bLTheme
@@ -179,7 +173,6 @@ Func _SetTheme()
 			$aColors[1] = 0xFFFFFF
 			$aColors[2] = 0x191919
 			$aColors[3] = 0x0D0D0D
-			$aIcons[0] = $iDarkMode
 		Case 0xFFFFFF > $dWindow > 0x000000
 			$aColors[0] = $dWindow + 0xF8F8F9
 			$aColors[1] = $dText
@@ -191,7 +184,5 @@ Func _SetTheme()
 			;;;
 	EndSelect
 
-	Local $aReturn[2] = [$aColors, $aIcons]
 	Return $aColors
-	Return $aReturn
 EndFunc   ;==>_SetTheme
