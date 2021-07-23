@@ -53,7 +53,7 @@ Func _GetTranslationFonts($iMUI)
 EndFunc   ;==>_GetTranslationFonts
 
 Func _GetTranslationRTL($iMUI)
-	Local $sRTL = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang", "MetaData", "RTL", "False")
+	Local $sRTL = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "MetaData", "RTL", "False")
 	If $sRTL = "True" Then Return $WS_EX_LAYOUTRTL
 
 	Return -1
