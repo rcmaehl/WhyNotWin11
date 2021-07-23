@@ -426,7 +426,7 @@ Func Main()
 		Else
 			_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\inf.ico", -1, 24, 24)
 		EndIf
-		GUICtrlSetTip(-1, StringReplace($aInfo[$iRow], ".", "." & @CRLF), "", $TIP_NOICON,  $TIP_CENTER)
+		GUICtrlSetTip(-1, $aInfo[$iRow], "", $TIP_NOICON,  $TIP_CENTER)
 	Next
 	_GDIPlus_Shutdown()
 
