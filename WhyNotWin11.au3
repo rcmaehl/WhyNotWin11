@@ -363,10 +363,6 @@ Func Main()
 	GUICtrlCreateLabel("v " & $sVersion, 10, 30, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 
-	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
-	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
-
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
 
