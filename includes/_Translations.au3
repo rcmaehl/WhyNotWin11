@@ -97,5 +97,5 @@ Func _Translate($iMUI, $sString)
 	_INIUnicode(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang")
 	$sReturn = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Strings", $sString, $sString)
 	$sReturn = StringReplace($sReturn, "\n", @CRLF)
-	Return
+	Return $sReturn
 EndFunc   ;==>_Translate
