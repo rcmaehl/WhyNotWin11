@@ -524,8 +524,8 @@ Func Main()
 		_GUICtrlSetState($hCheck[7][0], $iPass)
 		GUICtrlSetData($hCheck[7][2], _MemCheck() & " GB")
 	Else
+		GUICtrlSetData($hCheck[7][2], @error & " GB")
 		_GUICtrlSetState($hCheck[7][0], $iFail)
-		GUICtrlSetData($hCheck[7][2], _MemCheck() & " GB")
 	EndIf
 
 	Switch _SecureBootCheck()
