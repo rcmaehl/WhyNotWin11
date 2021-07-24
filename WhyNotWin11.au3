@@ -5,9 +5,9 @@
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready
-#AutoIt3Wrapper_Res_Fileversion=2.3.1.1
+#AutoIt3Wrapper_Res_Fileversion=2.3.2.0
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
-#AutoIt3Wrapper_Res_ProductVersion=2.3.1
+#AutoIt3Wrapper_Res_ProductVersion=2.3.2
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
@@ -25,7 +25,7 @@
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 Global $aResults[11][4]
-Global $sVersion = "2.3.1.1"
+Global $sVersion = "2.3.2.0"
 Global $aOutput[2] = ["", ""]
 
 FileChangeDir(@SystemDir)
@@ -325,35 +325,35 @@ Func Main()
 	_GDIPlus_Startup()
 	If @Compiled Then
 		GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
-		_SetBkSelfIcon(-1, $aColors[$iSidebar], @ScriptFullPath, 201, 32, 32)
+		_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 201, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 160, 32, 32)
-		_SetBkSelfIcon(-1, $aColors[$iSidebar], @ScriptFullPath, 202, 32, 32)
+		_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 202, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 210, 32, 32)
-		_SetBkSelfIcon(-1, $aColors[$iSidebar], @ScriptFullPath, 203, 32, 32)
+		_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 203, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
-		_SetBkSelfIcon(-1, $aColors[$iSidebar], @ScriptFullPath, 204, 32, 32)
+		_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 204, 32, 32)
 		If @LogonDomain <> @ComputerName Then
 			GUICtrlCreateIcon("", -1, 34, 310, 32, 32)
-			_SetBkSelfIcon(-1, $aColors[$iSidebar], @ScriptFullPath, 205, 32, 32)
+			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 205, 32, 32)
 		EndIf
 		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
-		_SetBkSelfIcon(-1, $aColors[$iSidebar], @ScriptFullPath, 206, 32, 32)
+		_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 206, 32, 32)
 		GUICtrlSetState(-1, $GUI_HIDE)
 	Else
 		GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
-		_SetBkIcon(-1, $aColors[$iSidebar], $aColors[$iText], @ScriptDir & "\assets\git.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\git.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 160, 32, 32)
-		_SetBkIcon(-1, $aColors[$iSidebar], $aColors[$iText], @ScriptDir & ".\assets\pp.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\pp.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 210, 32, 32)
-		_SetBkIcon(-1, $aColors[$iSidebar], $aColors[$iText], @ScriptDir & ".\assets\dis.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\dis.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
-		_SetBkIcon(-1, $aColors[$iSidebar], $aColors[$iText], @ScriptDir & ".\assets\web.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\web.ico", -1, 32, 32)
 		If @LogonDomain <> @ComputerName Then
 			GUICtrlCreateIcon("", -1, 34, 310, 32, 32)
-			_SetBkIcon(-1, $aColors[$iSidebar], $aColors[$iText], @ScriptDir & ".\assets\job.ico", -1, 32, 32)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\job.ico", -1, 32, 32)
 		EndIf
 		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
-		_SetBkIcon(-1, $aColors[$iSidebar], $aColors[$iText], @ScriptDir & ".\assets\set.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\set.ico", -1, 32, 32)
 		GUICtrlSetState(-1, $GUI_HIDE)
 	EndIf
 	_GDIPlus_Shutdown()
@@ -361,10 +361,6 @@ Func Main()
 	GUICtrlCreateLabel("WhyNotWin11", 10, 10, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 	GUICtrlCreateLabel("v " & $sVersion, 10, 30, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
-
-	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
@@ -414,7 +410,7 @@ Func Main()
 	For $iRow = 0 To 10 Step 1
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 113, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, $aColors[$iBackground])
-		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40)
+		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40, $SS_CENTERIMAGE)
 		GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
 		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_SUNKEN)
 		Switch $iRow
@@ -426,11 +422,11 @@ Func Main()
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
 		GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
 		If @Compiled Then
-			_SetBkSelfIcon(-1, $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
+			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
 		Else
-			_SetBkIcon(-1, $aColors[$iBackground], $aColors[$iText], @ScriptDir & "\assets\inf.ico", -1, 24, 24)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\inf.ico", -1, 24, 24)
 		EndIf
-		GUICtrlSetTip(-1, StringReplace($aInfo[$iRow], ".", "." & @CRLF), "", $TIP_NOICON,  $TIP_CENTER)
+		GUICtrlSetTip(-1, $aInfo[$iRow], "", $TIP_NOICON,  $TIP_CENTER)
 	Next
 	_GDIPlus_Shutdown()
 
@@ -824,10 +820,10 @@ EndFunc   ;==>_SetBannerText
 Func _GUICtrlSetState($hCtrl, $iState)
 	Switch $iState
 		Case 0
-			GUICtrlSetData($hCtrl, "X") ; Failed
+			GUICtrlSetData($hCtrl, "") ; Failed
 			GUICtrlSetBkColor($hCtrl, 0xFA113D)
 		Case 1
-			GUICtrlSetData($hCtrl, ChrW(10003)) ; Passed
+			GUICtrlSetData($hCtrl, "") ; Passed
 			GUICtrlSetBkColor($hCtrl, 0x4CC355)
 		Case 2
 			GUICtrlSetData($hCtrl, "?") ; Unsure

@@ -65,93 +65,90 @@ Func _GDIPlus_EffectsSetParameters($pEffectObject, $tEffectParameters, $iSizeAdj
 	Return SetError($aResult[0], 0, $aResult[3])
 EndFunc   ;==>_GDIPlus_EffectsSetParameters
 
-Func _SetBkIcon($ControlID, $iBackground, $iForeground, $sIcon, $iIndex, $iWidth, $iHeight)
+Func _SetBkIcon($ControlID, $iForeground, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
 
-	Local Static $STM_SETIMAGE = 0x0172
-	Local $hDC, $hBackDC, $hBackSv, $hBitmap, $hImage, $hIcon, $hBkIcon
-	Local $hEffect
+    Local Static $STM_SETIMAGE = 0x0172
+    Local $hBitmap, $hGfx, $hImage, $hIcon, $hBkIcon
 
-	$hIcon = _WinAPI_ShellExtractIcon($sIcon, $iIndex, $iWidth, $iHeight)
+    $hIcon = _WinAPI_ShellExtractIcon($sIcon, $iIndex, $iWidth, $iHeight)
+    $hImage = _GDIPlus_BitmapCreateFromHICON32($hIcon)
 
-	$hDC = _WinAPI_GetDC(0)
-	$hBackDC = _WinAPI_CreateCompatibleDC($hDC)
-	$hBitmap = _WinAPI_CreateSolidBitmap(0, $iBackground, $iWidth, $iHeight)
-	$hBackSv = _WinAPI_SelectObject($hBackDC, $hBitmap)
-	_WinAPI_DrawIconEx($hBackDC, 0, 0, $hIcon, 0, 0, 0, 0, $DI_NORMAL)
+    Local $r = BitShift(BitAND($iForeground, 0xFF0000), 16), $g = BitShift(BitAND($iForeground, 0xFF00), 8), $b = BitAND($iForeground, 0xFF)
+    Local $hEffect = _GDIPlus_EffectCreateColorCurve($GDIP_AdjustExposure, $GDIP_CurveChannelRed, $r) ;GDI+ v1.1 is needed -> Win7+
+    _GDIPlus_BitmapApplyEffect($hImage, $hEffect)
+    _GDIPlus_EffectDispose($hEffect)
+    $hEffect = _GDIPlus_EffectCreateColorCurve($GDIP_AdjustExposure, $GDIP_CurveChannelGreen, $g)
+    _GDIPlus_BitmapApplyEffect($hImage, $hEffect)
+    _GDIPlus_EffectDispose($hEffect)
+    $hEffect = _GDIPlus_EffectCreateColorCurve($GDIP_AdjustExposure, $GDIP_CurveChannelBlue, $b)
+    _GDIPlus_BitmapApplyEffect($hImage, $hEffect)
+    _GDIPlus_EffectDispose($hEffect)
 
-	$hImage = _GDIPlus_BitmapCreateFromHBITMAP($hBitmap)
-	$hBkIcon = DllCall($__g_hGDIPDll, 'int', 'GdipCreateHICONFromBitmap', 'hWnd', $hImage, 'int*', 0)
-	$hBkIcon = $hBkIcon[2]
+    If $iBackground Then
+		$iBackground = "0xFF" & Hex($iBackground, 6)
+        $hBitmap = _GDIPlus_BitmapCreateFromScan0($iWidth, $iHeight)
+        $hGfx = _GDIPlus_ImageGetGraphicsContext($hBitmap)
+        _GDIPlus_GraphicsClear($hGfx, $iBackground)
+        _GDIPlus_GraphicsDrawImageRect($hGfx, $hImage, 0, 0, $iWidth, $iHeight)
+        _GDIPlus_ImageDispose($hImage)
+        $hImage = _GDIPlus_ImageClone($hBitmap)
+        _GDIPlus_GraphicsDispose($hGfx)
+        _GDIPlus_ImageDispose($hBitmap)
+    EndIf
 
-	Local $sForeground = Hex($iForeground, 6)
-	Local $iRed = Dec(StringRight(StringLeft($sForeground, 2), 2))
-	Local $iGreen = Dec(StringRight(StringLeft($sForeground, 4), 2))
-	Local $iBlue = Dec(StringRight(StringLeft($sForeground, 6), 2))
+    $hBkIcon = _GDIPlus_HICONCreateFromBitmap($hImage)
+    GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, $hBkIcon)
+    _WinAPI_RedrawWindow(GUICtrlGetHandle($ControlID))
 
-;	$hEffect = _GDIPlus_ColorCurve($tColorCurve, $iType, $iCurveChannelAll, 255)
-
-;	_GDIPlus_EffectDispose($hEffect)
-
-	$hEffect = _GDIPlus_ColorCurve($tColorCurve, $iType, $iCurveChannelRed, $iRed)
-
-	_GDIPlus_EffectDispose($hEffect)
-
-	$hEffect = _GDIPlus_ColorCurve($tColorCurve, $iType, $iCurveChannelGreen, $iGreen)
-
-	_GDIPlus_EffectDispose($hEffect)
-
-	$hEffect = _GDIPlus_ColorCurve($tColorCurve, $iType, $iCurveChannelBlue, $iBlue)
-
-	_GDIPlus_EffectDispose($hEffect)
-
-	_GDIPlus_ImageDispose($hImage)
-
-	GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, _WinAPI_CopyIcon($hBkIcon))
-	_WinAPI_RedrawWindow(GUICtrlGetHandle($ControlID))
-
-	_WinAPI_SelectObject($hBackDC, $hBackSv)
-	_WinAPI_DeleteDC($hBackDC)
-	_WinAPI_ReleaseDC(0, $hDC)
-	_WinAPI_DeleteObject($hBkIcon)
-	_WinAPI_DeleteObject($hBitmap)
-	_WinAPI_DeleteObject($hIcon)
-
-	Return SetError(0, 0, 1)
+    _WinAPI_DeleteObject($hIcon)
+    _WinAPI_DeleteObject($hBkIcon)
+    _GDIPlus_ImageDispose($hImage)
+    Return SetError(0, 0, 1)
 EndFunc   ;==>_SetBkIcon
 
-Func _SetBkSelfIcon($ControlID, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
+Func _SetBkSelfIcon($ControlID, $iForeground, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
 
-	Local Static $STM_SETIMAGE = 0x0172
-	Local $hDC, $hBackDC, $hBackSv, $hBitmap, $hImage, $hIcon, $hBkIcon
+    Local Static $STM_SETIMAGE = 0x0172
+    Local $hBitmap, $hGfx, $hImage, $hIcon, $hBkIcon
 
 	$hIcon = _Resource_GetAsIcon($iIndex, "RC_DATA", $sIcon)
+	$hImage = _GDIPlus_BitmapCreateFromHICON32($hIcon)
 
-	$hDC = _WinAPI_GetDC(0)
-	$hBackDC = _WinAPI_CreateCompatibleDC($hDC)
-	$hBitmap = _WinAPI_CreateSolidBitmap(0, $iBackground, $iWidth, $iHeight)
-	$hBackSv = _WinAPI_SelectObject($hBackDC, $hBitmap)
-	_WinAPI_DrawIconEx($hBackDC, 0, 0, $hIcon, 0, 0, 0, 0, $DI_NORMAL)
+    Local $r = BitShift(BitAND($iForeground, 0xFF0000), 16), $g = BitShift(BitAND($iForeground, 0xFF00), 8), $b = BitAND($iForeground, 0xFF)
+    Local $hEffect = _GDIPlus_EffectCreateColorCurve($GDIP_AdjustExposure, $GDIP_CurveChannelRed, $r) ;GDI+ v1.1 is needed -> Win7+
+    _GDIPlus_BitmapApplyEffect($hImage, $hEffect)
+    _GDIPlus_EffectDispose($hEffect)
+    $hEffect = _GDIPlus_EffectCreateColorCurve($GDIP_AdjustExposure, $GDIP_CurveChannelGreen, $g)
+    _GDIPlus_BitmapApplyEffect($hImage, $hEffect)
+    _GDIPlus_EffectDispose($hEffect)
+    $hEffect = _GDIPlus_EffectCreateColorCurve($GDIP_AdjustExposure, $GDIP_CurveChannelBlue, $b)
+    _GDIPlus_BitmapApplyEffect($hImage, $hEffect)
+    _GDIPlus_EffectDispose($hEffect)
 
-	$hImage = _GDIPlus_BitmapCreateFromHBITMAP($hBitmap)
-	$hBkIcon = DllCall($__g_hGDIPDll, 'int', 'GdipCreateHICONFromBitmap', 'hWnd', $hImage, 'int*', 0)
-	$hBkIcon = $hBkIcon[2]
-	_GDIPlus_ImageDispose($hImage)
+    If $iBackground Then
+		$iBackground = "0xFF" & Hex($iBackground, 6)
+        $hBitmap = _GDIPlus_BitmapCreateFromScan0($iWidth, $iHeight)
+        $hGfx = _GDIPlus_ImageGetGraphicsContext($hBitmap)
+        _GDIPlus_GraphicsClear($hGfx, $iBackground)
+        _GDIPlus_GraphicsDrawImageRect($hGfx, $hImage, 0, 0, $iWidth, $iHeight)
+        _GDIPlus_ImageDispose($hImage)
+        $hImage = _GDIPlus_ImageClone($hBitmap)
+        _GDIPlus_GraphicsDispose($hGfx)
+        _GDIPlus_ImageDispose($hBitmap)
+    EndIf
 
-	GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, _WinAPI_CopyIcon($hBkIcon))
-	_WinAPI_RedrawWindow(GUICtrlGetHandle($ControlID))
+    $hBkIcon = _GDIPlus_HICONCreateFromBitmap($hImage)
+    GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, $hBkIcon)
+    _WinAPI_RedrawWindow(GUICtrlGetHandle($ControlID))
 
-	_WinAPI_SelectObject($hBackDC, $hBackSv)
-	_WinAPI_DeleteDC($hBackDC)
-	_WinAPI_ReleaseDC(0, $hDC)
-	_WinAPI_DeleteObject($hBkIcon)
-	_WinAPI_DeleteObject($hBitmap)
-	_WinAPI_DeleteObject($hIcon)
-
-	Return SetError(0, 0, 1)
+    _WinAPI_DeleteObject($hIcon)
+    _WinAPI_DeleteObject($hBkIcon)
+    _GDIPlus_ImageDispose($hImage)
+    Return SetError(0, 0, 1)
 EndFunc   ;==>_SetBkSelfIcon
 
 Func _SetTheme()
-	Local $aColors[4], $aIcons[8]
+	Local $aColors[4]
 
 	Local $dText = _WinAPI_GetSysColor($COLOR_WINDOWTEXT)
 	Local $dWindow = _WinAPI_GetSysColor($COLOR_WINDOW)
@@ -163,17 +160,12 @@ Func _SetTheme()
 	$aColors[2] = 0xE6E6E6 ; Sidebar
 	$aColors[3] = 0xF2F2F2 ; Footer
 
-	Local Enum $iLightMode, $iDarkMode, $iCustom
-
-	$aIcons[0] = $iLightMode
-
 	Select
 		Case FileExists(@ScriptDir & "\theme.def")
 			$aColors[0] = IniRead(@ScriptDir & "\theme.def", "Colors", "Background", $aColors[0])
 			$aColors[1] = IniRead(@ScriptDir & "\theme.def", "Colors", "Text", $aColors[1])
 			$aColors[2] = IniRead(@ScriptDir & "\theme.def", "Colors", "Sidebar", $aColors[2])
 			$aColors[3] = IniRead(@ScriptDir & "\theme.def", "Colors", "Footer", $aColors[3])
-			$aIcons[0] = IniRead(@ScriptDir & "\theme.def", "Icons", "Type", $aIcons[0])
 		Case $dWindow = 0x000000
 			ContinueCase
 		Case $dWindow = 0xFFFFFF And Not $bLTheme
@@ -181,7 +173,6 @@ Func _SetTheme()
 			$aColors[1] = 0xFFFFFF
 			$aColors[2] = 0x191919
 			$aColors[3] = 0x0D0D0D
-			$aIcons[0] = $iDarkMode
 		Case 0xFFFFFF > $dWindow > 0x000000
 			$aColors[0] = $dWindow + 0xF8F8F9
 			$aColors[1] = $dText
@@ -193,6 +184,5 @@ Func _SetTheme()
 			;;;
 	EndSelect
 
-	Local $aReturn[2] = [$aColors, $aIcons]
 	Return $aColors
 EndFunc   ;==>_SetTheme

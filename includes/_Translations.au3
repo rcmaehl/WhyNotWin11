@@ -23,6 +23,12 @@ Func _GetDescriptions($iMUI)
 	$aDescriptions[9] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Descriptions", "Storage", "The amount of space for data on your disk. Physically upgradeable in high end Laptops.")
 	$aDescriptions[10] = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Descriptions", "TPM", "A security module used by Windows. All modern AMD CPUs contain one; Some modern Intel CPUs contain one. Check your BIOS/UEFI settings. Refer to your motherboard manual.")
 
+	For $iLoop = 0 To 10
+		$aDescriptions[$iLoop] = StringReplace($aDescriptions[$iLoop], ". ", "." & @CRLF)
+		$aDescriptions[$iLoop] = StringReplace($aDescriptions[$iLoop], "; ", ";" & @CRLF)
+		$aDescriptions[$iLoop] = StringReplace($aDescriptions[$iLoop], "\n", @CRLF)
+	Next
+
 	Return $aDescriptions
 EndFunc   ;==>_GetDescriptions
 
@@ -53,7 +59,7 @@ Func _GetTranslationFonts($iMUI)
 EndFunc   ;==>_GetTranslationFonts
 
 Func _GetTranslationRTL($iMUI)
-	Local $sRTL = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang", "MetaData", "RTL", "False")
+	Local $sRTL = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "MetaData", "RTL", "False")
 	If $sRTL = "True" Then Return $WS_EX_LAYOUTRTL
 
 	Return -1
@@ -87,6 +93,9 @@ Func _SetFile($sString, $sFile, $iOverwrite = $FO_READ)
 EndFunc   ;==>_SetFile
 
 Func _Translate($iMUI, $sString)
+	Local $sReturn
 	_INIUnicode(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang")
-	Return IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Strings", $sString, $sString)
+	$sReturn = IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "Strings", $sString, $sString)
+	$sReturn = StringReplace($sReturn, "\n", @CRLF)
+	Return $sReturn
 EndFunc   ;==>_Translate
