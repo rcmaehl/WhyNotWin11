@@ -532,7 +532,7 @@ Func Main()
 		Case 2
 			_GUICtrlSetState($hCheck[8][0], $iPass)
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Enabled"))
-		Case True
+		Case 1
 			_GUICtrlSetState($hCheck[8][0], $iPass)
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Supported"))
 		Case False

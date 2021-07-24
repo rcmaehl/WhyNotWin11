@@ -156,10 +156,10 @@ Func _SecureBootCheck()
 	Local $sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
 	If @error Then $sSecureBoot = 999
 	Switch $sSecureBoot
-		Case 0
-			Return True
 		Case 1
 			Return 2
+		Case 0
+			Return 1
 		Case Else
 			Return False
 	EndSwitch
