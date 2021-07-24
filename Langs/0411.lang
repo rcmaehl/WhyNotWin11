@@ -1,5 +1,6 @@
 [MetaData]
 Language=Japanese - Japan
+RTL=false
 Translator=yuki-gh, goahi, syobon-tech, arakim, micachi
 Version=2.3.1.1
 [Font]
