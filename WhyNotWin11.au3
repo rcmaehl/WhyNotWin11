@@ -410,7 +410,7 @@ Func Main()
 	For $iRow = 0 To 10 Step 1
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 113, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, $aColors[$iBackground])
-		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40)
+		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40, $SS_CENTERIMAGE)
 		GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
 		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_SUNKEN)
 		Switch $iRow
@@ -820,10 +820,10 @@ EndFunc   ;==>_SetBannerText
 Func _GUICtrlSetState($hCtrl, $iState)
 	Switch $iState
 		Case 0
-			GUICtrlSetData($hCtrl, "X") ; Failed
+			GUICtrlSetData($hCtrl, "") ; Failed
 			GUICtrlSetBkColor($hCtrl, 0xFA113D)
 		Case 1
-			GUICtrlSetData($hCtrl, ChrW(10003)) ; Passed
+			GUICtrlSetData($hCtrl, "") ; Passed
 			GUICtrlSetBkColor($hCtrl, 0x4CC355)
 		Case 2
 			GUICtrlSetData($hCtrl, "?") ; Unsure
