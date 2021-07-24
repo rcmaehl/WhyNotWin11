@@ -1,6 +1,7 @@
 #include-once
 #include <File.au3>
 #include ".\_WMIC.au3"
+#include <WinAPIDiag.au3>
 
 Func _ArchCheck()
 	Select
@@ -125,6 +126,10 @@ Func _GPTCheck($aDisks)
 		EndIf
 	Next
 EndFunc   ;==>_GPTCheck
+
+Func _InternetCheck()
+	Return _WinAPI_IsInternetConnected()
+EndFunc
 
 Func _MemCheck()
 	Local Static $vMem
