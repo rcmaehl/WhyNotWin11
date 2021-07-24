@@ -313,10 +313,10 @@ Func Main()
 	; Allow Dragging of Window
 	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
 
-	GUICtrlCreateLabel("", 0, 0, 100, 570)
+	GUICtrlCreateLabel("", 0, 0, 110, 570)
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 
-	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 0, 570, 100, 30, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 0, 570, 110, 30, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 	GUICtrlSetTip(-1, "Update")
@@ -363,7 +363,7 @@ Func Main()
 	GUICtrlCreateLabel("v " & $sVersion, 10, 30, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 
-	GUICtrlCreateLabel("", 100, 560, 700, 40)
+	GUICtrlCreateLabel("", 110, 560, 700, 40)
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
 
 	#cs Maybe Readd Later
