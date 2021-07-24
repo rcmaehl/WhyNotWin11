@@ -101,6 +101,7 @@ Func _GetGPUInfo($iFlag = 0)
 
 			Local $Obj_Item
 			For $Obj_Item In $Col_Items
+				If $Obj_Item.Name = "Citrix Indirect Display Adapter" Then ContinueLoop
 				$sName &= $Obj_Item.Name & ", "
 				$sMemory = $Obj_Item.AdapterRAM
 			Next
