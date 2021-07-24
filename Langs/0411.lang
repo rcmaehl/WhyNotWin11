@@ -10,6 +10,8 @@ Medium=10
 Small=8.5
 Name=Meiryo
 [Strings]
+Enable enhanced accessibility?=拡張アクセシビリティを有効にしますか?
+This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=この新しい拡張アクセシビリティ機能は視覚障碍者向けに設計されており、ほとんどのプログラムインターフェースが音声とキーボードショートカットで利用可能です。有効にしますか?
 Donate=寄付
 Settings=Settings
 Check for Updates=更新をチェック
@@ -46,6 +48,7 @@ Enabled=有効
 Supported=サポートあり
 Disabled / Not Detected=無効 / 未検出
 Drive(s) Meet Requirements=個のドライブが要件に適合
+0 Drives Meet Requirements=要件に適合するドライブなし
 TPM Missing / Disabled=TPMなし / 無効
 Not Supported=サポートなし
 Detected=検出
