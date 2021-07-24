@@ -264,7 +264,7 @@ Func Main()
 	GUISetAccelerators($aAccel)
 
 	; Top Most Interaction for Update Text
-	Local $hUpdate = GUICtrlCreateLabel("", 0, 570, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
+	Local $hUpdate = GUICtrlCreateLabel("", 0, 560, 90, 60, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 	GUICtrlSetCursor(-1, 0)
 
@@ -316,7 +316,7 @@ Func Main()
 	GUICtrlCreateLabel("", 0, 0, 100, 570)
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 
-	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 0, 570, 100, 30, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 0, 563, 100, 60, $SS_CENTER)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 	GUICtrlSetTip(-1, "Update")
