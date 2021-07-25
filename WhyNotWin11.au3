@@ -39,6 +39,7 @@ If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetPr
 #include <GDIPlus.au3>
 #include <WinAPIGDI.au3>
 #include <WinAPISys.au3>
+#include <TabConstants.au3>
 #include <WinAPISysWin.au3>
 #include <EditConstants.au3>
 #include <FontConstants.au3>
@@ -248,21 +249,13 @@ Func Main()
 	GUICtrlSetDefColor($aColors[$iText])
 	GUICtrlSetDefBkColor($aColors[$iBackground])
 
-#cs
-	Local $sCheck = _CheckAppsUseLightTheme()
-	If @error Then
-		;;;
-	ElseIf Not $sCheck Then
-		GUICtrlSetDefColor(0xFFFFFF)
-	EndIf
-#ce
-
 	Local $hDumpLang = GUICtrlCreateDummy()
 
 	; Debug Key
 	Local $aAccel[1][2] = [["{DEL}", $hDumpLang]]
 	GUISetAccelerators($aAccel)
 
+	#Region Sidebar
 	; Top Most Interaction for Update Text
 	Local $hUpdate = GUICtrlCreateLabel("", 0, 560, 90, 60, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
@@ -362,7 +355,9 @@ Func Main()
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 	GUICtrlCreateLabel("v " & $sVersion, 10, 30, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
+	#EndRegion
 
+	#Region Footer
 	GUICtrlCreateLabel("", 100, 560, 700, 40)
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
 
@@ -385,7 +380,9 @@ Func Main()
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
 	GUICtrlCreateLabel(_GetGPUInfo(0), 450, 580, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
+	#EndRegion
 
+	#Region Header
 	GUICtrlCreateLabel(_Translate($iMUI, "Your Windows 11 Compatibility Results Are Below"), 130, 10, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
 
@@ -401,6 +398,19 @@ Func Main()
 
 	GUICtrlCreateLabel(ChrW(0x274C), 765, 5, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
+	#EndRegion
+
+	Local $hTab = GUICtrlCreateTab(100, 80, 700, 520, BitOR($TCS_BUTTONS,$TCS_FLATBUTTONS,$TCS_FOCUSNEVER))
+	GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO)
+
+	#Region Summary Tab
+	Local $hSummary = GUICtrlCreateTabItem("Summary")
+
+	#EndRegion
+
+	#Region Basic Checks Tab
+	Local $hBasic = GUICtrlCreateTabItem("Basic Checks")
+	GUICtrlSetColor(-1, $aColors[$iBackground])
 
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
@@ -463,7 +473,6 @@ Func Main()
 			EndSwitch
 	EndSwitch
 
-
 	Switch _CPUNameCheck(_GetCPUInfo(2))
 		Case False
 			Switch @error
@@ -482,7 +491,6 @@ Func Main()
 			GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Listed as Compatible"))
 	EndSwitch
 
-	#Region - Determining CPU properties
 	If _CPUCoresCheck(_GetCPUInfo(0), _GetCPUInfo(1)) Then
 		_GUICtrlSetState($hCheck[3][0], $iPass)
 	Else
@@ -502,7 +510,6 @@ Func Main()
 		_GUICtrlSetState($hCheck[4][0], $iFail)
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	EndIf
-	#EndRegion - Determining CPU properties
 
 	Local $aDirectX
 	$aDirectX = _DirectXStartCheck()
@@ -568,6 +575,48 @@ Func Main()
 			_GUICtrlSetState($hCheck[10][0], $iFail)
 			GUICtrlSetData($hCheck[10][2], _GetTPMInfo(0) & " " & _GetTPMInfo(1) & " " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]))
 	EndSelect
+	#EndRegion
+
+	#Region Advanced Checks Tab
+	Local $hAdv = GUICtrlCreateTabItem("Advanced Checks")
+
+	Local $hAdvCheck[11][3]
+	Local $hAdvLabel[11] = ["Camera", "Display Depth", "Display Resolution", "Display Size", "Internet Access", "S Mode", "", "", "", "", ""]
+
+	_GDIPlus_Startup()
+	For $iRow = 0 To 10 Step 1
+		$hAdvCheck[$iRow][0] = GUICtrlCreateLabel("?", 113, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
+		GUICtrlSetBkColor(-1, $aColors[$iBackground])
+		$hAdvCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hAdvLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40, $SS_CENTERIMAGE)
+		GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
+		$hAdvCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_SUNKEN)
+		Switch $iRow
+			Case -1
+				GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN)
+			Case Else
+				GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
+		EndSwitch
+		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
+		GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
+		If @Compiled Then
+			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
+		Else
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\inf.ico", -1, 24, 24)
+		EndIf
+		;GUICtrlSetTip(-1, $aInfo[$iRow + 10], "", $TIP_NOICON,  $TIP_CENTER)
+	Next
+	_GDIPlus_Shutdown()
+
+	If _InternetCheck() Then
+		_GUICtrlSetState($hAdvCheck[4][0], $iPass)
+		GUICtrlSetData($hAdvCheck[4][2], _Translate($iMUI, "Detected"))
+	Else
+		_GUICtrlSetState($hAdvCheck[4][0], $iFail)
+		GUICtrlSetData($hAdvCheck[4][2], _Translate($iMUI, "Disabled / Not Detected"))
+	EndIf
+	#EndRegion
+
+	GUICtrlCreateTabItem("")
 
 	#Region Settings GUI
 	Local $hSettings = GUICreate(_Translate($iMUI, "Settings"), 698, 528, 102, 32, $WS_POPUP, $WS_EX_MDICHILD, $hGUI)
