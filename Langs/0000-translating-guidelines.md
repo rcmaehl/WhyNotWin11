@@ -10,8 +10,8 @@
 * Due to space restrictions, translations do not have to be 1:1.
 * Please do not use slang, due to it being hard to judge/approve.
 * Ideally, file must be at least UTF-8 encoded.
-    * Files will be converted to UTF-16 upon usage
-    * The GitHub editor will save this way by default
+   * Files will be converted to UTF-16 upon usage
+   * The GitHub editor will save this way by default
 
 ## Testing Translations Locally
 1. Go to folder: *%localappdata%\WhyNotWin11\langs*
@@ -31,8 +31,11 @@ Translation will (most likely) be checked using mechanical translation.
 
 ### Existing Translations
 
-Previous translators will be notified and will have 24h to reply.
-After all parties agree, translation will be updated.
+* Notification or approval is not required for the following
+   * Version Number Changes
+   * RTL Additions (Verified using Google)
+* Previous translators will be notified and will have 24h to reply.
+   * After all responding parties agree, translation will be updated.
 
 ## Getting Translator Role on the Community
 
