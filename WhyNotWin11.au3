@@ -219,11 +219,10 @@ Func Main()
 	Local Static $aColors[4] ; Convert to [4][8] for 2.0 themes
 	Local Static $iMUI = @MUILang
 
+	#cs ; 2.0 Theming Enums
 	Local Enum $iGeneral = 0, $iText, $iIcons, $iStatus
 
-	#cs ; 2.0 Theming Enums
 	Local Enum $iBackground = 0, $iSidebar, $iFooter, $iResults
-
 	Local Enum $iDefault = 0, $iName, $iVersion, $iHeader, $iSubHead, $iLinks, $iChecks, $iResults
 	Local Enum $iGithub = 0, $iDonate, $iDiscord, $iLTT, $iWork, $iSettings
 	Local Enum $iFail = 0, $iPass, $iUnsure, $iWarn, $iRunning
