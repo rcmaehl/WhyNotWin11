@@ -13,8 +13,8 @@
     * *Updated Positioning of All Icons* is okay
     * *Updated TPM Check and Updated Related Includes files* is okay
     * *Updated GPU Check, Updated TPM Check, Changed Social Icon Colors* is NOT okay
-* DLLs, EXEs, and other executables may not be included
-* Pull Request title must give a brief overview of the change
+* External DLLs, EXEs, and other executables may not be included
+* The Pull Request title must give a brief overview of the change
 
 ### ALL Code Changes
 * Place any Function Information above Function

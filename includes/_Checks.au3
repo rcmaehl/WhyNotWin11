@@ -1,6 +1,7 @@
 #include-once
 #include <File.au3>
 #include ".\_WMIC.au3"
+#include <WinAPIDiag.au3>
 
 Func _ArchCheck()
 	Select
@@ -126,29 +127,33 @@ Func _GPTCheck($aDisks)
 	Next
 EndFunc   ;==>_GPTCheck
 
-Func _MemCheck()
-	Local Static $aMem
+Func _InternetCheck()
+	Return _WinAPI_IsInternetConnected()
+EndFunc
 
-	If Not $aMem <> "" Then
-		$aMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
+Func _MemCheck()
+	Local Static $vMem
+
+	If Not $vMem <> "" Then
+		$vMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
 		If @error Then
-			$aMem = MemGetStats()
-			$aMem = Round($aMem[1] / 1048576, 1)
-			$aMem = Ceiling($aMem)
+			$vMem = MemGetStats()
+			$vMem = Round($vMem[1] / 1048576, 1)
+			$vMem = Ceiling($vMem)
 		Else
-			$aMem = Round($aMem[1] / 1048576, 1)
+			$vMem = Round($vMem[1] / 1048576, 1)
 		EndIf
-		If $aMem = 0 Then
-			$aMem = MemGetStats()
-			$aMem = Round($aMem[1] / 1048576, 1)
-			$aMem = Ceiling($aMem)
+		If $vMem = 0 Then
+			$vMem = MemGetStats()
+			$vMem = Round($vMem[1] / 1048576, 1)
+			$vMem = Ceiling($vMem)
 		EndIf
 	EndIf
 
-	If $aMem >= 4 Then
-		Return $aMem
+	If $vMem >= 4 Then
+		Return $vMem
 	Else
-		Return False
+		Return SetError($vMem, 0, False)
 	EndIf
 EndFunc   ;==>_MemCheck
 
@@ -156,10 +161,10 @@ Func _SecureBootCheck()
 	Local $sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
 	If @error Then $sSecureBoot = 999
 	Switch $sSecureBoot
-		Case 0
-			Return True
 		Case 1
 			Return 2
+		Case 0
+			Return 1
 		Case Else
 			Return False
 	EndSwitch
