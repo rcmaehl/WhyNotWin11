@@ -400,17 +400,19 @@ Func Main()
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
 	#EndRegion
 
+	#cs
 	Local $hTab = GUICtrlCreateTab(100, 80, 700, 520, BitOR($TCS_BUTTONS,$TCS_FLATBUTTONS,$TCS_FOCUSNEVER))
 	GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO)
+	#ce
 
 	#Region Summary Tab
-	Local $hSummary = GUICtrlCreateTabItem("Summary")
+	;Local $hSummary = GUICtrlCreateTabItem("Summary")
 
 	#EndRegion
 
 	#Region Basic Checks Tab
-	Local $hBasic = GUICtrlCreateTabItem("Basic Checks")
-	GUICtrlSetColor(-1, $aColors[$iBackground])
+	;Local $hBasic = GUICtrlCreateTabItem("Basic Checks")
+	;GUICtrlSetColor(-1, $aColors[$iBackground])
 
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
@@ -578,6 +580,7 @@ Func Main()
 	#EndRegion
 
 	#Region Advanced Checks Tab
+	#cs
 	Local $hAdv = GUICtrlCreateTabItem("Advanced Checks")
 
 	Local $hAdvCheck[11][3]
@@ -614,9 +617,10 @@ Func Main()
 		_GUICtrlSetState($hAdvCheck[4][0], $iFail)
 		GUICtrlSetData($hAdvCheck[4][2], _Translate($iMUI, "Disabled / Not Detected"))
 	EndIf
+	#ce
 	#EndRegion
 
-	GUICtrlCreateTabItem("")
+	;GUICtrlCreateTabItem("")
 
 	#Region Settings GUI
 	Local $hSettings = GUICreate(_Translate($iMUI, "Settings"), 698, 528, 102, 32, $WS_POPUP, $WS_EX_MDICHILD, $hGUI)
