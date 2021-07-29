@@ -12,7 +12,7 @@ Footer=0x55CDFC
 Results=0x8C4799
 
 [Text Colors]
-Text=0x000000
+Default=0x000000
 Name=0x000000
 Version=0x000000
 Header=0x000000
@@ -30,8 +30,8 @@ Work=0x9C59D1
 Settings=0xFFFFFF
 
 [Status Colors]
-Running=0xFFFFFF
-Pass=0x4CC355
-Warn=0xF4C141
-Unsure=0xF4C141
 Fail=0xFA113D
+Pass=0x4CC355
+Unsure=0xF4C141
+Warn=0xF4C141
+Running=0xFFFFFF
