@@ -223,6 +223,8 @@ Func Main(ByRef $aResults)
 	$aColors = _SetTheme()
 	$aFonts = _GetTranslationFonts($iMUI)
 
+	Local $aDirectX = $aResults[5][0]
+
 	Local Enum $iFail = 0, $iPass, $iUnsure, $iWarn
 	Local Enum $iBackground = 0, $iText, $iSidebar, $iFooter
 
@@ -451,24 +453,27 @@ Func Main(ByRef $aResults)
 	EndSwitch
 	#EndRegion
 
-	Switch _BootCheck()
+	#Region ; _BootCheck()
+	Switch $aResults[1][0]
 		Case True
 			_GUICtrlSetState($hCheck[1][0], $iPass)
 			GUICtrlSetData($hCheck[1][2], "UEFI")
 		Case False
-			Switch @error
+			Switch $aResults[1][1]
 				Case 0
 					_GUICtrlSetState($hCheck[1][0], $iFail)
 					GUICtrlSetData($hCheck[1][2], "Legacy")
 				Case Else
-					GUICtrlSetData($hCheck[1][2], @error)
+					GUICtrlSetData($hCheck[1][2], $aResults[1][1])
 					_GUICtrlSetState($hCheck[1][0], $iWarn)
 			EndSwitch
 	EndSwitch
+	#EndRegion
 
-	Switch _CPUNameCheck(_GetCPUInfo(2))
+	#Region ; _CPUNameCheck()
+	Switch $aResults[2][0]
 		Case False
-			Switch @error
+			Switch $aResults[2][1]
 				Case 1
 					_GUICtrlSetState($hCheck[2][0], $iWarn)
 					GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Unable to Check List"))
@@ -483,8 +488,10 @@ Func Main(ByRef $aResults)
 			_GUICtrlSetState($hCheck[2][0], $iPass)
 			GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Listed as Compatible"))
 	EndSwitch
+	#EndRegion
 
-	If _CPUCoresCheck(_GetCPUInfo(0), _GetCPUInfo(1)) Then
+	#Region ; _CPUCoresCheck()
+	If $aResults[3][0] Then
 		_GUICtrlSetState($hCheck[3][0], $iPass)
 	Else
 		_GUICtrlSetState($hCheck[3][0], $iFail)
@@ -495,18 +502,19 @@ Func Main(ByRef $aResults)
 	Local $sThreads = StringReplace(_Translate($iMUI, "Threads"), '#', _GetCPUInfo(1))
 	If @extended = 0 Then $sThreads = _GetCPUInfo(1) & " " & $sThreads
 	GUICtrlSetData($hCheck[3][2], $sCores & @CRLF & $sThreads)
+	#EndRegion
 
-	If _GetCPUInfo(3) >= 1000 Then
+	#Region ; _CPUSpeedCheck()
+	If $aResults[4][0] Then
 		_GUICtrlSetState($hCheck[4][0], $iPass)
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	Else
 		_GUICtrlSetState($hCheck[4][0], $iFail)
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
 	EndIf
+	#EndRegion
 
-	Local $aDirectX
-	$aDirectX = _DirectXStartCheck()
-
+	#Region ; _GPTCheck()
 	If $aResults[6][0] Then
 		If $aResults[6][1] Then
 			_GUICtrlSetState($hCheck[6][0], $iPass)
@@ -519,16 +527,20 @@ Func Main(ByRef $aResults)
 		GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected"))
 		_GUICtrlSetState($hCheck[6][0], $iFail)
 	EndIf
+	#EndRegion
 
-	If _MemCheck() Then
+	#Region ; _MemCheck()
+	If $aResults[7][0] Then
 		_GUICtrlSetState($hCheck[7][0], $iPass)
-		GUICtrlSetData($hCheck[7][2], _MemCheck() & " GB")
+		GUICtrlSetData($hCheck[7][2], $aResults[7][0] & " GB")
 	Else
-		GUICtrlSetData($hCheck[7][2], @error & " GB")
+		GUICtrlSetData($hCheck[7][2], $aResults[7][1] & " GB")
 		_GUICtrlSetState($hCheck[7][0], $iFail)
 	EndIf
+	#EndRegion
 
-	Switch _SecureBootCheck()
+	#Region ; _SecureBootCheck()
+	Switch $aResults[8][0]
 		Case 2
 			_GUICtrlSetState($hCheck[8][0], $iPass)
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Enabled"))
@@ -539,15 +551,18 @@ Func Main(ByRef $aResults)
 			_GUICtrlSetState($hCheck[8][0], $iFail)
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Disabled / Not Detected"))
 	EndSwitch
+	#EndRegion
 
-	_SpaceCheck()
-	GUICtrlSetData($hCheck[9][2], @error & " GB " & $WINDOWS_DRIVE & @CRLF & @extended & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
-	If _SpaceCheck() Then
+	#Region ; _SpaceCheck()
+	If $aResults[9][0] Then
 		_GUICtrlSetState($hCheck[9][0], $iPass)
 	Else
 		_GUICtrlSetState($hCheck[9][0], $iFail)
 	EndIf
+	GUICtrlSetData($hCheck[9][2], $aResults[9][1] & " GB " & $WINDOWS_DRIVE & @CRLF & $aResults[9][2] & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
+	#EndRegion
 
+	#Region : TPM Check
 	Select
 		Case _GetTPMInfo(0) = False
 			ContinueCase
@@ -568,6 +583,8 @@ Func Main(ByRef $aResults)
 			_GUICtrlSetState($hCheck[10][0], $iFail)
 			GUICtrlSetData($hCheck[10][2], _GetTPMInfo(0) & " " & _GetTPMInfo(1) & " " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]))
 	EndSelect
+	#EndRegion
+
 	#EndRegion
 
 	#Region Advanced Checks Tab
