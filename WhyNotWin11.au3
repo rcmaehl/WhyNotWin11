@@ -24,13 +24,8 @@
 #Au3Stripper_Parameters=/so
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
-Global $aResults[11][4]
 Global $sVersion = "2.3.2.0"
-Global $aOutput[2] = ["", ""]
-
 FileChangeDir(@SystemDir)
-
-If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext", "HWND", "DPI_AWARENESS_CONTEXT" - 1)
 
 #include <File.au3>
 #include <Misc.au3>
@@ -64,6 +59,10 @@ Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
 
 Opt("TrayIconHide", 1)
 Opt("TrayAutoPause", 0)
+
+ExtractFiles()
+
+#Region ; OS Checks
 Switch @OSVersion
 	Case "WIN_7", "WIN_VISTA", "WIN_XP", "WIN_XPe"
 		MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Not Supported"), @OSVersion & " " & _Translate(@MUILang, "Not Supported"))
@@ -74,72 +73,84 @@ Switch @OSVersion
 		;;;
 EndSwitch
 
-Global $__g_hModule = _WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll")
-If @OSBuild >= 22000 Or _WinAPI_GetProcAddress($__g_hModule, "wine_get_host_version") Then
-	MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Your Windows 11 Compatibility Results Are Below"), _Translate(@MUILang, "You're running the latest build!"))
+If @OSBuild >= 22000 Or _WinAPI_GetProcAddress(_WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll"), "wine_get_host_version") Then
+	MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Not Supported"), _Translate(@MUILang, "You're running the latest build!"))
 EndIf
+#EndRegion
 
-If $CmdLine[0] > 0 Then ProcessCMDLine()
-ExtractFiles()
-Main()
+ProcessCMDLine()
 
 Func ProcessCMDLine()
-	Local $bCheck = False
+	Local $aResults
+	Local $bSilent = False
+	Local $aOutput[3] = [False, "", ""]
+	#forceref $aOutput
 	Local $iParams = $CmdLine[0]
-	For $iLoop = 1 To $iParams Step 1
-		Switch $CmdLine[1]
-			Case "/?", "/h", "/help"
-				MsgBox(0, "Help and Flags", _
-						"Checks PC for Windows 11 Release Compatibility" & @CRLF & _
-						@CRLF & _
-						"WhyNotWin11 [/format FORMAT FILENAME [/silent]]" & @CRLF & _
-						@CRLF & _
-						@TAB & "/format" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
-						@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
-						@TAB & "       " & @TAB & "output. Requires a filename if used." & @CRLF & _
-						@TAB & "formats" & @TAB & "TXT" & @CRLF & _
-						@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systems will Exit" & @CRLF & _
-						@TAB & "       " & @TAB & "with ERROR_SUCCESS." & @CRLF & _
-						@CRLF & _
-						"All flags can be shortened to just the first character (e.g. /s)" & @CRLF)
-				Exit 0
-			Case "/s", "/silent"
-				$bCheck = True
-				_ArrayDelete($CmdLine, 1)
-				If UBound($CmdLine) = 1 Then ExitLoop
-				ContinueLoop
-			Case "/f", "/format"
-				Select
-					Case UBound($CmdLine) <= 3
-						MsgBox(0, "Invalid", "Missing FILENAME parameter for /format." & @CRLF)
+
+	If $iParams > 0 Then
+		For $iLoop = 1 To $iParams Step 1
+			Switch $CmdLine[1]
+				Case "/?", "/h", "/help"
+					MsgBox(0, "Help and Flags", _
+							"Checks PC for Windows 11 Release Compatibility" & @CRLF & _
+							@CRLF & _
+							"WhyNotWin11 [/format FORMAT FILENAME [/silent]]" & @CRLF & _
+							@CRLF & _
+							@TAB & "/format" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
+							@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
+							@TAB & "       " & @TAB & "output. Requires a filename if used." & @CRLF & _
+							@TAB & "formats" & @TAB & "TXT" & @CRLF & _
+							@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systems will Exit" & @CRLF & _
+							@TAB & "       " & @TAB & "with ERROR_SUCCESS." & @CRLF & _
+							@CRLF & _
+							"All flags can be shortened to just the first character (e.g. /s)" & @CRLF)
+					Exit 0
+				Case "/s", "/silent"
+					$bSilent = True
+					_ArrayDelete($CmdLine, 1)
+					If UBound($CmdLine) = 1 Then ExitLoop
+				Case "/f", "/format"
+					Select
+						Case UBound($CmdLine) <= 3
+							MsgBox(0, "Invalid", "Missing FILENAME parameter for /format." & @CRLF)
+							Exit 1
+						Case UBound($CmdLine) <= 2
+							MsgBox(0, "Invalid", "Missing FORMAT parameter for /format." & @CRLF)
+							Exit 1
+						Case Else
+							Switch $CmdLine[2]
+								Case "TXT"
+									$aOutput[0] = True
+									$aOutput[1] = $CmdLine[2]
+									$aOutput[2] = $CmdLine[3]
+									_ArrayDelete($CmdLine, "1-3")
+								Case Else
+									MsgBox(0, "Invalid", "Missing FORMAT parameter for /format." & @CRLF)
+									Exit 1
+							EndSwitch
+					EndSelect
+				Case Else
+					If @Compiled Then ; support for running non-compiled script - mLipok
+						MsgBox(0, "Invalid", 'Invalid switch - "' & $CmdLine[$iLoop] & "." & @CRLF)
 						Exit 1
-					Case UBound($CmdLine) <= 2
-						MsgBox(0, "Invalid", "Missing FORMAT parameter for /format." & @CRLF)
-						Exit 1
-					Case Else
-						Switch $CmdLine[2]
-							Case "TXT"
-								$aOutput[0] = $CmdLine[2]
-								$aOutput[1] = $CmdLine[3]
-								_ArrayDelete($CmdLine, "1-3")
-							Case Else
-								MsgBox(0, "Invalid", "Missing FORMAT parameter for /format." & @CRLF)
-								Exit 1
-						EndSwitch
-				EndSelect
-			Case Else
-				If @Compiled Then ; support for running non-compiled script - mLipok
-					MsgBox(0, "Invalid", 'Invalid switch - "' & $CmdLine[$iLoop] & "." & @CRLF)
-					Exit 1
-				EndIf
-		EndSwitch
-	Next
-	If $bCheck Then ChecksOnly()
+					EndIf
+			EndSwitch
+		Next
+	EndIf
+
+	If Not $bSilent Then ProgressOn("WhyNotWin11", _Translate(@MUILang, "Loading WMIC"))
+
+	$aResults = RunChecks()
+
+	ProgressSet(80, "Done")
+
+	If Not $bSilent Then Main($aResults)
+
 EndFunc   ;==>ProcessCMDLine
 
-Func ChecksOnly()
+Func RunChecks()
 
-	Local $aDirectX[2]
+	Local $aResults[11][3]
 
 	$aResults[0][0] = _ArchCheck()
 	$aResults[0][1] = @error
@@ -161,7 +172,9 @@ Func ChecksOnly()
 	$aResults[4][1] = @error
 	$aResults[4][2] = @extended
 
-	$aDirectX = _DirectXStartCheck()
+	$aResults[5][0] = _DirectXStartCheck()
+	$aResults[5][1] = -1
+	$aResults[5][2] = -1
 
 	Local $aDisks, $aPartitions
 	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
@@ -185,35 +198,14 @@ Func ChecksOnly()
 	$aResults[10][1] = @error
 	$aResults[10][2] = @extended
 
-	Local $iErr
-	Local $iExt
+	Return $aResults
 
-	While 1
+EndFunc   ;==>RunChecks
 
-		$aDirectX = _GetDirectXCheck($aDirectX)
-		$iErr = @error ; Preserve Values against IsArray()
-		$iExt = @extended
-		If Not IsArray($aDirectX) Then
-			$aResults[5][0] = $aDirectX
-			$aResults[5][1] = $iErr
-			$aResults[5][2] = $iExt
-			ExitLoop
-		EndIf
+Func Main(ByRef $aResults)
 
-		Sleep(100)
-
-	WEnd
-
-	If Not $aOutput[0] = "" Then ParseResults($aResults)
-
-	For $iLoop = 0 To 10 Step 1
-		If $aResults[$iLoop][0] = False Then Exit 0
-	Next
-	Exit 1
-
-EndFunc   ;==>ChecksOnly
-
-Func Main()
+	; Disable Scaling
+	If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext", "HWND", "DPI_AWARENESS_CONTEXT" - 1)
 
 	Local Static $aFonts[5]
 	Local Static $aColors[4] ; Convert to [4][8] for 2.0 themes
@@ -234,21 +226,9 @@ Func Main()
 	Local Enum $iFail = 0, $iPass, $iUnsure, $iWarn
 	Local Enum $iBackground = 0, $iText, $iSidebar, $iFooter
 
-	Local $aDisks, $aPartitions
 	Local Const $DPI_RATIO = _GDIPlus_GraphicsGetDPIRatio()[0]
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 
-	ProgressOn("WhyNotWin11", _Translate($iMUI, "Loading WMIC"))
-	ProgressSet(0, "_GetCPUInfo()")
-	_GetCPUInfo()
-	ProgressSet(20, "_GetDiskInfo()")
-	_GetDiskInfo()
-	ProgressSet(40, "_GetGPUInfo()")
-	_GetGPUInfo()
-	ProgressSet(60, "_GetTPMInfo()")
-	_GetTPMInfo()
-	ProgressSet(80, "_GetDiskInfoFromWmi")
-	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
 	ProgressSet(100, _Translate($iMUI, "Done"))
 
 	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER), _GetTranslationRTL($iMUI))
@@ -451,12 +431,13 @@ Func Main()
 	Next
 	_GDIPlus_Shutdown()
 
-	Switch _ArchCheck()
+	#Region ; ArchCheck()
+	Switch $aResults[0][0]
 		Case True
 			_GUICtrlSetState($hCheck[0][0], $iPass)
 			GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "64 Bit CPU") & @CRLF & _Translate($iMUI, "64 Bit OS"))
 		Case Else
-			Switch @error
+			Switch $aResults[0][1]
 				Case 1
 					_GUICtrlSetState($hCheck[0][0], $iWarn)
 					GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "64 Bit CPU") & @CRLF & _Translate($iMUI, "32 bit OS"))
@@ -468,6 +449,7 @@ Func Main()
 					GUICtrlSetData($hCheck[0][2], "?")
 			EndSwitch
 	EndSwitch
+	#EndRegion
 
 	Switch _BootCheck()
 		Case True
@@ -525,8 +507,8 @@ Func Main()
 	Local $aDirectX
 	$aDirectX = _DirectXStartCheck()
 
-	If _GPTCheck($aDisks) Then
-		If @error Then
+	If $aResults[6][0] Then
+		If $aResults[6][1] Then
 			_GUICtrlSetState($hCheck[6][0], $iPass)
 			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected"))
 		Else
@@ -801,7 +783,7 @@ EndFunc   ;==>_GetLatestRelease
 ; Link ..........:
 ; Example .......: No
 ; ===============================================================================================================================
-Func ParseResults($aResults)
+Func ParseResults($aResults, $aOutput)
 
 	Local $aLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 
