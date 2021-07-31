@@ -2,8 +2,9 @@
 #AutoIt3Wrapper_Icon=Assets\windows11-logo.ico
 #AutoIt3Wrapper_Outfile=WhyNotWin11_x86.exe
 #AutoIt3Wrapper_Outfile_x64=WhyNotWin11.exe
-#AutoIt3Wrapper_Compile_Both=y
-#AutoIt3Wrapper_UseX64=y
+#AutoIt3Wrapper_Compile_Both=Y
+#AutoIt3Wrapper_UseX64=Y
+#AutoIt3Wrapper_Res_Comment=https://www.whynotwin11.org
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready
 #AutoIt3Wrapper_Res_Fileversion=2.3.2.0
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
@@ -11,6 +12,7 @@
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
+#AutoIt3Wrapper_Res_Compatibility=Win8,Win81,Win10
 #AutoIt3Wrapper_Res_Icon_Add=Assets\git.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\pp.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\dis.ico
@@ -18,9 +20,10 @@
 #AutoIt3Wrapper_Res_Icon_Add=Assets\job.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\set.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\inf.ico
-#AutoIt3Wrapper_Run_AU3Check=Y
 #AutoIt3Wrapper_AU3Check_Parameters=-d -w 1 -w 2 -w 3 -w 4 -w 5 -w 6 -w 7 -v1 -v2 -v3
-#AutoIt3Wrapper_Run_Au3Stripper=y
+#AutoIt3Wrapper_Run_Tidy=y
+#Tidy_Parameters=/tc 0 /serc /scec
+#AutoIt3Wrapper_Run_Au3Stripper=Y
 #Au3Stripper_Parameters=/so
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
@@ -429,7 +432,7 @@ Func Main(ByRef $aResults)
 		Else
 			_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\inf.ico", -1, 24, 24)
 		EndIf
-		GUICtrlSetTip(-1, $aInfo[$iRow], "", $TIP_NOICON,  $TIP_CENTER)
+		GUICtrlSetTip(-1, $aInfo[$iRow], "", $TIP_NOICON, $TIP_CENTER)
 	Next
 	_GDIPlus_Shutdown()
 
