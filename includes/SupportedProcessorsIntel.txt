@@ -56,6 +56,7 @@ Core(TM) i5-8310Y
 Core(TM) i7-10510Y
 Core(TM) i7-8500Y
 Core(TM) m3-8100Y
+Core(TM) i3-6100U
 Core(TM) i3-8100
 Core(TM) i3-8100B
 Core(TM) i3-8100H
