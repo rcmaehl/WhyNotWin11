@@ -1,7 +1,8 @@
 [MetaData]
 Language=Polish - Poland
+RTL=false
 Translator=BxOxSxS, micwoj92, mLipok, kp1971
-Version=2.3.1.0
+Version=2.3.2.0
 [Font]
 Extra Large=24
 Large=18
@@ -9,6 +10,8 @@ Medium=10
 Small=7.4
 Name=Arial
 [Strings]
+Enable enhanced accessibility?=Włączyć ulepszoną dostępność?
+This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=Ta nowa funkcja ulepszonej dostępności jest przeznaczona dla osób niedowidzących, w których większość interfejsu programu może być używana za pomocą głosu i skrótów klawiaturowych. Aktywować?
 Donate=Wesprzyj
 Settings=Ustawienia
 Check for Updates=Sprawdź aktualizacje
