@@ -65,8 +65,8 @@ Core(TM) i3-8140U
 Core(TM) i3-8300
 Core(TM) i3-8300T
 Core(TM) i3-8350K
-Core(TM) i5+8400
-Core(TM) i5+8500
+Core(TM) i5-8400
+Core(TM) i5-8500
 Core(TM) i5-8257U
 Core(TM) i5-8259U
 Core(TM) i5-8260U
