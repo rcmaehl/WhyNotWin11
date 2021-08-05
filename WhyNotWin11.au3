@@ -1,5 +1,5 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
-#AutoIt3Wrapper_Icon=Assets\windows11-logo.ico
+#AutoIt3Wrapper_Icon=Assets\WhyNotWin11.ico
 #AutoIt3Wrapper_Outfile=WhyNotWin11_x86.exe
 #AutoIt3Wrapper_Outfile_x64=WhyNotWin11.exe
 #AutoIt3Wrapper_Compile_Both=Y
@@ -13,13 +13,13 @@
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
 #AutoIt3Wrapper_Res_Compatibility=Win8,Win81,Win10
-#AutoIt3Wrapper_Res_Icon_Add=Assets\git.ico
-#AutoIt3Wrapper_Res_Icon_Add=Assets\pp.ico
-#AutoIt3Wrapper_Res_Icon_Add=Assets\dis.ico
-#AutoIt3Wrapper_Res_Icon_Add=Assets\web.ico
-#AutoIt3Wrapper_Res_Icon_Add=Assets\job.ico
-#AutoIt3Wrapper_Res_Icon_Add=Assets\set.ico
-#AutoIt3Wrapper_Res_Icon_Add=Assets\inf.ico
+#AutoIt3Wrapper_Res_Icon_Add=Assets\GitHub.ico
+#AutoIt3Wrapper_Res_Icon_Add=Assets\PayPal.ico
+#AutoIt3Wrapper_Res_Icon_Add=Assets\Discord.ico
+#AutoIt3Wrapper_Res_Icon_Add=Assets\Web.ico
+#AutoIt3Wrapper_Res_Icon_Add=Assets\HireMe.ico
+#AutoIt3Wrapper_Res_Icon_Add=Assets\Settings.ico
+#AutoIt3Wrapper_Res_Icon_Add=Assets\Info.ico
 #AutoIt3Wrapper_AU3Check_Parameters=-d -w 1 -w 2 -w 3 -w 4 -w 5 -w 6 -w 7 -v1 -v2 -v3
 #AutoIt3Wrapper_Run_Tidy=y
 #Tidy_Parameters=/tc 0 /serc /scec
@@ -328,19 +328,19 @@ Func Main(ByRef $aResults)
 		GUICtrlSetState(-1, $GUI_HIDE)
 	Else
 		GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
-		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\git.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\GitHub.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 160, 32, 32)
-		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\pp.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\PayPal.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 210, 32, 32)
-		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\dis.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Discord.ico", -1, 32, 32)
 		GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
-		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\web.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Web.ico", -1, 32, 32)
 		If @LogonDomain <> @ComputerName Then
 			GUICtrlCreateIcon("", -1, 34, 310, 32, 32)
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\job.ico", -1, 32, 32)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\HireMe.ico", -1, 32, 32)
 		EndIf
 		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
-		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\set.ico", -1, 32, 32)
+		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Settings.ico", -1, 32, 32)
 		GUICtrlSetState(-1, $GUI_HIDE)
 	EndIf
 	_GDIPlus_Shutdown()
@@ -414,8 +414,9 @@ Func Main(ByRef $aResults)
 
 	_GDIPlus_Startup()
 	For $iRow = 0 To 10 Step 1
-		$hCheck[$iRow][0] = GUICtrlCreateLabel("?", 113, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
+		$hCheck[$iRow][0] = GUICtrlCreateLabel("…", 113, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, $aColors[$iBackground])
+		GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
 		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40, $SS_CENTERIMAGE)
 		GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
 		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_SUNKEN)
@@ -430,7 +431,7 @@ Func Main(ByRef $aResults)
 		If @Compiled Then
 			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
 		Else
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\inf.ico", -1, 24, 24)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\Info.ico", -1, 24, 24)
 		EndIf
 		GUICtrlSetTip(-1, $aInfo[$iRow], "", $TIP_NOICON, $TIP_CENTER)
 	Next
@@ -615,7 +616,7 @@ Func Main(ByRef $aResults)
 		If @Compiled Then
 			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
 		Else
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\inf.ico", -1, 24, 24)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\Info.ico", -1, 24, 24)
 		EndIf
 		;GUICtrlSetTip(-1, $aInfo[$iRow + 10], "", $TIP_NOICON,  $TIP_CENTER)
 	Next
@@ -646,7 +647,7 @@ Func Main(ByRef $aResults)
 	If @Compiled Then
 		GUICtrlCreateIcon(@ScriptFullPath, 99, 50, 30, 40, 40)
 	Else
-		GUICtrlCreateIcon(@ScriptDir & "\assets\windows11-logo.ico", -1, 50, 50, 40, 40)
+		GUICtrlCreateIcon(@ScriptDir & "\assets\WhyNotWin11.ico", -1, 50, 50, 40, 40)
 	EndIf
 
 	#EndRegion Settings GUI
