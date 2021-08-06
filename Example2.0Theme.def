@@ -1,0 +1,37 @@
+#2.0 themes are not yet implemented
+#Rename file to theme.def
+[MetaData]
+Name=Inclusive
+Version=1.0
+Designer=rcmaehl
+
+[General Colors]
+Background=0xFFFFFF
+Sidebar=0xF7A8B8
+Footer=0x55CDFC
+Results=0x8C4799
+
+[Text Colors]
+Default=0x000000
+Name=0x000000
+Version=0x000000
+Header=0x000000
+SubHead=0xE20012
+Links=0x0000EE
+Checks=0xD00070
+Results=0x0032A0
+
+[Icon Colors]
+Github=0xFFF430
+Donate=0xFFFFFF
+Discord=0x9C59D1
+LTT=0x000000
+Work=0x9C59D1
+Settings=0xFFFFFF
+
+[Status Colors]
+Fail=0xFA113D
+Pass=0x4CC355
+Unsure=0xF4C141
+Warn=0xF4C141
+Running=0xFFFFFF

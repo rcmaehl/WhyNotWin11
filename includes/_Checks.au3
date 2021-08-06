@@ -1,5 +1,7 @@
 #include-once
 #include <File.au3>
+#include ".\_WMIC.au3"
+#include <WinAPIDiag.au3>
 
 Func _ArchCheck()
 	Select
@@ -12,7 +14,7 @@ Func _ArchCheck()
 		Case Else
 			SetError(2, 0, False)
 	EndSelect
-EndFunc
+EndFunc   ;==>_ArchCheck
 
 Func _BootCheck()
 	Local $sFirmware = EnvGet("firmware_type")
@@ -22,81 +24,51 @@ Func _BootCheck()
 		Case "Legacy"
 			Return False
 		Case Else
-			SetError(1, 0, False)
+			SetError(1, $sFirmware, False)
 	EndSwitch
-EndFunc
+EndFunc   ;==>_BootCheck
 
-Func _CPUNameCheck($sCPU)
+Func _CPUNameCheck($sCPU, $sVersion)
+	Local $iLines, $sLine, $ListFile
 	Select
 		Case StringInStr($sCPU, "AMD")
-			Local $iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
-			If @error Then
-				SetError(1, 0, 0)
-			EndIf
-			For $iLine = 1 to $iLines Step 1
-				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $iLine)
-				Select
-					Case @error = -1
-						SetError(2, 0, False)
-						ExitLoop
-					Case $iLine = $iLines
-						SetError(3, 0, False)
-						ExitLoop
-					Case StringInStr($sCPU, $sLine)
-						Return True
-						ExitLoop
-				EndSelect
-			Next
+			If StringInStr($sCPU, "1600") And StringInStr($sVersion, "Version 2") Then Return True ; 1600AF
+			$ListFile = "\WhyNotWin11\SupportedProcessorsAMD.txt"
 		Case StringInStr($sCPU, "Intel")
-			Local $iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt")
-			If @error Then
-				SetError(1, 0, 0)
-			EndIf
-			For $iLine = 1 to $iLines Step 1
-				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $iLine)
-				Select
-					Case @error = -1
-						SetError(2, 0, False)
-						ExitLoop
-					Case $iLine = $iLines
-						SetError(3, 0, False)
-						ExitLoop
-					Case StringInStr($sCPU, $sLine)
-						Return True
-						ExitLoop
-				EndSelect
-			Next
+			$ListFile = "\WhyNotWin11\SupportedProcessorsIntel.txt"
 		Case StringInStr($sCPU, "SnapDragon") Or StringInStr($sCPU, "Microsoft")
-			Local $iLines = _FileCountLines(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt")
-			If @error Then
-				SetError(1, 0, 0)
-			EndIf
-			For $iLine = 1 to $iLines Step 1
-				$sLine = FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $iLine)
-				Select
-					Case @error = -1
-						SetError(2, 0, False)
-						ExitLoop
-					Case $iLine = $iLines
-						SetError(3, 0, False)
-						ExitLoop
-					Case StringInStr($sCPU, $sLine)
-						Return True
-						ExitLoop
-				EndSelect
-			Next
-		Case Else
-			Return False
+			$ListFile = "\WhyNotWin11\SupportedProcessorsQualcomm.txt"
 	EndSelect
-EndFunc
 
-Func _CPUCoresCheck()
-	If _GetCPUInfo(0) >= 2 Or _GetCPUInfo(1) >= 2 Then
+	If $ListFile = Null Then
+		Return False
+	Else
+		$iLines = _FileCountLines(@LocalAppDataDir & $ListFile)
+		If @error Then Return SetError(1, 0, False)
+		For $iLine = 1 To $iLines Step 1
+			$sLine = FileReadLine(@LocalAppDataDir & $ListFile, $iLine)
+			Select
+				Case @error
+					SetError(2, 0, False)
+					ExitLoop
+				Case $iLine = $iLines
+					SetError(3, 0, False)
+					ExitLoop
+				Case StringInStr($sCPU, $sLine)
+					Return True
+					ExitLoop
+			EndSelect
+		Next
+	EndIf
+EndFunc   ;==>_CPUNameCheck
+
+Func _CPUCoresCheck($iCores, $iThreads)
+	If $iCores >= 2 Or $iThreads >= 2 Then
 		Return True
 	Else
 		Return False
 	EndIf
-EndFunc
+EndFunc   ;==>_CPUCoresCheck
 
 Func _CPUSpeedCheck()
 	If _GetCPUInfo(3) >= 1000 Then
@@ -104,7 +76,7 @@ Func _CPUSpeedCheck()
 	Else
 		Return False
 	EndIf
-EndFunc
+EndFunc   ;==>_CPUSpeedCheck
 
 Func _DirectXStartCheck()
 	Local $aReturn[2]
@@ -112,28 +84,28 @@ Func _DirectXStartCheck()
 	$aReturn[0] = $hDXFile
 	$aReturn[1] = Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
 	Return $aReturn
-EndFunc
+EndFunc   ;==>_DirectXStartCheck
 
 Func _GetDirectXCheck($aArray)
 	If Not ProcessExists($aArray[1]) And FileExists($aArray[0]) Then
 		Local $sDXFile = StringStripWS(StringStripCR(FileRead($aArray[0])), $STR_STRIPALL)
 		Select
-			Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "3") ; Non-English Languages
+			Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "3") ; Non-English Languages
 				ContinueCase
-			Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:3") ; Non-English Languages
+			Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:3") ; Non-English Languages
 				ContinueCase
-			Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM3")
+			Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM3")
 				Return 2
-			Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "2") ; Non-English Languages
+			Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "2") ; Non-English Languages
 				ContinueCase
-			Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:2") ; Non-English Languages
+			Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:2") ; Non-English Languages
 				ContinueCase
-			Case StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
+			Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 				Return 1
-			Case Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
+			Case Not StringInStr($sDXFile, "FeatureLevels:12") Or Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 				SetError(1, 0, False)
 			Case StringInStr($sDXFile, "DDIVersion:12") And Not StringInStr($sDXFile, "DriverModel:WDDM2")
-				SetError(1, 0, False)
+				SetError(2, 0, False)
 			Case Else
 				Return False
 		EndSelect
@@ -141,77 +113,87 @@ Func _GetDirectXCheck($aArray)
 	Else
 		Return $aArray
 	EndIf
-EndFunc
+EndFunc   ;==>_GetDirectXCheck
 
-Func _GPTCheck()
-	Local $aDisks = _GetDiskInfo(1)
-	Switch _GetDiskInfo(0)
-		Case "GPT"
-			If $aDisks[0] = $aDisks[1] Then
-				Return True
-			Else
-				SetError($aDisks[1], $aDisks[0], True)
-			EndIf
-		Case Else
-			Return False
-	EndSwitch
+Func _GPTCheck($aDisks)
+	For $iLoop = 0 To UBound($aDisks) - 1
+		If $aDisks[$iLoop][11] = "True" Then
+			Switch $aDisks[$iLoop][9]
+				Case "GPT"
+					Return True
+				Case Else
+					Return SetError($aDisks[$iLoop][9], 0, False)
+			EndSwitch
+		EndIf
+	Next
+EndFunc   ;==>_GPTCheck
+
+Func _InternetCheck()
+	Return _WinAPI_IsInternetConnected()
 EndFunc
 
 Func _MemCheck()
-	Local $aMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
-	If @error Then
-		$aMem = MemGetStats()
-		$aMem = Round($aMem[1]/1048576, 1)
-		$aMem = Ceiling($aMem)
-	Else
-		$aMem = Round($aMem[1]/1048576, 1)
-	EndIf
-	If $aMem = 0 Then
-		$aMem = MemGetStats()
-		$aMem = $aMem[1]
-		$aMem = Ceiling($aMem)
+	Local Static $vMem
+
+	If Not $vMem <> "" Then
+		$vMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
+		If @error Then
+			$vMem = MemGetStats()
+			$vMem = Round($vMem[1] / 1048576, 1)
+			$vMem = Ceiling($vMem)
+		Else
+			$vMem = Round($vMem[1] / 1048576, 1)
+		EndIf
+		If $vMem = 0 Then
+			$vMem = MemGetStats()
+			$vMem = Round($vMem[1] / 1048576, 1)
+			$vMem = Ceiling($vMem)
+		EndIf
 	EndIf
 
-	If $aMem >= 4 Then
-		Return $aMem
+	If $vMem >= 4 Then
+		Return $vMem
 	Else
-		Return False
+		Return SetError($vMem, 0, False)
 	EndIf
-EndFunc
+EndFunc   ;==>_MemCheck
 
 Func _SecureBootCheck()
 	Local $sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
 	If @error Then $sSecureBoot = 999
 	Switch $sSecureBoot
-		Case 0
-			Return True
 		Case 1
 			Return 2
+		Case 0
+			Return 1
 		Case Else
 			Return False
 	EndSwitch
-EndFunc
+EndFunc   ;==>_SecureBootCheck
 
 Func _SpaceCheck()
+	Local $sWindows = EnvGet("SystemDrive")
+
+	Local $iFree = Round(DriveSpaceTotal($sWindows) / 1024, 0)
 	Local $aDrives = DriveGetDrive($DT_FIXED)
 	Local $iDrives = 0
 
-	For $iLoop = 1 to $aDrives[0] Step 1
-		If Round(DriveSpaceTotal($aDrives[$iLoop])/1024, 0) >= 64 Then $iDrives += 1
+	For $iLoop = 1 To $aDrives[0] Step 1
+		If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 64 Then $iDrives += 1
 	Next
 
-	If Round(DriveSpaceTotal("C:\")/1024, 0) >= 64 Then
-		Return $iDrives
+	If $iFree >= 64 Then
+		Return SetError($iFree, $iDrives, True)
 	Else
-		SetError($iDrives, 0, 0)
+		Return SetError($iFree, $iDrives, False)
 	EndIf
-EndFunc
+EndFunc   ;==>_SpaceCheck
 
 Func _TPMCheck()
 	Select
 		Case Not IsAdmin() And _GetTPMInfo(0) = True
 			Return True
-		Case Not IsAdmin() And _GetTPMInfo <> True
+		Case Not IsAdmin() And _GetTPMInfo(0) <> True
 			Return False
 		Case _GetTPMInfo(0) = False
 			ContinueCase
@@ -226,4 +208,4 @@ Func _TPMCheck()
 		Case Else
 			Return False
 	EndSelect
-EndFunc
+EndFunc   ;==>_TPMCheck

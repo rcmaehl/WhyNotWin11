@@ -1,4 +1,4 @@
-2.2.2.0
+2.3.1.0
 Atom(R) x6200FE
 Atom(R) x6211E
 Atom(R) x6212RE
@@ -65,8 +65,8 @@ Core(TM) i3-8140U
 Core(TM) i3-8300
 Core(TM) i3-8300T
 Core(TM) i3-8350K
-Core(TM) i5+8400
-Core(TM) i5+8500
+Core(TM) i5-8400
+Core(TM) i5-8500
 Core(TM) i5-8257U
 Core(TM) i5-8259U
 Core(TM) i5-8260U
@@ -282,12 +282,38 @@ Pentium(R) CPU G5500T
 Pentium(R) CPU G5600
 Pentium(R) CPU G5600T
 Pentium(R) CPU G5620
+Pentium(R) Gold 4425Y
+Pentium(R) Gold 6500Y
+Pentium(R) Gold G5400
+Pentium(R) Gold G5400T
+Pentium(R) Gold G5420
+Pentium(R) Gold G5420T
+Pentium(R) Gold G5500
+Pentium(R) Gold G5500T
+Pentium(R) Gold G5600
+Pentium(R) Gold G5600T
+Pentium(R) Gold G5620
 Pentium(R) Silver J5005
 Pentium(R) Silver N5000
 Pentium(R) CPU 4417U
 Pentium(R) CPU 5405U
+Pentium(R) Gold 4417U
+Pentium(R) Gold 5405U
 Pentium(R) Silver J5040
 Pentium(R) Silver N5030
+Pentium(R) Gold 6405U
+Pentium(R) Gold G6400
+Pentium(R) Gold G6400E
+Pentium(R) Gold G6400T
+Pentium(R) Gold G6400TE
+Pentium(R) Gold G6405
+Pentium(R) Gold G6405T
+Pentium(R) Gold G6500
+Pentium(R) Gold G6500T
+Pentium(R) Gold G6505
+Pentium(R) Gold G6505T
+Pentium(R) Gold G6600
+Pentium(R) Gold G6605
 Pentium(R) CPU 6405U
 Pentium(R) CPU G6400
 Pentium(R) CPU G6400E
@@ -438,10 +464,10 @@ Xeon(R) Gold 6254
 Xeon(R) Gold 6256
 Xeon(R) Gold 6258R
 Xeon(R) Gold 6262V
-Xeon(R) Gold Gold 5218
-Xeon(R) Gold Gold 6238R
-Xeon(R) Gold6246
-Xeon(R) Goldv 6234
+Xeon(R) Gold 5218
+Xeon(R) Gold 6238R
+Xeon(R) Gold 6246
+Xeon(R) Gold 6234
 Xeon(R) Platinum 8253
 Xeon(R) Platinum 8256
 Xeon(R) Platinum 8260
@@ -520,7 +546,7 @@ Xeon(R) Gold 6342
 Xeon(R) Gold 6346
 Xeon(R) Gold 6348
 Xeon(R) Gold 6354
-Xeon(R) Gold Gold 5318Y
+Xeon(R) Gold 5318Y
 Xeon(R) Platinum 8351N
 Xeon(R) Platinum 8352S
 Xeon(R) Platinum 8352V

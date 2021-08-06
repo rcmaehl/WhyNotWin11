@@ -7,9 +7,9 @@
 [![My Twitter](https://img.shields.io/badge/twitter-545454.svg?logo=twitter)](https://twitter.com/WhyNotWin11)
 
 # WhyNotWin11
-Detection Script to help identify why your PC isn't Windows 11 Release Ready
+Detection Script to help identify why your PC isn't Windows 11 Release Ready.
 
-![image](https://user-images.githubusercontent.com/716581/123796852-91b16600-d8b3-11eb-869f-b5f6c67a6de8.png)
+![image](https://user-images.githubusercontent.com/716581/127423275-b5359bf3-79d8-49db-8767-a0bfd038ddd5.png)
 
 ----
 
@@ -20,25 +20,15 @@ Detection Script to help identify why your PC isn't Windows 11 Release Ready
 [Download latest testing release](https://nightly.link/rcmaehl/WhyNotWin11/workflows/wnw11/main/WNW11.zip)\
 **Keep in mind that you will have to update testing releases manually**
 
-## To-Do
-
-- [x] Hard Floor Checks:
-    - [x] Cores >= 2
-    - [x] CPU Freq >= 1 GHZ
-    - [X] CPU Arch = 64
-    - [x] RAM >= 4 GB
-    - [x] Storage >= 64 GB
-    - [x] ~~TPM >= 1.2~~ (Removed with recent changes from Microsoft)
-    - [x] SecureBoot
-    - [x] ~~SMode~~ (WhyNotWin11 is not compatible with S Mode Devices)
-- [x] Soft Floor Checks:
-    - [x] TPM >= 2.0
-    - [x] CPU Compatibility list
-- [ ] Other Checks:
-    - [x] DirectX 12
-    - [x] WDDM 2
-    - [ ] Screen Resolution
-- [x] A fancier GUI
+## System Requirements
+ |Minimum Requirements|Recommended
+----|----|----
+OS|Windows 8.1|Latest Windows 10 Build
+CPU|32-bit Single Core|64-bit Dual Core or Higher
+RAM (Memory)|40MB Free|100MB Free
+Disk (Storage)|5MB Free|100MB Free
+||
+Limitations|DirectX 12 Check Inaccurate|None
 
 ## Compiling
 
@@ -47,8 +37,14 @@ Detection Script to help identify why your PC isn't Windows 11 Release Ready
 1. Right click on `WhyNotWin11.au3` in the WhyNotWin11 directory and select "Compile Script (x64) (or x86 if you have 32 bit Windows install).
 1. This will create WhyNotWin11.exe in the same directory.
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for rules of coding and pull requests.
+
+If you want to help with translations check [translating guidelines](Langs/0000-translating-guidelines.md).
+
 ## License
 
 WhyNotWin11 is free and open source software, it is using the LGPL-3.0 license.
 
-See LICENSE for the full license text.
+See [LICENSE](LICENSE) for the full license text.

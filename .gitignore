@@ -1,4 +1,7 @@
 *.exe
-WhyNot.txt
-WhyNotWin11_stripped.au3
-del.au3
+*_stripped.au3
+del*.au3
+Config/config.st
+theme.def
+2theme.def
+Backup/*
