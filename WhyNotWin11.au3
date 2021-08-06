@@ -127,6 +127,7 @@ Func ProcessCMDLine()
 									$aOutput[1] = $CmdLine[2]
 									$aOutput[2] = $CmdLine[3]
 									_ArrayDelete($CmdLine, "1-3")
+									If UBound($CmdLine) = 1 Then ExitLoop
 								Case Else
 									MsgBox(0, "Invalid", "Missing FORMAT parameter for /format." & @CRLF)
 									Exit 1
@@ -147,7 +148,8 @@ Func ProcessCMDLine()
 
 	ProgressSet(80, "Done")
 
-	If Not $bSilent Then Main($aResults)
+	If Not $bSilent Then Main($aResults, $aOutput)
+	ParseResults($aResults, $aOutput)
 
 EndFunc   ;==>ProcessCMDLine
 
@@ -205,7 +207,7 @@ Func RunChecks()
 
 EndFunc   ;==>RunChecks
 
-Func Main(ByRef $aResults)
+Func Main(ByRef $aResults, ByRef $aOutput)
 
 	; Disable Scaling
 	If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext", "HWND", "DPI_AWARENESS_CONTEXT" - 1)
@@ -667,6 +669,7 @@ Func Main(ByRef $aResults)
 
 			Case $hMsg = $GUI_EVENT_CLOSE Or $hMsg = $hExit
 				GUIDelete($hGUI)
+				If $aOutput[0] = True Then Return
 				Exit
 
 				#cs
@@ -810,13 +813,13 @@ Func ParseResults($aResults, $aOutput)
 
 	Local $aLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 
-	Switch $aOutput[0]
+	Switch $aOutput[1]
 		Case "txt"
 			Local $sFile
-			If StringInStr($aOutput[1], ":") Then
-				$sFile = $aOutput[1]
+			If StringInStr($aOutput[2], ":") Then
+				$sFile = $aOutput[2]
 			Else
-				$sFile = @ScriptDir & "\" & $aOutput[1]
+				$sFile = @ScriptDir & "\" & $aOutput[2]
 			EndIf
 			Local $hFile = FileOpen($sFile, $FO_CREATEPATH + $FO_OVERWRITE)
 			FileWrite($hFile, "Results for " & @ComputerName & @CRLF)
