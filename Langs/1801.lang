@@ -1,6 +1,6 @@
 [MetaData]
 Language=العربية - المملكة المغربية
-Translator=Jae Jin - Kadantte
+Translator=Kadantte
 Version=2.2.4.5
 [Strings]
 Donate=تبرع
@@ -9,7 +9,7 @@ Your Windows 11 Compatibility Results are Below=نتائج توافقية حاس
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=للوصول إلينا WhyNotWin11
 Results Based on Currently Known Requirements!=النتائج مبنية على المتطلبات المعروفة حاليا
 Translation by=المترجم
-Architecture (CPU + OS)=معمارية المعالج ونظام التشغيل
+Architecture=معمارية المعالج ونظام التشغيل
 Boot Method=نوعية الإقلاع
 CPU Compatibility=توافقية المعالج
 CPU Core Count=عدد أنوية المعالج
@@ -56,4 +56,4 @@ Invalid Data Received!=البيانات المستلمة غير صالحة
 Invalid Release Tags Received!=العلامات غير صالحة
 Invalid Release Types Received!=الإصدار غير صالح
 Update Available=هناك تحديث متوفر
-An Update is Availabe, would you like to download it?=هناك تحديث متوفر، أتود تحميله؟
+An Update is Available, would you like to download it?=هناك تحديث متوفر، أتود تحميله؟
