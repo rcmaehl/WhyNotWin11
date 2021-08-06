@@ -1,8 +1,17 @@
 [MetaData]
 Language=Israel - Hebrew
+RTL=true
 Translator= HypeGameMode, dinuto
 Version=2.3.1.1
+[Font]
+Extra Large=24
+Large=18
+Medium=10
+Small=8.5
+Name=Arial
 [Strings]
+Enable enhanced accessibility?=לאפשר נגישות משופרת?
+This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=פונקציית נגישות משופרת החדשה הזו מיועדת עבור לקויי ראיה, כך שברוב ממשק התוכנה יהיה ניתן להשתמש על ידי הקול שלכם וקיצורי מקלדת. להפעיל?
 Donate=תרום
 Settings=הגדרות
 Check for Updates=בדוק עדכוני תוכנה
