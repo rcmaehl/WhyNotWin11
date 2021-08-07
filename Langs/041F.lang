@@ -1,7 +1,7 @@
 [MetaData]
 Language=Turkish - Turkey
 Translator=eren885
-Version=2.2.5.0
+Version=2.3.2.0
 [Strings]
 Donate=Bağış
 Check for Updates=Güncellemeleri kontrol et
@@ -30,7 +30,7 @@ Unable to Check List=Liste kontrol edilemedi
 Error Accessing List=Listeye erişilemedi
 Not Currently Listed as Compatible=Şu anda uyumlu olarak listelenmemiş
 Listed as Compatible=Uyumlu olarak listelenmiş
-Cores=Çekirdekler
+Cores=Çekirdek
 Threads=İş parçacağı
 GPT Detected=GPT tespit edildi
 GPT Not Detected=GPT tespit edilmedi

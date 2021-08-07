@@ -8,6 +8,7 @@ Func _GetCPUInfo($iFlag = 0)
 	Local Static $sSpeed
 	Local Static $sArch
 	Local Static $sCPUs
+	Local Static $sVersion
 
 	If Not $vName <> "" Then
 		Local $Obj_WMIService = ObjGet('winmgmts:\\.\root\cimv2') ;
@@ -21,6 +22,7 @@ Func _GetCPUInfo($iFlag = 0)
 				$vName = $Obj_Item.Name
 				$sSpeed = $Obj_Item.MaxClockSpeed
 				$sArch = $Obj_Item.AddressWidth
+				$sVersion = $Obj_Item.Version
 			Next
 
 			Local $CPUs
@@ -51,6 +53,8 @@ Func _GetCPUInfo($iFlag = 0)
 			Return Number($sSpeed)
 		Case 4
 			Return Number($sArch)
+		Case 5
+			Return String($sVersion)
 		Case Else
 			Return 0
 	EndSwitch
