@@ -2,6 +2,7 @@ Func CopyLangFiles()
 	; FileInstall doc says : The source file must be specified using a string literal.
 	FileInstall(".\langs\0004.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0004.lang", $FC_OVERWRITE)
 	FileInstall(".\langs\0C01.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0C01.lang", $FC_OVERWRITE)
+	FileInstall(".\langs\0C04.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0C0A.lang", $FC_OVERWRITE)
 	FileInstall(".\langs\0C0A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0C0A.lang", $FC_OVERWRITE)
 	FileInstall(".\langs\0401.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0401.lang", $FC_OVERWRITE)
 	FileInstall(".\langs\0404.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0404.lang", $FC_OVERWRITE)
