@@ -10,9 +10,9 @@ Func _ArchCheck()
 		Case @CPUArch = "X64" And @OSArch = "X64"
 			Return True
 		Case @CPUArch = "X64" And @OSArch = "X86"
-			SetError(1, 0, False)
+			Return SetError(1, 0, False)
 		Case Else
-			SetError(2, 0, False)
+			Return SetError(2, 0, False)
 	EndSelect
 EndFunc   ;==>_ArchCheck
 
@@ -24,7 +24,7 @@ Func _BootCheck()
 		Case "Legacy"
 			Return False
 		Case Else
-			SetError(1, $sFirmware, False)
+			Return SetError(1, $sFirmware, False)
 	EndSwitch
 EndFunc   ;==>_BootCheck
 
@@ -49,10 +49,10 @@ Func _CPUNameCheck($sCPU, $sVersion)
 			$sLine = FileReadLine(@LocalAppDataDir & $ListFile, $iLine)
 			Select
 				Case @error
-					SetError(2, 0, False)
+					Return SetError(2, 0, False)
 					ExitLoop
 				Case $iLine = $iLines
-					SetError(3, 0, False)
+					Return SetError(3, 0, False)
 					ExitLoop
 				Case StringInStr($sCPU, $sLine)
 					Return True
@@ -103,9 +103,9 @@ Func _GetDirectXCheck($aArray)
 			Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
 				Return 1
 			Case Not StringInStr($sDXFile, "FeatureLevels:12") Or Not StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM2")
-				SetError(1, 0, False)
+				Return SetError(1, 0, False)
 			Case StringInStr($sDXFile, "DDIVersion:12") And Not StringInStr($sDXFile, "DriverModel:WDDM2")
-				SetError(2, 0, False)
+				Return SetError(2, 0, False)
 			Case Else
 				Return False
 		EndSelect
@@ -152,7 +152,7 @@ Func _MemCheck()
 	EndIf
 
 	If $vMem >= 4 Then
-		Return $vMem
+		Return SetError($vMem, 0, True)
 	Else
 		Return SetError($vMem, 0, False)
 	EndIf
@@ -192,20 +192,20 @@ EndFunc   ;==>_SpaceCheck
 Func _TPMCheck()
 	Select
 		Case Not IsAdmin() And _GetTPMInfo(0) = True
-			Return True
+			Return SetError(Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]), 0, True)
 		Case Not IsAdmin() And _GetTPMInfo(0) <> True
-			Return False
+			Return SetError(0, 0, False)
 		Case _GetTPMInfo(0) = False
 			ContinueCase
 		Case _GetTPMInfo(1) = False
-			Return False
+			Return SetError(0, 0, False)
 		Case Not Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
-			SetError(1, 0, False) ; Under Version 1.2
+			Return SetError(1, 0, False) ; Under Version 1.2
 		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 2.0
-			Return True
+			Return SetError(Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]), 0, True)
 		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
-			SetError(2, 0, False) ; Under Version 1.2 ????
+			Return SetError(2, 0, False) ; Under Version 1.2 ????
 		Case Else
-			Return False
+			Return SetError(0, 0, False)
 	EndSelect
 EndFunc   ;==>_TPMCheck

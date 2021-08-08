@@ -102,7 +102,7 @@ Func ProcessCMDLine()
 							@TAB & "/format" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
 							@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
 							@TAB & "       " & @TAB & "output. Requires a filename if used." & @CRLF & _
-							@TAB & "formats" & @TAB & "TXT" & @CRLF & _
+							@TAB & "formats" & @TAB & "TXT, CSV" & @CRLF & _
 							@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systems will Exit" & @CRLF & _
 							@TAB & "       " & @TAB & "with ERROR_SUCCESS." & @CRLF & _
 							@CRLF & _
@@ -144,16 +144,26 @@ Func ProcessCMDLine()
 
 	If Not $bSilent Then ProgressOn("WhyNotWin11", _Translate(@MUILang, "Loading WMIC"))
 
-	$aResults = RunChecks()
+	$aResults = RunChecks($bSilent)
 
 	ProgressSet(80, "Done")
 
-	If Not $bSilent Then Main($aResults, $aOutput)
-	ParseResults($aResults, $aOutput)
+	If Not $bSilent Then
+		Main($aResults, $aOutput)
+	Else
+		FinalizeResults($aResults)
+	EndIf
+	If $aOutput[0] = True Then OutputResults($aResults, $aOutput)
+	For $iLoop = 0 To 10 Step 1
+		If $aResults[$iLoop][0] = False Or $aResults[$iLoop][0] < 1 Then Exit 1
+	Next
+	Exit 0
 
 EndFunc   ;==>ProcessCMDLine
 
-Func RunChecks()
+Func RunChecks($bSilent)
+
+	#forceref $bSilent
 
 	Local $aResults[11][3]
 
@@ -218,7 +228,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	#cs ; 2.0 Theming Enums
 	Local Enum $iGeneral = 0, $iText, $iIcons, $iStatus
-
+	
 	Local Enum $iBackground = 0, $iSidebar, $iFooter, $iResults
 	Local Enum $iDefault = 0, $iName, $iVersion, $iHeader, $iSubHead, $iLinks, $iChecks, $iResults
 	Local Enum $iGithub = 0, $iDonate, $iDiscord, $iLTT, $iWork, $iSettings
@@ -361,7 +371,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	Local $hBannerText = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
-
+	
 	Local $sBannerURL = _SetBannerText($hBannerText, $hBanner)
 	#ce Maybe Readd Later
 
@@ -540,7 +550,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	#Region ; _MemCheck()
 	If $aResults[7][0] Then
 		_GUICtrlSetState($hCheck[7][0], $iPass)
-		GUICtrlSetData($hCheck[7][2], $aResults[7][0] & " GB")
+		GUICtrlSetData($hCheck[7][2], $aResults[7][1] & " GB")
 	Else
 		GUICtrlSetData($hCheck[7][2], $aResults[7][1] & " GB")
 		_GUICtrlSetState($hCheck[7][0], $iFail)
@@ -571,26 +581,20 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	#EndRegion
 
 	#Region : TPM Check
-	Select
-		Case _GetTPMInfo(0) = False
-			ContinueCase
-		Case _GetTPMInfo(1) = False
-			_GUICtrlSetState($hCheck[10][0], $iFail)
-			GUICtrlSetData($hCheck[10][2], _Translate($iMUI, "TPM Missing / Disabled"))
-		Case Not Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
-			_GUICtrlSetState($hCheck[10][0], $iFail)
-			GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Not Supported"))
-		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 2.0
-			_GUICtrlSetState($hCheck[10][0], $iPass)
-			GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Detected"))
-		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
-			;_GUICtrlSetWarn($hCheck[10][0], "OK")
-			_GUICtrlSetState($hCheck[10][0], $iFail)
-			GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Detected"))
-		Case Else
-			_GUICtrlSetState($hCheck[10][0], $iFail)
-			GUICtrlSetData($hCheck[10][2], _GetTPMInfo(0) & " " & _GetTPMInfo(1) & " " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]))
-	EndSelect
+	If $aResults[10][0] Then
+		_GUICtrlSetState($hCheck[10][0], $iPass)
+		GUICtrlSetData($hCheck[10][2], "TPM " & $aResults[10][1] & " " & _Translate($iMUI, "Detected"))
+	Else
+		_GUICtrlSetState($hCheck[10][0], $iFail)
+		Switch $aResults[10][1]
+			Case 0
+				GUICtrlSetData($hCheck[10][2], _Translate($iMUI, "TPM Missing / Disabled"))
+			Case 1
+				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Not Supported"))
+			Case 2
+				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Not Supported"))
+		EndSwitch
+	EndIf
 	#EndRegion
 
 	#EndRegion
@@ -598,10 +602,10 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	#Region Advanced Checks Tab
 	#cs
 	Local $hAdv = GUICtrlCreateTabItem("Advanced Checks")
-
+	
 	Local $hAdvCheck[11][3]
 	Local $hAdvLabel[11] = ["Camera", "Display Depth", "Display Resolution", "Display Size", "Internet Access", "S Mode", "", "", "", "", ""]
-
+	
 	_GDIPlus_Startup()
 	For $iRow = 0 To 10 Step 1
 		$hAdvCheck[$iRow][0] = GUICtrlCreateLabel("?", 113, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
@@ -625,7 +629,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		;GUICtrlSetTip(-1, $aInfo[$iRow + 10], "", $TIP_NOICON,  $TIP_CENTER)
 	Next
 	_GDIPlus_Shutdown()
-
+	
 	If _InternetCheck() Then
 		_GUICtrlSetState($hAdvCheck[4][0], $iPass)
 		GUICtrlSetData($hAdvCheck[4][2], _Translate($iMUI, "Detected"))
@@ -797,41 +801,92 @@ Func _GetLatestRelease($sCurrent)
 EndFunc   ;==>_GetLatestRelease
 
 ; #FUNCTION# ====================================================================================================================
-; Name ..........: ParseResults
-; Description ...: Parses an Array of Check Results and formats it to a file based on file setting
-; Syntax ........: ParseResults($aResults)
+; Name ..........: FinalizeResults
+; Description ...: Finalizes Checks that take extended periods to execute
+; Syntax ........: FinalizeResults(Byref $aResults)
 ; Parameters ....: $aResults            - an array of results
 ; Return values .: None
 ; Author ........: rcmaehl
-; Modified ......: 07/09/2021
+; Modified ......: 08/08/2021
 ; Remarks .......:
 ; Related .......:
 ; Link ..........:
 ; Example .......: No
 ; ===============================================================================================================================
-Func ParseResults($aResults, $aOutput)
+Func FinalizeResults(ByRef $aResults)
+
+	Local $aDirectX = $aResults[5][0]
+
+	While 1
+		Select
+			Case IsArray($aDirectX) And (Not ProcessExists($aDirectX[1])) And FileExists($aDirectX[0])
+				_GetDirectXCheck($aDirectX)
+				$aDirectX = Null
+			Case $aDirectX = Null
+				Return
+		EndSelect
+	WEnd
+
+EndFunc   ;==>FinalizeResults
+
+; #FUNCTION# ====================================================================================================================
+; Name ..........: OutputResults
+; Description ...: Parses an Array of Check Results and formats it to a file based on file setting
+; Syntax ........: OutputResults($aResults)
+; Parameters ....: $aResults            - an array of results
+; Return values .: None
+; Author ........: rcmaehl
+; Modified ......: 08/08/2021
+; Remarks .......:
+; Related .......:
+; Link ..........:
+; Example .......: No
+; ===============================================================================================================================
+Func OutputResults(ByRef $aResults, $aOutput)
+
+	Local $sFile, $hFile
 
 	Local $aLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 
 	Switch $aOutput[1]
 		Case "txt"
-			Local $sFile
 			If StringInStr($aOutput[2], ":") Then
 				$sFile = $aOutput[2]
 			Else
 				$sFile = @ScriptDir & "\" & $aOutput[2]
 			EndIf
-			Local $hFile = FileOpen($sFile, $FO_CREATEPATH + $FO_OVERWRITE)
+			$hFile = FileOpen($sFile, $FO_CREATEPATH + $FO_OVERWRITE)
 			FileWrite($hFile, "Results for " & @ComputerName & @CRLF)
 			For $iLoop = 0 To 10 Step 1
 				FileWrite($hFile, $aLabel[$iLoop] & @TAB & $aResults[$iLoop][0] & @TAB & $aResults[$iLoop][1] & @TAB & $aResults[$iLoop][2] & @CRLF)
+			Next
+			FileClose($hFile)
+		Case "csv"
+			If StringInStr($aOutput[2], ":") Then
+				$sFile = $aOutput[2]
+			Else
+				$sFile = @ScriptDir & "\" & $aOutput[2]
+			EndIf
+			If Not FileExists($sFile) Then
+				$hFile = FileOpen($sFile, $FO_CREATEPATH + $FO_OVERWRITE)
+				FileWrite($hFile, "Hostname")
+				For $iLoop = 0 To 10 Step 1
+					FileWrite($hFile, "," & $aLabel[$iLoop])
+				Next
+				FileWrite($hFile, @CRLF)
+			Else
+				$hFile = FileOpen($sFile, $FO_APPEND)
+			EndIf
+			FileWrite($hFile, @ComputerName)
+			For $iLoop = 0 To 10 Step 1
+				FileWrite($hFile, "," & $aResults[$iLoop][0])
 			Next
 			FileClose($hFile)
 		Case Else
 			;;;
 	EndSwitch
 
-EndFunc   ;==>ParseResults
+EndFunc   ;==>OutputResults
 
 ; #FUNCTION# ====================================================================================================================
 ; Name ..........: _SetBannerText
