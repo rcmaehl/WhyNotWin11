@@ -72,7 +72,7 @@ Done=Fertig
 Loading WMIC=Lade WMIC
 Warning=Warnung
 [Descriptions]
-Architecture=Sollten Sie ein 32-Bit-Betriebssystem nutzen, erfordert dies eine 64-Bit-Neuinstallation von Windows 11. Ihre Daten müssen vorab gesichert werden. Eine 32-Bit-CPU erfordert einen Wechsel auf eine 64-Bit-CPU.
+Architecture=Sollten Sie ein 32-Bit-Betriebssystem einsetzen, erfordert dies eine 64-Bit-Neuinstallation von Windows 11. Ihre Daten müssen vorab gesichert werden. Eine 32-Bit-CPU erfordert einen Wechsel auf eine neue 64-Bit-CPU.
 Boot=Die Boot-Methode, die Ihr Computer zum Starten verwendet. Windows 11 benötigt den UEFI-Modus. Sollten Sie "Legacy" (traditioneller Startmodus) nutzen, kann dies oft in den BIOS/UEFI-Einstellungen umgestellt werden. Schlagen Sie im Handbuch Ihres Motherboards nach.
 CPU Name=Der Prozessor, welcher in Ihrem Computer verbaut ist. Die Liste der zu Windows 11 kompatiblen Prozessoren kann sich noch ändern. Bei einer Inkompatibilität muss der Prozessor ersetzt werden. Dies ist bei vielen Laptops nicht möglich.
 CPU Cores=Die Anzahl der Rechenkerne, die Ihrer CPU zur Verfügung stehen. Windows 11 benötigt mindestens eine 2-Kern-CPU. Bei einer Inkompatibilität muss die CPU ersetzt werden. Dies ist bei vielen Laptops nicht möglich.
