@@ -71,11 +71,14 @@ Func _CPUCoresCheck($iCores, $iThreads)
 EndFunc   ;==>_CPUCoresCheck
 
 Func _CPUSpeedCheck()
-	If _GetCPUInfo(3) >= 1000 Then
-		Return True
-	Else
-		Return False
-	EndIf
+	Select
+		Case _GetCPUInfo(3) >= 1000
+			ContinueCase
+		Case RegRead("HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0", "~MHz") >= 1000
+			Return True
+		Case Else
+			Return False
+	EndSelect
 EndFunc   ;==>_CPUSpeedCheck
 
 Func _DirectXStartCheck()
