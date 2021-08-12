@@ -11,7 +11,7 @@ Small=8.5
 Name=Arial
 [Strings]
 Enable enhanced accessibility?=Erweiterte Barrierefreiheit aktivieren?
-This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=Die neue erweiterte Barrierefreiheit-Funktionalität wurde für Sehbehinderte entwickelt, bei denen der größte Teil der Programmoberfläche durch Sprach- und Tastaturkürzel verwendet werden kann. Soll diese aktiviert werden? 
+This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=Die neue Funktionalität für erweiterte Barrierefreiheit wurde für Sehbehinderte entwickelt, wobei der größte Teil der Programmoberfläche durch Sprach- und Tastaturkürzel kontrolliert werden kann. Soll diese aktiviert werden? 
 Donate=Spenden
 Settings=Einstellungen
 Check for Updates=Update suchen
