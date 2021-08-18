@@ -1,15 +1,25 @@
 [MetaData]
 Language=Romanian - Romania
+RTL=false
 Translator=bog1200
-Version=2.3.0.1
+Version=2.3.2.0
+[Font]
+Extra Large=24
+Large=16
+Medium=10
+Small=8.5
+Name=Arial
 [Strings]
+Enable enhanced accessibility?=Activați accesibilitatea îmbunătățită?
+This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=Această nouă funcționalitate de accesibilitate îmbunătățită este concepută pentru persoanele cu deficiențe de vedere, în care cea mai mare parte a interfeței programului poate fi utilizată de comenzile rapide de la voce și tastatură. Activați?
 Donate=Donează
+Settings=Setări
 Check for Updates=Verifică actualizări
-Your Windows 11 Compatibility Results are Below=Rezultatele dvs. de compatibilitate Windows 11 sunt mai jos
+Your Windows 11 Compatibility Results Are Below=Rezultatele dvs. de compatibilitate Windows 11 sunt mai jos
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Acum ajungeți la WhyNotWin11 prin https://www.whynotwin11.org/
-Results Based on Currently Known Requirements!=Rezultate bazate pe cerințele cunoscute în prezent!
+Results based on currently known requirements!=Rezultate bazate pe cerințele cunoscute în prezent!
 Translation by=Tradus de
-Architecture=Architectura (CPU + SO)
+Architecture=Architectură
 Boot Method=Metodă de Boot
 CPU Compatibility=Compatibilitate CPU
 CPU Core Count=Număr Nuclee CPU
@@ -28,7 +38,7 @@ Checking...=Se verifică...
 Unable to Determine=Nu s-a putut determina
 Unable to Check List=Nu s-a putut accesa lista
 Error Accessing List=Eroare la acesarea listei
-Not Currently Listed aș Compatible=Nu este listat că fiind compatibil
+Not Currently Listed as Compatible=Nu este listat ca fiind compatibil
 Listed as Compatible=Listat că fiind compatibil
 Cores=Nuclee
 Threads=Threaduri
@@ -57,3 +67,18 @@ Invalid Release Tags Received!=Tag-uri de lansare invalide primite!
 Invalid Release Types Received!=Tipuri de lansare invalide primite!
 Update Available=Actualizare Disponibilă
 An Update is Available, would you like to download it?=Este disponibilă o actualizare, doriți să o descărcați?
+Done=Gata
+Loading WMIC=Se încarcă WMIC
+Warning=Atenție
+[Descriptions]
+Architecture=Cantitatea de date pe care procesorul și sistemul de operare le pot procesa simultan. Rezultatul sistemului de operare pe 32 de biți necesită ștergerea discului și reinstalarea Windows 11. Procesorul pe 32 de biți necesită înlocuirea procesorului.
+Boot=O metodă utilizată de placa de bază pentru a încărca Windows. Rezultatele Legacy pot fi fixate pe plăcile de bază mai noi din setările BIOS / UEFI. Consultați manualul plăcii de bază.
+CPU Name=CPU pe care îl aveți instalat în computer. Compatibilitatea poate fi modificată. Necesită înlocuire fizică pe desktopuri; Nu se poate înlocui pe laptopuri.
+CPU Cores=Numărul de sarcini pe care CPU le poate procesa simultan. Necesită înlocuire fizică pe desktopuri; Nu se poate înlocui pe laptopuri.
+CPU Speed=Viteza cu care procesorul procesează sarcinile. Necesită înlocuire fizică pe desktopuri; Nu se poate înlocui pe laptopuri.
+DirectX=Versiunea DirectX DDI / Feature Level acceptată de placa dvs. Aceasta este separată de versiunea software DirectX. Placile 'DirectX 12 API' pot eșua la această verificare.
+Disk Type=Formatul în care datele dvs. sunt stocate pe disc. Rezultatele non-GPT pot fi remediate utilizând instrumentul Microsoft MBR2GPT.
+RAM=Cantitatea de memorie rapidă instalată în computer. Actualizabil fizic pe desktopuri; Actualizabil fizic la laptopuri de ultimă generație.
+Secure Boot=O metodă utilizată de placa de bază pentru a încărca Windows. Dacă nu este detectat, poate fi fixat pe plăcile de bază mai noi din setările BIOS / UEFI. Consultați manualul plăcii de bază.
+Storage=Cantitatea de spațiu pentru date pe disc. Actualizabil fizic la laptopuri de ultimă generație. 
+TPM=Un modul de securitate utilizat de Windows. Toate procesoarele AMD moderne conțin unul; Unele procesoare Intel moderne conțin unul. Verificați setările BIOS / UEFI. Consultați manualul plăcii de bază.
