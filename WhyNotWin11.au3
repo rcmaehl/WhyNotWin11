@@ -6,9 +6,9 @@
 #AutoIt3Wrapper_UseX64=Y
 #AutoIt3Wrapper_Res_Comment=https://www.whynotwin11.org
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready
-#AutoIt3Wrapper_Res_Fileversion=2.3.2.0
+#AutoIt3Wrapper_Res_Fileversion=2.4.0.0
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
-#AutoIt3Wrapper_Res_ProductVersion=2.3.2
+#AutoIt3Wrapper_Res_ProductVersion=2.4.0
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
@@ -27,7 +27,7 @@
 #Au3Stripper_Parameters=/so
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
-Global $sVersion = "2.3.2.0"
+Global $sVersion = "2.4.0.0"
 FileChangeDir(@SystemDir)
 
 #include <File.au3>
@@ -97,9 +97,9 @@ Func ProcessCMDLine()
 					MsgBox(0, "Help and Flags", _
 							"Checks PC for Windows 11 Release Compatibility" & @CRLF & _
 							@CRLF & _
-							"WhyNotWin11 [/format FORMAT FILENAME [/silent]]" & @CRLF & _
+							"WhyNotWin11 [/export FORMAT FILENAME [/silent]]" & @CRLF & _
 							@CRLF & _
-							@TAB & "/format" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
+							@TAB & "/export" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
 							@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
 							@TAB & "       " & @TAB & "output. Requires a filename if used." & @CRLF & _
 							@TAB & "formats" & @TAB & "TXT, CSV" & @CRLF & _
@@ -112,7 +112,7 @@ Func ProcessCMDLine()
 					$bSilent = True
 					_ArrayDelete($CmdLine, 1)
 					If UBound($CmdLine) = 1 Then ExitLoop
-				Case "/f", "/format"
+				Case "/e", "/export", "/f", "/format"
 					Select
 						Case UBound($CmdLine) <= 3
 							MsgBox(0, "Invalid", "Missing FILENAME parameter for /format." & @CRLF)
