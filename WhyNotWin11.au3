@@ -108,10 +108,6 @@ Func ProcessCMDLine()
 							@CRLF & _
 							"All flags can be shortened to just the first character (e.g. /s)" & @CRLF)
 					Exit 0
-				Case "/s", "/silent"
-					$bSilent = True
-					_ArrayDelete($CmdLine, 1)
-					If UBound($CmdLine) = 1 Then ExitLoop
 				Case "/e", "/export", "/f", "/format"
 					Select
 						Case UBound($CmdLine) <= 3
@@ -133,6 +129,30 @@ Func ProcessCMDLine()
 									Exit 1
 							EndSwitch
 					EndSelect
+				Case "/s", "/silent"
+					$bSilent = True
+					_ArrayDelete($CmdLine, 1)
+					If UBound($CmdLine) = 1 Then ExitLoop
+				Case "/u", "/update"
+					Switch $CmdLine[2]
+						Case "dev"
+							InetGet("https://nightly.link/rcmaehl/WhyNotWin11/workflows/wnw11/main/WNW11.zip", "WhyNotWin11_dev.exe")
+							_ArrayDelete($CmdLine, "1-2")
+						Case "release"
+							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", "WhyNotWin11_Latest.exe")
+							_ArrayDelete($CmdLine, "1-2")
+						Case Else
+							Select
+								Case UBound($CmdLine) = 1
+									ContinueCase
+								Case StringLeft($CmdLine[2], 1) = "/"
+									InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", "WhyNotWin11_Latest.exe")
+									_ArrayDelete($CmdLine, 1)
+								Case Else
+									MsgBox(0, "Invalid", 'Invalid release type - "' & $CmdLine[2] & "." & @CRLF)
+									Exit 1
+							EndSelect
+					EndSwitch
 				Case Else
 					If @Compiled Then ; support for running non-compiled script - mLipok
 						MsgBox(0, "Invalid", 'Invalid switch - "' & $CmdLine[$iLoop] & "." & @CRLF)
