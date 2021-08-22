@@ -1,6 +1,6 @@
 [MetaData]
 Language=Indonesian (Indonesia)
-Translator=SamCool939
+Translator=SamCool939 and WilloIzCitron
 Version=2.3.1.0
 [Font]
 Extra Large=22
@@ -54,24 +54,24 @@ DirectX 12 and WDDM 2=DirectX 12 dan WDDM 2
 No DirectX 12, but WDDM2=Tidak ada DirectX 12, tapi ada WDDM2
 DirectX 12, but no WDDM2=Ada DirectX 12, tapi tidak ada WDDM2
 No DirectX 12 or WDDM2=Tidak ada DirectX 12 maupun WDDM
-Test Build?=Versi Tes?
+Test Build?=Versi Uji Coba?
 You're running a newer build than publicly Available!=Anda menjalankan versi yang lebih baru daripada yang Tersedia untuk publik!
 Up to Date=Terkini
 You're running the latest build!=Anda menjalankan versi terbaru!
 Unable to Check for Updates=Tidak Dapat Memeriksa Pembaruan
 Unable to load release data.=Tidak dapat memuat data rilis.
 Invalid Data Received!=Data yang Diterima Tidak Valid!
-Invalid Release Tags Received!=Tag Rilis yang Diterima Tidak Valid!
+Invalid Release Tags Received!=Tanda Rilis yang Diterima Tidak Valid!
 Invalid Release Types Received!=Tipe Rilis yang Diterima Tidak Valid!
 Update Available=Pembaruan Tersedia
-An Update is Available, would you like to download it?=Pembaruan Tersedia, apakah Anda ingin mengunduhnya?
+An Update is Available, would you like to download it?=Pembaruan telah Tersedia, apakah Anda ingin mengunduhnya?
 [Descriptions]
 Arsitektur=Jumlah data yang dapat diproses oleh CPU dan OS Anda sekaligus. Hasil OS 32-Bit memerlukan penghapusan disk dan instalasi bersih Windows 11. CPU 32-Bit membutuhkan penggantian CPU.
 Boot=Metode yang digunakan motherboard Anda untuk memuat Windows. Hasil lawas dapat diperbaiki pada motherboard yang lebih baru di pengaturan BIOS/UEFI Anda. Lihat manual motherboard Anda.
 Nama CPU=CPU yang telah Anda pasang di komputer Anda. Kompatibilitas dapat berubah. Membutuhkan penggantian fisik di Desktop; Tidak dapat diganti pada Laptop.
 Inti CPU=Jumlah tugas yang dapat diproses CPU Anda sekaligus. Membutuhkan penggantian fisik di Desktop; Tidak dapat diganti pada Laptop.
 Kecepatan CPU=Kecepatan CPU Anda memproses tugas. Membutuhkan penggantian fisik di Desktop; Tidak dapat diganti pada Laptop.
-DirectX=Versi DirectX DDI/Feature Level yang didukung kartu Anda. Ini terpisah dari versi perangkat lunak DirectX. Kartu 'DirectX 12 API' mungkin gagal dalam pemeriksaan ini.
+DirectX=Versi DirectX DDI/Feature Level yang didukung kartu grafis Anda. Ini terpisah dari versi perangkat lunak DirectX. Kartu 'DirectX 12 API' mungkin gagal dalam pemeriksaan ini.
 Tipe Disk=Format data Anda yang disimpan di Disk Anda. Hasil non-GPT dapat diperbaiki menggunakan alat MBR2GPT dari Microsoft.
 RAM=Jumlah memori cepat yang terpasang di komputer Anda. Dapat diupgrade secara fisik di Desktop; Dapat diupgrade secara fisik di Laptop kelas atas.
 Boot Aman=Metode yang digunakan motherboard Anda untuk memuat Windows. Jika tidak terdeteksi, dapat diperbaiki pada motherboard yang lebih baru di pengaturan BIOS/UEFI Anda. Lihat manual motherboard Anda.
