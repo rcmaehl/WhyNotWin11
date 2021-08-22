@@ -1,7 +1,7 @@
 [MetaData]
 Language=Indonesian (Indonesia)
 Translator=SamCool939 and WilloIzCitron
-Version=2.3.1.0
+Version=2.3.2.0
 [Font]
 Extra Large=22
 Large=18
@@ -45,7 +45,7 @@ Enabled=Diaktifkan
 Supported=Didukung
 Not Supported=Tidak Didukung
 Disabled / Not Detected=Dinonaktifkan / Tidak Terdeteksi
-Drive(s) Meet Requirements=Drive Memenuhi Persyaratan
+Drive(s) Meet Requirements=Perangkat Yang Memenuhi Persyaratan
 0 Drives Meet Requirements=0 Drive Memenuhi Persyaratan
 TPM Missing / Disabled=TPM Tidak Ada / Dinonaktifkan
 Detected=Terdeteksi
