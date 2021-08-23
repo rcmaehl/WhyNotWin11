@@ -97,7 +97,7 @@ Func ProcessCMDLine()
 					MsgBox(0, "Help and Flags", _
 							"Checks PC for Windows 11 Release Compatibility" & @CRLF & _
 							@CRLF & _
-							"WhyNotWin11 [/export FORMAT FILENAME [/silent]]" & @CRLF & _
+							"WhyNotWin11 [/export FORMAT FILENAME [/silent]][/update [branch]]" & @CRLF & _
 							@CRLF & _
 							@TAB & "/export" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
 							@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
@@ -105,6 +105,7 @@ Func ProcessCMDLine()
 							@TAB & "formats" & @TAB & "TXT, CSV" & @CRLF & _
 							@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systems will Exit" & @CRLF & _
 							@TAB & "       " & @TAB & "with ERROR_SUCCESS." & @CRLF & _
+							@TAB & "/update" & @TAB & "Downloads the latest RELEASE (default) or DEV build" & @CRLF & _
 							@CRLF & _
 							"All flags can be shortened to just the first character (e.g. /s)" & @CRLF)
 					Exit 0
@@ -134,25 +135,23 @@ Func ProcessCMDLine()
 					_ArrayDelete($CmdLine, 1)
 					If UBound($CmdLine) = 1 Then ExitLoop
 				Case "/u", "/update"
-					Switch $CmdLine[2]
-						Case "dev"
+					Select
+						Case UBound($CmdLine) = 1
+							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", "WhyNotWin11_Latest.exe")
+							_ArrayDelete($CmdLine, 1)
+						Case UBound($CmdLine) > 1 And $CmdLine[2] = "dev"
 							InetGet("https://nightly.link/rcmaehl/WhyNotWin11/workflows/wnw11/main/WNW11.zip", "WhyNotWin11_dev.exe")
 							_ArrayDelete($CmdLine, "1-2")
-						Case "release"
+						Case UBound($CmdLine) > 1 And $CmdLine[2] = "release"
 							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", "WhyNotWin11_Latest.exe")
 							_ArrayDelete($CmdLine, "1-2")
+						Case StringLeft($CmdLine[2], 1) = "/"
+							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", "WhyNotWin11_Latest.exe")
+							_ArrayDelete($CmdLine, 1)
 						Case Else
-							Select
-								Case UBound($CmdLine) = 1
-									ContinueCase
-								Case StringLeft($CmdLine[2], 1) = "/"
-									InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", "WhyNotWin11_Latest.exe")
-									_ArrayDelete($CmdLine, 1)
-								Case Else
-									MsgBox(0, "Invalid", 'Invalid release type - "' & $CmdLine[2] & "." & @CRLF)
-									Exit 1
-							EndSelect
-					EndSwitch
+							MsgBox(0, "Invalid", 'Invalid release type - "' & $CmdLine[2] & "." & @CRLF)
+							Exit 1
+					EndSelect
 				Case Else
 					If @Compiled Then ; support for running non-compiled script - mLipok
 						MsgBox(0, "Invalid", 'Invalid switch - "' & $CmdLine[$iLoop] & "." & @CRLF)
@@ -274,6 +273,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	GUICtrlSetDefColor($aColors[$iText])
 	GUICtrlSetDefBkColor($aColors[$iBackground])
+
 
 	Local $hDumpLang = GUICtrlCreateDummy()
 
