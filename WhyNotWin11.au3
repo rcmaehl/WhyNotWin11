@@ -63,6 +63,8 @@ Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
 Opt("TrayIconHide", 1)
 Opt("TrayAutoPause", 0)
 
+Opt("GUIResizeMode", $GUI_DOCKSIZE)
+
 ExtractFiles()
 
 #Region ; OS Checks
