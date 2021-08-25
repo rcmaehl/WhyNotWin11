@@ -1,5 +1,5 @@
 [MetaData]
-Language=Indonesian (Indonesia)
+Language=Indonesian (Bahasa Indonesia)
 Translator=SamCool939, WilloIzCitron
 Version=2.4.0.0
 [Font]
@@ -46,8 +46,8 @@ Supported=Didukung
 Not Supported=Tidak Didukung
 Disabled / Not Detected=Dinonaktifkan / Tidak Terdeteksi
 Drive(s) Meet Requirements=Perangkat Yang Memenuhi Persyaratan
-0 Drives Meet Requirements=0 Drive Memenuhi Persyaratan
-TPM Missing / Disabled=TPM Tidak Ada / Dinonaktifkan
+0 Drives Meet Requirements=0 Perangkat Memenuhi Persyaratan
+TPM Missing / Disabled=TPM Hilang / Dinonaktifkan
 Detected=Terdeteksi
 DirectX 12 and WDDM 3=DirectX 12 dan WDDM 3
 DirectX 12 and WDDM 2=DirectX 12 dan WDDM 2
@@ -73,7 +73,7 @@ Inti CPU=Jumlah tugas yang dapat diproses CPU Anda sekaligus. Membutuhkan pengga
 Kecepatan CPU=Kecepatan CPU Anda memproses tugas. Membutuhkan penggantian fisik di Desktop; Tidak dapat diganti pada Laptop.
 DirectX=Versi DirectX DDI/Feature Level yang didukung kartu grafis Anda. Ini terpisah dari versi perangkat lunak DirectX. Kartu 'DirectX 12 API' mungkin gagal dalam pemeriksaan ini.
 Tipe Disk=Format data Anda yang disimpan di Disk Anda. Hasil non-GPT dapat diperbaiki menggunakan alat MBR2GPT dari Microsoft.
-RAM=Jumlah memori cepat yang terpasang di komputer Anda. Dapat diupgrade secara fisik di Desktop; Dapat diupgrade secara fisik di Laptop kelas atas.
+RAM=Jumlah memori cepat yang terpasang di komputer Anda. Dapat ditingkatkan secara fisik di Desktop; Dapat ditingkatkan secara fisik di Laptop kelas atas.
 Boot Aman=Metode yang digunakan motherboard Anda untuk memuat Windows. Jika tidak terdeteksi, dapat diperbaiki pada motherboard yang lebih baru di pengaturan BIOS/UEFI Anda. Lihat manual motherboard Anda.
-Penyimpanan=Jumlah ruang untuk data di disk Anda. Secara fisik dapat diupgrade di Laptop kelas atas.
-TPM=Modul keamanan yang digunakan oleh Windows. Semua CPU AMD modern punya satu modul; Beberapa CPU Intel modern punya satu modul. Periksa pengaturan BIOS/UEFI Anda. Lihat manual motherboard Anda.
+Penyimpanan=Jumlah ruang untuk data di disk Anda. Secara fisik dapat ditingkatkan di Laptop kelas atas.
+TPM=Modul keamanan yang digunakan oleh Windows. Semua CPU AMD modern punya satu modul; Beberapa CPU Intel modern punya satu modul; dan pula menggunakan chip TPM eksternal ke motherboard yang memiliki slot TPM. Periksa pengaturan BIOS/UEFI Anda. Lihat manual motherboard Anda.
