@@ -1,5 +1,5 @@
 [MetaData]
-Language=Indonesian (Indonesia)
+Language=Indonesian (Bahasa Indonesia)
 Translator=SamCool939, WilloIzCitron
 Version=2.4.0.0
 [Font]
@@ -46,8 +46,8 @@ Supported=Didukung
 Not Supported=Tidak Didukung
 Disabled / Not Detected=Dinonaktifkan / Tidak Terdeteksi
 Drive(s) Meet Requirements=Perangkat Yang Memenuhi Persyaratan
-0 Drives Meet Requirements=0 Drive Memenuhi Persyaratan
-TPM Missing / Disabled=TPM Tidak Ada / Dinonaktifkan
+0 Drives Meet Requirements=0 Perangkat Memenuhi Persyaratan
+TPM Missing / Disabled=TPM Hilang / Dinonaktifkan
 Detected=Terdeteksi
 DirectX 12 and WDDM 3=DirectX 12 dan WDDM 3
 DirectX 12 and WDDM 2=DirectX 12 dan WDDM 2
@@ -65,15 +65,18 @@ Invalid Release Tags Received!=Tanda Rilis yang Diterima Tidak Valid!
 Invalid Release Types Received!=Tipe Rilis yang Diterima Tidak Valid!
 Update Available=Pembaruan Tersedia
 An Update is Available, would you like to download it?=Pembaruan telah Tersedia, apakah Anda ingin mengunduhnya?
+Done=Selesai
+Loading WMIC=Memuat WMIC
+Warning=Peringatan
 [Descriptions]
-Arsitektur=Jumlah data yang dapat diproses oleh CPU dan OS Anda sekaligus. Hasil OS 32-Bit memerlukan penghapusan disk dan instalasi bersih Windows 11. CPU 32-Bit membutuhkan penggantian CPU.
+Architecture=Jumlah data yang dapat diproses oleh CPU dan OS Anda sekaligus. Hasil OS 32-Bit memerlukan penghapusan disk dan instalasi bersih Windows 11. CPU 32-Bit membutuhkan penggantian CPU.
 Boot=Metode yang digunakan motherboard Anda untuk memuat Windows. Hasil lawas dapat diperbaiki pada motherboard yang lebih baru di pengaturan BIOS/UEFI Anda. Lihat manual motherboard Anda.
-Nama CPU=CPU yang telah Anda pasang di komputer Anda. Kompatibilitas dapat berubah. Membutuhkan penggantian fisik di Desktop; Tidak dapat diganti pada Laptop.
-Inti CPU=Jumlah tugas yang dapat diproses CPU Anda sekaligus. Membutuhkan penggantian fisik di Desktop; Tidak dapat diganti pada Laptop.
-Kecepatan CPU=Kecepatan CPU Anda memproses tugas. Membutuhkan penggantian fisik di Desktop; Tidak dapat diganti pada Laptop.
+CPU Name=CPU yang telah Anda pasang di komputer Anda. Kompatibilitas dapat berubah. Membutuhkan penggantian fisik di Desktop; Tidak dapat diganti pada Laptop.
+CPU Cores=Jumlah tugas yang dapat diproses CPU Anda sekaligus. Membutuhkan penggantian fisik di Desktop; Tidak dapat diganti pada Laptop.
+CPU Speed=Kecepatan CPU Anda memproses tugas. Membutuhkan penggantian fisik di Desktop; Tidak dapat diganti pada Laptop.
 DirectX=Versi DirectX DDI/Feature Level yang didukung kartu grafis Anda. Ini terpisah dari versi perangkat lunak DirectX. Kartu 'DirectX 12 API' mungkin gagal dalam pemeriksaan ini.
-Tipe Disk=Format data Anda yang disimpan di Disk Anda. Hasil non-GPT dapat diperbaiki menggunakan alat MBR2GPT dari Microsoft.
-RAM=Jumlah memori cepat yang terpasang di komputer Anda. Dapat diupgrade secara fisik di Desktop; Dapat diupgrade secara fisik di Laptop kelas atas.
-Boot Aman=Metode yang digunakan motherboard Anda untuk memuat Windows. Jika tidak terdeteksi, dapat diperbaiki pada motherboard yang lebih baru di pengaturan BIOS/UEFI Anda. Lihat manual motherboard Anda.
-Penyimpanan=Jumlah ruang untuk data di disk Anda. Secara fisik dapat diupgrade di Laptop kelas atas.
-TPM=Modul keamanan yang digunakan oleh Windows. Semua CPU AMD modern punya satu modul; Beberapa CPU Intel modern punya satu modul. Periksa pengaturan BIOS/UEFI Anda. Lihat manual motherboard Anda.
+Disk Type=Format data Anda yang disimpan di Disk Anda. Hasil non-GPT dapat diperbaiki menggunakan alat MBR2GPT dari Microsoft.
+RAM=Jumlah memori cepat yang terpasang di komputer Anda. Dapat ditingkatkan secara fisik di Desktop; Dapat ditingkatkan secara fisik di Laptop kelas atas.
+Secure Boot=Metode yang digunakan motherboard Anda untuk memuat Windows. Jika tidak terdeteksi, dapat diperbaiki pada motherboard yang lebih baru di pengaturan BIOS/UEFI Anda. Lihat manual motherboard Anda.
+Storage=Jumlah ruang untuk data di disk Anda. Secara fisik dapat ditingkatkan di Laptop kelas atas.
+TPM=Modul keamanan yang digunakan oleh Windows. Semua CPU AMD modern punya satu modul; Beberapa CPU Intel modern punya satu modul; dan pula menggunakan chip TPM eksternal ke motherboard yang memiliki slot TPM. Periksa pengaturan BIOS/UEFI Anda. Lihat manual motherboard Anda.
