@@ -251,7 +251,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	#cs ; 2.0 Theming Enums
 	Local Enum $iGeneral = 0, $iText, $iIcons, $iStatus
-
+	
 	Local Enum $iBackground = 0, $iSidebar, $iFooter, $iResults
 	Local Enum $iDefault = 0, $iName, $iVersion, $iHeader, $iSubHead, $iLinks, $iChecks, $iResults
 	Local Enum $iGithub = 0, $iDonate, $iDiscord, $iLTT, $iWork, $iSettings
@@ -395,7 +395,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	Local $hBannerText = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
-
+	
 	Local $sBannerURL = _SetBannerText($hBannerText, $hBanner)
 	#ce Maybe Readd Later
 
@@ -626,10 +626,10 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	#Region Advanced Checks Tab
 	#cs
 	Local $hAdv = GUICtrlCreateTabItem("Advanced Checks")
-
+	
 	Local $hAdvCheck[11][3]
 	Local $hAdvLabel[11] = ["Camera", "Display Depth", "Display Resolution", "Display Size", "Internet Access", "S Mode", "", "", "", "", ""]
-
+	
 	_GDIPlus_Startup()
 	For $iRow = 0 To 10 Step 1
 		$hAdvCheck[$iRow][0] = GUICtrlCreateLabel("?", 113, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
@@ -653,7 +653,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		;GUICtrlSetTip(-1, $aInfo[$iRow + 10], "", $TIP_NOICON,  $TIP_CENTER)
 	Next
 	_GDIPlus_Shutdown()
-
+	
 	If _InternetCheck() Then
 		_GUICtrlSetState($hAdvCheck[4][0], $iPass)
 		GUICtrlSetData($hAdvCheck[4][2], _Translate($iMUI, "Detected"))
