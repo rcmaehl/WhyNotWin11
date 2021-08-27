@@ -132,28 +132,30 @@ Func ProcessCMDLine()
 									Exit 1
 							EndSwitch
 					EndSelect
+					If UBound($CmdLine) = 1 Then ExitLoop
 				Case "/s", "/silent"
 					$bSilent = True
 					_ArrayDelete($CmdLine, 1)
 					If UBound($CmdLine) = 1 Then ExitLoop
 				Case "/u", "/update"
 					Select
-						Case UBound($CmdLine) = 1
-							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", "WhyNotWin11_Latest.exe")
+						Case UBound($CmdLine) = 2
+							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", @ScriptDir & "WhyNotWin11_Latest.exe")
 							_ArrayDelete($CmdLine, 1)
-						Case UBound($CmdLine) > 1 And $CmdLine[2] = "dev"
-							InetGet("https://nightly.link/rcmaehl/WhyNotWin11/workflows/wnw11/main/WNW11.zip", "WhyNotWin11_dev.exe")
+						Case UBound($CmdLine) > 2 And $CmdLine[2] = "dev"
+							InetGet("https://nightly.link/rcmaehl/WhyNotWin11/workflows/wnw11/main/WNW11.zip", @ScriptDir & "WhyNotWin11_dev.exe")
 							_ArrayDelete($CmdLine, "1-2")
-						Case UBound($CmdLine) > 1 And $CmdLine[2] = "release"
-							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", "WhyNotWin11_Latest.exe")
+						Case UBound($CmdLine) > 2 And $CmdLine[2] = "release"
+							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", @ScriptDir & "WhyNotWin11_Latest.exe")
 							_ArrayDelete($CmdLine, "1-2")
 						Case StringLeft($CmdLine[2], 1) = "/"
-							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", "WhyNotWin11_Latest.exe")
+							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", @ScriptDir & "WhyNotWin11_Latest.exe")
 							_ArrayDelete($CmdLine, 1)
 						Case Else
 							MsgBox(0, "Invalid", 'Invalid release type - "' & $CmdLine[2] & "." & @CRLF)
 							Exit 1
 					EndSelect
+					If UBound($CmdLine) = 1 Then ExitLoop
 				Case Else
 					If @Compiled Then ; support for running non-compiled script - mLipok
 						MsgBox(0, "Invalid", 'Invalid switch - "' & $CmdLine[$iLoop] & "." & @CRLF)
@@ -249,7 +251,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	#cs ; 2.0 Theming Enums
 	Local Enum $iGeneral = 0, $iText, $iIcons, $iStatus
-
+	
 	Local Enum $iBackground = 0, $iSidebar, $iFooter, $iResults
 	Local Enum $iDefault = 0, $iName, $iVersion, $iHeader, $iSubHead, $iLinks, $iChecks, $iResults
 	Local Enum $iGithub = 0, $iDonate, $iDiscord, $iLTT, $iWork, $iSettings
@@ -393,7 +395,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	Local $hBannerText = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
-
+	
 	Local $sBannerURL = _SetBannerText($hBannerText, $hBanner)
 	#ce Maybe Readd Later
 
@@ -420,7 +422,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlSetCursor(-1, 0)
 	#ce
 
-	GUICtrlCreateLabel("* " & _Translate($iMUI, "Results based on currently known requirements!"), 130, 45, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlCreateLabel("* " & _Translate($iMUI, "Results based on currently known requirements! Older Hardware Supported if Data Wiped!"), 130, 45, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetColor(-1, 0xE20012)
 	GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO)
 
@@ -624,10 +626,10 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	#Region Advanced Checks Tab
 	#cs
 	Local $hAdv = GUICtrlCreateTabItem("Advanced Checks")
-
+	
 	Local $hAdvCheck[11][3]
 	Local $hAdvLabel[11] = ["Camera", "Display Depth", "Display Resolution", "Display Size", "Internet Access", "S Mode", "", "", "", "", ""]
-
+	
 	_GDIPlus_Startup()
 	For $iRow = 0 To 10 Step 1
 		$hAdvCheck[$iRow][0] = GUICtrlCreateLabel("?", 113, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
@@ -651,7 +653,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		;GUICtrlSetTip(-1, $aInfo[$iRow + 10], "", $TIP_NOICON,  $TIP_CENTER)
 	Next
 	_GDIPlus_Shutdown()
-
+	
 	If _InternetCheck() Then
 		_GUICtrlSetState($hAdvCheck[4][0], $iPass)
 		GUICtrlSetData($hAdvCheck[4][2], _Translate($iMUI, "Detected"))
