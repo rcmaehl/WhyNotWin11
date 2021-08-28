@@ -1,4 +1,4 @@
-2.3.1.0
+2.4.0.0
 Atom(R) x6200FE
 Atom(R) x6211E
 Atom(R) x6212RE
@@ -536,6 +536,16 @@ Xeon(R) W-1290E
 Xeon(R) W-1290P
 Xeon(R) W-1290T
 Xeon(R) W-1290TE
+Xeon(R) W-2102
+Xeon(R) W-2104
+Xeon(R) W-2123
+Xeon(R) W-2125
+Xeon(R) W-2133
+Xeon(R) W-2135
+Xeon(R) W-2145
+Xeon(R) W-2155
+Xeon(R) W-2175
+Xeon(R) W-2195
 Xeon(R) Gold 5315Y
 Xeon(R) Gold 5317
 Xeon(R) Gold 5318N
