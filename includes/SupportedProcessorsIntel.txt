@@ -53,11 +53,11 @@ Core(TM) i7-7740X
 Core(TM) i7-7800X
 Core(TM) i7-7820HQ
 Core(TM) i7-7820X
-Core(TM) i7-7900X
-Core(TM) i7-7920X
-Core(TM) i7-7940X
-Core(TM) i7-7960X
-Core(TM) i7-7980XE
+Core(TM) i9-7900X
+Core(TM) i9-7920X
+Core(TM) i9-7940X
+Core(TM) i9-7960X
+Core(TM) i9-7980XE
 Core(TM) i5-10210Y
 Core(TM) i5-10310Y
 Core(TM) i5-8200Y
