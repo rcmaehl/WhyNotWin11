@@ -161,6 +161,10 @@ Core(TM) i9-9900K
 Core(TM) i9-9900KF
 Core(TM) i9-9900KS
 Core(TM) i9-9900T
+Core(TM) i9-9900X
+Core(TM) i9-9920X
+Core(TM) i9-9940X
+Core(TM) i9-9960X
 Core(TM) i9-9980HK
 Core(TM) i3-10100Y
 Core(TM) i3-10110Y
