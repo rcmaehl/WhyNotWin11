@@ -151,6 +151,7 @@ Core(TM) i7-9700T
 Core(TM) i7-9700TE
 Core(TM) i7-9750H
 Core(TM) i7-9750HF
+Core(TM) i7-9800X
 Core(TM) i7-9850H
 Core(TM) i7-9850HE
 Core(TM) i7-9850HL
