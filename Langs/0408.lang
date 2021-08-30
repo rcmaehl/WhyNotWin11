@@ -2,11 +2,11 @@
 Language=Greek - Greece
 RTL=false
 Translator=Mant08, konmaz
-Version=2.3.2.0
+Version=2.4.0.0
 [Font]
 Extra Large=24
 Large=16
-Medium=10
+Medium=8
 Small=8.5
 Name=Arial
 [Strings]
@@ -17,7 +17,7 @@ Settings=Ρυθμίσεις
 Check for Updates='Ελεγχος για ενημερώσεις
 Your Windows 11 Compatibility Results Are Below=Aποτελέσματα συμβατότητας για τα Windows 11
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Βρείτε το WhyNotWin11 μέσω της σελίδας https://www.whynotwin11.org/
-Results based on currently known requirements!=Τα αποτελέσματα είναι βασισμένα στις τρέχον γνωστές απαιτήσεις!
+Results based on currently known requirements! Older Hardware Supported if Data Wiped!=Τα αποτελέσματα είναι βασισμένα στις τρέχον γνωστές απαιτήσεις! Παλιότερα Hardware υποστηρίζονται μέσω fresh install!
 Translation by=Μεταφράστηκε από:
 Architecture=Αρκιτεκτονική (Κ.Μ.Ε+Λ.Σ)
 Boot Method=Μέθοδος εκκίνησης
