@@ -102,6 +102,7 @@ Core(TM) i7-8700B
 Core(TM) i7-8700K
 Core(TM) i7-8700T
 Core(TM) i7-8750H
+Core(TM) i7-8809G
 Core(TM) i7-8850H
 Core(TM) i3-8130U
 Core(TM) i5-8250U
