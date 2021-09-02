@@ -67,22 +67,6 @@ Opt("GUIResizeMode", $GUI_DOCKSIZE)
 
 ExtractFiles()
 
-#Region ; OS Checks
-Switch @OSVersion
-	Case "WIN_7", "WIN_VISTA", "WIN_XP", "WIN_XPe"
-		MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Not Supported"), @OSVersion & " " & _Translate(@MUILang, "Not Supported"))
-		Exit 1
-	Case "WIN_8", "WIN_8.1"
-		MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Warning"), StringReplace(_Translate(@MUILang, "May Report DirectX 12 Incorrectly"), '#', @OSVersion))
-	Case Else
-		;;;
-EndSwitch
-
-If @OSBuild >= 22000 Or _WinAPI_GetProcAddress(_WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll"), "wine_get_host_version") Then
-	MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Not Supported"), _Translate(@MUILang, "You're running the latest build!"))
-EndIf
-#EndRegion
-
 ProcessCMDLine()
 
 Func ProcessCMDLine()
@@ -164,6 +148,33 @@ Func ProcessCMDLine()
 			EndSwitch
 		Next
 	EndIf
+
+	#Region ; OS Checks
+	Switch @OSVersion
+		Case "WIN_7", "WIN_VISTA", "WIN_XP", "WIN_XPe"
+			If $bSilent Then
+				Exit 10 ; ERROR_BAD_ENVIRONMENT
+			Else
+				MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Not Supported"), @OSVersion & " " & _Translate(@MUILang, "Not Supported"))
+			EndIf
+		Case "WIN_8", "WIN_8.1"
+			If $bSilent Then
+				Exit 10 ; ERROR_BAD_ENVIRONMENT
+			Else
+				MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Warning"), StringReplace(_Translate(@MUILang, "May Report DirectX 12 Incorrectly"), '#', @OSVersion))
+			EndIf
+		Case Else
+			;;;
+	EndSwitch
+
+	If @OSBuild >= 22000 Or _WinAPI_GetProcAddress(_WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll"), "wine_get_host_version") Then
+		If $bSilent Then
+			Exit 10 ; ERROR_BAD_ENVIRONMENT
+		Else
+			MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Not Supported"), _Translate(@MUILang, "You're running the latest build!"))
+		EndIf
+	EndIf
+	#EndRegion
 
 	If Not $bSilent Then ProgressOn("WhyNotWin11", _Translate(@MUILang, "Loading WMIC"))
 
@@ -265,6 +276,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	Local Enum $iFail = 0, $iPass, $iUnsure, $iWarn
 	Local Enum $iBackground = 0, $iText, $iSidebar, $iFooter
+	#forceref $iUnsure
 
 	Local Const $DPI_RATIO = _GDIPlus_GraphicsGetDPIRatio()[0]
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
