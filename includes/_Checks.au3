@@ -116,7 +116,7 @@ Func _GetDirectXCheck($aArray)
 		FileDelete($aArray[0])
 	ElseIf TimerDiff($aArray[2]) > 120000 Then
 		FileDelete($aArray[0])
-		Return SetError(3, 0, False)
+		Return SetError(0, 1, False)
 	Else
 		Return $aArray
 	EndIf

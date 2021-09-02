@@ -728,6 +728,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")   ; <== No translation, "DirectX 12 and WDDM 2" in LANG-file
 					Case Else
 						Switch @error
+							Case 0
+								_GUICtrlSetState($hCheck[5][0], $iUnsure)
+								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "Check Timed Out"))
 							Case 1
 								_GUICtrlSetState($hCheck[5][0], $iPass)
 								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12, but WDDM2"))
