@@ -82,10 +82,11 @@ Func _CPUSpeedCheck()
 EndFunc   ;==>_CPUSpeedCheck
 
 Func _DirectXStartCheck()
-	Local $aReturn[2]
+	Local $aReturn[3]
 	Local $hDXFile = _TempFile(@TempDir, "dxdiag")
 	$aReturn[0] = $hDXFile
 	$aReturn[1] = Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
+	$aReturn[2] = TimerInit()
 	Return $aReturn
 EndFunc   ;==>_DirectXStartCheck
 
@@ -113,6 +114,9 @@ Func _GetDirectXCheck($aArray)
 				Return False
 		EndSelect
 		FileDelete($aArray[0])
+	ElseIf TimerDiff($aArray[2]) > 120000 Then
+		FileDelete($aArray[0])
+		Return SetError(3, 0, False)
 	Else
 		Return $aArray
 	EndIf
