@@ -719,7 +719,8 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 				; DirectX 12 takes a while. Grab the result once done
 			Case IsArray($aDirectX)
-				Switch _GetDirectXCheck($aDirectX)
+				$aDirectX = _GetDirectXCheck($aDirectX)
+				Switch $aDirectX
 					Case 2
 						_GUICtrlSetState($hCheck[5][0], $iPass)
 						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")   ; <== No translation, "DirectX 12 and WDDM 3" in LANG-file
@@ -729,8 +730,14 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 					Case Else
 						Switch @error
 							Case 0
-								_GUICtrlSetState($hCheck[5][0], $iUnsure)
-								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "Check Timed Out"))
+								Switch @extended
+									Case 1
+										_GUICtrlSetState($hCheck[5][0], $iUnsure)
+										GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DxDiag Errored"))
+									Case 2
+										_GUICtrlSetState($hCheck[5][0], $iUnsure)
+										GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "Check Timed Out"))
+								EndSwitch
 							Case 1
 								_GUICtrlSetState($hCheck[5][0], $iPass)
 								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12, but WDDM2"))
@@ -742,7 +749,6 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12 or WDDM2"))
 						EndSwitch
 				EndSwitch
-				$aDirectX = Null
 
 			Case $hMsg = $hDumpLang
 				FileDelete(@LocalAppDataDir & "\WhyNotWin11\langs\")

@@ -90,8 +90,13 @@ Func _DirectXStartCheck()
 	Return $aReturn
 EndFunc   ;==>_DirectXStartCheck
 
-Func _GetDirectXCheck($aArray)
-	If Not ProcessExists($aArray[1]) And FileExists($aArray[0]) Then
+Func _GetDirectXCheck(ByRef $aArray)
+	ConsoleWrite(TimerDiff($aArray[2]) & @CRLF)
+	If TimerDiff($aArray[2]) > 120000 Then
+		FileDelete($aArray[0])
+		Return SetError(0, 2, False)
+	ElseIf Not ProcessExists($aArray[1]) Then
+		MsgBox(0, "", 1)
 		Local $sDXFile = StringStripWS(StringStripCR(FileRead($aArray[0])), $STR_STRIPALL)
 		Select
 			Case StringInStr($sDXFile, "FeatureLevels:12") Or StringInStr($sDXFile, "DDIVersion:12") And StringInStr($sDXFile, "DriverModel:WDDM" & Chr(160) & "3") ; Non-English Languages
@@ -111,12 +116,9 @@ Func _GetDirectXCheck($aArray)
 			Case StringInStr($sDXFile, "DDIVersion:12") And Not StringInStr($sDXFile, "DriverModel:WDDM2")
 				Return SetError(2, 0, False)
 			Case Else
-				Return False
+				Return SetError(0, 1, False)
 		EndSelect
 		FileDelete($aArray[0])
-	ElseIf TimerDiff($aArray[2]) > 120000 Then
-		FileDelete($aArray[0])
-		Return SetError(0, 1, False)
 	Else
 		Return $aArray
 	EndIf
