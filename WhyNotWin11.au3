@@ -718,7 +718,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 				#ce
 
 				; DirectX 12 takes a while. Grab the result once done
-			Case IsArray($aDirectX) And (Not ProcessExists($aDirectX[1])) And FileExists($aDirectX[0])
+			Case IsArray($aDirectX)
 				Switch _GetDirectXCheck($aDirectX)
 					Case 2
 						_GUICtrlSetState($hCheck[5][0], $iPass)
