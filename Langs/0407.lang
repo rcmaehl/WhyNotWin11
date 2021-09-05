@@ -2,7 +2,7 @@
 Language=German - Germany
 RTL=false
 Translator=botflakes, JimBim89, schmelto, speedy-pc, htcfreek
-Version= 2.3.2
+Version= 2.4.1
 [Font]
 Extra Large=24
 Large=18
@@ -73,13 +73,13 @@ Loading WMIC=Lade WMIC
 Warning=Warnung
 [Descriptions]
 Architecture=Sollten Sie ein 32-Bit-Betriebssystem einsetzen, erfordert dies eine 64-Bit-Neuinstallation von Windows 11. Ihre Daten müssen vorab gesichert werden. Eine 32-Bit-CPU erfordert einen Wechsel auf eine neue 64-Bit-CPU.
-Boot=Die Boot-Methode, die Ihr Computer zum Starten verwendet. Windows 11 benötigt den UEFI-Modus. Sollten Sie "Legacy" (traditioneller Startmodus) nutzen, kann dies oft in den BIOS/UEFI-Einstellungen umgestellt werden. Schlagen Sie im Handbuch Ihres Motherboards nach.
-CPU Name=Der Prozessor, welcher in Ihrem Computer verbaut ist. Die Liste der zu Windows 11 kompatiblen Prozessoren kann sich noch ändern. Bei einer Inkompatibilität muss der Prozessor ersetzt werden. Dies ist bei vielen Laptops nicht möglich.
+Boot=Windows 11 benötigt als Boot-Methode den UEFI-Modus. Sollten Sie "Legacy" (traditioneller Startmodus) nutzen, kann dies oft in den BIOS/UEFI-Einstellungen umgestellt werden. Schlagen Sie im Handbuch Ihres Motherboards nach.
+CPU Name=Der Prozessor, welcher in Ihrem Computer verbaut ist. Bei einer Inkompatibilität muss der Prozessor ersetzt werden. Dies ist bei vielen Laptops nicht möglich.
 CPU Cores=Die Anzahl der Rechenkerne, die Ihrer CPU zur Verfügung stehen. Windows 11 benötigt mindestens eine 2-Kern-CPU. Bei einer Inkompatibilität muss die CPU ersetzt werden. Dies ist bei vielen Laptops nicht möglich.
 CPU Speed=Die Geschwindigkeit, mit der Ihre CPU die Aufgaben abarbeitet. Windows 11 erfordert mindestens 1 GHz. Bei einer Inkompatibilität muss die CPU ersetzt werden. Dies ist bei vielen Laptops nicht möglich.
-DirectX=Die Version des DirectX-Funktionslevels, den die Grafikkarte unterstützt. Dies ist unabhängig von der DirectX-Softwareversion. Es kann vorkommen, dass 'DirectX 12 API'-Karten diese Prüfung nicht bestehen.
+DirectX=Windows 11 benötigt eine DirectX 12-kompatible Grafikkarte mit Windows Display Driver Model (WDDM) 2.x. Dies ist unabhängig von der DirectX-Softwareversion.
 Disk Type=Der Partitionsstil Ihrer Festplatte oder SSD. Windows 11 benötigt eine GPT-Partition. Sollten Sie MBR anstatt GPT nutzen, können Sie dies mit dem MBR2GPT-Tool von Microsoft korrigieren.
 RAM=Die Größe des in Ihrem Computer installierten Arbeitsspeichers. Windows 11 erfordert mindestens 4 GB RAM. Eine Aufrüstung ist bei Desktop PCs sowie vielen Laptops meistens möglich.
 Secure Boot=Secure Boot (sicherer Start) ist eine Funktion innerhalb des UEFI-BIOS. Für Windows 11 muss diese Funktion vorhanden sein. Wenn Secure Boot nicht erkannt wird, kann dies bei neueren PCs oder Laptops im UEFI-BIOS aktiviert werden. Schlagen Sie im Handbuch Ihres Motherboards nach.
 Storage=Der Speicherplatz Ihrer Festplatte oder SSD. Windows 11 erfordert mindestens 64 GB Speicherplatz. Eine Aufrüstung ist bei Desktop PCs sowie vielen Laptops meistens möglich.
-TPM=Trusted Platform Module (TPM) ist ein Sicherheitsmodul des Computers, das von Windows 11 benötigt wird. Nicht immer ist ein separates TPM-Modul notwendig. Viele moderne CPUs enthalten diese Funktion. Die Aktivierung von TPM ist oft in den UEFI-BIOS-Einstellungen möglich. Im BIOS nennt sich diese Funktion "fTPM" (AMD) oder "PTT" (Intel). Schlagen Sie im Handbuch Ihres Motherboards nach.
+TPM=TPM (Trusted Platform Module) ist ein Sicherheitsmodul des Computers, das von Windows 11 benötigt wird. Nicht immer ist ein separates TPM-Modul notwendig. Viele moderne CPUs enthalten diese Funktion. Die Aktivierung von TPM ist oft in den UEFI-BIOS-Einstellungen möglich. Im BIOS nennt sich diese Funktion "fTPM" (AMD) oder "Platform Trust Technology / PTT" (Intel). Schlagen Sie im Handbuch Ihres Motherboards nach.
