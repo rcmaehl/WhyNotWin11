@@ -71,6 +71,7 @@ ProcessCMDLine()
 
 Func ProcessCMDLine()
 	Local $aResults
+	Local $bForce = False
 	Local $bSilent = False
 	Local $aOutput[3] = [False, "", ""]
 	#forceref $aOutput
@@ -83,19 +84,20 @@ Func ProcessCMDLine()
 					MsgBox(0, "Help and Flags", _
 							"Checks PC for Windows 11 Release Compatibility" & @CRLF & _
 							@CRLF & _
-							"WhyNotWin11 [/export FORMAT FILENAME [/silent]][/update [branch]]" & @CRLF & _
+							"WhyNotWin11 [/export FORMAT FILENAME [/silent]][/force][/update [branch]]" & @CRLF & _
 							@CRLF & _
 							@TAB & "/export" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
 							@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
 							@TAB & "       " & @TAB & "output. Requires a filename if used." & @CRLF & _
 							@TAB & "formats" & @TAB & "TXT, CSV" & @CRLF & _
+							@TAB & "/force " & @TAB & "Ignores program system requirements (e.g. WinPE)" & @CRLF & _
 							@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systems will Exit" & @CRLF & _
 							@TAB & "       " & @TAB & "with ERROR_SUCCESS." & @CRLF & _
 							@TAB & "/update" & @TAB & "Downloads the latest RELEASE (default) or DEV build" & @CRLF & _
 							@CRLF & _
 							"All flags can be shortened to just the first character (e.g. /s)" & @CRLF)
 					Exit 0
-				Case "/e", "/export", "/f", "/format"
+				Case "/e", "/export", "/format"
 					Select
 						Case UBound($CmdLine) <= 3
 							MsgBox(0, "Invalid", "Missing FILENAME parameter for /format." & @CRLF)
@@ -116,6 +118,9 @@ Func ProcessCMDLine()
 									Exit 1
 							EndSwitch
 					EndSelect
+					If UBound($CmdLine) = 1 Then ExitLoop
+				Case "/f", "/force"
+					$bForce = True
 					If UBound($CmdLine) = 1 Then ExitLoop
 				Case "/s", "/silent"
 					$bSilent = True
@@ -150,28 +155,30 @@ Func ProcessCMDLine()
 	EndIf
 
 	#Region ; OS Checks
-	Switch @OSVersion
-		Case "WIN_7", "WIN_VISTA", "WIN_XP", "WIN_XPe"
-			If $bSilent Then
-				Exit 10 ; ERROR_BAD_ENVIRONMENT
-			Else
-				MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Not Supported"), @OSVersion & " " & _Translate(@MUILang, "Not Supported"))
-			EndIf
-		Case "WIN_8", "WIN_8.1"
-			If $bSilent Then
-				Exit 10 ; ERROR_BAD_ENVIRONMENT
-			Else
-				MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Warning"), StringReplace(_Translate(@MUILang, "May Report DirectX 12 Incorrectly"), '#', @OSVersion))
-			EndIf
-		Case Else
-			;;;
-	EndSwitch
+	If Not $bForce Then
+		Switch @OSVersion
+			Case "WIN_7", "WIN_VISTA", "WIN_XP", "WIN_XPe"
+				If $bSilent Then
+					Exit 10 ; ERROR_BAD_ENVIRONMENT
+				Else
+					MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Not Supported"), @OSVersion & " " & _Translate(@MUILang, "Not Supported"))
+				EndIf
+			Case "WIN_8", "WIN_8.1"
+				If $bSilent Then
+					Exit 10 ; ERROR_BAD_ENVIRONMENT
+				Else
+					MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Warning"), StringReplace(_Translate(@MUILang, "May Report DirectX 12 Incorrectly"), '#', @OSVersion))
+				EndIf
+			Case Else
+				;;;
+		EndSwitch
 
-	If @OSBuild >= 22000 Or _WinAPI_GetProcAddress(_WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll"), "wine_get_host_version") Then
-		If $bSilent Then
-			Exit 10 ; ERROR_BAD_ENVIRONMENT
-		Else
-			MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Not Supported"), _Translate(@MUILang, "You're running the latest build!"))
+		If @OSBuild >= 22000 Or _WinAPI_GetProcAddress(_WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll"), "wine_get_host_version") Then
+			If $bSilent Then
+				Exit 10 ; ERROR_BAD_ENVIRONMENT
+			Else
+				MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Not Supported"), _Translate(@MUILang, "You're running the latest build!"))
+			EndIf
 		EndIf
 	EndIf
 	#EndRegion
