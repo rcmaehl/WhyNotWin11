@@ -20,7 +20,7 @@ Detection Script to help identify why your PC isn't Windows 11 Release Ready.
 **Keep in mind that you will have to update testing releases manually**
 
 ## System Requirements
- |Minimum Requirements|Recommended
+ |Minimum Requirements*|Recommended
 ----|----|----
 OS|Windows 8.1|Latest Windows 10 Build
 CPU|32-bit Single Core|64-bit Dual Core or Higher
@@ -28,6 +28,8 @@ RAM (Memory)|40MB Free|100MB Free
 Disk (Storage)|5MB Free|100MB Free
 ||
 Limitations|DirectX 12 Check Inaccurate|None
+
+\* WhyNotWin11 can be forced to run on Unsupported Systems using the `/force` parameter, no support will be given for this parameter.
 
 ## Compiling
 
