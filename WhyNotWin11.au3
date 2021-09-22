@@ -6,9 +6,9 @@
 #AutoIt3Wrapper_UseX64=Y
 #AutoIt3Wrapper_Res_Comment=https://www.whynotwin11.org
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready
-#AutoIt3Wrapper_Res_Fileversion=2.4.1.0
+#AutoIt3Wrapper_Res_Fileversion=2.4.2.0
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
-#AutoIt3Wrapper_Res_ProductVersion=2.4.1
+#AutoIt3Wrapper_Res_ProductVersion=2.4.2
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
@@ -27,7 +27,7 @@
 #Au3Stripper_Parameters=/so
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
-Global $sVersion = "2.4.1.0"
+Global $sVersion = "2.4.2.0"
 FileChangeDir(@SystemDir)
 
 #include <File.au3>
@@ -859,7 +859,7 @@ EndFunc   ;==>_GetLatestRelease
 ; Parameters ....: $aResults            - an array of results
 ; Return values .: None
 ; Author ........: rcmaehl
-; Modified ......: 08/08/2021
+; Modified ......: 09/22/2021
 ; Remarks .......:
 ; Related .......:
 ; Link ..........:
@@ -871,7 +871,7 @@ Func FinalizeResults(ByRef $aResults)
 
 	While 1
 		Select
-			Case IsArray($aDirectX) And (Not ProcessExists($aDirectX[1])) And FileExists($aDirectX[0])
+			Case IsArray($aDirectX)
 				_GetDirectXCheck($aDirectX)
 				$aDirectX = Null
 			Case $aDirectX = Null
