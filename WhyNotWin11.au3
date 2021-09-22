@@ -124,22 +124,19 @@ Func ProcessCMDLine()
 					If UBound($CmdLine) = 1 Then ExitLoop
 				Case "/s", "/silent"
 					$bSilent = True
-					_ArrayDelete($CmdLine, 1)
 					If UBound($CmdLine) = 1 Then ExitLoop
 				Case "/u", "/update"
 					Select
 						Case UBound($CmdLine) = 2
-							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", @ScriptDir & "WhyNotWin11_Latest.exe")
-							_ArrayDelete($CmdLine, 1)
+							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", @ScriptDir & "\WhyNotWin11_Latest.exe")
 						Case UBound($CmdLine) > 2 And $CmdLine[2] = "dev"
-							InetGet("https://nightly.link/rcmaehl/WhyNotWin11/workflows/wnw11/main/WNW11.zip", @ScriptDir & "WhyNotWin11_dev.exe")
+							InetGet("https://nightly.link/rcmaehl/WhyNotWin11/workflows/wnw11/main/WNW11.zip", @ScriptDir & "\WhyNotWin11_dev.zip")
 							_ArrayDelete($CmdLine, "1-2")
 						Case UBound($CmdLine) > 2 And $CmdLine[2] = "release"
-							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", @ScriptDir & "WhyNotWin11_Latest.exe")
+							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", @ScriptDir & "\WhyNotWin11_Latest.exe")
 							_ArrayDelete($CmdLine, "1-2")
 						Case StringLeft($CmdLine[2], 1) = "/"
-							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", @ScriptDir & "WhyNotWin11_Latest.exe")
-							_ArrayDelete($CmdLine, 1)
+							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", @ScriptDir & "\WhyNotWin11_Latest.exe")
 						Case Else
 							MsgBox(0, "Invalid", 'Invalid release type - "' & $CmdLine[2] & "." & @CRLF)
 							Exit 1
