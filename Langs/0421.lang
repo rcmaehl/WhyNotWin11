@@ -1,5 +1,6 @@
 [MetaData]
 Language=Indonesian (Bahasa Indonesia)
+RTL=false
 Translator=SamCool939, WilloIzCitron
 Version=2.4.0.0
 [Font]
@@ -9,6 +10,8 @@ Medium=10
 Small=8.5
 Name=Arial
 [Strings]
+Enable enhanced accessibility?=Aktifkan aksesibilitas yang ditingkatkan?
+This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=Fungsionalitas Peningkatan Aksesibilitas yang baru ini dirancang untuk tunanetra, di mana sebagian besar antarmuka program dapat digunakan melalui pintasan suara dan papan ketik. Aktifkan?
 Donate=Donasi
 Settings=Setelan
 Check for Updates=Periksa Pembaruan
