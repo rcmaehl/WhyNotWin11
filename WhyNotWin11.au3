@@ -78,7 +78,7 @@ Func ProcessCMDLine()
 	Local $iParams = $CmdLine[0]
 
 	If $iParams > 0 Then
-		For $iLoop = 1 To $iParams Step 1
+		Do
 			Switch $CmdLine[1]
 				Case "/?", "/h", "/help"
 					MsgBox(0, "Help and Flags", _
@@ -101,10 +101,10 @@ Func ProcessCMDLine()
 					Select
 						Case UBound($CmdLine) <= 3
 							MsgBox(0, "Invalid", "Missing FILENAME parameter for /format." & @CRLF)
-							Exit 1
+							Exit 87 ; ERROR_INVALID_PARAMETER
 						Case UBound($CmdLine) <= 2
 							MsgBox(0, "Invalid", "Missing FORMAT parameter for /format." & @CRLF)
-							Exit 1
+							Exit 87 ; ERROR_INVALID_PARAMETER
 						Case Else
 							Switch $CmdLine[2]
 								Case "CSV", "TXT"
@@ -112,23 +112,22 @@ Func ProcessCMDLine()
 									$aOutput[1] = $CmdLine[2]
 									$aOutput[2] = $CmdLine[3]
 									_ArrayDelete($CmdLine, "1-3")
-									If UBound($CmdLine) = 1 Then ExitLoop
 								Case Else
 									MsgBox(0, "Invalid", "Invalid FORMAT parameter for /format." & @CRLF)
-									Exit 1
+									Exit 87 ; ERROR_INVALID_PARAMETER
 							EndSwitch
 					EndSelect
-					If UBound($CmdLine) = 1 Then ExitLoop
 				Case "/f", "/force"
 					$bForce = True
-					If UBound($CmdLine) = 1 Then ExitLoop
+					_ArrayDelete($CmdLine, 1)
 				Case "/s", "/silent"
 					$bSilent = True
-					If UBound($CmdLine) = 1 Then ExitLoop
+					_ArrayDelete($CmdLine, 1)
 				Case "/u", "/update"
 					Select
 						Case UBound($CmdLine) = 2
 							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", @ScriptDir & "\WhyNotWin11_Latest.exe")
+							_ArrayDelete($CmdLine, 1)
 						Case UBound($CmdLine) > 2 And $CmdLine[2] = "dev"
 							InetGet("https://nightly.link/rcmaehl/WhyNotWin11/workflows/wnw11/main/WNW11.zip", @ScriptDir & "\WhyNotWin11_dev.zip")
 							_ArrayDelete($CmdLine, "1-2")
@@ -137,18 +136,18 @@ Func ProcessCMDLine()
 							_ArrayDelete($CmdLine, "1-2")
 						Case StringLeft($CmdLine[2], 1) = "/"
 							InetGet("https://WhyNotWin11.org/releases/latest/download/WhyNotWin11.exe", @ScriptDir & "\WhyNotWin11_Latest.exe")
+							_ArrayDelete($CmdLine, 1)
 						Case Else
 							MsgBox(0, "Invalid", 'Invalid release type - "' & $CmdLine[2] & "." & @CRLF)
-							Exit 1
+							Exit 87 ; ERROR_INVALID_PARAMETER
 					EndSelect
-					If UBound($CmdLine) = 1 Then ExitLoop
 				Case Else
 					If @Compiled Then ; support for running non-compiled script - mLipok
-						MsgBox(0, "Invalid", 'Invalid switch - "' & $CmdLine[$iLoop] & "." & @CRLF)
-						Exit 1
+						MsgBox(0, "Invalid", 'Invalid parameter - "' & $CmdLine[1] & "." & @CRLF)
+						Exit 87 ; ERROR_INVALID_PARAMETER
 					EndIf
 			EndSwitch
-		Next
+		Until UBound($CmdLine) <= 1
 	EndIf
 
 	#Region ; OS Checks
@@ -725,12 +724,15 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 			Case IsArray($aDirectX)
 				$aDirectX = _GetDirectXCheck($aDirectX)
 				Switch $aDirectX
-					Case 2
-						_GUICtrlSetState($hCheck[5][0], $iPass)
-						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")   ; <== No translation, "DirectX 12 and WDDM 3" in LANG-file
-					Case 1
-						_GUICtrlSetState($hCheck[5][0], $iPass)
-						GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")   ; <== No translation, "DirectX 12 and WDDM 2" in LANG-file
+					Case True
+						Switch @extended
+							Case 1
+								_GUICtrlSetState($hCheck[5][0], $iPass)
+								GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")   ; <== No translation, "DirectX 12 and WDDM 2" in LANG-file
+							Case 2
+								_GUICtrlSetState($hCheck[5][0], $iPass)
+								GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")   ; <== No translation, "DirectX 12 and WDDM 3" in LANG-file
+						EndSwitch
 					Case Else
 						Switch @error
 							Case 0
@@ -866,15 +868,14 @@ Func FinalizeResults(ByRef $aResults)
 
 	Local $aDirectX = $aResults[5][0]
 
-	While 1
-		Select
-			Case IsArray($aDirectX)
-				_GetDirectXCheck($aDirectX)
-				$aDirectX = Null
-			Case $aDirectX = Null
-				Return
-		EndSelect
-	WEnd
+	Do
+		$aDirectX = _GetDirectXCheck($aDirectX)
+		$aResults[5][0] = $aDirectX
+		$aResults[5][1] = @error
+		$aResults[5][2] = @extended
+	Until Not IsArray($aDirectX)
+
+	Return
 
 EndFunc   ;==>FinalizeResults
 
