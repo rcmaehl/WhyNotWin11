@@ -85,7 +85,7 @@ Func _DirectXStartCheck()
 	Local $aReturn[3]
 	Local $hDXFile = _TempFile(@TempDir, "dxdiag")
 	$aReturn[0] = $hDXFile
-	$aReturn[1] = Run(@SystemDir & "\dxdiag.exe /whql:off /t " & $hDXFile)
+	$aReturn[1] = Run(@SystemDir & "\dxdiag.exe /whql:off /dontskip /t " & $hDXFile)
 	$aReturn[2] = TimerInit()
 	Return $aReturn
 EndFunc   ;==>_DirectXStartCheck

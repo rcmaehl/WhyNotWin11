@@ -95,7 +95,7 @@ Func ProcessCMDLine()
 							@TAB & "       " & @TAB & "with ERROR_SUCCESS." & @CRLF & _
 							@TAB & "/update" & @TAB & "Downloads the latest RELEASE (default) or DEV build" & @CRLF & _
 							@CRLF & _
-							"All flags can be shortened to just the first character (e.g. /s)" & @CRLF)
+							"Refer to https://WhyNotWin11.org/wiki/Command-Line-Switches for more details" & @CRLF)
 					Exit 0
 				Case "/e", "/export", "/format"
 					Select
@@ -122,6 +122,8 @@ Func ProcessCMDLine()
 					_ArrayDelete($CmdLine, 1)
 				Case "/s", "/silent"
 					$bSilent = True
+					_ArrayDelete($CmdLine, 1)
+				Case "/sc", "/skipcheck"
 					_ArrayDelete($CmdLine, 1)
 				Case "/u", "/update"
 					Select
