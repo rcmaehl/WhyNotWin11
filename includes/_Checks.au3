@@ -144,17 +144,12 @@ Func _MemCheck()
 
 	If Not $vMem <> "" Then
 		$vMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
-		If @error Then
+		If @error Or $vMem = 0 Then
 			$vMem = MemGetStats()
 			$vMem = Round($vMem[1] / 1048576, 1)
 			$vMem = Ceiling($vMem)
 		Else
 			$vMem = Round($vMem[1] / 1048576, 1)
-		EndIf
-		If $vMem = 0 Then
-			$vMem = MemGetStats()
-			$vMem = Round($vMem[1] / 1048576, 1)
-			$vMem = Ceiling($vMem)
 		EndIf
 	EndIf
 
