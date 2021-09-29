@@ -608,12 +608,15 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	#Region ; _SecureBootCheck()
 	Switch $aResults[8][0]
-		Case 2
-			_GUICtrlSetState($hCheck[8][0], $iPass)
-			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Enabled"))
-		Case 1
-			_GUICtrlSetState($hCheck[8][0], $iPass)
-			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Supported"))
+		Case True
+			Switch $aResults[8][2]
+				Case 1
+					_GUICtrlSetState($hCheck[8][0], $iPass)
+					GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Enabled"))
+				Case 0
+					_GUICtrlSetState($hCheck[8][0], $iPass)
+					GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Supported"))
+			EndSwitch
 		Case False
 			_GUICtrlSetState($hCheck[8][0], $iFail)
 			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Disabled / Not Detected"))

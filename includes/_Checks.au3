@@ -170,9 +170,9 @@ Func _SecureBootCheck()
 	If @error Then $sSecureBoot = 999
 	Switch $sSecureBoot
 		Case 1
-			Return 2
+			Return SetError(0, 1, True)
 		Case 0
-			Return 1
+			Return SetError(0, 0, True)
 		Case Else
 			Return False
 	EndSwitch
