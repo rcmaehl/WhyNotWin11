@@ -968,17 +968,9 @@ EndFunc   ;==>OutputResults
 ; ===============================================================================================================================
 Func _SetBannerText($hBannerText, $hBanner)
 
-	Local $bLinux = False
 	Local $hModule = _WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll")
 
-	If _WinAPI_GetProcAddress($hModule, "wine_get_host_version") Then $bLinux = True
-
 	Select
-		Case $bLinux
-			GUICtrlSetData($hBannerText, "i3 BEST WM")
-			Return "https://archlinux.org/"
-			GUICtrlSetCursor($hBannerText, 0)
-			GUICtrlSetCursor($hBanner, 0)
 		Case @LogonDomain <> @ComputerName
 			GUICtrlSetData($hBannerText, "I'M FOR HIRE")
 			Return "https://fcofix.org/rcmaehl/wiki/I'M-FOR-HIRE"
