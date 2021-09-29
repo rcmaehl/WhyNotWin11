@@ -499,6 +499,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 			GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "64 Bit CPU") & @CRLF & _Translate($iMUI, "64 Bit OS"))
 		Case Else
 			Switch $aResults[0][1]
+				Case 0
+					_GUICtrlSetState($hCheck[0][0], $iUnsure)
+					GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "Check Skipped"))
 				Case 1
 					_GUICtrlSetState($hCheck[0][0], $iWarn)
 					GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "64 Bit CPU") & @CRLF & _Translate($iMUI, "32 bit OS"))
@@ -566,7 +569,12 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	#Region ; _CPUSpeedCheck()
 	If $aResults[4][0] Then
 		_GUICtrlSetState($hCheck[4][0], $iPass)
-		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
+		Switch $aResults[4][2]
+			Case 0
+				GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
+			Case 1
+				GUICtrlSetData($hCheck[4][2], RegRead("HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0", "~MHz") & " MHz")
+		EndSwitch
 	Else
 		_GUICtrlSetState($hCheck[4][0], $iFail)
 		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")

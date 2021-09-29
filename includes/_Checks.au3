@@ -73,9 +73,9 @@ EndFunc   ;==>_CPUCoresCheck
 Func _CPUSpeedCheck()
 	Select
 		Case _GetCPUInfo(3) >= 1000
-			ContinueCase
+			Return SetError(0, 0, True)
 		Case RegRead("HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0", "~MHz") >= 1000
-			Return True
+			Return SetError(0, 1, True)
 		Case Else
 			Return False
 	EndSelect
