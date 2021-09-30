@@ -1,5 +1,4 @@
 #include-once
-#include ".\_CPUID.au3"
 #include <StringConstants.au3>
 
 Func _GetCPUInfo($iFlag = 0)
@@ -38,15 +37,11 @@ Func _GetCPUInfo($iFlag = 0)
 			Return 0
 		EndIf
 	EndIf
-
-	If $vName <> CpuId_Processor_Brand() Then $vName = CpuId_Processor_Brand()
-
 	If StringInStr($vName, "@") Then
 		$vName = StringSplit($vName, "@", $STR_NOCOUNT)
 		$sSpeed = StringRegExpReplace($vName[1], "[^[:digit:]]", "") & "0"
 		$vName = $vName[0]
 	EndIf
-
 	Switch $iFlag
 		Case 0
 			Return String($sCores)
