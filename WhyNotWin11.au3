@@ -277,6 +277,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	$aColors = _SetTheme()
 	$aFonts = _GetTranslationFonts($iMUI)
 
+	Local $bComplete = False
 	Local $aDirectX = $aResults[5][0]
 
 	Local Enum $iFail = 0, $iPass, $iUnsure, $iWarn
@@ -736,9 +737,12 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 				; DirectX 12 takes a while. Grab the result once done
 			Case IsArray($aDirectX)
 				$aDirectX = _GetDirectXCheck($aDirectX)
+				$aResults[5][0] = $aDirectX
+				$aResults[5][1] = @error
+				$aResults[5][2] = @extended
 				Switch $aDirectX
 					Case True
-						Switch @extended
+						Switch $aResults[5][2]
 							Case 1
 								_GUICtrlSetState($hCheck[5][0], $iPass)
 								GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")   ; <== No translation, "DirectX 12 and WDDM 2" in LANG-file
@@ -747,9 +751,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 								GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")   ; <== No translation, "DirectX 12 and WDDM 3" in LANG-file
 						EndSwitch
 					Case Else
-						Switch @error
+						Switch $aResults[5][1]
 							Case 0
-								Switch @extended
+								Switch $aResults[5][2]
 									Case 1
 										_GUICtrlSetState($hCheck[5][0], $iUnsure)
 										GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DxDiag Errored"))
@@ -768,6 +772,20 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12 or WDDM2"))
 						EndSwitch
 				EndSwitch
+
+			Case Not IsArray($aDirectX) And $bComplete = False
+				$bComplete = True
+				For $iLoop = 0 To 10 Step 1
+					If $aResults[$iLoop][0] = False Or $aResults[$iLoop][0] < 1 Then
+						MsgBox($MB_OK+$MB_ICONERROR+$MB_TOPMOST+$MB_SETFOREGROUND, _
+							_Translate($iMUI, "Not Supported"), _
+							_Translate($iMUI, "Your Computer is NOT ready for Windows 11, you can join the Discord using the Discord Icon if you need assistance."))
+						ContinueLoop 2
+					EndIf
+				Next
+				MsgBox($MB_OK+$MB_ICONINFORMATION+$MB_TOPMOST+$MB_SETFOREGROUND, _
+					_Translate($iMUI, "Supported"), _
+					_Translate($iMUI, "Your Computer is ready for Windows 11. You should receive the option to upgrade between October 5th 2021 and Fall 2022."))
 
 			Case $hMsg = $hDumpLang
 				FileDelete(@LocalAppDataDir & "\WhyNotWin11\langs\")
@@ -960,7 +978,7 @@ EndFunc   ;==>OutputResults
 ;                  $hBanner             - Handle to a GUI Control
 ; Return values .: URL String
 ; Author ........: rcmaehl
-; Modified ......: 07/09/2021
+; Modified ......: 10/05/2021
 ; Remarks .......:
 ; Related .......:
 ; Link ..........:
@@ -968,10 +986,8 @@ EndFunc   ;==>OutputResults
 ; ===============================================================================================================================
 Func _SetBannerText($hBannerText, $hBanner)
 
-	Local $hModule = _WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll")
-
 	Select
-		Case @LogonDomain <> @ComputerName
+		Case @LogonDomain = @ComputerName
 			GUICtrlSetData($hBannerText, "I'M FOR HIRE")
 			Return "https://fcofix.org/rcmaehl/wiki/I'M-FOR-HIRE"
 			GUICtrlSetCursor($hBannerText, 0)
