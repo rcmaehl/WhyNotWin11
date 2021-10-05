@@ -987,7 +987,7 @@ EndFunc   ;==>OutputResults
 Func _SetBannerText($hBannerText, $hBanner)
 
 	Select
-		Case @LogonDomain = @ComputerName
+		Case @LogonDomain <> @ComputerName
 			GUICtrlSetData($hBannerText, "I'M FOR HIRE")
 			Return "https://fcofix.org/rcmaehl/wiki/I'M-FOR-HIRE"
 			GUICtrlSetCursor($hBannerText, 0)
