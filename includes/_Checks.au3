@@ -198,19 +198,15 @@ EndFunc   ;==>_SpaceCheck
 
 Func _TPMCheck()
 	Select
-		Case Not IsAdmin() And _GetTPMInfo(0) = True
-			Return SetError(Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]), 0, True)
-		Case Not IsAdmin() And _GetTPMInfo(0) <> True
-			Return SetError(0, 0, False)
 		Case _GetTPMInfo(0) = False
 			ContinueCase
 		Case _GetTPMInfo(1) = False
 			Return SetError(0, 0, False)
-		Case Not Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
+		Case _GetTPMInfo(0) = True And Number(_GetTPMInfo(2)) >= 2.0
+			Return SetError(Number(_GetTPMInfo(2)), 0, True)
+		Case _GetTPMInfo(0) = True And Number(_GetTPMInfo(2)) >= 1.2
 			Return SetError(1, 0, False) ; Under Version 1.2
-		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 2.0
-			Return SetError(Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]), 0, True)
-		Case _GetTPMInfo(0) = True And _GetTPMInfo(0) = True And Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) >= 1.2
+		Case _GetTPMInfo(0) = True And Not Number(_GetTPMInfo(2)) >= 1.2
 			Return SetError(2, 0, False) ; Under Version 1.2 ????
 		Case Else
 			Return SetError(0, 0, False)
