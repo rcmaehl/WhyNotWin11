@@ -2,7 +2,7 @@
 Language=English - United States
 RTL=false
 Translator=rcmaehl, htcfreek
-Version=2.3.1.0
+Version=2.4.2.1
 [Font]
 Extra Large=24
 Large=18
@@ -36,6 +36,8 @@ Checking...=Checking...
 Unable to Determine=Unable to Determine
 Unable to Check List=Unable to Check List
 Error Accessing List=Error Accessing List
+Check Timed Out=Check Timed Out
+Check Skipped=Check Skipped
 Not Currently Listed as Compatible=Not Currently Listed as Compatible
 Listed as Compatible=Listed as Compatible
 Cores=# Cores
@@ -54,6 +56,7 @@ DirectX 12 and WDDM 2=DirectX 12 and WDDM 2
 No DirectX 12, but WDDM2=No DirectX 12, but WDDM2
 DirectX 12, but no WDDM2=DirectX 12, but no WDDM2
 No DirectX 12 or WDDM2=No DirectX 12 or WDDM2
+DxDiag Errored=DxDiag Errored
 Test Build?=Test Build?
 You're running a newer build than publicly Available!=You're running a newer build than publicly Available!
 Up to Date=Up to Date
@@ -68,6 +71,8 @@ An Update is Available, would you like to download it?=An Update is Available, w
 Done=Done
 Loading WMIC=Loading WMIC
 Warning=Warning
+Your Computer is NOT ready for Windows 11, you can join the Discord using the Discord Icon if you need assistance.=Your Computer is NOT ready for Windows 11, you can join the Discord using the Discord Icon if you need assistance.
+Your Computer is ready for Windows 11. You should receive the option to upgrade between October 5th 2021 and Fall 2022.=Your Computer is ready for Windows 11. You should receive the option to upgrade between October 5th 2021 and Fall 2022.
 [Descriptions]
 Architecture=The amount of data your CPU and OS can process at once. 32-Bit OS result requires a disk wipe and new Windows 11 install. 32-Bit CPU requires a CPU replacement.
 Boot=A method your motherboard uses to load Windows. Legacy results can be fixed on newer motherboards in your BIOS/UEFI settings. Refer to your motherboard manual.
