@@ -296,6 +296,10 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlSetDefColor($aColors[$iText])
 	GUICtrlSetDefBkColor($aColors[$iBackground])
 
+	Local $aLangs = _FileListToArray(@LocalAppDataDir & "\WhyNotWin11\langs\", "*.lang", $FLTA_FILES)
+	For $iLoop = 1 To $aLangs[0] Step 1
+		$aLangs[$iLoop] &= " - " & IniRead(@LocalAppDataDir & "\WhyNotWin11\langs\" & $aLangs[$iLoop], "MetaData", "Language", "Unknown")
+	Next
 
 	Local $hDumpLang = GUICtrlCreateDummy()
 
