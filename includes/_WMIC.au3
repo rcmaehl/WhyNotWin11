@@ -25,8 +25,6 @@ Func _GetCPUInfo($iFlag = 0)
 				$sVersion = $Obj_Item.Version
 			Next
 
-			Local $CPUs
-			#forceref $CPUs
 			$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_ComputerSystem')
 			For $Obj_Item In $Col_Items
 				$sCPUs = $Obj_Item.NumberOfProcessors

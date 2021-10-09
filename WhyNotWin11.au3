@@ -74,7 +74,6 @@ Func ProcessCMDLine()
 	Local $bForce = False
 	Local $bSilent = False
 	Local $aOutput[3] = [False, "", ""]
-	#forceref $aOutput
 	Local $iParams = $CmdLine[0]
 
 	If $iParams > 0 Then
@@ -183,7 +182,7 @@ Func ProcessCMDLine()
 
 	If Not $bSilent Then ProgressOn("WhyNotWin11", _Translate(@MUILang, "Loading WMIC"))
 
-	$aResults = RunChecks($bSilent)
+	$aResults = RunChecks()
 
 	ProgressSet(80, "Done")
 
@@ -200,9 +199,7 @@ Func ProcessCMDLine()
 
 EndFunc   ;==>ProcessCMDLine
 
-Func RunChecks($bSilent)
-
-	#forceref $bSilent
+Func RunChecks()
 
 	Local $aResults[11][3]
 
@@ -282,7 +279,6 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	Local Enum $iFail = 0, $iPass, $iUnsure, $iWarn
 	Local Enum $iBackground = 0, $iText, $iSidebar, $iFooter
-	#forceref $iUnsure
 
 	Local Const $DPI_RATIO = _GDIPlus_GraphicsGetDPIRatio()[0]
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
