@@ -32,7 +32,7 @@ Func _CPUNameCheck($sCPU, $sVersion)
 	Local $iLines, $sLine, $ListFile
 	Select
 		Case StringInStr($sCPU, "AMD")
-			If StringInStr($sCPU, "1600") And StringInStr($sVersion, "Version 2") Then Return True ; 1600AF
+			If StringInStr($sCPU, "1600") And StringInStr($sVersion, "Stepping 2") Then Return True ; 1600AF
 			$ListFile = "\WhyNotWin11\SupportedProcessorsAMD.txt"
 		Case StringInStr($sCPU, "Intel")
 			$ListFile = "\WhyNotWin11\SupportedProcessorsIntel.txt"
