@@ -646,6 +646,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Not Supported"))
 			Case 2
 				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Not Supported"))
+			Case 3
+				_GUICtrlSetState($hCheck[10][0], $iUnsure)
+				GUICtrlSetData($hCheck[10][2], _Translate($iMUI, "TPM Status Error"))
 		EndSwitch
 	EndIf
 	#EndRegion

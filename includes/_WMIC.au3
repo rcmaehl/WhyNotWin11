@@ -127,6 +127,7 @@ Func _GetTPMInfo($iFlag = 0)
 	Local Static $sVersion
 	Local Static $sName
 	Local Static $sPresent
+	Local Static $sStatus
 	If IsAdmin() Then
 		Local $Obj_WMIService, $Col_Items
 		If Not $sActivated <> "" Then
@@ -161,6 +162,7 @@ Func _GetTPMInfo($iFlag = 0)
 				For $Obj_Item In $Col_Items
 					$sName = $Obj_Item.Name
 					$sPresent = $Obj_Item.Present
+					$sStatus = $Obj_Item.Status
 				Next
 			Else
 				Return 0
@@ -173,6 +175,8 @@ Func _GetTPMInfo($iFlag = 0)
 				If $sName <> "" Then Return 1
 			Case 2
 				Return StringRegExp($sName, "\d+\.\d+", $STR_REGEXPARRAYMATCH)[0]
+			Case 3
+				Return $sStatus
 			Case Else
 				Return 0
 		EndSwitch

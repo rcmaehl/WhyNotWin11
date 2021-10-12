@@ -202,6 +202,8 @@ Func _TPMCheck()
 			ContinueCase
 		Case _GetTPMInfo(1) = False
 			Return SetError(0, 0, False)
+		Case _GetTPMInfo(0) = True And _GetTPMInfo(3) <> "OK"
+			Return SetError(3, 0 , False)
 		Case _GetTPMInfo(0) = True And Number(_GetTPMInfo(2)) >= 2.0
 			Return SetError(Number(_GetTPMInfo(2)), 0, True)
 		Case _GetTPMInfo(0) = True And Number(_GetTPMInfo(2)) >= 1.2
