@@ -527,7 +527,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 					_GUICtrlSetState($hCheck[1][0], $iFail)
 					GUICtrlSetData($hCheck[1][2], "Legacy")
 				Case Else
-					GUICtrlSetData($hCheck[1][2], $aResults[1][1])
+					GUICtrlSetData($hCheck[1][2], _Translate($iMUI, "Not Supported"))
 					_GUICtrlSetState($hCheck[1][0], $iWarn)
 			EndSwitch
 	EndSwitch
