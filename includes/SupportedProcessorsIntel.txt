@@ -1,4 +1,4 @@
-2.4.2.0
+2.4.2.1
 Atom(R) x6200FE
 Atom(R) x6211E
 Atom(R) x6212RE
@@ -128,7 +128,6 @@ Core(TM) i5-11260H
 Core(TM) i5-11300H
 Core(TM) i5-1130G7
 Core(TM) i5-11320H
-Core(TM) i5-1135G7
 Core(TM) i5-1135G7
 Core(TM) i5-11400
 Core(TM) i5-11400F
