@@ -1,7 +1,9 @@
 #include-once
 #include <File.au3>
-#include ".\_WMIC.au3"
 #include <WinAPIDiag.au3>
+
+#include ".\_WMIC.au3"
+
 
 Func _ArchCheck()
 	Select
@@ -123,7 +125,7 @@ Func _GetDirectXCheck(ByRef $aArray)
 EndFunc   ;==>_GetDirectXCheck
 
 Func _GPTCheck($aDisks)
-	For $iLoop = 0 To UBound($aDisks) - 1
+	For $iLoop = 1 To UBound($aDisks) - 1
 		If $aDisks[$iLoop][11] = "True" Then
 			Switch $aDisks[$iLoop][9]
 				Case "GPT"
@@ -134,7 +136,56 @@ Func _GPTCheck($aDisks)
 		EndIf
 	Next
 EndFunc   ;==>_GPTCheck
+#cs
+Func _GPTCheck($iFlag)
+	; Desc ......... : Call _GetDiskInfoFromWmi() to get the disk and partition informations. The selected information will be returned.
+	; Parameters ... : $iFlag = 0 => Return init type of system disk.
+	; .............. : $iFlag = 1 => Return count of internal GPT disks.
+	; .............. : $iFlag = 2 => Return count of all internal disks.
+	; .............. : $iFlag = 3 => Return array with all disk. (Columns: DiskNum | InitType | CheckResult)
+	; On error ..... : SetError(1, 1, "Error_CheckFailed")
 
+	; Vars
+	Local Static $aDisks
+	If ($aDisks = Null) Then
+		$aDisks = _GetDiskProperties(1) ; Array with all disks
+		If @error = 1 Then Return SetError(1, 1, "Error_CheckFailed")
+	EndIf
+	Local $aReturnDiskArray[0][3]
+	_ArrayAdd($aReturnDiskArray, "Disk" & "|" & "Type" & "|" & "Check result")
+
+	; Return data based on $iFlag
+	Switch $iFlag
+		Case 0
+			; Return data of system disk.
+			Switch _GetDiskProperties(3)[0][9] ; 9 = Array field for DiskInitType
+				Case "GPT"
+					Return True
+				Case "MBR"
+					Return False
+			EndSwitch
+		Case 1
+			; Count int. GPT disks
+			Local $iDiskCount = 0
+			For $i = 1 To UBound($aDisks) - 1
+				If $aDisks[$i][9] = "GPT" Then
+					$iDiskCount += 1
+				EndIf
+			Next
+			Return $iDiskCount
+		Case 2
+			; Return count of all int. disks
+			Return UBound($aDisks)
+		Case 3
+			; Return array with all disk in the format Number|Type|Result
+			For $i = 0 To UBound($aDisks) - 1
+				Local $sDiskRow = $aDisks[$i][0] & "|" & $aDisks[$i][9] & "|" & (($aDisks[$i][9] = "GPT") ? "True" : "False")
+				_ArrayAdd($aReturnDiskArray, $sDiskRow)
+			Next
+			Return $aReturnDiskArray
+	EndSwitch
+EndFunc   ;==>_GPTCheck
+#ce
 Func _InternetCheck()
 	Return _WinAPI_IsInternetConnected()
 EndFunc

@@ -50,13 +50,13 @@ FileChangeDir(@SystemDir)
 
 Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
 
+#include "Includes\GetDiskInfo.au3"
 #include "Includes\ResourcesEx.au3"
 
 #include "Includes\_WMIC.au3"
 #include "Includes\_Checks.au3"
 #include "Includes\_Theming.au3"
 #include "Includes\_Resources.au3"
-#include "Includes\_GetDiskInfo.au3"
 #include "Includes\_Translations.au3"
 ; #include "includes\WhyNotWin11_accessibility.au3"
 
@@ -196,7 +196,6 @@ Func ProcessCMDLine()
 		If $aResults[$iLoop][0] = False Or $aResults[$iLoop][0] < 1 Then Exit 1
 	Next
 	Exit 0
-
 EndFunc   ;==>ProcessCMDLine
 
 Func RunChecks()
