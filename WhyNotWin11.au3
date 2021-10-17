@@ -348,7 +348,6 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	Local $hToggle = GUICtrlCreateLabel("", 34, 518, 32, 32)
 	GUICtrlSetTip(-1, "Settings")
 	GUICtrlSetCursor(-1, 0)
-	GUICtrlSetState(-1, $GUI_HIDE)
 
 	; Allow Dragging of Window
 	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
@@ -394,7 +393,6 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		EndIf
 		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
 		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Settings.ico", -1, 32, 32)
-		GUICtrlSetState(-1, $GUI_HIDE)
 	EndIf
 	_GDIPlus_Shutdown()
 
@@ -430,7 +428,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	#EndRegion
 
 	#Region Header
-	GUICtrlCreateLabel(_Translate($iMUI, "Your Windows 11 Compatibility Results Are Below"), 130, 10, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
+	Local $hHeader = GUICtrlCreateLabel(_Translate($iMUI, "Your Windows 11 Compatibility Results Are Below"), 130, 10, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
 
 	#cs
@@ -724,6 +722,45 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	While 1
 		$hMsg = GUIGetMsg()
 
+		If IsArray($aDirectX) Then
+			$aDirectX = _GetDirectXCheck($aDirectX)
+			$aResults[5][0] = $aDirectX
+			$aResults[5][1] = @error
+			$aResults[5][2] = @extended
+			Switch $aDirectX
+				Case True
+					Switch $aResults[5][2]
+						Case 1
+							_GUICtrlSetState($hCheck[5][0], $iPass)
+							GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")   ; <== No translation, "DirectX 12 and WDDM 2" in LANG-file
+						Case 2
+							_GUICtrlSetState($hCheck[5][0], $iPass)
+							GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")   ; <== No translation, "DirectX 12 and WDDM 3" in LANG-file
+					EndSwitch
+				Case Else
+					Switch $aResults[5][1]
+						Case 0
+							Switch $aResults[5][2]
+								Case 1
+									_GUICtrlSetState($hCheck[5][0], $iUnsure)
+									GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DxDiag Errored"))
+								Case 2
+									_GUICtrlSetState($hCheck[5][0], $iUnsure)
+									GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "Check Timed Out"))
+							EndSwitch
+						Case 1
+							_GUICtrlSetState($hCheck[5][0], $iPass)
+							GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12, but WDDM2"))
+						Case 2
+							_GUICtrlSetState($hCheck[5][0], $iFail)
+							GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DirectX 12, but no WDDM2"))
+						Case Else
+							_GUICtrlSetState($hCheck[5][0], $iFail)
+							GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12 or WDDM2"))
+					EndSwitch
+			EndSwitch
+		EndIf
+
 		Select
 
 			Case $hMsg = $GUI_EVENT_CLOSE Or $hMsg = $hExit
@@ -735,45 +772,6 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 				Case $hMsg = $h_WWW
 					ShellExecute("https://www.whynotwin11.org/")
 				#ce
-
-				; DirectX 12 takes a while. Grab the result once done
-			Case IsArray($aDirectX)
-				$aDirectX = _GetDirectXCheck($aDirectX)
-				$aResults[5][0] = $aDirectX
-				$aResults[5][1] = @error
-				$aResults[5][2] = @extended
-				Switch $aDirectX
-					Case True
-						Switch $aResults[5][2]
-							Case 1
-								_GUICtrlSetState($hCheck[5][0], $iPass)
-								GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")   ; <== No translation, "DirectX 12 and WDDM 2" in LANG-file
-							Case 2
-								_GUICtrlSetState($hCheck[5][0], $iPass)
-								GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")   ; <== No translation, "DirectX 12 and WDDM 3" in LANG-file
-						EndSwitch
-					Case Else
-						Switch $aResults[5][1]
-							Case 0
-								Switch $aResults[5][2]
-									Case 1
-										_GUICtrlSetState($hCheck[5][0], $iUnsure)
-										GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DxDiag Errored"))
-									Case 2
-										_GUICtrlSetState($hCheck[5][0], $iUnsure)
-										GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "Check Timed Out"))
-								EndSwitch
-							Case 1
-								_GUICtrlSetState($hCheck[5][0], $iPass)
-								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12, but WDDM2"))
-							Case 2
-								_GUICtrlSetState($hCheck[5][0], $iFail)
-								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DirectX 12, but no WDDM2"))
-							Case Else
-								_GUICtrlSetState($hCheck[5][0], $iFail)
-								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12 or WDDM2"))
-						EndSwitch
-				EndSwitch
 
 			Case Not IsArray($aDirectX) And $bComplete = False
 				$bComplete = True
@@ -810,7 +808,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 			Case $hMsg = $hToggle
 				If $bSettings Then
 					GUISetState(@SW_HIDE, $hSettings)
+					GUICtrlSetState($hHeader, $GUI_SHOW)
 				Else
+					GUICtrlSetState($hHeader, $GUI_HIDE)
 					GUISetState(@SW_SHOW, $hSettings)
 				EndIf
 				$bSettings = Not $bSettings
