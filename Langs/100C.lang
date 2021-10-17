@@ -1,7 +1,7 @@
 [MetaData]
 Language=French - Switzerland
 Translator=PierreGrillet; Nits77; villisek; BSoD38
-Version=2.3.1.1
+Version=2.4.2.1
 [Font]
 Extra Large=24
 Large=14
@@ -37,6 +37,8 @@ Checking...=Vérification…
 Unable to Determine=N'a pas pu être déterminé
 Unable to Check List=N'a pas pu vérifier la liste
 Error Accessing List=Erreur lors de l'accès à la liste
+Check Timed Out=La vérification a expiré (Time Out)
+Check Skipped=La vérification a été passée
 Not Currently Listed as Compatible=Actuellement non compatible
 Listed as Compatible=Listé comme compatible
 Cores=Cœurs Physiques
@@ -51,11 +53,13 @@ Drive(s) Meet Requirements=Disque(s) compatible(s)
 0 Drives Meet Requirements=Aucun disque n'est compatible
 TPM Missing / Disabled=TPM Manquant / Désactivé
 Detected=détecté
+May Report DirectX 12 Incorrectly=La détection de DirectX 12 peut être incorrecte.
 DirectX 12 and WDDM 3=DirectX 12 et WDDM 3
 DirectX 12 and WDDM 2=DirectX 12 et WDDM 2
 No DirectX 12, but WDDM2=Pas de DirectX 12, mais WDDM2
 DirectX 12, but no WDDM2=DirectX 12, mais pas de WDDM2
 No DirectX 12 or WDDM2=Ni DirectX 12, ni de WDDM2
+DxDiag Errored=Erreur de DxDiag
 Test Build?=Version de test ?
 You're running a newer build than publicly Available!=Vous exécutez une version plus récente que celle distribuée publiquement !
 Up to Date=À Jour
@@ -70,6 +74,8 @@ An Update is Available, would you like to download it?=Une mise à jour est disp
 Done=Terminé
 Loading WMIC=Chargement de WMIC
 Warning=Attention
+Your Computer is NOT ready for Windows 11, you can join the Discord using the Discord Icon if you need assistance.=Votre ordinateur N'EST PAS prêt pour Windows 11. Si vous avez besoin d'aide, vous pouvez rejoindre notre Discord via l'icône Discord.
+Your Computer is ready for Windows 11. You should receive the option to upgrade between October 5th 2021 and Fall 2022.=Votre ordinateur est prêt pour Windows 11. Vous devriez recevoir l'option de migration entre le 5 octobre 2021 et l'automne 2022.
 [Descriptions]
 Architecture=Quantité de données que peut traiter votre ordinateur en un cycle. Un OS 32 bits nécessitera un formatage du disque et une installation de Windows 11. Un processeur 32 bits nécessitera un remplacement.
 Boot=Méthode de démarrage que votre carte mère utilise pour charger Windows. Legacy peut être modifié en UEFI en changeant les paramètres dans le BIOS. Consultez votre manuel de carte mère.
