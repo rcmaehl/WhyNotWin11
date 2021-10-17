@@ -28,6 +28,7 @@
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 Global $sVersion = "2.4.2.1"
+Global $sEdition = "Standard"
 FileChangeDir(@SystemDir)
 
 #include <File.au3>
@@ -421,6 +422,8 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		EndIf
 	#ce
 
+	GUICtrlCreateLabel(@ComputerName, 113, 560, 300, 20, $SS_CENTERIMAGE)
+	GUICtrlSetBkColor(-1, $aColors[$iFooter])
 	GUICtrlCreateLabel(_GetCPUInfo(2), 450, 560, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
 	GUICtrlCreateLabel(_GetGPUInfo(0), 450, 580, 300, 20, $SS_CENTERIMAGE)
@@ -710,6 +713,14 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	Else
 		GUICtrlCreateIcon(@ScriptDir & "\assets\WhyNotWin11.ico", -1, 50, 50, 40, 40)
 	EndIf
+
+	GUICtrlCreateGroup(_Translate($iMUI, "Settings"), 30, 180, 400, 328)
+
+	GUICtrlCreateGroup(_Translate($iMUI, "Guides"), 470, 180, 200, 328)
+	GUICtrlCreateButton("Convert Disk to GPT", 480, 200, 180, 40)
+	GUICtrlCreateButton("Enable Secure Boot", 480, 250, 180, 40)
+	GUICtrlCreateButton("Enable TPM", 480, 300, 180, 40)
+	GUICtrlCreateButton("Skipping CPU && TPM", 480, 350, 180, 40)
 
 	#EndRegion Settings GUI
 
