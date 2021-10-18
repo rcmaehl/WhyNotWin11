@@ -348,7 +348,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	EndIf
 
 	Local $hToggle = GUICtrlCreateLabel("", 34, 518, 32, 32)
-	GUICtrlSetTip(-1, "Settings")
+	GUICtrlSetTip(-1, _Translate($iMUI, "Settings"))
 	GUICtrlSetCursor(-1, 0)
 
 	; Allow Dragging of Window
@@ -803,7 +803,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 					_Translate($iMUI, "Your Computer is ready for Windows 11. You should receive the option to upgrade between October 5th 2021 and Fall 2022."))
 
 			Case $hMsg = $hLanguage
-				If Not StringLeft(GUICtrlRead($hLanguage), 4) = $iMUI Then
+				If StringLeft(GUICtrlRead($hLanguage), 4) <> $iMUI Then
 					$iMUI = StringLeft(GUICtrlRead($hLanguage), 4)
 					GUIDelete($hGUI)
 					Main($aResults, $aOutput)
