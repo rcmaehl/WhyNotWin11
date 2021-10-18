@@ -717,8 +717,8 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	GUICtrlCreateGroup(_Translate($iMUI, "Settings"), 30, 180, 400, 328)
 
-	$hLanguage = GUICtrlCreateCombo("", 40, 200, 380, 20)
-	GUICtrlSetData(-1, _ArrayToString($aLangs))
+	Local $hLanguage = GUICtrlCreateCombo("", 40, 200, 380, 20)
+	GUICtrlSetData(-1, _ArrayToString($aLangs), $iMUI)
 
 	GUICtrlCreateGroup(_Translate($iMUI, "Guides"), 470, 180, 200, 328)
 	GUICtrlCreateButton("Convert Disk to GPT", 480, 200, 180, 40)
@@ -801,6 +801,11 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 				MsgBox($MB_OK+$MB_ICONINFORMATION+$MB_TOPMOST+$MB_SETFOREGROUND, _
 					_Translate($iMUI, "Supported"), _
 					_Translate($iMUI, "Your Computer is ready for Windows 11. You should receive the option to upgrade between October 5th 2021 and Fall 2022."))
+
+			Case $hMsg = $hLanguage
+				$iMUI = StringLeft(GUICtrlRead($hLanguage), 4)
+				GUIDelete($hGUI)
+				Main($aResults, $aOutput)
 
 			Case $hMsg = $hDumpLang
 				FileDelete(@LocalAppDataDir & "\WhyNotWin11\langs\")
