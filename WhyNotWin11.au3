@@ -296,6 +296,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	For $iLoop = 1 To $aLangs[0] Step 1
 		$aLangs[$iLoop] &= " - " & IniRead(@LocalAppDataDir & "\WhyNotWin11\langs\" & $aLangs[$iLoop], "MetaData", "Language", "Unknown")
 	Next
+	_ArrayDelete($aLangs, 0)
 
 	Local $hDumpLang = GUICtrlCreateDummy()
 
@@ -715,6 +716,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	EndIf
 
 	GUICtrlCreateGroup(_Translate($iMUI, "Settings"), 30, 180, 400, 328)
+
+	$hLanguage = GUICtrlCreateCombo("", 40, 200, 380, 20)
+	GUICtrlSetData(-1, _ArrayToString($aLangs))
 
 	GUICtrlCreateGroup(_Translate($iMUI, "Guides"), 470, 180, 200, 328)
 	GUICtrlCreateButton("Convert Disk to GPT", 480, 200, 180, 40)

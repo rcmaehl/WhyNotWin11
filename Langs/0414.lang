@@ -1,7 +1,8 @@
 [MetaData]
-Language=Norwegian Bokmål
+Language=Norwegian
+Translated=Bokmål
 Translator=Odyssey346, ThomasAunvik, Tosa96
-Version=2.3.1.0
+Version=2.4.2.1
 [Strings]
 Donate=Doner
 Check for Updates=Se etter oppdateringer
