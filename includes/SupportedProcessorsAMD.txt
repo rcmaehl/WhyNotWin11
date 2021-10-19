@@ -1,4 +1,4 @@
-2.4.1.0
+2.4.2.1
 3015e
 3020e
 Athlon 3000G
@@ -120,8 +120,6 @@ Ryzen 5 PRO 4650U
 Ryzen 5 PRO 5650G
 Ryzen 5 PRO 5650GE
 Ryzen 5 PRO 5650U
-Ryzen 5 PRO 5750G
-Ryzen 5 PRO 5750GE
 Ryzen 7 2700 
 Ryzen 7 5800
 Ryzen 7 2700E
@@ -152,6 +150,8 @@ Ryzen 7 PRO 3700U
 Ryzen 7 PRO 4750G
 Ryzen 7 PRO 4750GE
 Ryzen 7 PRO 4750U
+Ryzen 7 PRO 5750G
+Ryzen 7 PRO 5750GE
 Ryzen 7 PRO 5850U
 Ryzen 9 5900
 Ryzen 9 3900
