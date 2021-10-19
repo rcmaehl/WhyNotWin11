@@ -190,7 +190,9 @@ Func ProcessCMDLine()
 	If Not $bSilent Then
 		Main($aResults, $aOutput)
 	Else
-		FinalizeResults($aResults)
+		Do
+			FinalizeResults($aResults)
+		Until Not IsArray($aResults[5][0])
 	EndIf
 	If $aOutput[0] = True Then OutputResults($aResults, $aOutput)
 	For $iLoop = 0 To 10 Step 1
@@ -275,7 +277,6 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	$aFonts = _GetTranslationFonts($iMUI)
 
 	Local $bComplete = False
-	Local $aDirectX = $aResults[5][0]
 
 	Local Enum $iFail = 0, $iPass, $iUnsure, $iWarn
 	Local Enum $iBackground = 0, $iText, $iSidebar, $iFooter
@@ -737,43 +738,8 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	While 1
 		$hMsg = GUIGetMsg()
 
-		If IsArray($aDirectX) Then
-			$aDirectX = _GetDirectXCheck($aDirectX)
-			$aResults[5][0] = $aDirectX
-			$aResults[5][1] = @error
-			$aResults[5][2] = @extended
-			Switch $aDirectX
-				Case True
-					Switch $aResults[5][2]
-						Case 1
-							_GUICtrlSetState($hCheck[5][0], $iPass)
-							GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")   ; <== No translation, "DirectX 12 and WDDM 2" in LANG-file
-						Case 2
-							_GUICtrlSetState($hCheck[5][0], $iPass)
-							GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")   ; <== No translation, "DirectX 12 and WDDM 3" in LANG-file
-					EndSwitch
-				Case Else
-					Switch $aResults[5][1]
-						Case 0
-							Switch $aResults[5][2]
-								Case 1
-									_GUICtrlSetState($hCheck[5][0], $iUnsure)
-									GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DxDiag Errored"))
-								Case 2
-									_GUICtrlSetState($hCheck[5][0], $iUnsure)
-									GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "Check Timed Out"))
-							EndSwitch
-						Case 1
-							_GUICtrlSetState($hCheck[5][0], $iPass)
-							GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12, but WDDM2"))
-						Case 2
-							_GUICtrlSetState($hCheck[5][0], $iFail)
-							GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DirectX 12, but no WDDM2"))
-						Case Else
-							_GUICtrlSetState($hCheck[5][0], $iFail)
-							GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12 or WDDM2"))
-					EndSwitch
-			EndSwitch
+		If IsArray($aResults[5][0]) Then
+			FinalizeResults($aResults)
 		EndIf
 
 		Select
@@ -788,8 +754,40 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 					ShellExecute("https://www.whynotwin11.org/")
 				#ce
 
-			Case Not IsArray($aDirectX) And $bComplete = False
+			Case Not IsArray($aResults[5][0]) And $bComplete = False
 				$bComplete = True
+				Switch $aResults[5][0]
+					Case True
+						Switch $aResults[5][2]
+							Case 1
+								_GUICtrlSetState($hCheck[5][0], $iPass)
+								GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")   ; <== No translation, "DirectX 12 and WDDM 2" in LANG-file
+							Case 2
+								_GUICtrlSetState($hCheck[5][0], $iPass)
+								GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")   ; <== No translation, "DirectX 12 and WDDM 3" in LANG-file
+						EndSwitch
+					Case Else
+						Switch $aResults[5][1]
+							Case 0
+								Switch $aResults[5][2]
+									Case 1
+										_GUICtrlSetState($hCheck[5][0], $iUnsure)
+										GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DxDiag Errored"))
+									Case 2
+										_GUICtrlSetState($hCheck[5][0], $iUnsure)
+										GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "Check Timed Out"))
+								EndSwitch
+							Case 1
+								_GUICtrlSetState($hCheck[5][0], $iPass)
+								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12, but WDDM2"))
+							Case 2
+								_GUICtrlSetState($hCheck[5][0], $iFail)
+								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DirectX 12, but no WDDM2"))
+							Case Else
+								_GUICtrlSetState($hCheck[5][0], $iFail)
+								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12 or WDDM2"))
+						EndSwitch
+				EndSwitch
 				For $iLoop = 0 To 10 Step 1
 					If $aResults[$iLoop][0] = False Or $aResults[$iLoop][0] < 1 Then
 						MsgBox($MB_OK+$MB_ICONERROR+$MB_TOPMOST+$MB_SETFOREGROUND, _
@@ -913,7 +911,7 @@ EndFunc   ;==>_GetLatestRelease
 ; Parameters ....: $aResults            - an array of results
 ; Return values .: None
 ; Author ........: rcmaehl
-; Modified ......: 09/22/2021
+; Modified ......: 10/18/2021
 ; Remarks .......:
 ; Related .......:
 ; Link ..........:
@@ -923,14 +921,10 @@ Func FinalizeResults(ByRef $aResults)
 
 	Local $aDirectX = $aResults[5][0]
 
-	Do
-		$aDirectX = _GetDirectXCheck($aDirectX)
-		$aResults[5][0] = $aDirectX
-		$aResults[5][1] = @error
-		$aResults[5][2] = @extended
-	Until Not IsArray($aDirectX)
-
-	Return
+	$aDirectX = _GetDirectXCheck($aDirectX)
+	$aResults[5][0] = $aDirectX
+	$aResults[5][1] = @error
+	$aResults[5][2] = @extended
 
 EndFunc   ;==>FinalizeResults
 
