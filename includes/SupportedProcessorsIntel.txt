@@ -1,4 +1,4 @@
-2.4.2.1
+2.4.2.2
 Atom(R) x6200FE
 Atom(R) x6211E
 Atom(R) x6212RE
@@ -7,13 +7,13 @@ Atom(R) x6414RE
 Atom(R) x6425E
 Atom(R) x6425RE
 Atom(R) x6427FE
-Celeron(R) 6305
 Celeron(R) 3867U
 Celeron(R) 4205U
 Celeron(R) 4305U
 Celeron(R) 4305UE
 Celeron(R) 5205U
 Celeron(R) 5305U
+Celeron(R) 6305
 Celeron(R) 6305E
 Celeron(R) G4900
 Celeron(R) G4900T
@@ -211,7 +211,6 @@ Core(TM) i7-11390H
 Core(TM) i7-11600H
 Core(TM) i7-1160G7
 Core(TM) i7-1165G7
-Core(TM) i7-1165G7
 Core(TM) i7-11700
 Core(TM) i7-11700F
 Core(TM) i7-11700K
@@ -398,6 +397,7 @@ Xeon(R) Gold 5315Y
 Xeon(R) Gold 5317
 Xeon(R) Gold 5318N
 Xeon(R) Gold 5318S
+Xeon(R) Gold 5318Y
 Xeon(R) Gold 5320
 Xeon(R) Gold 5320T
 Xeon(R) Gold 6126
@@ -473,7 +473,6 @@ Xeon(R) Gold 6342
 Xeon(R) Gold 6346
 Xeon(R) Gold 6348
 Xeon(R) Gold 6354
-Xeon(R) Gold 5318Y
 Xeon(R) Platinum 8153
 Xeon(R) Platinum 8156
 Xeon(R) Platinum 8158
