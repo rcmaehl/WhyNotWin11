@@ -300,6 +300,12 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	Next
 	_ArrayDelete($aLangs, 0)
 
+	Local $aThemes = _FileListToArray(@ScriptDir & "\", "*.def", $FLTA_FILES)
+	For $iLoop = 1 To $aThemes[0] Step 1
+		$aThemes[$iLoop] &= " - " & IniRead(@ScriptDir & "\" & $aThemes[$iLoop], "MetaData", "Name", "Unknown")
+	Next
+	_ArrayDelete($aThemes, 0)
+
 	Local $hDumpLang = GUICtrlCreateDummy()
 
 	; Debug Key
@@ -727,7 +733,8 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	GUICtrlCreateLabel(_Translate($iMUI, "Theme") & ":", 40, 290, 380, 20)
 	Local $hTheme = GUICtrlCreateCombo("", 40, 310, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
-	; GUICtrlSetData(-1, _ArrayToString($aThemes), $iMUI)
+	#forceref $hTheme
+	GUICtrlSetData(-1, _ArrayToString($aThemes))
 	GUICtrlCreateLabel(_Translate($iMUI, "Theme by") & ":", 40, 340, 100, 20)
 ;	GUICtrlCreateLabel(_GetThemeCredit($sTheme), 140, 340, 280, 40, $SS_RIGHT)
 
@@ -737,11 +744,16 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlCreateCheckbox(_Translate($iMUI, "Save Settings in Registry, Not Disk"), 40, 480, 380, 20, $BS_RIGHTBUTTON)
 
 	GUICtrlCreateGroup(_Translate($iMUI, "Guides"), 470, 180, 200, 328)
-	GUICtrlCreateButton("Windows 11 Requirements", 480, 200, 180, 40)
-	GUICtrlCreateButton("Convert Disk to GPT", 480, 250, 180, 40)
+	Local $hChecks = GUICtrlCreateButton("Windows 11 Requirements", 480, 200, 180, 40)
+	GUICtrlSetCursor(-1, 0)
+	Local $hConvert = GUICtrlCreateButton("Convert Disk to GPT", 480, 250, 180, 40)
+	GUICtrlSetCursor(-1, 0)
 	GUICtrlCreateButton("Enable Secure Boot", 480, 300, 180, 40)
+	GUICtrlSetCursor(-1, 0)
 	GUICtrlCreateButton("Enable TPM", 480, 350, 180, 40)
-	GUICtrlCreateButton("Skip CPU && TPM", 480, 400, 180, 40)
+	GUICtrlSetCursor(-1, 0)
+	Local $hSkips = GUICtrlCreateButton("Skip CPU && TPM", 480, 400, 180, 40)
+	GUICtrlSetCursor(-1, 0)
 
 	#EndRegion Settings GUI
 
@@ -840,6 +852,15 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 			Case $hMsg = $hLTT
 				ShellExecute("https://linustechtips.com/topic/1350354-windows-11-readiness-check-whynotwin11/")
+
+			Case $hMsg = $hChecks
+				ShellExecute("https://www.microsoft.com/en-us/windows/windows-11-specifications")
+
+			Case $hMsg = $hConvert
+				ShellExecute("https://docs.microsoft.com/en-us/windows/deployment/mbr-to-gpt")
+
+			Case $hMsg = $hSkips
+				ShellExecute("https://support.microsoft.com/en-us/windows/ways-to-install-windows-11-e0edbbfb-cfc5-4011-868b-2ce77ac7c70e")
 
 			Case $hMsg = $hToggle
 				If $bSettings Then
