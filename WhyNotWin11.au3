@@ -43,6 +43,7 @@ FileChangeDir(@SystemDir)
 #include <EditConstants.au3>
 #include <FontConstants.au3>
 #include <WinAPIShellEx.au3>
+#include <ComboConstants.au3>
 #include <GUIConstantsEx.au3>
 #include <AutoItConstants.au3>
 #include <StaticConstants.au3>
@@ -718,14 +719,29 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	GUICtrlCreateGroup(_Translate($iMUI, "Settings"), 30, 180, 400, 328)
 
-	Local $hLanguage = GUICtrlCreateCombo("", 40, 200, 380, 20)
+	GUICtrlCreateLabel(_Translate($iMUI, "Language") & ":", 40, 200, 380, 20)
+	Local $hLanguage = GUICtrlCreateCombo("", 40, 220, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
 	GUICtrlSetData(-1, _ArrayToString($aLangs), $iMUI)
+	GUICtrlCreateLabel(_Translate($iMUI, "Translation by") & ":", 40, 250, 100, 20)
+	GUICtrlCreateLabel(_GetTranslationCredit($iMUI), 140, 250, 280, 40, $SS_RIGHT)
+
+	GUICtrlCreateLabel(_Translate($iMUI, "Theme") & ":", 40, 290, 380, 20)
+	Local $hTheme = GUICtrlCreateCombo("", 40, 310, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
+	; GUICtrlSetData(-1, _ArrayToString($aThemes), $iMUI)
+	GUICtrlCreateLabel(_Translate($iMUI, "Theme by") & ":", 40, 340, 100, 20)
+;	GUICtrlCreateLabel(_GetThemeCredit($sTheme), 140, 340, 280, 40, $SS_RIGHT)
+
+	GUICtrlCreateCheckbox(_Translate($iMUI, "Remember Last Language Used"), 40, 380, 380, 20, $BS_RIGHTBUTTON)
+	GUICtrlCreateCheckbox(_Translate($iMUI, "Check for Updates on App Launch"), 40, 400, 380, 20, $BS_RIGHTBUTTON)
+
+	GUICtrlCreateCheckbox(_Translate($iMUI, "Save Settings in Registry, Not Disk"), 40, 480, 380, 20, $BS_RIGHTBUTTON)
 
 	GUICtrlCreateGroup(_Translate($iMUI, "Guides"), 470, 180, 200, 328)
-	GUICtrlCreateButton("Convert Disk to GPT", 480, 200, 180, 40)
-	GUICtrlCreateButton("Enable Secure Boot", 480, 250, 180, 40)
-	GUICtrlCreateButton("Enable TPM", 480, 300, 180, 40)
-	GUICtrlCreateButton("Skipping CPU && TPM", 480, 350, 180, 40)
+	GUICtrlCreateButton("Windows 11 Requirements", 480, 200, 180, 40)
+	GUICtrlCreateButton("Convert Disk to GPT", 480, 250, 180, 40)
+	GUICtrlCreateButton("Enable Secure Boot", 480, 300, 180, 40)
+	GUICtrlCreateButton("Enable TPM", 480, 350, 180, 40)
+	GUICtrlCreateButton("Skip CPU && TPM", 480, 400, 180, 40)
 
 	#EndRegion Settings GUI
 
@@ -754,7 +770,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 					ShellExecute("https://www.whynotwin11.org/")
 				#ce
 
-			Case Not IsArray($aResults[5][0]) And $bComplete = False
+			Case Not IsArray($aResults[5][0]) And $bComplete = False And Not $bSettings
 				$bComplete = True
 				Switch $aResults[5][0]
 					Case True
