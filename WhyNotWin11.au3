@@ -733,6 +733,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Language") & ":", 40, 200, 380, 20)
 	Local $hLanguage = GUICtrlCreateCombo("", 40, 220, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
+	If $aMUI[0] Then GUICtrlSetState(-1, $GUI_DISABLE)
 	GUICtrlSetData(-1, _ArrayToString($aLangs), $aMUI[1])
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Translation by") & ":", 40, 250, 100, 20)
 	GUICtrlCreateLabel(_GetTranslationCredit($aMUI[1]), 140, 250, 280, 40, $SS_RIGHT)
