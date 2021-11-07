@@ -263,7 +263,13 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	Local Static $aFonts[5]
 	Local Static $aColors[4] ; Convert to [4][8] for 2.0 themes
-	Local Static $iMUI = @MUILang
+	Local Static $aMUI[2] = [Null, @MUILang] ; Forced, MUI Lang
+
+	If $aMUI[0] = Null Then
+		$aMUI[1] = RegRead("HKEY_LOCAL_MACHINE\Software\Policies\Robert Maehl Software\WhyNotWin11", "ForcedMUI")
+		$aMUI[0] = $aMUI[1] ? True : False
+		If Not $aMUI[0] Then $aMUI[1] = @MUILang
+	EndIf
 
 	#cs ; 2.0 Theming Enums
 	Local Enum $iGeneral = 0, $iText, $iIcons, $iStatus
@@ -275,7 +281,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	#ce
 
 	$aColors = _SetTheme()
-	$aFonts = _GetTranslationFonts($iMUI)
+	$aFonts = _GetTranslationFonts($aMUI[1])
 
 	Local $bComplete = False
 
@@ -285,9 +291,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	Local Const $DPI_RATIO = _GDIPlus_GraphicsGetDPIRatio()[0]
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
 
-	ProgressSet(100, _Translate($iMUI, "Done"))
+	ProgressSet(100, _Translate($aMUI[1], "Done"))
 
-	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER), _GetTranslationRTL($iMUI))
+	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER), _GetTranslationRTL($aMUI[1]))
 	GUISetBkColor($aColors[$iBackground])
 	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", $aFonts[4])
 
@@ -335,7 +341,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlSetCursor(-1, 0)
 
 	Local $hDonate = GUICtrlCreateLabel("", 34, 160, 32, 32)
-	GUICtrlSetTip(-1, _Translate($iMUI, "Donate"))
+	GUICtrlSetTip(-1, _Translate($aMUI[1], "Donate"))
 	GUICtrlSetCursor(-1, 0)
 
 	Local $hDiscord = GUICtrlCreateLabel("", 34, 210, 32, 32)
@@ -356,7 +362,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	EndIf
 
 	Local $hToggle = GUICtrlCreateLabel("", 34, 518, 32, 32)
-	GUICtrlSetTip(-1, _Translate($iMUI, "Settings"))
+	GUICtrlSetTip(-1, _Translate($aMUI[1], "Settings"))
 	GUICtrlSetCursor(-1, 0)
 
 	; Allow Dragging of Window
@@ -365,7 +371,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlCreateLabel("", 0, 0, 100, 570)
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 
-	GUICtrlCreateLabel(_Translate($iMUI, "Check for Updates"), 0, 563, 100, 60, $SS_CENTER)
+	GUICtrlCreateLabel(_Translate($aMUI[1], "Check for Updates"), 0, 563, 100, 60, $SS_CENTER)
 	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 	GUICtrlSetTip(-1, "Update")
@@ -426,7 +432,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	#cs
 		If Not (@MUILang = "0409") Then
-			GUICtrlCreateLabel(_Translate($iMUI, "Translation by") & " " & _GetTranslationCredit(), 130, 560, 310, 40)
+			GUICtrlCreateLabel(_Translate($aMUI[1], "Translation by") & " " & _GetTranslationCredit(), 130, 560, 310, 40)
 			GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
 		EndIf
 	#ce
@@ -440,16 +446,16 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	#EndRegion
 
 	#Region Header
-	Local $hHeader = GUICtrlCreateLabel(_Translate($iMUI, "Your Windows 11 Compatibility Results Are Below"), 130, 10, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
+	Local $hHeader = GUICtrlCreateLabel(_Translate($aMUI[1], "Your Windows 11 Compatibility Results Are Below"), 130, 10, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
 
 	#cs
-	Local $h_WWW = GUICtrlCreateLabel(_Translate($iMUI, "Now Reach WhyNotWin11 via https://www.whynotwin11.org/"), 130, 45, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
+	Local $h_WWW = GUICtrlCreateLabel(_Translate($aMUI[1], "Now Reach WhyNotWin11 via https://www.whynotwin11.org/"), 130, 45, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO)
 	GUICtrlSetCursor(-1, 0)
 	#ce
 
-	GUICtrlCreateLabel("* " & _Translate($iMUI, "Results based on currently known requirements!"), 130, 45, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlCreateLabel("* " & _Translate($aMUI[1], "Results based on currently known requirements!"), 130, 45, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetColor(-1, 0xE20012)
 	GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO)
 
@@ -473,7 +479,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
-	Local $aInfo = _GetDescriptions($iMUI)
+	Local $aInfo = _GetDescriptions($aMUI[1])
 
 	_GDIPlus_Startup()
 	For $iRow = 0 To 10 Step 1
@@ -482,9 +488,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("…", 113, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, $aColors[$iBackground])
 		GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
-		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40, $SS_CENTERIMAGE)
+		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($aMUI[1], $hLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40, $SS_CENTERIMAGE)
 		GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
-		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_SUNKEN)
+		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($aMUI[1], "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_SUNKEN)
 		Switch $iRow
 			Case 0, 3, 9
 				GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN)
@@ -506,18 +512,18 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	Switch $aResults[0][0]
 		Case True
 			_GUICtrlSetState($hCheck[0][0], $iPass)
-			GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "64 Bit CPU") & @CRLF & _Translate($iMUI, "64 Bit OS"))
+			GUICtrlSetData($hCheck[0][2], _Translate($aMUI[1], "64 Bit CPU") & @CRLF & _Translate($aMUI[1], "64 Bit OS"))
 		Case Else
 			Switch $aResults[0][1]
 				Case 0
 					_GUICtrlSetState($hCheck[0][0], $iUnsure)
-					GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "Check Skipped"))
+					GUICtrlSetData($hCheck[0][2], _Translate($aMUI[1], "Check Skipped"))
 				Case 1
 					_GUICtrlSetState($hCheck[0][0], $iWarn)
-					GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "64 Bit CPU") & @CRLF & _Translate($iMUI, "32 bit OS"))
+					GUICtrlSetData($hCheck[0][2], _Translate($aMUI[1], "64 Bit CPU") & @CRLF & _Translate($aMUI[1], "32 bit OS"))
 				Case 2
 					_GUICtrlSetState($hCheck[0][0], $iFail)
-					GUICtrlSetData($hCheck[0][2], _Translate($iMUI, "32 Bit CPU") & @CRLF & _Translate($iMUI, "32 Bit OS"))
+					GUICtrlSetData($hCheck[0][2], _Translate($aMUI[1], "32 Bit CPU") & @CRLF & _Translate($aMUI[1], "32 Bit OS"))
 				Case Else
 					_GUICtrlSetState($hCheck[0][0], $iFail)
 					GUICtrlSetData($hCheck[0][2], "?")
@@ -536,7 +542,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 					_GUICtrlSetState($hCheck[1][0], $iFail)
 					GUICtrlSetData($hCheck[1][2], "Legacy")
 				Case Else
-					GUICtrlSetData($hCheck[1][2], _Translate($iMUI, "Not Supported"))
+					GUICtrlSetData($hCheck[1][2], _Translate($aMUI[1], "Not Supported"))
 					_GUICtrlSetState($hCheck[1][0], $iWarn)
 			EndSwitch
 	EndSwitch
@@ -548,17 +554,17 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 			Switch $aResults[2][1]
 				Case 1
 					_GUICtrlSetState($hCheck[2][0], $iWarn)
-					GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Unable to Check List"))
+					GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Unable to Check List"))
 				Case 2
 					_GUICtrlSetState($hCheck[2][0], $iWarn)
-					GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Error Accessing List"))
+					GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Error Accessing List"))
 				Case 3
 					_GUICtrlSetState($hCheck[2][0], $iFail)
-					GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Not Supported"))
+					GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Not Supported"))
 			EndSwitch
 		Case Else
 			_GUICtrlSetState($hCheck[2][0], $iPass)
-			GUICtrlSetData($hCheck[2][2], _Translate($iMUI, "Listed as Compatible"))
+			GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Listed as Compatible"))
 	EndSwitch
 	#EndRegion
 
@@ -569,9 +575,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		_GUICtrlSetState($hCheck[3][0], $iFail)
 	EndIf
 
-	Local $sCores = StringReplace(_Translate($iMUI, "Cores"), '#', _GetCPUInfo(0))
+	Local $sCores = StringReplace(_Translate($aMUI[1], "Cores"), '#', _GetCPUInfo(0))
 	If @extended = 0 Then $sCores = _GetCPUInfo(0) & " " & $sCores
-	Local $sThreads = StringReplace(_Translate($iMUI, "Threads"), '#', _GetCPUInfo(1))
+	Local $sThreads = StringReplace(_Translate($aMUI[1], "Threads"), '#', _GetCPUInfo(1))
 	If @extended = 0 Then $sThreads = _GetCPUInfo(1) & " " & $sThreads
 	GUICtrlSetData($hCheck[3][2], $sCores & @CRLF & $sThreads)
 	#EndRegion
@@ -595,13 +601,13 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	If $aResults[6][0] Then
 		If $aResults[6][1] Then
 			_GUICtrlSetState($hCheck[6][0], $iPass)
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected"))
+			GUICtrlSetData($hCheck[6][2], _Translate($aMUI[1], "GPT Detected"))
 		Else
 			_GUICtrlSetState($hCheck[6][0], $iPass)
-			GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Detected"))
+			GUICtrlSetData($hCheck[6][2], _Translate($aMUI[1], "GPT Detected"))
 		EndIf
 	Else
-		GUICtrlSetData($hCheck[6][2], _Translate($iMUI, "GPT Not Detected"))
+		GUICtrlSetData($hCheck[6][2], _Translate($aMUI[1], "GPT Not Detected"))
 		_GUICtrlSetState($hCheck[6][0], $iFail)
 	EndIf
 	#EndRegion
@@ -622,14 +628,14 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 			Switch $aResults[8][2]
 				Case 1
 					_GUICtrlSetState($hCheck[8][0], $iPass)
-					GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Enabled"))
+					GUICtrlSetData($hCheck[8][2], _Translate($aMUI[1], "Enabled"))
 				Case 0
 					_GUICtrlSetState($hCheck[8][0], $iPass)
-					GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Supported"))
+					GUICtrlSetData($hCheck[8][2], _Translate($aMUI[1], "Supported"))
 			EndSwitch
 		Case False
 			_GUICtrlSetState($hCheck[8][0], $iFail)
-			GUICtrlSetData($hCheck[8][2], _Translate($iMUI, "Disabled / Not Detected"))
+			GUICtrlSetData($hCheck[8][2], _Translate($aMUI[1], "Disabled / Not Detected"))
 	EndSwitch
 	#EndRegion
 
@@ -639,25 +645,25 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	Else
 		_GUICtrlSetState($hCheck[9][0], $iFail)
 	EndIf
-	GUICtrlSetData($hCheck[9][2], $aResults[9][1] & " GB " & $WINDOWS_DRIVE & @CRLF & $aResults[9][2] & " " & _Translate($iMUI, "Drive(s) Meet Requirements"))
+	GUICtrlSetData($hCheck[9][2], $aResults[9][1] & " GB " & $WINDOWS_DRIVE & @CRLF & $aResults[9][2] & " " & _Translate($aMUI[1], "Drive(s) Meet Requirements"))
 	#EndRegion
 
 	#Region : TPM Check
 	If $aResults[10][0] Then
 		_GUICtrlSetState($hCheck[10][0], $iPass)
-		GUICtrlSetData($hCheck[10][2], "TPM " & $aResults[10][1] & " " & _Translate($iMUI, "Detected"))
+		GUICtrlSetData($hCheck[10][2], "TPM " & $aResults[10][1] & " " & _Translate($aMUI[1], "Detected"))
 	Else
 		_GUICtrlSetState($hCheck[10][0], $iFail)
 		Switch $aResults[10][1]
 			Case 0
-				GUICtrlSetData($hCheck[10][2], _Translate($iMUI, "TPM Missing / Disabled"))
+				GUICtrlSetData($hCheck[10][2], _Translate($aMUI[1], "TPM Missing / Disabled"))
 			Case 1
-				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Not Supported"))
+				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($aMUI[1], "Not Supported"))
 			Case 2
-				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($iMUI, "Not Supported"))
+				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($aMUI[1], "Not Supported"))
 			Case 3
 				_GUICtrlSetState($hCheck[10][0], $iUnsure)
-				GUICtrlSetData($hCheck[10][2], _Translate($iMUI, "TPM Status Error"))
+				GUICtrlSetData($hCheck[10][2], _Translate($aMUI[1], "TPM Status Error"))
 		EndSwitch
 	EndIf
 	#EndRegion
@@ -675,9 +681,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	For $iRow = 0 To 10 Step 1
 		$hAdvCheck[$iRow][0] = GUICtrlCreateLabel("?", 113, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, $aColors[$iBackground])
-		$hAdvCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($iMUI, $hAdvLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40, $SS_CENTERIMAGE)
+		$hAdvCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($aMUI[1], $hAdvLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40, $SS_CENTERIMAGE)
 		GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
-		$hAdvCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($iMUI, "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_SUNKEN)
+		$hAdvCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($aMUI[1], "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_SUNKEN)
 		Switch $iRow
 			Case -1
 				GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN)
@@ -697,10 +703,10 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	If _InternetCheck() Then
 		_GUICtrlSetState($hAdvCheck[4][0], $iPass)
-		GUICtrlSetData($hAdvCheck[4][2], _Translate($iMUI, "Detected"))
+		GUICtrlSetData($hAdvCheck[4][2], _Translate($aMUI[1], "Detected"))
 	Else
 		_GUICtrlSetState($hAdvCheck[4][0], $iFail)
-		GUICtrlSetData($hAdvCheck[4][2], _Translate($iMUI, "Disabled / Not Detected"))
+		GUICtrlSetData($hAdvCheck[4][2], _Translate($aMUI[1], "Disabled / Not Detected"))
 	EndIf
 	#ce
 	#EndRegion
@@ -708,7 +714,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	;GUICtrlCreateTabItem("")
 
 	#Region Settings GUI
-	Local $hSettings = GUICreate(_Translate($iMUI, "Settings"), 698, 528, 102, 32, $WS_POPUP, $WS_EX_MDICHILD, $hGUI)
+	Local $hSettings = GUICreate(_Translate($aMUI[1], "Settings"), 698, 528, 102, 32, $WS_POPUP, $WS_EX_MDICHILD, $hGUI)
 	Local $bSettings = False
 	GUISetBkColor($aColors[$iBackground])
 	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", "Arial")
@@ -723,27 +729,27 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		GUICtrlCreateIcon(@ScriptDir & "\assets\WhyNotWin11.ico", -1, 50, 50, 40, 40)
 	EndIf
 
-	GUICtrlCreateGroup(_Translate($iMUI, "Settings"), 30, 180, 400, 328)
+	GUICtrlCreateGroup(_Translate($aMUI[1], "Settings"), 30, 180, 400, 328)
 
-	GUICtrlCreateLabel(_Translate($iMUI, "Language") & ":", 40, 200, 380, 20)
+	GUICtrlCreateLabel(_Translate($aMUI[1], "Language") & ":", 40, 200, 380, 20)
 	Local $hLanguage = GUICtrlCreateCombo("", 40, 220, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
-	GUICtrlSetData(-1, _ArrayToString($aLangs), $iMUI)
-	GUICtrlCreateLabel(_Translate($iMUI, "Translation by") & ":", 40, 250, 100, 20)
-	GUICtrlCreateLabel(_GetTranslationCredit($iMUI), 140, 250, 280, 40, $SS_RIGHT)
+	GUICtrlSetData(-1, _ArrayToString($aLangs), $aMUI[1])
+	GUICtrlCreateLabel(_Translate($aMUI[1], "Translation by") & ":", 40, 250, 100, 20)
+	GUICtrlCreateLabel(_GetTranslationCredit($aMUI[1]), 140, 250, 280, 40, $SS_RIGHT)
 
-	GUICtrlCreateLabel(_Translate($iMUI, "Theme") & ":", 40, 290, 380, 20)
+	GUICtrlCreateLabel(_Translate($aMUI[1], "Theme") & ":", 40, 290, 380, 20)
 	Local $hTheme = GUICtrlCreateCombo("", 40, 310, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
 	#forceref $hTheme
 	GUICtrlSetData(-1, _ArrayToString($aThemes))
-	GUICtrlCreateLabel(_Translate($iMUI, "Theme by") & ":", 40, 340, 100, 20)
+	GUICtrlCreateLabel(_Translate($aMUI[1], "Theme by") & ":", 40, 340, 100, 20)
 ;	GUICtrlCreateLabel(_GetThemeCredit($sTheme), 140, 340, 280, 40, $SS_RIGHT)
 
-	GUICtrlCreateCheckbox(_Translate($iMUI, "Remember Last Language Used"), 40, 380, 380, 20, $BS_RIGHTBUTTON)
-	GUICtrlCreateCheckbox(_Translate($iMUI, "Check for Updates on App Launch"), 40, 400, 380, 20, $BS_RIGHTBUTTON)
+	GUICtrlCreateCheckbox(_Translate($aMUI[1], "Remember Last Language Used"), 40, 380, 380, 20, $BS_RIGHTBUTTON)
+	GUICtrlCreateCheckbox(_Translate($aMUI[1], "Check for Updates on App Launch"), 40, 400, 380, 20, $BS_RIGHTBUTTON)
 
-	GUICtrlCreateCheckbox(_Translate($iMUI, "Save Settings in Registry, Not Disk"), 40, 480, 380, 20, $BS_RIGHTBUTTON)
+	GUICtrlCreateCheckbox(_Translate($aMUI[1], "Save Settings in Registry, Not Disk"), 40, 480, 380, 20, $BS_RIGHTBUTTON)
 
-	GUICtrlCreateGroup(_Translate($iMUI, "Guides"), 470, 180, 200, 328)
+	GUICtrlCreateGroup(_Translate($aMUI[1], "Guides"), 470, 180, 200, 328)
 	Local $hChecks = GUICtrlCreateButton("Windows 11 Requirements", 480, 200, 180, 40)
 	GUICtrlSetCursor(-1, 0)
 	Local $hConvert = GUICtrlCreateButton("Convert Disk to GPT", 480, 250, 180, 40)
@@ -753,6 +759,8 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlCreateButton("Enable TPM", 480, 350, 180, 40)
 	GUICtrlSetCursor(-1, 0)
 	Local $hSkips = GUICtrlCreateButton("Skip CPU && TPM", 480, 400, 180, 40)
+	GUICtrlSetCursor(-1, 0)
+	Local $hInstall = GUICtrlCreateButton("Get Windows 11 Now", 480, 450, 180, 40)
 	GUICtrlSetCursor(-1, 0)
 
 	#EndRegion Settings GUI
@@ -800,37 +808,37 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 								Switch $aResults[5][2]
 									Case 1
 										_GUICtrlSetState($hCheck[5][0], $iUnsure)
-										GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DxDiag Errored"))
+										GUICtrlSetData($hCheck[5][2], _Translate($aMUI[1], "DxDiag Errored"))
 									Case 2
 										_GUICtrlSetState($hCheck[5][0], $iUnsure)
-										GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "Check Timed Out"))
+										GUICtrlSetData($hCheck[5][2], _Translate($aMUI[1], "Check Timed Out"))
 								EndSwitch
 							Case 1
 								_GUICtrlSetState($hCheck[5][0], $iPass)
-								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12, but WDDM2"))
+								GUICtrlSetData($hCheck[5][2], _Translate($aMUI[1], "No DirectX 12, but WDDM2"))
 							Case 2
 								_GUICtrlSetState($hCheck[5][0], $iFail)
-								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "DirectX 12, but no WDDM2"))
+								GUICtrlSetData($hCheck[5][2], _Translate($aMUI[1], "DirectX 12, but no WDDM2"))
 							Case Else
 								_GUICtrlSetState($hCheck[5][0], $iFail)
-								GUICtrlSetData($hCheck[5][2], _Translate($iMUI, "No DirectX 12 or WDDM2"))
+								GUICtrlSetData($hCheck[5][2], _Translate($aMUI[1], "No DirectX 12 or WDDM2"))
 						EndSwitch
 				EndSwitch
 				For $iLoop = 0 To 10 Step 1
 					If $aResults[$iLoop][0] = False Or $aResults[$iLoop][0] < 1 Then
 						MsgBox($MB_OK+$MB_ICONERROR+$MB_TOPMOST+$MB_SETFOREGROUND, _
-							_Translate($iMUI, "Not Supported"), _
-							_Translate($iMUI, "Your Computer is NOT ready for Windows 11, you can join the Discord using the Discord Icon if you need assistance."))
+							_Translate($aMUI[1], "Not Supported"), _
+							_Translate($aMUI[1], "Your Computer is NOT ready for Windows 11, you can join the Discord using the Discord Icon if you need assistance."))
 						ContinueLoop 2
 					EndIf
 				Next
 				MsgBox($MB_OK+$MB_ICONINFORMATION+$MB_TOPMOST+$MB_SETFOREGROUND, _
-					_Translate($iMUI, "Supported"), _
-					_Translate($iMUI, "Your Computer is ready for Windows 11. You should receive the option to upgrade between October 5th 2021 and Fall 2022."))
+					_Translate($aMUI[1], "Supported"), _
+					_Translate($aMUI[1], "Your Computer is ready for Windows 11. You should receive the option to upgrade between October 5th 2021 and Fall 2022."))
 
 			Case $hMsg = $hLanguage
-				If StringLeft(GUICtrlRead($hLanguage), 4) <> $iMUI Then
-					$iMUI = StringLeft(GUICtrlRead($hLanguage), 4)
+				If StringLeft(GUICtrlRead($hLanguage), 4) <> $aMUI[1] Then
+					$aMUI[1] = StringLeft(GUICtrlRead($hLanguage), 4)
 					GUIDelete($hGUI)
 					Main($aResults, $aOutput)
 				EndIf
@@ -862,6 +870,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 			Case $hMsg = $hSkips
 				ShellExecute("https://support.microsoft.com/en-us/windows/ways-to-install-windows-11-e0edbbfb-cfc5-4011-868b-2ce77ac7c70e")
 
+			Case $hMsg = $hInstall
+				ShellExecute("https://www.youtube.com/watch?v=GOqVVP52qsk&t=515s")
+
 			Case $hMsg = $hToggle
 				If $bSettings Then
 					GUISetState(@SW_HIDE, $hSettings)
@@ -875,25 +886,25 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 			Case $hMsg = $hUpdate
 				Switch _GetLatestRelease($sVersion)
 					Case -1
-						MsgBox($MB_OK + $MB_ICONWARNING + $MB_TOPMOST, _Translate($iMUI, "Test Build?"), _Translate($iMUI, "You're running a newer build than publicly Available!"), 10)
+						MsgBox($MB_OK + $MB_ICONWARNING + $MB_TOPMOST, _Translate($aMUI[1], "Test Build?"), _Translate($aMUI[1], "You're running a newer build than publicly Available!"), 10)
 					Case 0
 						Switch @error
 							Case 0
-								MsgBox($MB_OK + $MB_ICONINFORMATION + $MB_TOPMOST, _Translate($iMUI, "Up to Date"), _Translate($iMUI, "You're running the latest build!"), 10)
+								MsgBox($MB_OK + $MB_ICONINFORMATION + $MB_TOPMOST, _Translate($aMUI[1], "Up to Date"), _Translate($aMUI[1], "You're running the latest build!"), 10)
 							Case 1
-								MsgBox($MB_OK + $MB_ICONWARNING + $MB_TOPMOST, _Translate($iMUI, "Unable to Check for Updates"), _Translate($iMUI, "Unable to load release data."), 10)
+								MsgBox($MB_OK + $MB_ICONWARNING + $MB_TOPMOST, _Translate($aMUI[1], "Unable to Check for Updates"), _Translate($aMUI[1], "Unable to load release data."), 10)
 							Case 2
-								MsgBox($MB_OK + $MB_ICONWARNING + $MB_TOPMOST, _Translate($iMUI, "Unable to Check for Updates"), _Translate($iMUI, "Invalid Data Received!"), 10)
+								MsgBox($MB_OK + $MB_ICONWARNING + $MB_TOPMOST, _Translate($aMUI[1], "Unable to Check for Updates"), _Translate($aMUI[1], "Invalid Data Received!"), 10)
 							Case 3
 								Switch @extended
 									Case 0
-										MsgBox($MB_OK + $MB_ICONWARNING + $MB_TOPMOST, _Translate($iMUI, "Unable to Check for Updates"), _Translate($iMUI, "Invalid Release Tags Received!"), 10)
+										MsgBox($MB_OK + $MB_ICONWARNING + $MB_TOPMOST, _Translate($aMUI[1], "Unable to Check for Updates"), _Translate($aMUI[1], "Invalid Release Tags Received!"), 10)
 									Case 1
-										MsgBox($MB_OK + $MB_ICONWARNING + $MB_TOPMOST, _Translate($iMUI, "Unable to Check for Updates"), _Translate($iMUI, "Invalid Release Types Received!"), 10)
+										MsgBox($MB_OK + $MB_ICONWARNING + $MB_TOPMOST, _Translate($aMUI[1], "Unable to Check for Updates"), _Translate($aMUI[1], "Invalid Release Types Received!"), 10)
 								EndSwitch
 						EndSwitch
 					Case 1
-						If MsgBox($MB_YESNO + $MB_ICONINFORMATION + $MB_TOPMOST, _Translate($iMUI, "Update Available"), _Translate($iMUI, "An Update is Available, would you like to download it?"), 10) = $IDYES Then ShellExecute("https://fcofix.org/WhyNotWin11/releases")
+						If MsgBox($MB_YESNO + $MB_ICONINFORMATION + $MB_TOPMOST, _Translate($aMUI[1], "Update Available"), _Translate($aMUI[1], "An Update is Available, would you like to download it?"), 10) = $IDYES Then ShellExecute("https://fcofix.org/WhyNotWin11/releases")
 				EndSwitch
 
 			Case Else
