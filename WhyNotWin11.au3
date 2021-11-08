@@ -320,9 +320,12 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	#Region Sidebar
 	; Top Most Interaction for Update Text
-	Local $hUpdate = GUICtrlCreateLabel("", 0, 560, 90, 60, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
-	GUICtrlSetCursor(-1, 0)
+	Local $hUpdate = Default
+	If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoUpdate") Then
+		$hUpdate = GUICtrlCreateLabel("", 0, 560, 90, 60, $SS_CENTER + $SS_CENTERIMAGE)
+		GUICtrlSetBkColor(-1, $aColors[$iSidebar])
+		GUICtrlSetCursor(-1, 0)
+	EndIf
 
 	#cs Maybe Readd Later
 	; Top Most Interaction for Banner
@@ -368,14 +371,16 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	; Allow Dragging of Window
 	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
 
-	GUICtrlCreateLabel("", 0, 0, 100, 570)
+	GUICtrlCreateLabel("", 0, 0, 100, 600)
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 
-	GUICtrlCreateLabel(_Translate($aMUI[1], "Check for Updates"), 0, 563, 100, 60, $SS_CENTER)
-	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
-	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
-	GUICtrlSetTip(-1, "Update")
-	GUICtrlSetCursor(-1, 0)
+	If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoUpdate") Then
+		GUICtrlCreateLabel(_Translate($aMUI[1], "Check for Updates"), 0, 563, 100, 60, $SS_CENTER)
+		GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
+		GUICtrlSetBkColor(-1, $aColors[$iSidebar])
+		GUICtrlSetTip(-1, "Update")
+		GUICtrlSetCursor(-1, 0)
+	EndIf
 
 	_GDIPlus_Startup()
 	If @Compiled Then
