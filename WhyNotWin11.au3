@@ -336,7 +336,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlSetCursor(-1, 0)
 
 	; Top Most Interaction for Socials
-	Local $hGithub = 0, $hDonate = 0, $hDiscord = 0, $hLTT = 0, $hJob = 0
+	Local $hGithub = Default, $hDonate = Default, $hDiscord = Default, $hLTT = Default, $hJob = Default
 	If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
 		$hGithub = GUICtrlCreateLabel("", 34, 110, 32, 32)
 		GUICtrlSetTip(-1, "GitHub")
@@ -828,17 +828,19 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 								GUICtrlSetData($hCheck[5][2], _Translate($aMUI[1], "No DirectX 12 or WDDM2"))
 						EndSwitch
 				EndSwitch
-				For $iLoop = 0 To 10 Step 1
-					If $aResults[$iLoop][0] = False Or $aResults[$iLoop][0] < 1 Then
-						MsgBox($MB_OK+$MB_ICONERROR+$MB_TOPMOST+$MB_SETFOREGROUND, _
-							_Translate($aMUI[1], "Not Supported"), _
-							_Translate($aMUI[1], "Your Computer is NOT ready for Windows 11, you can join the Discord using the Discord Icon if you need assistance."))
-						ContinueLoop 2
-					EndIf
-				Next
-				MsgBox($MB_OK+$MB_ICONINFORMATION+$MB_TOPMOST+$MB_SETFOREGROUND, _
-					_Translate($aMUI[1], "Supported"), _
-					_Translate($aMUI[1], "Your Computer is ready for Windows 11. You should receive the option to upgrade between October 5th 2021 and Fall 2022."))
+				If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoPopUp") Then
+					For $iLoop = 0 To 10 Step 1
+						If $aResults[$iLoop][0] = False Or $aResults[$iLoop][0] < 1 Then
+							MsgBox($MB_OK+$MB_ICONERROR+$MB_TOPMOST+$MB_SETFOREGROUND, _
+								_Translate($aMUI[1], "Not Supported"), _
+								_Translate($aMUI[1], "Your Computer is NOT ready for Windows 11, you can join the Discord using the Discord Icon if you need assistance."))
+							ContinueLoop 2
+						EndIf
+					Next
+					MsgBox($MB_OK+$MB_ICONINFORMATION+$MB_TOPMOST+$MB_SETFOREGROUND, _
+						_Translate($aMUI[1], "Supported"), _
+						_Translate($aMUI[1], "Your Computer is ready for Windows 11. You should receive the option to upgrade between October 5th 2021 and Fall 2022."))
+				EndIf
 
 			Case $hMsg = $hLanguage
 				If StringLeft(GUICtrlRead($hLanguage), 4) <> $aMUI[1] Then
