@@ -336,29 +336,29 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlSetCursor(-1, 0)
 
 	; Top Most Interaction for Socials
-	Local $hGithub = GUICtrlCreateLabel("", 34, 110, 32, 32)
-	GUICtrlSetTip(-1, "GitHub")
-	GUICtrlSetCursor(-1, 0)
-
-	Local $hDonate = GUICtrlCreateLabel("", 34, 160, 32, 32)
-	GUICtrlSetTip(-1, _Translate($aMUI[1], "Donate"))
-	GUICtrlSetCursor(-1, 0)
-
-	Local $hDiscord = GUICtrlCreateLabel("", 34, 210, 32, 32)
-	GUICtrlSetTip(-1, "Discord")
-	GUICtrlSetCursor(-1, 0)
-
-	Local $hLTT = GUICtrlCreateLabel("", 34, 260, 32, 32)
-	GUICtrlSetTip(-1, "LTT")
-	GUICtrlSetCursor(-1, 0)
-
-	Local $hJob
-	If @LogonDomain <> @ComputerName Then
-		$hJob = GUICtrlCreateLabel("", 34, 310, 32, 32)
-		GUICtrlSetTip(-1, "I'm For Hire")
+	Local $hGithub = 0, $hDonate = 0, $hDiscord = 0, $hLTT = 0, $hJob = 0
+	If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
+		$hGithub = GUICtrlCreateLabel("", 34, 110, 32, 32)
+		GUICtrlSetTip(-1, "GitHub")
 		GUICtrlSetCursor(-1, 0)
-	Else
-		$hJob = GUICtrlCreateDummy()
+
+		$hDonate = GUICtrlCreateLabel("", 34, 160, 32, 32)
+		GUICtrlSetTip(-1, _Translate($aMUI[1], "Donate"))
+		GUICtrlSetCursor(-1, 0)
+
+		$hDiscord = GUICtrlCreateLabel("", 34, 210, 32, 32)
+		GUICtrlSetTip(-1, "Discord")
+		GUICtrlSetCursor(-1, 0)
+
+		$hLTT = GUICtrlCreateLabel("", 34, 260, 32, 32)
+		GUICtrlSetTip(-1, "LTT")
+		GUICtrlSetCursor(-1, 0)
+
+		If @LogonDomain <> @ComputerName Then
+			$hJob = GUICtrlCreateLabel("", 34, 310, 32, 32)
+			GUICtrlSetTip(-1, "I'm For Hire")
+			GUICtrlSetCursor(-1, 0)
+		EndIf
 	EndIf
 
 	Local $hToggle = GUICtrlCreateLabel("", 34, 518, 32, 32)
@@ -379,33 +379,37 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	_GDIPlus_Startup()
 	If @Compiled Then
-		GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
-		_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 201, 32, 32)
-		GUICtrlCreateIcon("", -1, 34, 160, 32, 32)
-		_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 202, 32, 32)
-		GUICtrlCreateIcon("", -1, 34, 210, 32, 32)
-		_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 203, 32, 32)
-		GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
-		_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 204, 32, 32)
-		If @LogonDomain <> @ComputerName Then
-			GUICtrlCreateIcon("", -1, 34, 310, 32, 32)
-			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 205, 32, 32)
+		If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
+			GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
+			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 201, 32, 32)
+			GUICtrlCreateIcon("", -1, 34, 160, 32, 32)
+			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 202, 32, 32)
+			GUICtrlCreateIcon("", -1, 34, 210, 32, 32)
+			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 203, 32, 32)
+			GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
+			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 204, 32, 32)
+			If @LogonDomain <> @ComputerName Then
+				GUICtrlCreateIcon("", -1, 34, 310, 32, 32)
+				_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 205, 32, 32)
+			EndIf
 		EndIf
 		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
 		_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 206, 32, 32)
 		GUICtrlSetState(-1, $GUI_HIDE)
 	Else
-		GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
-		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\GitHub.ico", -1, 32, 32)
-		GUICtrlCreateIcon("", -1, 34, 160, 32, 32)
-		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\PayPal.ico", -1, 32, 32)
-		GUICtrlCreateIcon("", -1, 34, 210, 32, 32)
-		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Discord.ico", -1, 32, 32)
-		GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
-		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Web.ico", -1, 32, 32)
-		If @LogonDomain <> @ComputerName Then
-			GUICtrlCreateIcon("", -1, 34, 310, 32, 32)
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\HireMe.ico", -1, 32, 32)
+		If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
+			GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\GitHub.ico", -1, 32, 32)
+			GUICtrlCreateIcon("", -1, 34, 160, 32, 32)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\PayPal.ico", -1, 32, 32)
+			GUICtrlCreateIcon("", -1, 34, 210, 32, 32)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Discord.ico", -1, 32, 32)
+			GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Web.ico", -1, 32, 32)
+			If @LogonDomain <> @ComputerName Then
+				GUICtrlCreateIcon("", -1, 34, 310, 32, 32)
+				_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\HireMe.ico", -1, 32, 32)
+			EndIf
 		EndIf
 		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
 		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Settings.ico", -1, 32, 32)
