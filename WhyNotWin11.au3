@@ -261,14 +261,21 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	; Disable Scaling
 	If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext", "HWND", "DPI_AWARENESS_CONTEXT" - 1)
 
+	Local Static $aMUI[2] = [Null, @MUILang] ; Forced, MUI Lang
+	Local Static $aName[2] = [Null, "WhyNotWin11"] ; Forced, AppName
 	Local Static $aFonts[5]
 	Local Static $aColors[4] ; Convert to [4][8] for 2.0 themes
-	Local Static $aMUI[2] = [Null, @MUILang] ; Forced, MUI Lang
 
 	If $aMUI[0] = Null Then
 		$aMUI[1] = RegRead("HKEY_LOCAL_MACHINE\Software\Policies\Robert Maehl Software\WhyNotWin11", "ForcedMUI")
 		$aMUI[0] = $aMUI[1] ? True : False
 		If Not $aMUI[0] Then $aMUI[1] = @MUILang
+	EndIf
+
+	If $aName[0] = Null Then
+		$aName[1] = RegRead("HKEY_LOCAL_MACHINE\Software\Policies\Robert Maehl Software\WhyNotWin11", "SetAppName")
+		$aName[0] = $aName[1] ? True : False
+		If Not $aName[0] Then $aName[1] = "WhyNotWin11"
 	EndIf
 
 	#cs ; 2.0 Theming Enums
@@ -293,7 +300,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	ProgressSet(100, _Translate($aMUI[1], "Done"))
 
-	Local $hGUI = GUICreate("WhyNotWin11", 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER), _GetTranslationRTL($aMUI[1]))
+	Local $hGUI = GUICreate($aName[1], 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER), _GetTranslationRTL($aMUI[1]))
 	GUISetBkColor($aColors[$iBackground])
 	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", $aFonts[4])
 
@@ -421,7 +428,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	EndIf
 	_GDIPlus_Shutdown()
 
-	GUICtrlCreateLabel("WhyNotWin11", 10, 10, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlCreateLabel($aName[1], 10, 10, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 	GUICtrlCreateLabel("v " & $sVersion, 10, 30, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
@@ -507,13 +514,15 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 				GUICtrlSetStyle(-1, $SS_CENTER + $SS_CENTERIMAGE + $SS_SUNKEN)
 		EndSwitch
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
-		GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
-		If @Compiled Then
-			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
-		Else
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\Info.ico", -1, 24, 24)
+		If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoInfoBox") Then
+			GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
+			If @Compiled Then
+				_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
+			Else
+				_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\Info.ico", -1, 24, 24)
+			EndIf
+			GUICtrlSetTip(-1, $aInfo[$iRow], "", $TIP_NOICON, $TIP_CENTER)
 		EndIf
-		GUICtrlSetTip(-1, $aInfo[$iRow], "", $TIP_NOICON, $TIP_CENTER)
 	Next
 	_GDIPlus_Shutdown()
 
