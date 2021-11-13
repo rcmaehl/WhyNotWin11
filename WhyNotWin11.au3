@@ -81,6 +81,20 @@ Func ProcessCMDLine()
 	Local $aOutput[3] = [False, "", ""]
 	Local $iParams = $CmdLine[0]
 
+	If $aMUI[0] = Null Then
+		$aMUI[1] = RegRead("HKEY_LOCAL_MACHINE\Software\Policies\Robert Maehl Software\WhyNotWin11", "ForcedMUI")
+		$aMUI[0] = $aMUI[1] ? True : False
+		If Not $aMUI[0] Then $aMUI[1] = @MUILang
+	EndIf
+
+	If $aName[0] = Null Then
+		$aName[1] = RegRead("HKEY_LOCAL_MACHINE\Software\Policies\Robert Maehl Software\WhyNotWin11", "SetAppName")
+		$aName[0] = $aName[1] ? True : False
+		If Not $aName[0] Then $aName[1] = "WhyNotWin11"
+	EndIf
+
+	If RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoAppName") Then $aName[1] = ""
+
 	If $iParams > 0 Then
 		Do
 			Switch $CmdLine[1]
@@ -185,7 +199,7 @@ Func ProcessCMDLine()
 	EndIf
 	#EndRegion
 
-	If Not $bSilent Then ProgressOn("WhyNotWin11", _Translate(@MUILang, "Loading WMIC"))
+	If Not $bSilent And Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoProgress") Then ProgressOn($aName[1], _Translate(@MUILang, "Loading WMIC"))
 
 	$aResults = RunChecks()
 
@@ -266,18 +280,6 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	Local Static $aFonts[5]
 	Local Static $aColors[4] ; Convert to [4][8] for 2.0 themes
-
-	If $aMUI[0] = Null Then
-		$aMUI[1] = RegRead("HKEY_LOCAL_MACHINE\Software\Policies\Robert Maehl Software\WhyNotWin11", "ForcedMUI")
-		$aMUI[0] = $aMUI[1] ? True : False
-		If Not $aMUI[0] Then $aMUI[1] = @MUILang
-	EndIf
-
-	If $aName[0] = Null Then
-		$aName[1] = RegRead("HKEY_LOCAL_MACHINE\Software\Policies\Robert Maehl Software\WhyNotWin11", "SetAppName")
-		$aName[0] = $aName[1] ? True : False
-		If Not $aName[0] Then $aName[1] = "WhyNotWin11"
-	EndIf
 
 	#cs ; 2.0 Theming Enums
 	Local Enum $iGeneral = 0, $iText, $iIcons, $iStatus
@@ -429,10 +431,12 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	EndIf
 	_GDIPlus_Shutdown()
 
-	GUICtrlCreateLabel($aName[1], 10, 10, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
-	GUICtrlCreateLabel("v " & $sVersion, 10, 30, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
+	If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoAppName") Then
+		GUICtrlCreateLabel($aName[1], 10, 10, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
+		GUICtrlSetBkColor(-1, $aColors[$iSidebar])
+		GUICtrlCreateLabel("v " & $sVersion, 10, 30, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
+		GUICtrlSetBkColor(-1, $aColors[$iSidebar])
+	EndIf
 	#EndRegion
 
 	#Region Footer
@@ -763,10 +767,10 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Theme by") & ":", 40, 340, 100, 20)
 ;	GUICtrlCreateLabel(_GetThemeCredit($sTheme), 140, 340, 280, 40, $SS_RIGHT)
 
-	GUICtrlCreateCheckbox(_Translate($aMUI[1], "Remember Last Language Used"), 40, 380, 380, 20, $BS_RIGHTBUTTON)
-	GUICtrlCreateCheckbox(_Translate($aMUI[1], "Check for Updates on App Launch"), 40, 400, 380, 20, $BS_RIGHTBUTTON)
+	$hMUI = GUICtrlCreateCheckbox(_Translate($aMUI[1], "Remember Last Language Used"), 40, 380, 380, 20, $BS_RIGHTBUTTON)
+	$hUOL = GUICtrlCreateCheckbox(_Translate($aMUI[1], "Check for Updates on App Launch"), 40, 400, 380, 20, $BS_RIGHTBUTTON)
 
-	GUICtrlCreateCheckbox(_Translate($aMUI[1], "Save Settings in Registry, Not Disk"), 40, 480, 380, 20, $BS_RIGHTBUTTON)
+	;GUICtrlCreateCheckbox(_Translate($aMUI[1], "Save Settings in Registry, Not Disk"), 40, 480, 380, 20, $BS_RIGHTBUTTON)
 
 	GUICtrlCreateGroup(_Translate($aMUI[1], "Guides"), 470, 180, 200, 328)
 	Local $hChecks = GUICtrlCreateButton("Windows 11 Requirements", 480, 200, 180, 40)
@@ -775,7 +779,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlSetCursor(-1, 0)
 	Local $hSecure = GUICtrlCreateButton("Enable Secure Boot", 480, 300, 180, 40)
 	GUICtrlSetCursor(-1, 0)
-	$hTPM = GUICtrlCreateButton("Enable TPM", 480, 350, 180, 40)
+	Local $hTPM = GUICtrlCreateButton("Enable TPM", 480, 350, 180, 40)
 	GUICtrlSetCursor(-1, 0)
 	Local $hSkips = GUICtrlCreateButton("Skip CPU && TPM", 480, 400, 180, 40)
 	GUICtrlSetCursor(-1, 0)
@@ -881,6 +885,10 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 			Case $hMsg = $hLTT
 				ShellExecute("https://linustechtips.com/topic/1350354-windows-11-readiness-check-whynotwin11/")
+
+			Case $hMsg = $hMUI
+
+			Case $hMsg = $hUOL
 
 			Case $hMsg = $hChecks
 				ShellExecute("https://www.microsoft.com/en-us/windows/windows-11-specifications")
