@@ -52,6 +52,9 @@ FileChangeDir(@SystemDir)
 
 Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
 
+Global Static $aMUI[2] = [Null, @MUILang] ; Forced, MUI Lang
+Global Static $aName[2] = [Null, "WhyNotWin11"] ; Forced, AppName
+
 #include "Includes\GetDiskInfo.au3"
 #include "Includes\ResourcesEx.au3"
 
@@ -261,8 +264,6 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	; Disable Scaling
 	If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext", "HWND", "DPI_AWARENESS_CONTEXT" - 1)
 
-	Local Static $aMUI[2] = [Null, @MUILang] ; Forced, MUI Lang
-	Local Static $aName[2] = [Null, "WhyNotWin11"] ; Forced, AppName
 	Local Static $aFonts[5]
 	Local Static $aColors[4] ; Convert to [4][8] for 2.0 themes
 
@@ -772,9 +773,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlSetCursor(-1, 0)
 	Local $hConvert = GUICtrlCreateButton("Convert Disk to GPT", 480, 250, 180, 40)
 	GUICtrlSetCursor(-1, 0)
-	GUICtrlCreateButton("Enable Secure Boot", 480, 300, 180, 40)
+	Local $hSecure = GUICtrlCreateButton("Enable Secure Boot", 480, 300, 180, 40)
 	GUICtrlSetCursor(-1, 0)
-	GUICtrlCreateButton("Enable TPM", 480, 350, 180, 40)
+	$hTPM = GUICtrlCreateButton("Enable TPM", 480, 350, 180, 40)
 	GUICtrlSetCursor(-1, 0)
 	Local $hSkips = GUICtrlCreateButton("Skip CPU && TPM", 480, 400, 180, 40)
 	GUICtrlSetCursor(-1, 0)
@@ -885,7 +886,13 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 				ShellExecute("https://www.microsoft.com/en-us/windows/windows-11-specifications")
 
 			Case $hMsg = $hConvert
-				ShellExecute("https://docs.microsoft.com/en-us/windows/deployment/mbr-to-gpt")
+				ShellExecute("https://youtu.be/NivpAiuh-s0?t=311")
+
+			Case $hMsg = $hSecure
+				ShellExecute("https://youtu.be/NivpAiuh-s0?t=272s")
+
+			Case $hMsg = $hTPM
+				ShellExecute("https://www.youtube.com/watch?v=GOqVVP52qsk&t=137s")
 
 			Case $hMsg = $hSkips
 				ShellExecute("https://support.microsoft.com/en-us/windows/ways-to-install-windows-11-e0edbbfb-cfc5-4011-868b-2ce77ac7c70e")
