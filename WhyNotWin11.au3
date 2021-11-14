@@ -374,10 +374,12 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		EndIf
 	EndIf
 
-	Local $dSettings = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoInfoBox")
+	Local $dSettings = Number(RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSettings"))
 
 	Local $hToggle = Default
-	If Not BitAND($dSettings, 65535) Then
+	If BitAND($dSettings, 65535) = 65535 Then
+		;;;
+	Else
 		$hToggle = GUICtrlCreateLabel("", 34, 518, 32, 32)
 		GUICtrlSetTip(-1, _Translate($aMUI[1], "Settings"))
 		GUICtrlSetCursor(-1, 0)
@@ -413,7 +415,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 				_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 205, 32, 32)
 			EndIf
 		EndIf
-		If Not BitAND($dSettings, 65535) Then
+		If BitAND($dSettings, 65535) = 65535 Then
+			;;;
+		Else
 			GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
 			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 206, 32, 32)
 			GUICtrlSetState(-1, $GUI_HIDE)
@@ -433,7 +437,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 				_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\HireMe.ico", -1, 32, 32)
 			EndIf
 		EndIf
-		If Not BitAND($dSettings, 65535) Then
+		If BitAND($dSettings, 65535) = 65535 Then
+			;;;
+		Else
 			GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
 			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Settings.ico", -1, 32, 32)
 		EndIf
@@ -755,7 +761,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlSetDefColor($aColors[$iText])
 	GUICtrlSetDefBkColor($aColors[$iBackground])
 
-	If Not BitAND($dSettings, 1) Then
+	If BitAND($dSettings, 1) = 1 Then
+		;;;
+	Else
 		GUICtrlCreateGroup("Info", 30, 20, 638, 100)
 		If @Compiled Then
 			GUICtrlCreateIcon(@ScriptFullPath, 99, 50, 30, 40, 40)
@@ -785,7 +793,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	;GUICtrlCreateCheckbox(_Translate($aMUI[1], "Save Settings in Registry, Not Disk"), 40, 480, 380, 20, $BS_RIGHTBUTTON)
 
 	Local $hChecks = Default, $hConvert = Default, $hSecure = Default, $hTPM = Default, $hSkips = Default, $hInstall = Default
-	If Not BitAND($dSettings, 2) Then
+	If BitAND($dSettings, 2) = 2 Then
+		;;;
+	Else
 		GUICtrlCreateGroup(_Translate($aMUI[1], "Guides"), 470, 180, 200, 328)
 		$hChecks = GUICtrlCreateButton("Windows 11 Requirements", 480, 200, 180, 40)
 		GUICtrlSetCursor(-1, 0)
