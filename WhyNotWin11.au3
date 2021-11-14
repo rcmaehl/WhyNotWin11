@@ -498,6 +498,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	;Local $hBasic = GUICtrlCreateTabItem("Basic Checks")
 	;GUICtrlSetColor(-1, $aColors[$iBackground])
 
+	Local $bInfoBox = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoInfoBox")
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 	Local $aInfo = _GetDescriptions($aMUI[1])
@@ -519,7 +520,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 				GUICtrlSetStyle(-1, $SS_CENTER + $SS_CENTERIMAGE + $SS_SUNKEN)
 		EndSwitch
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
-		If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoInfoBox") Then
+		If Not $bInfoBox Then
 			GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
 			If @Compiled Then
 				_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
@@ -767,8 +768,8 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Theme by") & ":", 40, 340, 100, 20)
 ;	GUICtrlCreateLabel(_GetThemeCredit($sTheme), 140, 340, 280, 40, $SS_RIGHT)
 
-	$hMUI = GUICtrlCreateCheckbox(_Translate($aMUI[1], "Remember Last Language Used"), 40, 380, 380, 20, $BS_RIGHTBUTTON)
-	$hUOL = GUICtrlCreateCheckbox(_Translate($aMUI[1], "Check for Updates on App Launch"), 40, 400, 380, 20, $BS_RIGHTBUTTON)
+	Local $hMUI = GUICtrlCreateCheckbox(_Translate($aMUI[1], "Remember Last Language Used"), 40, 380, 380, 20, $BS_RIGHTBUTTON)
+	Local $hUOL = GUICtrlCreateCheckbox(_Translate($aMUI[1], "Check for Updates on App Launch"), 40, 400, 380, 20, $BS_RIGHTBUTTON)
 
 	;GUICtrlCreateCheckbox(_Translate($aMUI[1], "Save Settings in Registry, Not Disk"), 40, 480, 380, 20, $BS_RIGHTBUTTON)
 
