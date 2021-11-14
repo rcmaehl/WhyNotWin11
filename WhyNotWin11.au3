@@ -755,11 +755,13 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlSetDefColor($aColors[$iText])
 	GUICtrlSetDefBkColor($aColors[$iBackground])
 
-	GUICtrlCreateGroup("Info", 30, 20, 638, 100)
-	If @Compiled Then
-		GUICtrlCreateIcon(@ScriptFullPath, 99, 50, 30, 40, 40)
-	Else
-		GUICtrlCreateIcon(@ScriptDir & "\assets\WhyNotWin11.ico", -1, 50, 50, 40, 40)
+	If Not BitAND($dSettings, 1) Then
+		GUICtrlCreateGroup("Info", 30, 20, 638, 100)
+		If @Compiled Then
+			GUICtrlCreateIcon(@ScriptFullPath, 99, 50, 30, 40, 40)
+		Else
+			GUICtrlCreateIcon(@ScriptDir & "\assets\WhyNotWin11.ico", -1, 50, 50, 40, 40)
+		EndIf
 	EndIf
 
 	GUICtrlCreateGroup(_Translate($aMUI[1], "Settings"), 30, 180, 400, 328)
@@ -782,19 +784,22 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	;GUICtrlCreateCheckbox(_Translate($aMUI[1], "Save Settings in Registry, Not Disk"), 40, 480, 380, 20, $BS_RIGHTBUTTON)
 
-	GUICtrlCreateGroup(_Translate($aMUI[1], "Guides"), 470, 180, 200, 328)
-	Local $hChecks = GUICtrlCreateButton("Windows 11 Requirements", 480, 200, 180, 40)
-	GUICtrlSetCursor(-1, 0)
-	Local $hConvert = GUICtrlCreateButton("Convert Disk to GPT", 480, 250, 180, 40)
-	GUICtrlSetCursor(-1, 0)
-	Local $hSecure = GUICtrlCreateButton("Enable Secure Boot", 480, 300, 180, 40)
-	GUICtrlSetCursor(-1, 0)
-	Local $hTPM = GUICtrlCreateButton("Enable TPM", 480, 350, 180, 40)
-	GUICtrlSetCursor(-1, 0)
-	Local $hSkips = GUICtrlCreateButton("Skip CPU && TPM", 480, 400, 180, 40)
-	GUICtrlSetCursor(-1, 0)
-	Local $hInstall = GUICtrlCreateButton("Get Windows 11 Now", 480, 450, 180, 40)
-	GUICtrlSetCursor(-1, 0)
+	Local $hChecks = Default, $hConvert = Default, $hSecure = Default, $hTPM = Default, $hSkips = Default, $hInstall = Default
+	If Not BitAND($dSettings, 2) Then
+		GUICtrlCreateGroup(_Translate($aMUI[1], "Guides"), 470, 180, 200, 328)
+		$hChecks = GUICtrlCreateButton("Windows 11 Requirements", 480, 200, 180, 40)
+		GUICtrlSetCursor(-1, 0)
+		$hConvert = GUICtrlCreateButton("Convert Disk to GPT", 480, 250, 180, 40)
+		GUICtrlSetCursor(-1, 0)
+		$hSecure = GUICtrlCreateButton("Enable Secure Boot", 480, 300, 180, 40)
+		GUICtrlSetCursor(-1, 0)
+		$hTPM = GUICtrlCreateButton("Enable TPM", 480, 350, 180, 40)
+		GUICtrlSetCursor(-1, 0)
+		$hSkips = GUICtrlCreateButton("Skip CPU && TPM", 480, 400, 180, 40)
+		GUICtrlSetCursor(-1, 0)
+		$hInstall = GUICtrlCreateButton("Get Windows 11 Now", 480, 450, 180, 40)
+		GUICtrlSetCursor(-1, 0)
+	EndIf
 
 	#EndRegion Settings GUI
 
