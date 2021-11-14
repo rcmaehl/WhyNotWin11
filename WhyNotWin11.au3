@@ -27,6 +27,8 @@
 #Au3Stripper_Parameters=/so
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
+Global $aFonts[5]
+Global $aColors[4] ; Convert to [4][8] for 2.0 themes
 Global $sVersion = "2.4.2.1"
 Global $sEdition = "Standard"
 FileChangeDir(@SystemDir)
@@ -206,6 +208,19 @@ Func ProcessCMDLine()
 	ProgressSet(80, "Done")
 
 	If Not $bSilent Then
+
+		#cs ; 2.0 Theming Enums
+		Local Enum $iGeneral = 0, $iText, $iIcons, $iStatus
+
+		Local Enum $iBackground = 0, $iSidebar, $iFooter, $iResults
+		Local Enum $iDefault = 0, $iName, $iVersion, $iHeader, $iSubHead, $iLinks, $iChecks, $iResults
+		Local Enum $iGithub = 0, $iDonate, $iDiscord, $iLTT, $iWork, $iSettings
+		Local Enum $iFail = 0, $iPass, $iUnsure, $iWarn, $iRunning
+		#ce
+
+		$aColors = _SetTheme()
+		$aFonts = _GetTranslationFonts($aMUI[1])
+
 		Main($aResults, $aOutput)
 	Else
 		Do
@@ -277,21 +292,6 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	; Disable Scaling
 	If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext", "HWND", "DPI_AWARENESS_CONTEXT" - 1)
-
-	Local Static $aFonts[5]
-	Local Static $aColors[4] ; Convert to [4][8] for 2.0 themes
-
-	#cs ; 2.0 Theming Enums
-	Local Enum $iGeneral = 0, $iText, $iIcons, $iStatus
-
-	Local Enum $iBackground = 0, $iSidebar, $iFooter, $iResults
-	Local Enum $iDefault = 0, $iName, $iVersion, $iHeader, $iSubHead, $iLinks, $iChecks, $iResults
-	Local Enum $iGithub = 0, $iDonate, $iDiscord, $iLTT, $iWork, $iSettings
-	Local Enum $iFail = 0, $iPass, $iUnsure, $iWarn, $iRunning
-	#ce
-
-	$aColors = _SetTheme()
-	$aFonts = _GetTranslationFonts($aMUI[1])
 
 	Local $bComplete = False
 
@@ -892,6 +892,11 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 					GUIDelete($hGUI)
 					Main($aResults, $aOutput)
 				EndIf
+
+			Case $hMsg = $hTheme
+				$aColors = _SetTheme(StringSplit(GUICtrlRead($hTheme), " - ")[1])
+				GUIDelete($hGUI)
+				Main($aResults, $aOutput)
 
 			Case $hMsg = $hDumpLang
 				FileDelete(@LocalAppDataDir & "\WhyNotWin11\langs\")

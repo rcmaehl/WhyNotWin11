@@ -147,11 +147,12 @@ Func _SetBkSelfIcon($ControlID, $iForeground, $iBackground, $sIcon, $iIndex, $iW
     Return SetError(0, 0, 1)
 EndFunc   ;==>_SetBkSelfIcon
 
-Func _SetTheme()
+Func _SetTheme($sName = False)
 	Local $aColors[4] ; Convert to [4][8] for 2.0 themes
 
 	Local $sVer
 	Local $dText = _WinAPI_GetSysColor($COLOR_WINDOWTEXT)
+	Local $sFile = "\theme.def"
 	Local $dWindow = _WinAPI_GetSysColor($COLOR_WINDOW)
 	Local $bLTheme = RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
 	If @error Then $bLTheme = True
@@ -163,14 +164,16 @@ Func _SetTheme()
 	$aColors[2] = 0xE6E6E6 ; Sidebar
 	$aColors[3] = 0xF2F2F2 ; Footer
 
+	If $sName Then $sFile = "\" & $sName
+
 	Select
-		Case FileExists(@ScriptDir & "\theme.def")
-			$sVer = IniReadSection(@ScriptDir & "\theme.def", "MetaData")
+		Case FileExists(@ScriptDir & $sFile)
+			$sVer = IniReadSection(@ScriptDir & $sFile, "MetaData")
 			If @error Then ; 1.0 Theme
-				$aColors[0] = IniRead(@ScriptDir & "\theme.def", "Colors", "Background", $aColors[0])
-				$aColors[1] = IniRead(@ScriptDir & "\theme.def", "Colors", "Text", $aColors[1])
-				$aColors[2] = IniRead(@ScriptDir & "\theme.def", "Colors", "Sidebar", $aColors[2])
-				$aColors[3] = IniRead(@ScriptDir & "\theme.def", "Colors", "Footer", $aColors[3])
+				$aColors[0] = IniRead(@ScriptDir & $sFile, "Colors", "Background", $aColors[0])
+				$aColors[1] = IniRead(@ScriptDir & $sFile, "Colors", "Text", $aColors[1])
+				$aColors[2] = IniRead(@ScriptDir & $sFile, "Colors", "Sidebar", $aColors[2])
+				$aColors[3] = IniRead(@ScriptDir & $sFile, "Colors", "Footer", $aColors[3])
 			Else
 				;;;
 			EndIf
