@@ -374,9 +374,14 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		EndIf
 	EndIf
 
-	Local $hToggle = GUICtrlCreateLabel("", 34, 518, 32, 32)
-	GUICtrlSetTip(-1, _Translate($aMUI[1], "Settings"))
-	GUICtrlSetCursor(-1, 0)
+	Local $dSettings = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoInfoBox")
+
+	Local $hToggle = Default
+	If Not BitAND($dSettings, 65535) Then
+		$hToggle = GUICtrlCreateLabel("", 34, 518, 32, 32)
+		GUICtrlSetTip(-1, _Translate($aMUI[1], "Settings"))
+		GUICtrlSetCursor(-1, 0)
+	EndIf
 
 	; Allow Dragging of Window
 	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
@@ -408,9 +413,11 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 				_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 205, 32, 32)
 			EndIf
 		EndIf
-		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
-		_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 206, 32, 32)
-		GUICtrlSetState(-1, $GUI_HIDE)
+		If Not BitAND($dSettings, 65535) Then
+			GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
+			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 206, 32, 32)
+			GUICtrlSetState(-1, $GUI_HIDE)
+		EndIf
 	Else
 		If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
 			GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
@@ -426,8 +433,10 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 				_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\HireMe.ico", -1, 32, 32)
 			EndIf
 		EndIf
-		GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
-		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Settings.ico", -1, 32, 32)
+		If Not BitAND($dSettings, 65535) Then
+			GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Settings.ico", -1, 32, 32)
+		EndIf
 	EndIf
 	_GDIPlus_Shutdown()
 
