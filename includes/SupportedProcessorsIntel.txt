@@ -482,6 +482,7 @@ Xeon(R) Platinum 8160T
 Xeon(R) Platinum 8164
 Xeon(R) Platinum 8168
 Xeon(R) Platinum 8170
+Xeon(R) Platinum 8171M
 Xeon(R) Platinum 8176
 Xeon(R) Platinum 8176F
 Xeon(R) Platinum 8180
@@ -492,6 +493,7 @@ Xeon(R) Platinum 8260L
 Xeon(R) Platinum 8260Y
 Xeon(R) Platinum 8268
 Xeon(R) Platinum 8270
+Xeon(R) Platinum 8272CL
 Xeon(R) Platinum 8276
 Xeon(R) Platinum 8276L
 Xeon(R) Platinum 8280
