@@ -24,7 +24,7 @@ Global $tColorCurve = DllStructCreate($tagCOLORCURVEEFFECTPARAMS), $iType = $iAd
 ; Return values .: None
 ; Author ........: UEZ
 ; Modified ......:
-; Remarks .......:
+; Remarks .......: Requires #AutoIt3Wrapper_Res_HiDpi=Y
 ; Related .......:
 ; Link ..........: http://www.autoitscript.com/forum/topic/159612-dpi-resolution-problem/?hl=%2Bdpi#entry1158317
 ; Example .......: No
@@ -33,7 +33,7 @@ Func _GDIPlus_GraphicsGetDPIRatio($iDPIDef = 96)
 	_GDIPlus_Startup()
 	Local $hGfx = _GDIPlus_GraphicsCreateFromHWND(0)
 	If @error Then Return SetError(1, @extended, 0)
-	#forcedef $__g_hGDIPDll
+	#forcedef $__g_hGDIPDll, $ghGDIPDll
 
 	Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipGetDpiX", "handle", $hGfx, "float*", 0)
 

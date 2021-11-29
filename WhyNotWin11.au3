@@ -13,6 +13,7 @@
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
 #AutoIt3Wrapper_Res_Compatibility=Win8,Win81,Win10
+#AutoIt3Wrapper_Res_HiDpi=Y
 #AutoIt3Wrapper_Res_Icon_Add=Assets\GitHub.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\PayPal.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\Discord.ico
