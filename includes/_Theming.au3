@@ -33,7 +33,7 @@ Func _GDIPlus_GraphicsGetDPIRatio($iDPIDef = 96)
 	_GDIPlus_Startup()
 	Local $hGfx = _GDIPlus_GraphicsCreateFromHWND(0)
 	If @error Then Return SetError(1, @extended, 0)
-	#forcedef $__g_hGDIPDll, $ghGDIPDll
+	#forcedef $__g_hGDIPDll
 
 	Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipGetDpiX", "handle", $hGfx, "float*", 0)
 
