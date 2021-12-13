@@ -237,7 +237,7 @@ Func _SpaceCheck()
 	Local $iDrives = 0
 
 	For $iLoop = 1 To $aDrives[0] Step 1
-		If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 64 Then $iDrives += 1
+		If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 60 Then $iDrives += 1
 	Next
 
 	If $iFree >= 64 Then
