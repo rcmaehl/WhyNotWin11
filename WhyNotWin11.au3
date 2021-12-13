@@ -312,16 +312,20 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlSetDefBkColor($aColors[$iBackground])
 
 	Local $aLangs = _FileListToArray(@LocalAppDataDir & "\WhyNotWin11\langs\", "*.lang", $FLTA_FILES)
-	For $iLoop = 1 To $aLangs[0] Step 1
-		$aLangs[$iLoop] &= " - " & IniRead(@LocalAppDataDir & "\WhyNotWin11\langs\" & $aLangs[$iLoop], "MetaData", "Language", "Unknown")
-	Next
-	_ArrayDelete($aLangs, 0)
+	If Not @error Then
+		For $iLoop = 1 To $aLangs[0] Step 1
+			$aLangs[$iLoop] &= " - " & IniRead(@LocalAppDataDir & "\WhyNotWin11\langs\" & $aLangs[$iLoop], "MetaData", "Language", "Unknown")
+		Next
+		_ArrayDelete($aLangs, 0)
+	EndIf
 
 	Local $aThemes = _FileListToArray(@ScriptDir & "\", "*.def", $FLTA_FILES)
-	For $iLoop = 1 To $aThemes[0] Step 1
-		$aThemes[$iLoop] &= " - " & IniRead(@ScriptDir & "\" & $aThemes[$iLoop], "MetaData", "Name", "Unknown")
-	Next
-	_ArrayDelete($aThemes, 0)
+	If Not @error Then
+		For $iLoop = 1 To $aThemes[0] Step 1
+			$aThemes[$iLoop] &= " - " & IniRead(@ScriptDir & "\" & $aThemes[$iLoop], "MetaData", "Name", "Unknown")
+		Next
+		_ArrayDelete($aThemes, 0)
+	EndIf
 
 	Local $hDumpLang = GUICtrlCreateDummy()
 
@@ -776,14 +780,14 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Language") & ":", 40, 200, 380, 20)
 	Local $hLanguage = GUICtrlCreateCombo("", 40, 220, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
-	GUICtrlSetData(-1, _ArrayToString($aLangs), $aMUI[1])
+	If Not _ArrayToString($aLangs) = -1 Then GUICtrlSetData(-1, _ArrayToString($aLangs), $aMUI[1])
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Translation by") & ":", 40, 250, 100, 20)
 	GUICtrlCreateLabel(_GetTranslationCredit($aMUI[1]), 140, 250, 280, 40, $SS_RIGHT)
 
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Theme") & ":", 40, 290, 380, 20)
 	Local $hTheme = GUICtrlCreateCombo("", 40, 310, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
 	#forceref $hTheme
-	GUICtrlSetData(-1, _ArrayToString($aThemes))
+	If Not _ArrayToString($aThemes) = -1 Then GUICtrlSetData(-1, _ArrayToString($aThemes))
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Theme by") & ":", 40, 340, 100, 20)
 ;	GUICtrlCreateLabel(_GetThemeCredit($sTheme), 140, 340, 280, 40, $SS_RIGHT)
 
