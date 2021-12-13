@@ -421,7 +421,6 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		Else
 			GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
 			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 206, 32, 32)
-			GUICtrlSetState(-1, $GUI_HIDE)
 		EndIf
 	Else
 		If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
