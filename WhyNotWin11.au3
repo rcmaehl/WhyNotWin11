@@ -6,9 +6,9 @@
 #AutoIt3Wrapper_UseX64=Y
 #AutoIt3Wrapper_Res_Comment=https://www.whynotwin11.org
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready
-#AutoIt3Wrapper_Res_Fileversion=2.4.2.1
+#AutoIt3Wrapper_Res_Fileversion=2.4.3.0
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
-#AutoIt3Wrapper_Res_ProductVersion=2.4.2.1
+#AutoIt3Wrapper_Res_ProductVersion=2.4.3.0
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
@@ -30,7 +30,7 @@
 
 Global $aFonts[5]
 Global $aColors[4] ; Convert to [4][8] for 2.0 themes
-Global $sVersion = "2.4.2.1"
+Global $sVersion = "2.4.3.0"
 Global $sEdition = "Standard"
 FileChangeDir(@SystemDir)
 
@@ -788,8 +788,8 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Theme by") & ":", 40, 340, 100, 20)
 ;	GUICtrlCreateLabel(_GetThemeCredit($sTheme), 140, 340, 280, 40, $SS_RIGHT)
 
-	Local $hMUI = GUICtrlCreateCheckbox(_Translate($aMUI[1], "Remember Last Language Used"), 40, 380, 380, 20, $BS_RIGHTBUTTON)
-	Local $hUOL = GUICtrlCreateCheckbox(_Translate($aMUI[1], "Check for Updates on App Launch"), 40, 400, 380, 20, $BS_RIGHTBUTTON)
+	;Local $hMUI = GUICtrlCreateCheckbox(_Translate($aMUI[1], "Remember Last Language Used"), 40, 380, 380, 20, $BS_RIGHTBUTTON)
+	;Local $hUOL = GUICtrlCreateCheckbox(_Translate($aMUI[1], "Check for Updates on App Launch"), 40, 400, 380, 20, $BS_RIGHTBUTTON)
 
 	;GUICtrlCreateCheckbox(_Translate($aMUI[1], "Save Settings in Registry, Not Disk"), 40, 480, 380, 20, $BS_RIGHTBUTTON)
 
@@ -917,9 +917,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 			Case $hMsg = $hLTT
 				ShellExecute("https://linustechtips.com/topic/1350354-windows-11-readiness-check-whynotwin11/")
 
-			Case $hMsg = $hMUI
+			; Case $hMsg = $hMUI
 
-			Case $hMsg = $hUOL
+			; Case $hMsg = $hUOL
 
 			Case $hMsg = $hChecks
 				ShellExecute("https://www.microsoft.com/en-us/windows/windows-11-specifications")
