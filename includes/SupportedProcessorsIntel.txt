@@ -1,4 +1,4 @@
-2.4.2.2
+2.5.0.0
 Atom(R) x6200FE
 Atom(R) x6211E
 Atom(R) x6212RE
@@ -7,13 +7,13 @@ Atom(R) x6414RE
 Atom(R) x6425E
 Atom(R) x6425RE
 Atom(R) x6427FE
+Celeron(R) 6305
 Celeron(R) 3867U
 Celeron(R) 4205U
 Celeron(R) 4305U
 Celeron(R) 4305UE
 Celeron(R) 5205U
 Celeron(R) 5305U
-Celeron(R) 6305
 Celeron(R) 6305E
 Celeron(R) G4900
 Celeron(R) G4900T
@@ -129,6 +129,7 @@ Core(TM) i5-11300H
 Core(TM) i5-1130G7
 Core(TM) i5-11320H
 Core(TM) i5-1135G7
+Core(TM) i5-1135G7
 Core(TM) i5-11400
 Core(TM) i5-11400F
 Core(TM) i5-11400H
@@ -145,6 +146,8 @@ Core(TM) i5-11600
 Core(TM) i5-11600K
 Core(TM) i5-11600KF
 Core(TM) i5-11600T
+Core(TM) i5-12600K
+Core(TM) i5-12600KF
 Core(TM) i5-8200Y
 Core(TM) i5-8210Y
 Core(TM) i5-8250U
@@ -211,6 +214,7 @@ Core(TM) i7-11390H
 Core(TM) i7-11600H
 Core(TM) i7-1160G7
 Core(TM) i7-1165G7
+Core(TM) i7-1165G7
 Core(TM) i7-11700
 Core(TM) i7-11700F
 Core(TM) i7-11700K
@@ -223,6 +227,8 @@ Core(TM) i7-1185G7
 Core(TM) i7-1185G7E
 Core(TM) i7-1185GRE
 Core(TM) i7-1195G7
+Core(TM) i7-12700K
+Core(TM) i7-12700KF
 Core(TM) i7-7800X
 Core(TM) i7-7820HQ
 Core(TM) i7-7820X
@@ -259,25 +265,6 @@ Core(TM) i7-9800X
 Core(TM) i7-9850H
 Core(TM) i7-9850HE
 Core(TM) i7-9850HL
-Core(TM) i9-7900X
-Core(TM) i9-7920X
-Core(TM) i9-7940X
-Core(TM) i9-7960X
-Core(TM) i9-7980XE
-Core(TM) i9-8950HK
-Core(TM) i9-9820X
-Core(TM) i9-9880H
-Core(TM) i9-9900
-Core(TM) i9-9900K
-Core(TM) i9-9900KF
-Core(TM) i9-9900KS
-Core(TM) i9-9900T
-Core(TM) i9-9900X
-Core(TM) i9-9920X
-Core(TM) i9-9940X
-Core(TM) i9-9960X
-Core(TM) i9-9980HK
-Core(TM) i9-9980XE
 Core(TM) i9-10850K
 Core(TM) i9-10885H
 Core(TM) i9-10900
@@ -302,6 +289,25 @@ Core(TM) i9-11950H
 Core(TM) i9-11980HK
 Core(TM) i9-12900K
 Core(TM) i9-12900KF
+Core(TM) i9-7900X
+Core(TM) i9-7920X
+Core(TM) i9-7940X
+Core(TM) i9-7960X
+Core(TM) i9-7980XE
+Core(TM) i9-8950HK
+Core(TM) i9-9820X
+Core(TM) i9-9880H
+Core(TM) i9-9900
+Core(TM) i9-9900K
+Core(TM) i9-9900KF
+Core(TM) i9-9900KS
+Core(TM) i9-9900T
+Core(TM) i9-9900X
+Core(TM) i9-9920X
+Core(TM) i9-9940X
+Core(TM) i9-9960X
+Core(TM) i9-9980HK
+Core(TM) i9-9980XE
 Core(TM) m3-8100Y
 Pentium(R) 6805
 Pentium(R) Gold 4417U
@@ -399,7 +405,6 @@ Xeon(R) Gold 5315Y
 Xeon(R) Gold 5317
 Xeon(R) Gold 5318N
 Xeon(R) Gold 5318S
-Xeon(R) Gold 5318Y
 Xeon(R) Gold 5320
 Xeon(R) Gold 5320T
 Xeon(R) Gold 6126
@@ -475,6 +480,7 @@ Xeon(R) Gold 6342
 Xeon(R) Gold 6346
 Xeon(R) Gold 6348
 Xeon(R) Gold 6354
+Xeon(R) Gold 5318Y
 Xeon(R) Platinum 8153
 Xeon(R) Platinum 8156
 Xeon(R) Platinum 8158
