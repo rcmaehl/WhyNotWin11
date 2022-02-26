@@ -800,17 +800,17 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		;;;
 	Else
 		GUICtrlCreateGroup(_Translate($aMUI[1], "Guides"), 470, 180, 200, 328)
-		$hChecks = GUICtrlCreateButton("Windows 11 Requirements", 480, 200, 180, 40)
+		$hChecks = GUICtrlCreateButton(_Translate($aMUI[1],"Windows 11 Requirements"), 480, 200, 180, 40)
 		GUICtrlSetCursor(-1, 0)
-		$hConvert = GUICtrlCreateButton("Convert Disk to GPT", 480, 250, 180, 40)
+		$hConvert = GUICtrlCreateButton(_Translate($aMUI[1],"Convert Disk to GPT"), 480, 250, 180, 40)
 		GUICtrlSetCursor(-1, 0)
-		$hSecure = GUICtrlCreateButton("Enable Secure Boot", 480, 300, 180, 40)
+		$hSecure = GUICtrlCreateButton(_Translate($aMUI[1],"Enable Secure Boot"), 480, 300, 180, 40)
 		GUICtrlSetCursor(-1, 0)
-		$hTPM = GUICtrlCreateButton("Enable TPM", 480, 350, 180, 40)
+		$hTPM = GUICtrlCreateButton(_Translate($aMUI[1],"Enable TPM"), 480, 350, 180, 40)
 		GUICtrlSetCursor(-1, 0)
-		$hSkips = GUICtrlCreateButton("Skip CPU && TPM", 480, 400, 180, 40)
+		$hSkips = GUICtrlCreateButton(_Translate($aMUI[1],"Skip CPU && TPM"), 480, 400, 180, 40)
 		GUICtrlSetCursor(-1, 0)
-		$hInstall = GUICtrlCreateButton("Get Windows 11 Now", 480, 450, 180, 40)
+		$hInstall = GUICtrlCreateButton(_Translate($aMUI[1],"Get Windows 11 Now"), 480, 450, 180, 40)
 		GUICtrlSetCursor(-1, 0)
 	EndIf
 
