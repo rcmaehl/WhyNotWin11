@@ -31,7 +31,7 @@ Limitations|DirectX 12 Check Inaccurate|None
 
 \* WhyNotWin11 can be forced to run on Unsupported Systems using the `/force` parameter, no support will be given for this parameter.
 
- Linux is unsupported, last version known to run on Wine is 2.3.0.5.
+ Linux and MacOS is unsupported, last version known to run on Wine is 2.3.0.5.
 
 ## Compiling
 
