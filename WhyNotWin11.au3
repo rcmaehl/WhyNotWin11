@@ -29,9 +29,15 @@
 
 Global $aFonts[5]
 Global $aColors[4] ; Convert to [4][8] for 2.0 themes
-Global $sVersion = "2.4.3.1"
+Global $sVersion
 Global $sEdition = "Standard"
 FileChangeDir(@SystemDir)
+
+If @Compiled Then
+	$sVersion = FileGetVersion(@ScriptFullPath)
+Else
+	$sVersion = "x.x.x.x"
+EndIf
 
 #include <File.au3>
 #include <Misc.au3>
