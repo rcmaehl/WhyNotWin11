@@ -85,7 +85,7 @@ ProcessCMDLine()
 
 Func ProcessCMDLine()
 	Local $aResults
-	Local $sDrive
+	Local $sDrive = Null
 	Local $bForce = False
 	Local $bSilent = False
 	Local $aOutput[3] = [False, "", ""]
@@ -220,13 +220,13 @@ Func ProcessCMDLine()
 			EndIf
 		EndIf
 
-		$bWinPE = RegRead("HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\WinPE", "Version")
-		If @error Then
-			$bWinPE = False
-		Else
-			MsgBox(0, "WinPE", $bWinPE)
-		EndIf
+	EndIf
 
+	$bWinPE = RegRead("HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\WinPE", "Version")
+	If @error Then
+		$bWinPE = False
+	Else
+		If $sDrive = Null Then $WINDOWS_DRIVE = "C:"
 	EndIf
 	#EndRegion
 
