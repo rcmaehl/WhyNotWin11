@@ -49,7 +49,6 @@ Func _CPUNameCheck($sCPU, $sVersion)
 		If @error Then Return SetError(1, 0, False)
 		For $iLine = 1 To $iLines Step 1
 			$sLine = FileReadLine(@LocalAppDataDir & $ListFile, $iLine)
-			$sLine = StringRight($sLine, StringLen($sCPU))
 			Select
 				Case @error
 					Return SetError(2, 0, False)
