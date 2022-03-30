@@ -773,7 +773,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	If BitAND($dSettings, 1) = 1 Then
 		;;;
 	Else
-		GUICtrlCreateGroup("Info", 30, 20, 638, 100)
+		GUICtrlCreateGroup("", 30, 20, 638, 100)
+		GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Info") & " ", 40, 20, 618, 20)
+		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 		If @Compiled Then
 			GUICtrlCreateIcon(@ScriptFullPath, 99, 50, 30, 40, 40)
 		Else
@@ -781,7 +783,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		EndIf
 	EndIf
 
-	GUICtrlCreateGroup(_Translate($aMUI[1], "Settings"), 30, 180, 400, 328)
+	GUICtrlCreateGroup("", 30, 180, 400, 328)
+	GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Settings") & " ", 40, 180, 380, 20)
+	GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Language") & ":", 40, 200, 380, 20)
 	Local $hLanguage = GUICtrlCreateCombo("", 40, 220, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
@@ -805,7 +809,9 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	If BitAND($dSettings, 2) = 2 Then
 		;;;
 	Else
-		GUICtrlCreateGroup(_Translate($aMUI[1], "Guides"), 470, 180, 200, 328)
+		GUICtrlCreateGroup("", 470, 180, 200, 328)
+		GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Guides") & " ", 480, 180, 180, 328)
+		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 		$hChecks = GUICtrlCreateButton(_Translate($aMUI[1],"Windows 11 Requirements"), 480, 200, 180, 40)
 		GUICtrlSetCursor(-1, 0)
 		$hConvert = GUICtrlCreateButton(_Translate($aMUI[1],"Convert Disk to GPT"), 480, 250, 180, 40)
