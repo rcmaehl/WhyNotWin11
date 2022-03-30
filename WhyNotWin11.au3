@@ -30,8 +30,8 @@
 Global $aFonts[5]
 Global $bWinPE = False
 Global $aColors[4] ; Convert to [4][8] for 2.0 themes
-Global $sVersion
 Global $sEdition = "Standard"
+Global $sVersion
 FileChangeDir(@SystemDir)
 
 If @Compiled Then
@@ -85,6 +85,7 @@ ProcessCMDLine()
 
 Func ProcessCMDLine()
 	Local $aResults
+	Local $sDrive
 	Local $bForce = False
 	Local $bSilent = False
 	Local $aOutput[3] = [False, "", ""]
@@ -111,7 +112,7 @@ Func ProcessCMDLine()
 					MsgBox(0, "Help and Flags", _
 							"Checks PC for Windows 11 Release Compatibility" & @CRLF & _
 							@CRLF & _
-							"WhyNotWin11 [/export FORMAT FILENAME [/silent]][/force][/update [branch]]" & @CRLF & _
+							"WhyNotWin11 [/export FORMAT FILENAME [/silent]][/drive DRIVE:][/force][/update [branch]]" & @CRLF & _
 							@CRLF & _
 							@TAB & "/export" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
 							@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
@@ -124,6 +125,19 @@ Func ProcessCMDLine()
 							@CRLF & _
 							"Refer to https://WhyNotWin11.org/wiki/Command-Line-Switches for more details" & @CRLF)
 					Exit 0
+				Case "/d", "/drive"
+					Select
+						Case UBound($CmdLine) <= 2
+							MsgBox(0, "Invalid", "Missing DRIVE: parameter for /drive." & @CRLF)
+							Exit 87 ; ERROR_INVALID_PARAMETER
+						Case StringLen($CmdLine[2]) <> 2
+							MsgBox(0, "Invalid", "Invalid DRIVE: parameter for /drive." & @CRLF)
+							Exit 87 ; ERROR_INVALID_PARAMETER
+						Case Else
+							$sDrive = $CmdLine[2]
+							$WINDOWS_DRIVE = $sDrive
+							_ArrayDelete($CmdLine, "1-2")
+					EndSelect
 				Case "/e", "/export", "/format"
 					Select
 						Case UBound($CmdLine) <= 3
@@ -207,14 +221,18 @@ Func ProcessCMDLine()
 		EndIf
 
 		$bWinPE = RegRead("HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\WinPE", "Version")
-		If @error Then $bWinPE = False
+		If @error Then
+			$bWinPE = False
+		Else
+			MsgBox(0, "WinPE", $bWinPE)
+		EndIf
 
 	EndIf
 	#EndRegion
 
 	If Not $bSilent And Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoProgress") Then ProgressOn($aName[1], _Translate(@MUILang, "Loading WMIC"))
 
-	$aResults = RunChecks()
+	$aResults = RunChecks($sDrive)
 
 	ProgressSet(80, "Done")
 
@@ -245,7 +263,7 @@ Func ProcessCMDLine()
 	Exit 0
 EndFunc   ;==>ProcessCMDLine
 
-Func RunChecks()
+Func RunChecks($sDrive = Null)
 
 	Local $aResults[11][3]
 
@@ -287,7 +305,7 @@ Func RunChecks()
 	$aResults[8][1] = @error
 	$aResults[8][2] = @extended
 
-	$aResults[9][0] = _SpaceCheck()
+	$aResults[9][0] = _SpaceCheck($sDrive)
 	$aResults[9][1] = @error
 	$aResults[9][2] = @extended
 
@@ -346,7 +364,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	#Region Sidebar
 	; Top Most Interaction for Update Text
 	Local $hUpdate = Default
-	If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoUpdate") Then
+	If $bWinPE Or Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoUpdate") Then
 		$hUpdate = GUICtrlCreateLabel("", 0, 560, 90, 60, $SS_CENTER + $SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 		GUICtrlSetCursor(-1, 0)
@@ -365,7 +383,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	; Top Most Interaction for Socials
 	Local $hGithub = Default, $hDonate = Default, $hDiscord = Default, $hLTT = Default, $hJob = Default
-	If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
+	If $bWinPE Or Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
 		$hGithub = GUICtrlCreateLabel("", 34, 110, 32, 32)
 		GUICtrlSetTip(-1, "GitHub")
 		GUICtrlSetCursor(-1, 0)
@@ -406,7 +424,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlCreateLabel("", 0, 0, 100, 600)
 	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 
-	If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoUpdate") Then
+	If $bWinPE Or Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoUpdate") Then
 		GUICtrlCreateLabel(_Translate($aMUI[1], "Check for Updates"), 0, 563, 100, 60, $SS_CENTER)
 		GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
 		GUICtrlSetBkColor(-1, $aColors[$iSidebar])
@@ -416,7 +434,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	_GDIPlus_Startup()
 	If @Compiled Then
-		If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
+		If $bWinPE Or Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
 			GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
 			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 201, 32, 32)
 			GUICtrlCreateIcon("", -1, 34, 160, 32, 32)

@@ -229,8 +229,14 @@ Func _SecureBootCheck()
 	EndSwitch
 EndFunc   ;==>_SecureBootCheck
 
-Func _SpaceCheck()
-	Local $sWindows = EnvGet("SystemDrive")
+Func _SpaceCheck($sDrive = Null)
+	Local $sWindows
+
+	If $sDrive = Null Then
+		$sWindows = EnvGet("SystemDrive")
+	Else
+		$sWindows = $sDrive
+	EndIf
 
 	Local $iFree = Round(DriveSpaceTotal($sWindows) / 1024, 0)
 	Local $aDrives = DriveGetDrive($DT_FIXED)
