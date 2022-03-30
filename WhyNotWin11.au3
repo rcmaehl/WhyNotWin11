@@ -28,6 +28,7 @@
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 Global $aFonts[5]
+Global $bWinPE = False
 Global $aColors[4] ; Convert to [4][8] for 2.0 themes
 Global $sVersion
 Global $sEdition = "Standard"
@@ -204,6 +205,10 @@ Func ProcessCMDLine()
 				MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Not Supported"), _Translate(@MUILang, "You're running the latest build!"))
 			EndIf
 		EndIf
+
+		$bWinPE = RegRead("HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\WinPE", "Version")
+		If @error Then $bWinPE = False
+
 	EndIf
 	#EndRegion
 
