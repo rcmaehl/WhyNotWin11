@@ -191,7 +191,7 @@ Func ProcessCMDLine()
 				;;;
 		EndSwitch
 
-		If @OSBuild >= 22000 Or _WinAPI_GetProcAddress(_WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll"), "wine_get_host_version") Then
+		If @OSVersion = "WIN_11" Or _WinAPI_GetProcAddress(_WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll"), "wine_get_host_version") Then
 			If $bSilent Then
 				Exit 10 ; ERROR_BAD_ENVIRONMENT
 			Else
