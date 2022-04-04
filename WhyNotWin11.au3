@@ -344,9 +344,10 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		For $iLoop = 1 To $aLangs[0] Step 1
 			$aLangs[$iLoop] &= " - " & IniRead(@LocalAppDataDir & "\WhyNotWin11\langs\" & $aLangs[$iLoop], "MetaData", "Language", "Unknown")
 		Next
-		_ArrayDelete($aLangs, 0)
+			_ArrayDelete($aLangs, 0)
+			_ArrayDelete($aLangs, 55) ;==> Remove the "Unknown" entry
 	EndIf
-
+	
 	Local $aThemes = _FileListToArray(@ScriptDir & "\", "*.def", $FLTA_FILES)
 	If Not @error Then
 		For $iLoop = 1 To $aThemes[0] Step 1
@@ -809,17 +810,16 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlCreateGroup("", 30, 180, 400, 328)
 	GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Settings") & " ", 40, 180, 380, 20)
 	GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
-
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Language") & ":", 40, 200, 380, 20)
-	Local $hLanguage = GUICtrlCreateCombo("", 40, 220, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
-	If Not _ArrayToString($aLangs) = -1 Then GUICtrlSetData(-1, _ArrayToString($aLangs), $aMUI[1])
-	GUICtrlCreateLabel(_Translate($aMUI[1], "Translation by") & ":", 40, 250, 100, 20)
+	Local $hLanguage = GUICtrlCreateCombo($alangs, 40, 220, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
+	GUICtrlSetData(-1, _ArrayToString($aLangs), $aMUI[1])
+	If IsArray($aLangs) ThenGUICtrlCreateLabel(_Translate($aMUI[1], "Translation by") & ":", 40, 250, 100, 20)
 	GUICtrlCreateLabel(_GetTranslationCredit($aMUI[1]), 140, 250, 280, 40, $SS_RIGHT)
 
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Theme") & ":", 40, 290, 380, 20)
 	Local $hTheme = GUICtrlCreateCombo("", 40, 310, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
 	#forceref $hTheme
-	If Not _ArrayToString($aThemes) = -1 Then GUICtrlSetData(-1, _ArrayToString($aThemes))
+	If IsArray($aThemes) Then GUICtrlSetData(-1, _ArrayToString($aThemes))
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Theme by") & ":", 40, 340, 100, 20)
 ;	GUICtrlCreateLabel(_GetThemeCredit($sTheme), 140, 340, 280, 40, $SS_RIGHT)
 
