@@ -7,3 +7,6 @@ theme.def
 Backup/*
 results.txt
 *.csv
+
+# Remove the editor settings directory
+.vscode
