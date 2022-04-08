@@ -820,8 +820,8 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	If BitAND($dSettings, 8) = 8 Then
 		;;;
 	Else
-	GUICtrlCreateLabel(_Translate($aMUI[1], "Translation by") & ":", 40, 260, 100, 20)
-	GUICtrlCreateLabel(_GetTranslationCredit($aMUI[1]), 140, 260, 280, 40, $SS_RIGHT)
+		GUICtrlCreateLabel(_Translate($aMUI[1], "Translation by") & ":", 40, 260, 100, 20)
+		GUICtrlCreateLabel(_GetTranslationCredit($aMUI[1]), 140, 260, 280, 40, $SS_RIGHT)
 	EndIf
 
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Theme") & ":", 40, 290, 380, 20)
@@ -835,8 +835,8 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	If BitAND($dSettings, 32) = 32 Then
 		;;;
 	Else
-	GUICtrlCreateLabel(_Translate($aMUI[1], "Theme by") & ":", 40, 360, 100, 20)
-;	GUICtrlCreateLabel(_GetThemeCredit($sTheme), 140, 340, 280, 40, $SS_RIGHT)
+		GUICtrlCreateLabel(_Translate($aMUI[1], "Theme by") & ":", 40, 360, 100, 20)
+;		GUICtrlCreateLabel(_GetThemeCredit($sTheme), 140, 340, 280, 40, $SS_RIGHT)
 	EndIf
 
 	;Local $hMUI = GUICtrlCreateCheckbox(_Translate($aMUI[1], "Remember Last Language Used"), 40, 380, 380, 20, $BS_RIGHTBUTTON)
