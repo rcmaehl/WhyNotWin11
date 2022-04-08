@@ -812,16 +812,32 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Language") & ":", 40, 200, 380, 20)
 	Local $hLanguage = GUICtrlCreateCombo($alangs, 40, 220, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
-	GUICtrlSetData(-1, _ArrayToString($aLangs), $aMUI[1])
-	If IsArray($aLangs) Then GUICtrlCreateLabel(_Translate($aMUI[1], "Translation by") & ":", 40, 250, 100, 20)
-	GUICtrlCreateLabel(_GetTranslationCredit($aMUI[1]), 140, 250, 280, 40, $SS_RIGHT)
+	If BitAND($dSettings, 4) = 4 Then
+		GUICtrlCreateLabel("Language Switcher currently disabled with Group Policy.", 40, 250, 380, 20)
+	Else
+		If IsArray($aLangs) Then GUICtrlSetData(-1, _ArrayToString($aLangs), $aMUI[1])
+	EndIf
+	If BitAND($dSettings, 8) = 8 Then
+		;;;
+	Else
+		GUICtrlCreateLabel(_Translate($aMUI[1], "Translation by") & ":", 40, 260, 100, 20)
+		GUICtrlCreateLabel(_GetTranslationCredit($aMUI[1]), 140, 260, 280, 40, $SS_RIGHT)
+	EndIf
 
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Theme") & ":", 40, 290, 380, 20)
 	Local $hTheme = GUICtrlCreateCombo("", 40, 310, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
 	#forceref $hTheme
-	If IsArray($aThemes) Then GUICtrlSetData(-1, _ArrayToString($aThemes))
-	GUICtrlCreateLabel(_Translate($aMUI[1], "Theme by") & ":", 40, 340, 100, 20)
-;	GUICtrlCreateLabel(_GetThemeCredit($sTheme), 140, 340, 280, 40, $SS_RIGHT)
+	If BitAND($dSettings, 16) = 16 Then
+		GUICtrlCreateLabel("Theme Switcher currently disabled with Group Policy.", 40, 340, 380, 20)
+	Else
+		If IsArray($aThemes) Then GUICtrlSetData(-1, _ArrayToString($aThemes))
+	EndIf
+	If BitAND($dSettings, 32) = 32 Then
+		;;;
+	Else
+		GUICtrlCreateLabel(_Translate($aMUI[1], "Theme by") & ":", 40, 360, 100, 20)
+;		GUICtrlCreateLabel(_GetThemeCredit($sTheme), 140, 340, 280, 40, $SS_RIGHT)
+	EndIf
 
 	;Local $hMUI = GUICtrlCreateCheckbox(_Translate($aMUI[1], "Remember Last Language Used"), 40, 380, 380, 20, $BS_RIGHTBUTTON)
 	;Local $hUOL = GUICtrlCreateCheckbox(_Translate($aMUI[1], "Check for Updates on App Launch"), 40, 400, 380, 20, $BS_RIGHTBUTTON)
