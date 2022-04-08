@@ -15,7 +15,7 @@ jobs:
             autoit-v3-setup.exe
             SciTE4AutoIt3.exe
             C:\Program Files (x86)\AutoIt3\SciTE\Au3Stripper
-          key: v2
+          key: v3
       - name: Download tools
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
