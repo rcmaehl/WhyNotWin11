@@ -2,7 +2,7 @@
 Language=Chinese (Traditional) - Taiwan
 RTL=false
 Translator=SiderealArt, chiyi4488
-Version=2.4.2.1
+Version=2.4.3.1
 [Font]
 Extra Large=24
 Large=18
@@ -18,7 +18,10 @@ Check for Updates=檢查更新
 Your Windows 11 Compatibility Results are Below=以下是您的 Windows 11 相容性結果
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=透過 https://www.whynotwin11.org/ 前往 WhyNotWin11
 Results Based on Currently Known Requirements!=結果為目前已知的系統要求
+Language=語言
+Theme=主題
 Translation by=譯者：
+Theme by=主題製作者：
 Architecture=架構 (CPU + OS)
 Boot Method=開機方式
 CPU Compatibility=CPU 相容性
@@ -77,6 +80,13 @@ Loading WMIC=正在載入 WMIC
 Warning=警告
 Your Computer is NOT ready for Windows 11, you can join the Discord using the Discord Icon if you need assistance.=您的電腦尚未做好升級 Windows 11 的準備。若您需要協助，可以點擊 Discord 圖示以加入伺服器。
 Your Computer is ready for Windows 11. You should receive the option to upgrade between October 5th 2021 and Fall 2022.=您的電腦已做好升級 Windows 11 的準備。您應在 2021 年 10 月 5 號至 2022 年秋季期間收到升級提示。
+Guides=指南
+Windows 11 Requirements=Windows 11 系統要求
+Convert Disk to GPT=將硬碟轉換至 GPT
+Enable TPM=啟用 TPM
+Enable Secure Boot=啟用安全開機
+Skip CPU && TPM=跳過 CPU && TPM
+Get Windows 11 Now=立刻取得 Windows 11
 [Descriptions]
 Architecture=您的 CPU 和作業系統一次可以處理的資料量。若您的結果為 32 位元的作業系統，您需要將硬碟清空，並從頭安裝 Windows 11。若您的結果為 32 位元的 CPU，則您需要更換 CPU。
 Boot=您的主機板載入 Windows 的方式。如果您的結果為 "Legacy (舊版)" 的話，可以至 BIOS/UEFI 設定中修復。詳見您的主機板使用手冊。
