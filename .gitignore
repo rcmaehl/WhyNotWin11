@@ -5,3 +5,8 @@ Config/config.st
 theme.def
 2theme.def
 Backup/*
+results.txt
+*.csv
+
+# Remove the editor settings directory
+.vscode
