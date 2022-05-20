@@ -83,7 +83,7 @@ Windows 11 Requirements=Απαιτήσεις των Windows 11
 Convert Disk to GPT=Μετατροπή δίσκου σε GPT 
 Enable TPM=Ενεργοποίηση TPM
 Enable Secure Boot=Ενεργοποίηση Secure Boot
-Skip CPU && TPM=Παράλειψη επεξεργαστή και TPM 
+Skip CPU && TPM=Παράλειψη επεξεργαστή & TPM 
 Get Windows 11 Now=Λήψη των Windows 11 τώρα!
 [Descriptions]
 Architecture=Το μέγεθος των δεδομένων ο επεξεργαστής σου μπορεί να επεξεργαστεί ταυτόχρονα .Το αποτέλεσμα "Λειτουργικό σύστημα 32-bit", απαιτεί εκκαθάριση του δίσκου και εγκατάστασης ενός νέου "αντίγραφου" των Windows 11. Το αποτέλεσμα "Επεξεργαστής 32-bit", απαιτεί αντικατάσταση του επεξεργαστή.
