@@ -24,7 +24,7 @@ Global $tColorCurve = DllStructCreate($tagCOLORCURVEEFFECTPARAMS), $iType = $iAd
 ; Return values .: None
 ; Author ........: UEZ
 ; Modified ......:
-; Remarks .......:
+; Remarks .......: Requires #AutoIt3Wrapper_Res_HiDpi=Y
 ; Related .......:
 ; Link ..........: http://www.autoitscript.com/forum/topic/159612-dpi-resolution-problem/?hl=%2Bdpi#entry1158317
 ; Example .......: No
@@ -147,25 +147,36 @@ Func _SetBkSelfIcon($ControlID, $iForeground, $iBackground, $sIcon, $iIndex, $iW
     Return SetError(0, 0, 1)
 EndFunc   ;==>_SetBkSelfIcon
 
-Func _SetTheme()
+Func _SetTheme($sName = False)
 	Local $aColors[4] ; Convert to [4][8] for 2.0 themes
 
+	Local $sVer
 	Local $dText = _WinAPI_GetSysColor($COLOR_WINDOWTEXT)
+	Local $sFile = "\theme.def"
 	Local $dWindow = _WinAPI_GetSysColor($COLOR_WINDOW)
 	Local $bLTheme = RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
 	If @error Then $bLTheme = True
+
+	#forceref $sVer
 
 	$aColors[0] = 0xF8F8F8 ; Backgrounds
 	$aColors[1] = $dText ;Text
 	$aColors[2] = 0xE6E6E6 ; Sidebar
 	$aColors[3] = 0xF2F2F2 ; Footer
 
+	If $sName Then $sFile = "\" & $sName
+
 	Select
-		Case FileExists(@ScriptDir & "\theme.def")
-			$aColors[0] = IniRead(@ScriptDir & "\theme.def", "Colors", "Background", $aColors[0])
-			$aColors[1] = IniRead(@ScriptDir & "\theme.def", "Colors", "Text", $aColors[1])
-			$aColors[2] = IniRead(@ScriptDir & "\theme.def", "Colors", "Sidebar", $aColors[2])
-			$aColors[3] = IniRead(@ScriptDir & "\theme.def", "Colors", "Footer", $aColors[3])
+		Case FileExists(@ScriptDir & $sFile)
+			$sVer = IniReadSection(@ScriptDir & $sFile, "MetaData")
+			If @error Then ; 1.0 Theme
+				$aColors[0] = IniRead(@ScriptDir & $sFile, "Colors", "Background", $aColors[0])
+				$aColors[1] = IniRead(@ScriptDir & $sFile, "Colors", "Text", $aColors[1])
+				$aColors[2] = IniRead(@ScriptDir & $sFile, "Colors", "Sidebar", $aColors[2])
+				$aColors[3] = IniRead(@ScriptDir & $sFile, "Colors", "Footer", $aColors[3])
+			Else
+				;;;
+			EndIf
 		Case $dWindow = 0x000000
 			ContinueCase
 		Case $dWindow = 0xFFFFFF And Not $bLTheme

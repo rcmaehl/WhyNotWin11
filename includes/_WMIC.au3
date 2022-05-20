@@ -1,5 +1,9 @@
 #include-once
+
+#include <Array.au3>
 #include <StringConstants.au3>
+
+#include "GetDiskInfo.au3"
 
 Func _GetCPUInfo($iFlag = 0)
 	Local Static $sCores
@@ -25,8 +29,6 @@ Func _GetCPUInfo($iFlag = 0)
 				$sVersion = $Obj_Item.Version
 			Next
 
-			Local $CPUs
-			#forceref $CPUs
 			$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_ComputerSystem')
 			For $Obj_Item In $Col_Items
 				$sCPUs = $Obj_Item.NumberOfProcessors
@@ -94,6 +96,66 @@ Func _GetDiskInfo($iFlag = 0)
 	EndSwitch
 EndFunc   ;==>_GetDiskInfo
 
+Func _GetDiskProperties($iFlag = 0)
+	; Desc ......... : Call _GetDiskInfoFromWmi() to get the disk and partition informations. The selected information will be returned.
+	; Parameters ... : $iFlag = 0 => Init WMI data.
+	; .............. : $iFlag = 1 => Return array with disk information.
+	; .............. : $iFlag = 2 => Return array with partition information.
+	; .............. : $iFlag = 3 => Return information of disk with system (Windows) partition.
+	; .............. : $iFlag = 4 => Return information of system (Windows) partition.
+	; On error ..... : Return SetError(1, 1, "Error_WmiFailed"), if WMI failed.
+	; .............. : Return SetError(1, 2, "Error_IncorrectFlag"), if $iFlag is unknown.
+	; .............. : Return SetError(1, 3, "Error_NoDataReturned"), if not data can be returned.
+
+	Local Static $aDiskArray
+	Local Static $aPartitionArray
+	Local Static $aSysDisk
+	Local Static $aSysPartition
+
+	#forcedef $DiskInfoWmi_TableHeader_No
+	#forcedef $DiskInfoWmi_DiskType_Fixed
+
+	; Get WMI data
+	If ($aDiskArray = "") Or ($aPartitionArray = "") Then
+		; Get disk datat for fixed (internal) disks.
+		_GetDiskInfoFromWmi($aDiskArray, $aPartitionArray, $DiskInfoWmi_TableHeader_No, $DiskInfoWmi_DiskType_Fixed)
+		If @error = 1 Then Return SetError(1, 1, "Error_WmiFailed")
+	EndIf
+
+	; Get sys disk and sys partition num
+	If ($aSysDisk = "") Or ($aSysPartition = "") Then
+		Local $iSysDisk = _ArraySearch($aDiskArray, "True", 0, 0, 0, 0, 1, 11) ; Row 11 = IsSysDisk
+		$aSysDisk = _ArrayExtract($aDiskArray, $iSysDisk, $iSysDisk)
+		Local $iSysPartition = _ArraySearch($aPartitionArray, "True", 0, 0, 0, 0, 1, 12) ; Row 12 = IsSysPartition
+		$aSysPartition = _ArrayExtract($aPartitionArray, $iSysPartition, $iSysPartition)
+	EndIf
+
+	; Return data based on $iFlag or exit function
+	Switch $iFlag
+		Case 0
+			; Exit function after init WMI data
+			Return
+		Case 1
+			; Return array with disk information.
+			Return $aDiskArray
+		Case 2
+			; Return array with partition information.
+			Return $aPartitionArray
+		Case 3
+			; Return information of disk with system (Windows) partition.
+			Return $aSysDisk
+		Case 4
+			; Return information of system (Windows) partition.
+			Return $aSysPartition
+		Case Else
+			; If $iFlag was incorrect...
+			Return SetError(1, 2, "Error_IncorrectFlag")
+	EndSwitch
+
+	; If no data returned before...
+	SetError(1, 3, "Error_NoDataReturned")
+EndFunc   ;==>_GetDiskProperties
+
 Func _GetGPUInfo($iFlag = 0)
 	Local Static $sName
 	Local Static $sMemory
@@ -129,6 +191,7 @@ Func _GetTPMInfo($iFlag = 0)
 	Local Static $sVersion
 	Local Static $sName
 	Local Static $sPresent
+	Local Static $sStatus
 	If IsAdmin() Then
 		Local $Obj_WMIService, $Col_Items
 		If Not $sActivated <> "" Then
@@ -163,6 +226,7 @@ Func _GetTPMInfo($iFlag = 0)
 				For $Obj_Item In $Col_Items
 					$sName = $Obj_Item.Name
 					$sPresent = $Obj_Item.Present
+					$sStatus = $Obj_Item.Status
 				Next
 			Else
 				Return 0
@@ -175,6 +239,8 @@ Func _GetTPMInfo($iFlag = 0)
 				If $sName <> "" Then Return 1
 			Case 2
 				Return StringRegExp($sName, "\d+\.\d+", $STR_REGEXPARRAYMATCH)[0]
+			Case 3
+				Return $sStatus
 			Case Else
 				Return 0
 		EndSwitch

@@ -42,8 +42,8 @@ Func _GetFile($sFile, $sFormat = $FO_READ)
 	Return $sData
 EndFunc   ;==>_GetFile
 
-Func _GetTranslationCredit()
-	Return IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & @MUILang & ".lang", "MetaData", "Translator", "???")
+Func _GetTranslationCredit($iMUI)
+	Return IniRead(@LocalAppDataDir & "\WhyNotWin11\Langs\" & $iMUI & ".lang", "MetaData", "Translator", "???")
 EndFunc   ;==>_GetTranslationCredit
 
 Func _GetTranslationFonts($iMUI)
