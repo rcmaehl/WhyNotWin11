@@ -2,7 +2,7 @@
 Language=Polish - Poland
 RTL=false
 Translator=BxOxSxS, micwoj92, mLipok, kp1971
-Version=2.3.2.0
+Version=2.4.1.0
 [Font]
 Extra Large=24
 Large=18
@@ -17,7 +17,7 @@ Settings=Ustawienia
 Check for Updates=Sprawdź aktualizacje
 Your Windows 11 Compatibility Results are Below=Twoje wyniki kompatybilności Windows 11 są poniżej
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Teraz program WhyNotWin11 jest dostępny na https://www.whynotwin11.org/
-Results Based on Currently Known Requirements!=Wyniki na podstawie obecnie znanych wymagań!
+Results based on currently known requirements!=Wyniki na podstawie obecnie znanych wymagań!
 Translation by=Tłumaczenie przez
 Architecture=Architektura (CPU + OS)
 Boot Method=Metoda uruchamiania

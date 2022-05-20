@@ -2,7 +2,7 @@
 Language=Japanese - Japan
 RTL=false
 Translator=yuki-gh, goahi, syobon-tech, arakim, micachi
-Version=2.3.1.1
+Version=2.3.2.0
 [Font]
 Extra Large=24
 Large=18
@@ -13,7 +13,7 @@ Name=Meiryo
 Enable enhanced accessibility?=拡張アクセシビリティを有効にしますか?
 This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=この新しい拡張アクセシビリティ機能は視覚障碍者向けに設計されており、ほとんどのプログラムインターフェースが音声とキーボードショートカットで利用可能です。有効にしますか?
 Donate=寄付
-Settings=Settings
+Settings=設定
 Check for Updates=更新をチェック
 Your Windows 11 Compatibility Results Are Below=Windows 11 対応チェック
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=WhyNotWin11 : https://www.whynotwin11.org/

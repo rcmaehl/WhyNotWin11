@@ -1,7 +1,7 @@
 [MetaData]
 Language=Greek - Greece
 RTL=false
-Translator=Mant08, konmaz
+Translator=Mant08, konmaz, GalaxyGamingBoy
 Version=2.3.2.0
 [Font]
 Extra Large=24
@@ -11,11 +11,11 @@ Small=8.5
 Name=Arial
 [Strings]
 Enable enhanced accessibility?=Ενεργοποίηση ενισχυμένης προσβασιμότητας
-This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=Αυτή η νέα ενισχυμένη δυνατότητα προσβασιμότητας είναι σχεδιασμένη για άτομα με προβλήματα όρασης,που με την οποία, το μεγαλύτερο μέρος της εφαρμογής μπορεί να λειτουργήσει με φωνητικές εντολές ή με συντομεύσεις πληκτρολογίου
+This new Enhanced Accessibility functionality is designed for the visually impaired, in which most of the program interface can be used by voice and keyboard shortcuts. Activate?=Αυτή η νέα ενισχυμένη δυνατότητα προσβασιμότητας είναι σχεδιασμένη για άτομα με προβλήματα όρασης,που με την οποία, το μεγαλύτερο μέρος της εφαρμογής μπορεί να λειτουργήσει με φωνητικές εντολές ή με συντομεύσεις πληκτρολογίου. Ενεργοποίηση;
 Donate=Δωρεά
 Settings=Ρυθμίσεις
 Check for Updates='Ελεγχος για ενημερώσεις
-Your Windows 11 Compatibility Results Are Below=Aποτελέσματα συμβατότητας για τα Windows 11
+Your Windows 11 Compatibility Results Are Below=Τα αποτελέσματα συμβατότητας για τα Windows 11 είναι τα παρακάτω
 Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Βρείτε το WhyNotWin11 μέσω της σελίδας https://www.whynotwin11.org/
 Results based on currently known requirements!=Τα αποτελέσματα είναι βασισμένα στις τρέχον γνωστές απαιτήσεις!
 Translation by=Μεταφράστηκε από:
@@ -63,8 +63,8 @@ Up to Date=Ενημερωμένο
 You're running the latest build!=Τρέχεις την τελευταία έκδοση!
 Unable to Check for Updates=Ανικανότητα έλεγχου για ενημερώσεις
 Unable to load release data.=Ανικανότητα φόρτωσης δεδομένων έκδοσης.
-Invalid Data Received!=Μη έγκυρα δεδομένα λήφθηκαν!
-Invalid Release Tags Received!=Μη έγκυρες ετικέτες έκδοσης
+Invalid Data Received!=Λήφθηκαν μη έγκυρα δεδομένα!
+Invalid Release Tags Received!=Λήφθηκαν μη έγκυρες ετικέτες έκδοσης
 Invalid Release Types Received!=Λήφθηκαν μη έγκυροι τύποι έκδοσης!
 Update Available=Διαθέσιμη ενημέρωση
 An Update is Available, would you like to download it?=Υπάρχει διαθέσιμη ενημέρωση,θα ήθελες να την κατεβάσεις?
