@@ -138,7 +138,7 @@ Ryzen 5 PRO 5650HX
 Ryzen 5 PRO 5650U
 Ryzen 5 PRO 5750G
 Ryzen 5 PRO 5750GE
-Ryzen 7 2700
+Ryzen 7 2700 
 Ryzen 7 5800
 Ryzen 7 2700E
 Ryzen 7 2700X
