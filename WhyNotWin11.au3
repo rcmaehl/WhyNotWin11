@@ -818,7 +818,12 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	If BitAND($dSettings, 4) = 4 Then
 		GUICtrlCreateLabel("Language Switcher currently disabled with Group Policy.", 40, 250, 380, 20)
 	Else
-		If IsArray($aLangs) Then GUICtrlSetData(-1, _ArrayToString($aLangs), $aMUI[1])
+		If IsArray($aLangs) Then
+			GUICtrlSetData(-1, _ArrayToString($aLangs), $aMUI[1])
+		Else
+			GUICtrlSetData(-1, "English - No Alternative Language Files Found", "English - No Alternative Language Files Found")
+			GUICtrlSetState(-1, $GUI_DISABLE)
+		EndIf
 	EndIf
 	If BitAND($dSettings, 8) = 8 Then
 		;;;
@@ -833,7 +838,12 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	If BitAND($dSettings, 16) = 16 Then
 		GUICtrlCreateLabel("Theme Switcher currently disabled with Group Policy.", 40, 340, 380, 20)
 	Else
-		If IsArray($aThemes) Then GUICtrlSetData(-1, _ArrayToString($aThemes))
+		If IsArray($aThemes) Then
+			GUICtrlSetData(-1, _ArrayToString($aThemes))
+		Else
+			GUICtrlSetData(-1, "Default - No Theme Files Found", "Default - No Theme Files Found")
+			GUICtrlSetState(-1, $GUI_DISABLE)
+		EndIf
 	EndIf
 	If BitAND($dSettings, 32) = 32 Then
 		;;;
@@ -852,7 +862,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		;;;
 	Else
 		GUICtrlCreateGroup("", 470, 180, 200, 328)
-		GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Guides") & " ", 480, 180, 180, 328)
+		GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Guides") & " ", 480, 180, 180, 20)
 		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 		$hChecks = GUICtrlCreateButton(_Translate($aMUI[1],"Windows 11 Requirements"), 480, 200, 180, 40)
 		GUICtrlSetCursor(-1, 0)
