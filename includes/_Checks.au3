@@ -42,10 +42,10 @@ Func _CPUNameCheck($sCPU, $sVersion)
 			$ListFile = "\WhyNotWin11\SupportedProcessorsQualcomm.txt"
 	EndSelect
 
-	If StringInStr(RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "RedReason"), "CpuFms") Then Return False
+	If StringInStr(RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "RedReason"), "CpuFms") Then Return SetError(3, 0, False)
 
 	If $ListFile = Null Then
-		Return False
+		Return SetError(1, 0, False)
 	Else
 		$iLines = _FileCountLines(@LocalAppDataDir & $ListFile)
 		If @error Then Return SetError(1, 0, False)
