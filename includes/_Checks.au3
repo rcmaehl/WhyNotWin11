@@ -275,7 +275,7 @@ Func _SpaceCheck($sDrive = Null)
 	If @error Then
 		;;;
 	Else
-		$bWin11Reg = Int(RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "SystemDriveTooFull"))
+		$bWin11Reg = Int($sReg)
 	EndIf
 
 	If $iFree >= 64 And Not $bWin11Reg Then
