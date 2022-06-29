@@ -1,0 +1,38 @@
+name: Submit WhyNotWin11 to winget
+
+on:
+  release:
+    types: [released]
+  workflow_dispatch:
+
+jobs:
+  winget-bump:
+    name: wnw11 winget
+    runs-on: windows-latest
+    if: github.repository == 'rcmaehl/WhyNotWin11'
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+      - uses: oprypin/find-latest-tag@v1
+        with:
+          repository: rcmaehl/WhyNotWin11  # The repository to scan.
+          releases-only: true  # We know that all relevant tags have a GitHub release for them.
+        id: latesttag
+      - name: Set Version
+        id: versionset
+        run: |
+          version="${{ steps.latesttag.outputs.tag }}"
+          echo "::set-output name=version::$version"
+      - name: Submit to winget repository #Name of the workflow step
+        uses: gnpaone/winget-push-test@v1
+        with:
+          version: ${{ steps.versionset.outputs.version }} #Package version
+          url32: https://github.com/rcmaehl/WhyNotWin11/releases/download/${{ steps.versionset.outputs.version }}/WhyNotWin11_x86.exe #Package url (32-bit)
+          url64: https://github.com/rcmaehl/WhyNotWin11/releases/download/${{ steps.versionset.outputs.version }}/WhyNotWin11.exe #Package url (64-bit)
+          token:  ${{ secrets.WhyNotWin11_PAT }} #Token used to submit to Winget repository
+          packageid: rcmaehl.WhyNotWin11 #Package ID
+          user: microsoft #Github username where test winget repo exists
+          repo: winget-pkgs #Name of winget test repo
