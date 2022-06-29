@@ -816,7 +816,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Language") & ":", 40, 200, 380, 20)
 	Local $hLanguage = GUICtrlCreateCombo($alangs, 40, 220, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
 	If BitAND($dSettings, 4) = 4 Then
-		GUICtrlCreateLabel("Language Switcher currently disabled with Group Policy.", 40, 250, 380, 20)
+		GUICtrlCreateLabel(_Translate($aMUI[1], "Language Switcher currently disabled with Group Policy."), 40, 250, 380, 20)
 	Else
 		If IsArray($aLangs) Then
 			GUICtrlSetData(-1, _ArrayToString($aLangs), $aMUI[1])
@@ -836,12 +836,12 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	Local $hTheme = GUICtrlCreateCombo("", 40, 310, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
 	#forceref $hTheme
 	If BitAND($dSettings, 16) = 16 Then
-		GUICtrlCreateLabel("Theme Switcher currently disabled with Group Policy.", 40, 340, 380, 20)
+		GUICtrlCreateLabel(_Translate($aMUI[1], "Theme Switcher currently disabled with Group Policy."), 40, 340, 380, 20)
 	Else
 		If IsArray($aThemes) Then
 			GUICtrlSetData(-1, _ArrayToString($aThemes))
 		Else
-			GUICtrlSetData(-1, "Default - No Theme Files Found", "Default - No Theme Files Found")
+			GUICtrlSetData(-1, _Translate($aMUI[1], "Default - No Theme Files Found"), _Translate($aMUI[1], "Default - No Theme Files Found"))
 			GUICtrlSetState(-1, $GUI_DISABLE)
 		EndIf
 	EndIf
