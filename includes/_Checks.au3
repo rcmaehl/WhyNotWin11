@@ -42,6 +42,8 @@ Func _CPUNameCheck($sCPU, $sVersion)
 			$ListFile = "\WhyNotWin11\SupportedProcessorsQualcomm.txt"
 	EndSelect
 
+	If StringInStr(RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "RedReason"), "CpuFms") Then Return False
+
 	If $ListFile = Null Then
 		Return False
 	Else
@@ -192,6 +194,7 @@ EndFunc
 
 Func _MemCheck()
 	Local Static $vMem
+	Local Static $bWin11Reg
 
 	If Not $vMem <> "" Then
 		$vMem = DllCall(@SystemDir & "\Kernel32.dll", "int", "GetPhysicallyInstalledSystemMemory", "int*", "")
@@ -207,9 +210,11 @@ Func _MemCheck()
 			$vMem = Round($vMem[1] / 1048576, 1)
 			$vMem = Ceiling($vMem)
 		EndIf
+		If StringInStr(RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "RedReason"), "Memory") Then $bWin11Reg = True
 	EndIf
 
-	If $vMem >= 4 Then
+
+	If $vMem >= 4 And Not $bWin11Reg Then
 		Return SetError($vMem, 0, True)
 	Else
 		Return SetError($vMem, 0, False)
