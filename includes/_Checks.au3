@@ -42,7 +42,13 @@ Func _CPUNameCheck($sCPU, $sVersion)
 			$ListFile = "\WhyNotWin11\SupportedProcessorsQualcomm.txt"
 	EndSelect
 
-	If StringInStr(RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "RedReason"), "CpuFms") Then Return SetError(3, 0, False)
+
+	Local $sReg = RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "RedReason")
+	If @error Then
+		;;;
+	Else
+		If StringInStr($sReg, "CpuFms") Then Return SetError(3, 0, False)
+	EndIf
 
 	If $ListFile = Null Then
 		Return SetError(1, 0, False)
@@ -194,6 +200,7 @@ EndFunc
 
 Func _MemCheck()
 	Local Static $vMem
+	LOcal Static $sReg
 	Local Static $bWin11Reg
 
 	If Not $vMem <> "" Then
@@ -210,9 +217,13 @@ Func _MemCheck()
 			$vMem = Round($vMem[1] / 1048576, 1)
 			$vMem = Ceiling($vMem)
 		EndIf
-		If StringInStr(RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "RedReason"), "Memory") Then $bWin11Reg = True
+		$sReg = RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "RedReason")
+		If @error Then
+			;;;
+		Else
+			If StringInStr($sReg, "Memory") Then $bWin11Reg = True
+		EndIf
 	EndIf
-
 
 	If $vMem >= 4 And Not $bWin11Reg Then
 		Return SetError($vMem, 0, True)
@@ -224,7 +235,14 @@ EndFunc   ;==>_MemCheck
 Func _SecureBootCheck()
 	Local $sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
 	If @error Then $sSecureBoot = 999
-	If StringInStr(RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "RedReason"), "UefiSecureBoot") Then $sSecureBoot = 998
+
+	Local $sReg = RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "RedReason")
+	If @error Then
+		;;;
+	Else
+		If StringInStr($sReg, "CpuFms") Then $sSecureBoot = 998
+	EndIf
+
 	Switch $sSecureBoot
 		Case 1
 			Return SetError(0, 1, True)
@@ -253,7 +271,12 @@ Func _SpaceCheck($sDrive = Null)
 		If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 60 Then $iDrives += 1
 	Next
 
-	If $bWin11 Then $bWin11Reg = Int(RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "SystemDriveTooFull"))
+	Local $sReg = RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "SystemDriveTooFull")
+	If @error Then
+		;;;
+	Else
+		$bWin11Reg = Int(RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "SystemDriveTooFull"))
+	EndIf
 
 	If $iFree >= 64 And Not $bWin11Reg Then
 		Return SetError($iFree, $iDrives, True)
@@ -282,18 +305,3 @@ Func _TPMCheck()
 			Return SetError(0, 0, False)
 	EndSelect
 EndFunc   ;==>_TPMCheck
-
-Func _Win11Updates()
-	Local $aRegistry[4]
-
-	$aRegistry[0] = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "RedReason")
-	$aRegistry[1] = RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "SystemDriveTooFull")
-	$aRegistry[2] = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "UpgEx")
-	$aRegistry[3] = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "UpExU")
-
-	If $aRegistry[2] = "Red" Or $aRegistry[3] = "Red" Then
-		Return SetError(0, $aRegistry, False)
-	Else
-		Return True
-	EndIf
-EndFunc
