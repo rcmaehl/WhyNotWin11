@@ -219,6 +219,7 @@ EndFunc   ;==>_MemCheck
 Func _SecureBootCheck()
 	Local $sSecureBoot = RegRead("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State", "UEFISecureBootEnabled")
 	If @error Then $sSecureBoot = 999
+	If StringInStr(RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "RedReason"), "UefiSecureBoot") Then $sSecureBoot = 998
 	Switch $sSecureBoot
 		Case 1
 			Return SetError(0, 1, True)
@@ -241,12 +242,15 @@ Func _SpaceCheck($sDrive = Null)
 	Local $iFree = Round(DriveSpaceTotal($sWindows) / 1024, 0)
 	Local $aDrives = DriveGetDrive($DT_FIXED)
 	Local $iDrives = 0
+	Local $bWin11Reg
 
 	For $iLoop = 1 To $aDrives[0] Step 1
 		If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 60 Then $iDrives += 1
 	Next
 
-	If $iFree >= 64 Then
+	If $bWin11 Then $bWin11Reg = Int(RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "SystemDriveTooFull"))
+
+	If $iFree >= 64 And Not $bWin11Reg Then
 		Return SetError($iFree, $iDrives, True)
 	Else
 		Return SetError($iFree, $iDrives, False)
@@ -255,6 +259,8 @@ EndFunc   ;==>_SpaceCheck
 
 Func _TPMCheck()
 	Select
+		Case StringInStr(RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "RedReason"), "Tpm")
+			Return SetError(0, 0, False)
 		Case _GetTPMInfo(0) = False
 			ContinueCase
 		Case _GetTPMInfo(1) = False
@@ -271,3 +277,18 @@ Func _TPMCheck()
 			Return SetError(0, 0, False)
 	EndSelect
 EndFunc   ;==>_TPMCheck
+
+Func _Win11Updates()
+	Local $aRegistry[4]
+
+	$aRegistry[0] = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "RedReason")
+	$aRegistry[1] = RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "SystemDriveTooFull")
+	$aRegistry[2] = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "UpgEx")
+	$aRegistry[3] = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "UpExU")
+
+	If $aRegistry[2] = "Red" Or $aRegistry[3] = "Red" Then
+		Return SetError(0, $aRegistry, False)
+	Else
+		Return True
+	EndIf
+EndFunc

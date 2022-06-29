@@ -61,6 +61,7 @@ EndIf
 
 Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
 
+Global $bWin11 = False
 Global Static $aMUI[2] = [Null, @MUILang] ; Forced, MUI Lang
 Global Static $aName[2] = [Null, "WhyNotWin11"] ; Forced, AppName
 
@@ -208,11 +209,13 @@ Func ProcessCMDLine()
 				Else
 					MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Warning"), StringReplace(_Translate(@MUILang, "May Report DirectX 12 Incorrectly"), '#', @OSVersion))
 				EndIf
+			Case "WIN_11"
+				$bWin11 = True
 			Case Else
 				;;;
 		EndSwitch
 
-		If @OSVersion = "WIN_11" Or _WinAPI_GetProcAddress(_WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll"), "wine_get_host_version") Then
+		If _WinAPI_GetProcAddress(_WinAPI_GetModuleHandle(@SystemDir & "\ntdll.dll"), "wine_get_host_version") Then
 			If $bSilent Then
 				Exit 10 ; ERROR_BAD_ENVIRONMENT
 			Else
@@ -347,7 +350,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 			_ArrayDelete($aLangs, 0)
 			_ArrayDelete($aLangs, 55) ;==> Remove the "Unknown" entry
 	EndIf
-	
+
 	Local $aThemes = _FileListToArray(@ScriptDir & "\", "*.def", $FLTA_FILES)
 	If Not @error Then
 		For $iLoop = 1 To $aThemes[0] Step 1
