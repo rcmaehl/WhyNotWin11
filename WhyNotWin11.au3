@@ -320,6 +320,46 @@ Func RunChecks($sDrive = Null)
 
 EndFunc   ;==>RunChecks
 
+Func RunCheckValidation($aInitial)
+
+	Local $aResults[11][3]
+	Local $bMismatch = False
+
+	$aResults[2][0] = _CPUNameCheck(_GetCPUInfo(2), _GetCPUInfo(5), True)
+	$aResults[2][1] = @error
+	$aResults[2][2] = @extended
+
+	$aResults[7][0] = _MemCheck(True)
+	$aResults[7][1] = @error
+	$aResults[7][2] = @extended
+
+	$aResults[8][0] = _SecureBootCheck(True)
+	$aResults[8][1] = @error
+	$aResults[8][2] = @extended
+
+	$aResults[9][0] = _SpaceCheck("", True)
+	$aResults[9][1] = @error
+	$aResults[9][2] = @extended
+
+	$aResults[10][0] = _TPMCheck(True)
+	$aResults[10][1] = @error
+	$aResults[10][2] = @extended
+
+	For $iLoop = 0 To 10 Step 1
+		Switch $iLoop
+			Case 2, 7 to 10
+				If Not $aResults[$iLoop][1] Then
+					If $aResults[$iLoop][0] <> $aInitial[$iLoop][0] Then $bMismatch = True
+				EndIf
+			Case Else
+				;;;
+		EndSwitch
+	Next
+
+	Return Not $bMismatch
+
+EndFunc
+
 Func Main(ByRef $aResults, ByRef $aOutput)
 
 	; Disable Scaling
@@ -948,9 +988,15 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 							ContinueLoop 2
 						EndIf
 					Next
-					MsgBox($MB_OK+$MB_ICONINFORMATION+$MB_TOPMOST+$MB_SETFOREGROUND, _
-						_Translate($aMUI[1], "Supported"), _
-						_Translate($aMUI[1], "Your Computer is ready for Windows 11. You should receive the option to upgrade between October 5th 2021 and Fall 2022."))
+					If Not RunCheckValidation($aResults) Then
+						MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST+$MB_SETFOREGROUND, _
+							_Translate($aMUI[1], "Supported"), _
+							_Translate($aMUI[1], "Your Computer is ready for Windows 11 and it's updates, but Windows Update may believe it is not."))
+					Else
+						MsgBox($MB_OK+$MB_ICONINFORMATION+$MB_TOPMOST+$MB_SETFOREGROUND, _
+							_Translate($aMUI[1], "Supported"), _
+							_Translate($aMUI[1], "Your Computer is ready for Windows 11 and it's updates."))
+					EndIf
 				EndIf
 
 			Case $hMsg = $hLanguage

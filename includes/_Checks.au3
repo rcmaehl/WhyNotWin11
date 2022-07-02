@@ -37,7 +37,7 @@ Func _CPUNameCheck($sCPU, $sVersion, $bAppCompat = False)
 		If @error Then
 			SetError(1, 0, False)
 		Else
-			Return StringInStr($sReg, "CpuFms")
+			Return Not StringInStr($sReg, "CpuFms")
 		EndIf
 	EndIf
 
@@ -209,7 +209,7 @@ Func _MemCheck($bAppCompat = False)
 		If @error Then
 			Return SetError(1, 0, False)
 		Else
-			Return StringInStr($sReg, "Memory")
+			Return Not StringInStr($sReg, "Memory")
 		EndIf
 	EndIf
 
@@ -243,7 +243,7 @@ Func _SecureBootCheck($bAppCompat = False)
 		If @error Then
 			Return SetError(1, 0, False)
 		Else
-			Return StringInStr($sReg, "CpuFms")
+			Return Not StringInStr($sReg, "CpuFms")
 		EndIf
 	EndIf
 
@@ -267,7 +267,7 @@ Func _SpaceCheck($sDrive = Null, $bAppCompat = False)
 		If @error Then
 			Return SetError(1, 0, False)
 		Else
-			Return Int($sReg)
+			Return Not Int($sReg)
 		EndIf
 	EndIf
 
@@ -301,7 +301,7 @@ Func _TPMCheck($bAppCompat = False)
 		If @error Then
 			Return SetError(1, 0, False)
 		Else
-			Return StringInStr($sReg, "Tpm")
+			Return Not StringInStr($sReg, "Tpm")
 		EndIf
 	EndIf
 
