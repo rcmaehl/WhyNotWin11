@@ -86,6 +86,8 @@ ProcessCMDLine()
 
 Func ProcessCMDLine()
 	Local $aResults
+	Local $aExtended
+
 	Local $sDrive = Null
 	Local $bForce = False
 	Local $bSilent = False
@@ -236,6 +238,7 @@ Func ProcessCMDLine()
 	If Not $bSilent And Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoProgress") Then ProgressOn($aName[1], _Translate(@MUILang, "Loading WMIC"))
 
 	$aResults = RunChecks($sDrive)
+	$aExtended = RunExtendedChecks($sDrive)
 
 	ProgressSet(80, "Done")
 
@@ -253,7 +256,7 @@ Func ProcessCMDLine()
 		$aColors = _SetTheme()
 		$aFonts = _GetTranslationFonts($aMUI[1])
 
-		Main($aResults, $aOutput)
+		Main($aResults, $aExtended, $aOutput)
 	Else
 		Do
 			FinalizeResults($aResults)
@@ -320,10 +323,9 @@ Func RunChecks($sDrive = Null)
 
 EndFunc   ;==>RunChecks
 
-Func RunCheckValidation($aInitial)
+Func RunExtendedChecks($sDrive = Null)
 
 	Local $aResults[11][3]
-	Local $bMismatch = False
 
 	$aResults[2][0] = _CPUNameCheck(_GetCPUInfo(2), _GetCPUInfo(5), True)
 	$aResults[2][1] = @error
@@ -337,7 +339,7 @@ Func RunCheckValidation($aInitial)
 	$aResults[8][1] = @error
 	$aResults[8][2] = @extended
 
-	$aResults[9][0] = _SpaceCheck("", True)
+	$aResults[9][0] = _SpaceCheck($sDrive, True)
 	$aResults[9][1] = @error
 	$aResults[9][2] = @extended
 
@@ -345,11 +347,19 @@ Func RunCheckValidation($aInitial)
 	$aResults[10][1] = @error
 	$aResults[10][2] = @extended
 
+	Return $aResults
+
+EndFunc
+
+Func RunCheckValidation($aInitial, $aExtended)
+
+	Local $bMismatch = False
+
 	For $iLoop = 0 To 10 Step 1
 		Switch $iLoop
 			Case 2, 7 to 10
-				If Not $aResults[$iLoop][1] Then
-					If $aResults[$iLoop][0] <> $aInitial[$iLoop][0] Then $bMismatch = True
+				If Not $aExtended[$iLoop][1] Then
+					If $aExtended[$iLoop][0] <> $aInitial[$iLoop][0] Then $bMismatch = True
 				EndIf
 			Case Else
 				;;;
@@ -360,7 +370,7 @@ Func RunCheckValidation($aInitial)
 
 EndFunc
 
-Func Main(ByRef $aResults, ByRef $aOutput)
+Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 
 	; Disable Scaling
 	If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext", "HWND", "DPI_AWARENESS_CONTEXT" - 1)
@@ -567,10 +577,6 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 	GUICtrlSetCursor(-1, 0)
 	#ce
 
-	GUICtrlCreateLabel("* " & _Translate($aMUI[1], "Results based on currently known requirements!"), 130, 45, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetColor(-1, 0xE20012)
-	GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO)
-
 	GUICtrlCreateLabel(ChrW(0x274C), 765, 5, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
 	#EndRegion
@@ -591,19 +597,33 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 
 	Local $bInfoBox = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoInfoBox")
 	Local $hCheck[11][3]
+	Local $hECheck[11]
 	Local $hLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 	Local $aInfo = _GetDescriptions($aMUI[1])
 
 	_GDIPlus_Startup()
 	For $iRow = 0 To 10 Step 1
-		;		GUICtrlCreateLabel("", 113, 113 + $iRow * 40, 637, 32)
+		;		GUICtrlCreateLabel("", 113, 113 + $iRow * 44, 637, 32)
 		;		GUICtrlSetBkColor(-1, $aColors[$iFooter])
-		$hCheck[$iRow][0] = GUICtrlCreateLabel("…", 113, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
+		Switch $iRow
+			Case 2
+				$hCheck[$iRow][0] = GUICtrlCreateLabel("…", 133, 70 + $iRow * 44, 20, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
+				$hECheck[$iRow] = GUICtrlCreateLabel("…", 113, 70 + $iRow * 44, 20, 128, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
+				GUICtrlSetTip(-1, "Reported by Windows Registry")
+			Case 3, 4
+				$hCheck[$iRow][0] = GUICtrlCreateLabel("…", 133, 70 + $iRow * 44, 20, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
+			Case 7, 8, 9, 10
+				$hCheck[$iRow][0] = GUICtrlCreateLabel("…", 133, 70 + $iRow * 44, 20, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
+				$hECheck[$iRow] = GUICtrlCreateLabel("…", 113, 70 + $iRow * 44, 20, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
+				GUICtrlSetTip(-1, "Reported by Windows Registry")
+			Case Else
+				$hCheck[$iRow][0] = GUICtrlCreateLabel("…", 113, 70 + $iRow * 44, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
+		EndSwitch
 		GUICtrlSetBkColor(-1, $aColors[$iBackground])
-		GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
-		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($aMUI[1], $hLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40, $SS_CENTERIMAGE)
+		GUICtrlCreateIcon("", -1, 763, 78 + $iRow * 44, 24, 40)
+		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($aMUI[1], $hLabel[$iRow]), 153, 70 + $iRow * 44, 297, 40, $SS_CENTERIMAGE)
 		GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
-		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($aMUI[1], "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_SUNKEN)
+		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($aMUI[1], "Checking..."), 450, 70 + $iRow * 44, 300, 40, $SS_SUNKEN)
 		Switch $iRow
 			Case 0, 3, 9
 				GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN)
@@ -612,7 +632,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		EndSwitch
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
 		If Not $bInfoBox Then
-			GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
+			GUICtrlCreateIcon("", -1, 763, 78 + $iRow * 44, 24, 40)
 			If @Compiled Then
 				_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
 			Else
@@ -681,6 +701,11 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 			_GUICtrlSetState($hCheck[2][0], $iPass)
 			GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Listed as Compatible"))
 	EndSwitch
+	If $aExtended[2][0] Then
+		_GUICtrlSetState($hECheck[2], $iPass)
+	Else
+		_GUICtrlSetState($hECheck[2], $iWarn)
+	EndIf
 	#EndRegion
 
 	#Region ; _CPUCoresCheck()
@@ -735,6 +760,11 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		GUICtrlSetData($hCheck[7][2], $aResults[7][1] & " GB")
 		_GUICtrlSetState($hCheck[7][0], $iFail)
 	EndIf
+	If $aExtended[7][0] Then
+		_GUICtrlSetState($hECheck[7], $iPass)
+	Else
+		_GUICtrlSetState($hECheck[7], $iWarn)
+	EndIf
 	#EndRegion
 
 	#Region ; _SecureBootCheck()
@@ -752,6 +782,11 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 			_GUICtrlSetState($hCheck[8][0], $iFail)
 			GUICtrlSetData($hCheck[8][2], _Translate($aMUI[1], "Disabled / Not Detected"))
 	EndSwitch
+	If $aExtended[8][0] Then
+		_GUICtrlSetState($hECheck[8], $iPass)
+	Else
+		_GUICtrlSetState($hECheck[8], $iWarn)
+	EndIf
 	#EndRegion
 
 	#Region ; _SpaceCheck()
@@ -761,6 +796,11 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 		_GUICtrlSetState($hCheck[9][0], $iFail)
 	EndIf
 	GUICtrlSetData($hCheck[9][2], $aResults[9][1] & " GB " & $WINDOWS_DRIVE & @CRLF & $aResults[9][2] & " " & _Translate($aMUI[1], "Drive(s) Meet Requirements"))
+	If $aExtended[9][0] Then
+		_GUICtrlSetState($hECheck[9], $iPass)
+	Else
+		_GUICtrlSetState($hECheck[9], $iWarn)
+	EndIf
 	#EndRegion
 
 	#Region : TPM Check
@@ -780,6 +820,11 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 				_GUICtrlSetState($hCheck[10][0], $iUnsure)
 				GUICtrlSetData($hCheck[10][2], _Translate($aMUI[1], "TPM Status Error"))
 		EndSwitch
+	EndIf
+	If $aExtended[10][0] Then
+		_GUICtrlSetState($hECheck[10], $iPass)
+	Else
+		_GUICtrlSetState($hECheck[10], $iWarn)
 	EndIf
 	#EndRegion
 
@@ -988,7 +1033,7 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 							ContinueLoop 2
 						EndIf
 					Next
-					If Not RunCheckValidation($aResults) Then
+					If Not RunCheckValidation($aResults, $aExtended) Then
 						MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST+$MB_SETFOREGROUND, _
 							_Translate($aMUI[1], "Supported"), _
 							_Translate($aMUI[1], "Your Computer is ready for Windows 11 and its updates, but Windows Update may believe it is not."))
@@ -1003,13 +1048,13 @@ Func Main(ByRef $aResults, ByRef $aOutput)
 				If StringLeft(GUICtrlRead($hLanguage), 4) <> $aMUI[1] Then
 					$aMUI[1] = StringLeft(GUICtrlRead($hLanguage), 4)
 					GUIDelete($hGUI)
-					Main($aResults, $aOutput)
+					Main($aResults, $aExtended, $aOutput)
 				EndIf
 
 			Case $hMsg = $hTheme
 				$aColors = _SetTheme(StringSplit(GUICtrlRead($hTheme), " - ")[1])
 				GUIDelete($hGUI)
-				Main($aResults, $aOutput)
+				Main($aResults, $aExtended, $aOutput)
 
 			Case $hMsg = $hDumpLang
 				FileDelete(@LocalAppDataDir & "\WhyNotWin11\langs\")
