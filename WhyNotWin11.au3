@@ -902,9 +902,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 	GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Language") & ":", 40, 200, 380, 20)
 	Local $hLanguage = GUICtrlCreateCombo($alangs, 40, 220, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
-	If RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "EditionID") == "CoreSingleLanguage" Then
-		GUICtrlCreateLabel(_Translate($aMUI[1], "Currently Single Language Edition can't switch language"), 40, 240, 380, 20)
-	ElseIf BitAND($dSettings, 4) = 4 Then
+	If BitAND($dSettings, 4) = 4 Then
 		GUICtrlCreateLabel(_Translate($aMUI[1], "Language Switcher currently disabled with Group Policy."), 40, 240, 380, 20)
 	Else
 		If IsArray($aLangs) Then
