@@ -33,6 +33,7 @@ Global $aColors[4] ; Convert to [4][8] for 2.0 themes
 Global $sEdition = "Standard"
 Global $sVersion
 FileChangeDir(@SystemDir)
+Global Static $aPass[2] = [Null, ""] ; Forced, Pass Symbol
 
 If @Compiled Then
 	$sVersion = FileGetVersion(@ScriptFullPath)
@@ -104,6 +105,12 @@ Func ProcessCMDLine()
 		$aName[1] = RegRead("HKEY_LOCAL_MACHINE\Software\Policies\Robert Maehl Software\WhyNotWin11", "SetAppName")
 		$aName[0] = $aName[1] ? True : False
 		If Not $aName[0] Then $aName[1] = "WhyNotWin11"
+	EndIf
+
+	If $aPass[0] = Null Then
+		$aPass[1] = RegRead("HKEY_LOCAL_MACHINE\Software\Policies\Robert Maehl Software\WhyNotWin11", "SetPassedSymbol")
+		$aPass[0] = $aPass[1] ? True : False
+		If Not $aPass[0] Then $aPass[1] = ""
 	EndIf
 
 	If RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoAppName") Then $aName[1] = ""
@@ -1311,7 +1318,7 @@ Func _GUICtrlSetState($hCtrl, $iState)
 			GUICtrlSetData($hCtrl, "❌") ; Failed
 			GUICtrlSetBkColor($hCtrl, 0xFA113D)
 		Case 1
-			GUICtrlSetData($hCtrl, "✔") ; Passed
+			GUICtrlSetData($hCtrl, $aPass[1]) ; Passed
 			GUICtrlSetBkColor($hCtrl, 0x4CC355)
 		Case 2
 			GUICtrlSetData($hCtrl, "?") ; Unsure
