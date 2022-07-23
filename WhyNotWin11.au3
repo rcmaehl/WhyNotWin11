@@ -33,6 +33,7 @@ Global $aColors[4] ; Convert to [4][8] for 2.0 themes
 Global $sEdition = "Standard"
 Global $sVersion
 FileChangeDir(@SystemDir)
+Global Static $aPass[2] = [Null, ""] ; Forced, Pass Symbol
 
 If @Compiled Then
 	$sVersion = FileGetVersion(@ScriptFullPath)
@@ -104,6 +105,12 @@ Func ProcessCMDLine()
 		$aName[1] = RegRead("HKEY_LOCAL_MACHINE\Software\Policies\Robert Maehl Software\WhyNotWin11", "SetAppName")
 		$aName[0] = $aName[1] ? True : False
 		If Not $aName[0] Then $aName[1] = "WhyNotWin11"
+	EndIf
+
+	If $aPass[0] = Null Then
+		$aPass[1] = RegRead("HKEY_LOCAL_MACHINE\Software\Policies\Robert Maehl Software\WhyNotWin11", "SetPassedSymbol")
+		$aPass[0] = $aPass[1] ? True : False
+		If Not $aPass[0] Then $aPass[1] = ""
 	EndIf
 
 	If RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoAppName") Then $aName[1] = ""
@@ -533,9 +540,11 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 	_GDIPlus_Shutdown()
 
 	If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoAppName") Then
-		GUICtrlCreateLabel($aName[1], 10, 10, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
+		GUICtrlCreateIcon(@ScriptDir & "\assets\WhyNotWin11.ico", -1, 42, 20, 20, 20)
 		GUICtrlSetBkColor(-1, $aColors[$iSidebar])
-		GUICtrlCreateLabel("v " & $sVersion, 10, 30, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
+		GUICtrlCreateLabel($aName[1], 10, 40, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
+		GUICtrlSetBkColor(-1, $aColors[$iSidebar])
+		GUICtrlCreateLabel("v " & $sVersion, 10, 60, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 	EndIf
 	#EndRegion
@@ -901,7 +910,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Language") & ":", 40, 200, 380, 20)
 	Local $hLanguage = GUICtrlCreateCombo($alangs, 40, 220, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
 	If BitAND($dSettings, 4) = 4 Then
-		GUICtrlCreateLabel(_Translate($aMUI[1], "Language Switcher currently disabled with Group Policy."), 40, 250, 380, 20)
+		GUICtrlCreateLabel(_Translate($aMUI[1], "Language Switcher currently disabled with Group Policy."), 40, 240, 380, 20)
 	Else
 		If IsArray($aLangs) Then
 			GUICtrlSetData(-1, _ArrayToString($aLangs), $aMUI[1])
@@ -913,8 +922,8 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 	If BitAND($dSettings, 8) = 8 Then
 		;;;
 	Else
-		GUICtrlCreateLabel(_Translate($aMUI[1], "Translation by") & ":", 40, 260, 100, 20)
-		GUICtrlCreateLabel(_GetTranslationCredit($aMUI[1]), 140, 260, 280, 40, $SS_RIGHT)
+	GUICtrlCreateLabel(_Translate($aMUI[1], "Translation by") & ":", 40, 260, 100, 20)
+	GUICtrlCreateLabel(_GetTranslationCredit($aMUI[1]), 140, 260, 280, 40, $SS_RIGHT)
 	EndIf
 
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Theme") & ":", 40, 290, 380, 20)
@@ -1306,10 +1315,10 @@ EndFunc   ;==>_SetBannerText
 Func _GUICtrlSetState($hCtrl, $iState)
 	Switch $iState
 		Case 0
-			GUICtrlSetData($hCtrl, "X") ; Failed
+			GUICtrlSetData($hCtrl, "❌") ; Failed
 			GUICtrlSetBkColor($hCtrl, 0xFA113D)
 		Case 1
-			GUICtrlSetData($hCtrl, "") ; Passed
+			GUICtrlSetData($hCtrl, $aPass[1]) ; Passed
 			GUICtrlSetBkColor($hCtrl, 0x4CC355)
 		Case 2
 			GUICtrlSetData($hCtrl, "?") ; Unsure
