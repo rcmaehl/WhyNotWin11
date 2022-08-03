@@ -20,6 +20,7 @@
 #AutoIt3Wrapper_Res_Icon_Add=Assets\HireMe.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\Settings.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\Info.ico
+#AutoIt3Wrapper_Res_Icon_Add=Assets\WhyNotWin11.ico
 #AutoIt3Wrapper_AU3Check_Parameters=-d -w 1 -w 2 -w 3 -w 4 -w 5 -w 6 -w 7 -v1 -v2 -v3
 #AutoIt3Wrapper_Run_Tidy=n
 #Tidy_Parameters=/tc 0 /serc /scec
@@ -515,6 +516,8 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 			GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
 			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 206, 32, 32)
 		EndIf
+		GUICtrlCreateIcon("", -1, 42, 20, 20, 20)
+		_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 207, 20, 20)
 	Else
 		If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
 			GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
@@ -536,8 +539,9 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 			GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
 			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Settings.ico", -1, 32, 32)
 		EndIf
+		GUICtrlCreateIcon("", -1, 42, 20, 20, 20)
+		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\WhyNotWin11.ico", -1, 20, 20)
 	EndIf
-	_GDIPlus_Shutdown()
 
 	If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoAppName") Then
 		GUICtrlCreateIcon(@ScriptDir & "\assets\WhyNotWin11.ico", -1, 42, 20, 20, 20)
@@ -547,6 +551,8 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 		GUICtrlCreateLabel("v " & $sVersion, 10, 60, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
 		GUICtrlSetBkColor(-1, $aColors[$iSidebar])
 	EndIf
+	_GDIPlus_Shutdown()
+
 	#EndRegion
 
 	#Region Footer
