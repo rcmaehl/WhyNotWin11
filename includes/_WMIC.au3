@@ -185,6 +185,34 @@ Func _GetGPUInfo($iFlag = 0)
 	EndSwitch
 EndFunc   ;==>_GetGPUInfo
 
+Func _GetMotherboardInfo($iFlag = 0)
+	Local Static $sManufacturer
+	Local Static $sProduct
+
+	If Not $sManufacturer <> "" Then
+		Local $Obj_WMIService = ObjGet('winmgmts:\\.\root\cimv2') ;
+		If (IsObj($Obj_WMIService)) And (Not @error) Then
+			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_Baseboard')
+
+			Local $Obj_Item
+			For $Obj_Item In $Col_Items
+				$sManufacturer = $Obj_Item.Manufacturer
+				$sProduct = $Obj_Item.Product
+			Next
+		Else
+			Return 0
+		EndIf
+	EndIf
+	Switch $iFlag
+		Case 0
+			Return String($sManufacturer)
+		Case 1
+			Return String($sProduct)
+		Case Else
+			Return 0
+	EndSwitch
+EndFunc
+
 Func _GetTPMInfo($iFlag = 0)
 	Local Static $sActivated
 	Local Static $sEnabled
@@ -218,7 +246,6 @@ Func _GetTPMInfo($iFlag = 0)
 				Return 0
 		EndSwitch
 	Else
-
 		If Not $sPresent <> "" Then
 			$Obj_WMIService = ObjGet('winmgmts:\\.\root\cimv2') ;
 			If (IsObj($Obj_WMIService)) And (Not @error) Then
