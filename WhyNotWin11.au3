@@ -576,6 +576,8 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 
 	GUICtrlCreateLabel(@ComputerName, 113, 560, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
+	GUICtrlCreateLabel(_GetMotherboardInfo(0) & " " & _GetMotherboardInfo(1), 113, 580, 300, 20, $SS_CENTERIMAGE)
+	GUICtrlSetBkColor(-1, $aColors[$iFooter])
 	GUICtrlCreateLabel(_GetCPUInfo(2), 450, 560, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
 	GUICtrlCreateLabel(_GetGPUInfo(0), 450, 580, 300, 20, $SS_CENTERIMAGE)
