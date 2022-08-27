@@ -687,6 +687,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 	#Region ; _CPUNameCheck()
 	If $aExtended[2][0] Then
 		_GUICtrlSetState($hCheck[2], $iPass)
+		GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Listed as Compatible"))
 	Else
 		Switch $aResults[2][0]
 			Case False
