@@ -614,28 +614,12 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 
 	Local $bInfoBox = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoInfoBox")
 	Local $hCheck[11][3]
-	Local $hECheck[11]
 	Local $hLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 	Local $aInfo = _GetDescriptions($aMUI[1])
 
 	_GDIPlus_Startup()
 	For $iRow = 0 To 10 Step 1
-		;		GUICtrlCreateLabel("", 113, 113 + $iRow * 44, 637, 32)
-		;		GUICtrlSetBkColor(-1, $aColors[$iFooter])
-		Switch $iRow
-			Case 2
-				$hCheck[$iRow][0] = GUICtrlCreateLabel("…", 133, 70 + $iRow * 44, 20, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
-				$hECheck[$iRow] = GUICtrlCreateLabel("…", 113, 70 + $iRow * 44, 20, 128, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
-				GUICtrlSetTip(-1, "Reported by Windows Registry")
-			Case 3, 4
-				$hCheck[$iRow][0] = GUICtrlCreateLabel("…", 133, 70 + $iRow * 44, 20, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
-			Case 7, 8, 9, 10
-				$hCheck[$iRow][0] = GUICtrlCreateLabel("…", 133, 70 + $iRow * 44, 20, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
-				$hECheck[$iRow] = GUICtrlCreateLabel("…", 113, 70 + $iRow * 44, 20, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
-				GUICtrlSetTip(-1, "Reported by Windows Registry")
-			Case Else
-				$hCheck[$iRow][0] = GUICtrlCreateLabel("…", 113, 70 + $iRow * 44, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
-		EndSwitch
+		$hCheck[$iRow][0] = GUICtrlCreateLabel("…", 113, 70 + $iRow * 44, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE) 
 		GUICtrlSetBkColor(-1, $aColors[$iBackground])
 		GUICtrlCreateIcon("", -1, 763, 78 + $iRow * 44, 24, 40)
 		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($aMUI[1], $hLabel[$iRow]), 153, 70 + $iRow * 44, 297, 40, $SS_CENTERIMAGE)
@@ -701,27 +685,26 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 	#EndRegion
 
 	#Region ; _CPUNameCheck()
-	Switch $aResults[2][0]
-		Case False
-			Switch $aResults[2][1]
-				Case 1
-					_GUICtrlSetState($hCheck[2][0], $iWarn)
-					GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Unable to Check List"))
-				Case 2
-					_GUICtrlSetState($hCheck[2][0], $iWarn)
-					GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Error Accessing List"))
-				Case 3
-					_GUICtrlSetState($hCheck[2][0], $iFail)
-					GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Not Supported"))
-			EndSwitch
-		Case Else
-			_GUICtrlSetState($hCheck[2][0], $iPass)
-			GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Listed as Compatible"))
-	EndSwitch
 	If $aExtended[2][0] Then
-		_GUICtrlSetState($hECheck[2], $iPass)
+		_GUICtrlSetState($hCheck[2], $iPass)
 	Else
-		_GUICtrlSetState($hECheck[2], $iWarn)
+		Switch $aResults[2][0]
+			Case False
+				Switch $aResults[2][1]
+					Case 1
+						_GUICtrlSetState($hCheck[2][0], $iWarn)
+						GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Unable to Check List"))
+					Case 2
+						_GUICtrlSetState($hCheck[2][0], $iWarn)
+						GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Error Accessing List"))
+					Case 3
+						_GUICtrlSetState($hCheck[2][0], $iFail)
+						GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Not Supported"))
+				EndSwitch
+			Case Else
+				_GUICtrlSetState($hCheck[2][0], $iPass)
+				GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Listed as Compatible"))
+		EndSwitch
 	EndIf
 	#EndRegion
 
@@ -777,11 +760,6 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 		GUICtrlSetData($hCheck[7][2], $aResults[7][1] & " GB")
 		_GUICtrlSetState($hCheck[7][0], $iFail)
 	EndIf
-	If $aExtended[7][0] Then
-		_GUICtrlSetState($hECheck[7], $iPass)
-	Else
-		_GUICtrlSetState($hECheck[7], $iWarn)
-	EndIf
 	#EndRegion
 
 	#Region ; _SecureBootCheck()
@@ -799,11 +777,6 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 			_GUICtrlSetState($hCheck[8][0], $iFail)
 			GUICtrlSetData($hCheck[8][2], _Translate($aMUI[1], "Disabled / Not Detected"))
 	EndSwitch
-	If $aExtended[8][0] Then
-		_GUICtrlSetState($hECheck[8], $iPass)
-	Else
-		_GUICtrlSetState($hECheck[8], $iWarn)
-	EndIf
 	#EndRegion
 
 	#Region ; _SpaceCheck()
@@ -813,11 +786,6 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 		_GUICtrlSetState($hCheck[9][0], $iFail)
 	EndIf
 	GUICtrlSetData($hCheck[9][2], $aResults[9][1] & " GB " & $WINDOWS_DRIVE & @CRLF & $aResults[9][2] & " " & _Translate($aMUI[1], "Drive(s) Meet Requirements"))
-	If $aExtended[9][0] Then
-		_GUICtrlSetState($hECheck[9], $iPass)
-	Else
-		_GUICtrlSetState($hECheck[9], $iWarn)
-	EndIf
 	#EndRegion
 
 	#Region : TPM Check
@@ -837,11 +805,6 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 				_GUICtrlSetState($hCheck[10][0], $iUnsure)
 				GUICtrlSetData($hCheck[10][2], _Translate($aMUI[1], "TPM Status Error"))
 		EndSwitch
-	EndIf
-	If $aExtended[10][0] Then
-		_GUICtrlSetState($hECheck[10], $iPass)
-	Else
-		_GUICtrlSetState($hECheck[10], $iWarn)
 	EndIf
 	#EndRegion
 
