@@ -637,7 +637,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 			If @Compiled Then
 				_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
 			Else
-				_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\Info.ico", -1, 24, 24)
+				_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\WhyNotWin11.ico", -1, 24, 24)
 			EndIf
 			GUICtrlSetTip(-1, $aInfo[$iRow], "", $TIP_NOICON, $TIP_CENTER)
 		EndIf
