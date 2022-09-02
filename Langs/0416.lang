@@ -1,5 +1,6 @@
 [MetaData]
 Language=Portuguese - Brazil
+RTL=false
 Translator=DanGM96, Eduardoaddad
 Version=2.5.0.0
 [Font]
@@ -50,10 +51,11 @@ GPT Detected=GPT Detectado
 GPT Not Detected=GPT Não Detectado
 Enabled=Habilitado
 Supported=Suportado
+Not Supported=Não Suportado
 Disabled / Not Detected=Desabilitado / Não Detectado
 Drive(s) Meet Requirements=Disco(s) Cumpre(m) os Requisitos
+0 Drives Meet Requirements=0 Discos Cumprem os Requisitos
 TPM Missing / Disabled=TPM Indisponível / Desabilitado
-Not Supported=Não Suportado
 Detected=Detectado
 May Report DirectX 12 Incorrectly=Pode Relatar o DirectX 12 Incorretamente
 DirectX 12 and WDDM 3=DirectX 12 e WDDM 3
