@@ -30,7 +30,7 @@ Func _BootCheck()
 	EndSwitch
 EndFunc   ;==>_BootCheck
 
-Func _CPUNameCheck($sCPU, $sVersion, $bAppCompat = False)
+Func _CPUNameCheck($sCPU, $sFamily, $sModel, $sVersion, $bAppCompat = False)
 
 	If $bAppCompat Then
 		Local $sReg = RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\NI22H2", "RedReason")
@@ -45,9 +45,11 @@ Func _CPUNameCheck($sCPU, $sVersion, $bAppCompat = False)
 
 	Select
 		Case StringInStr($sCPU, "AMD")
+			If $sFamily >= 25 Then Return True
 			If StringInStr($sCPU, "1600") And StringInStr($sVersion, "Stepping 2") Then Return True ; 1600AF
 			$ListFile = "\WhyNotWin11\SupportedProcessorsAMD.txt"
 		Case StringInStr($sCPU, "Intel")
+			If $sFamily = 6 And $sModel >= 158 Then Return True
 			$ListFile = "\WhyNotWin11\SupportedProcessorsIntel.txt"
 		Case StringInStr($sCPU, "SnapDragon") Or StringInStr($sCPU, "Microsoft")
 			$ListFile = "\WhyNotWin11\SupportedProcessorsQualcomm.txt"

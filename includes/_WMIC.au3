@@ -13,6 +13,8 @@ Func _GetCPUInfo($iFlag = 0)
 	Local Static $sArch
 	Local Static $sCPUs
 	Local Static $sVersion
+	Local Static $sFamily
+	Local Static $sModel
 
 	If Not $vName <> "" Then
 		Local $Obj_WMIService = ObjGet('winmgmts:\\.\root\cimv2') ;
@@ -27,6 +29,8 @@ Func _GetCPUInfo($iFlag = 0)
 				$sSpeed = $Obj_Item.MaxClockSpeed
 				$sArch = $Obj_Item.AddressWidth
 				$sVersion = $Obj_Item.Version
+				$Family = $Obj_Item.Family
+				$Model = $Obj_Item.Model
 			Next
 
 			$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_ComputerSystem')
@@ -57,6 +61,10 @@ Func _GetCPUInfo($iFlag = 0)
 			Return Number($sArch)
 		Case 5
 			Return String($sVersion)
+		Case 6
+			Return Number($sFamily)
+		Case 7
+			Return Number($sModel)
 		Case Else
 			Return 0
 	EndSwitch
