@@ -29,8 +29,8 @@ Func _GetCPUInfo($iFlag = 0)
 				$sSpeed = $Obj_Item.MaxClockSpeed
 				$sArch = $Obj_Item.AddressWidth
 				$sVersion = $Obj_Item.Version
-				$Family = $Obj_Item.Family
-				$Model = $Obj_Item.Model
+				$sFamily = $Obj_Item.Family
+				$sModel = $Obj_Item.Model
 			Next
 
 			$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_ComputerSystem')
