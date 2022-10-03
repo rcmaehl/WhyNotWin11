@@ -2,7 +2,7 @@
 Language=German - Germany
 RTL=false
 Translator=botflakes, JimBim89, schmelto, speedy-pc, htcfreek
-Version= 2.4.3.1
+Version= 2.5.0.3
 [Font]
 Extra Large=24
 Large=18
@@ -86,6 +86,15 @@ Enable TPM=TPM-Aktivierung
 Enable Secure Boot=Secure Boot-Aktiverung
 Skip CPU && TPM=CPU && TPM-Prüfung überspringen
 Get Windows 11 Now=Anleitung zum Upgrade
+May Report DirectX 12 Incorrectly=Kann DirectX 12 falsch melden
+TPM Status Error=TPM Status Fehler
+Language Switcher currently disabled with Group Policy.=Sprachumschaltung derzeit mit Gruppenrichtlinie deaktiviert.
+Default - No Theme Files Found=Standard - Keine Designdateien gefunden
+Remember Last Language Used=Zuletzt verwendete Sprache merken
+Check for Updates on App Launch=Beim App-Start nach Updates suchen
+Save Settings in Registry, Not Disk=Speichern Sie die Einstellungen in der Registrierung, nicht auf der Festplatte
+Your Computer is ready for Windows 11 and its updates, but Windows Update may you are not for 30 days. You can fix this using the Windows Installation Assistant.=Ihr Computer ist bereit für Windows 11 und seine Updates, aber Windows Update können Sie 30 Tage lang nicht ausführen. Sie können dies mit dem Windows 11 Installationsassistenten beheben.
+Your Computer is ready for Windows 11 and it's updates.=Ihr Computer ist bereit für Windows 11 und seine Updates.
 [Descriptions]
 Architecture=Sollten Sie ein 32-Bit-Betriebssystem einsetzen, erfordert dies eine 64-Bit-Neuinstallation von Windows 11. Ihre Daten müssen vorab gesichert werden. Eine 32-Bit-CPU erfordert einen Wechsel auf eine neue 64-Bit-CPU.
 Boot=Windows 11 benötigt als Boot-Methode den UEFI-Modus. Sollten Sie "Legacy" (traditioneller Startmodus) nutzen, kann dies oft in den BIOS/UEFI-Einstellungen umgestellt werden. Schlagen Sie im Handbuch Ihres Motherboards nach.
