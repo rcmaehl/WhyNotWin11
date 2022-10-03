@@ -656,7 +656,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 					GUICtrlSetData($hCheck[0][2], _Translate($aMUI[1], "Check Skipped"))
 				Case 1
 					_GUICtrlSetState($hCheck[0][0], $iWarn)
-					GUICtrlSetData($hCheck[0][2], _Translate($aMUI[1], "64 Bit CPU") & @CRLF & _Translate($aMUI[1], "32 bit OS"))
+					GUICtrlSetData($hCheck[0][2], _Translate($aMUI[1], "64 Bit CPU") & @CRLF & _Translate($aMUI[1], "32 Bit OS"))
 				Case 2
 					_GUICtrlSetState($hCheck[0][0], $iFail)
 					GUICtrlSetData($hCheck[0][2], _Translate($aMUI[1], "32 Bit CPU") & @CRLF & _Translate($aMUI[1], "32 Bit OS"))
