@@ -1,6 +1,6 @@
-2.5.0.0
-3015e
-3020e
+2.5.0.4
+AMD 3015e
+AMD 3020e
 Athlon 3000G
 Athlon 300GE
 Athlon 300U
@@ -13,6 +13,10 @@ Athlon Silver 3050C
 Athlon Silver 3050e
 Athlon Silver 3050GE
 Athlon Silver 3050U
+Athlon 7120e
+Athlon 7120U
+Athlon 7220e
+Athlon 7220U
 Athlon Gold PRO 3125GE
 Athlon Gold PRO 3150G
 Athlon Gold PRO 3150GE
@@ -78,6 +82,8 @@ Ryzen 3 4300U
 Ryzen 3 5300GE
 Ryzen 3 5300U
 Ryzen 3 5400U
+Ryzen 3 7320e
+Ryzen 3 7320U
 Ryzen 3 PRO 3200G
 Ryzen 3 PRO 3200GE
 Ryzen 3 PRO 3300U
@@ -121,6 +127,8 @@ Ryzen 5 5600U
 Ryzen 5 5600X
 Ryzen 5 6600H
 Ryzen 5 6600U
+Ryzen 5 7520U
+Ryzen 5 7600X
 Ryzen 5 PRO 2600
 Ryzen 5 PRO 3600
 Ryzen 5 PRO 3350G
@@ -165,6 +173,7 @@ Ryzen 7 5800X
 Ryzen 7 6800H
 Ryzen 7 6800U
 Ryzen 7 6810U
+Ryzen 7 7700X
 Ryzen 7 PRO 2700
 Ryzen 7 PRO 3700
 Ryzen 7 PRO 2700X
@@ -190,20 +199,16 @@ Ryzen 9 5980HS
 Ryzen 9 5980HX
 Ryzen 9 6900HX
 Ryzen 9 6980HX
+Ryzen 9 7900X
+Ryzen 9 7950X
 Ryzen 9 PRO 3900
 Ryzen Embedded V2516
 Ryzen Embedded V2546
 Ryzen Embedded V2718
 Ryzen Embedded V2748
-Ryzen Threadripper 2920X
-Ryzen Threadripper 2950X
-Ryzen Threadripper 2970WX
-Ryzen Threadripper 2990WX
-Ryzen Threadripper 3960X
-Ryzen Threadripper 3970X
-Ryzen Threadripper 3990X
-Ryzen Threadripper PRO 3945WX
-Ryzen Threadripper PRO 3955WX
-Ryzen Threadripper PRO 3975WX
-Ryzen Threadripper PRO 3995WX
+Ryzen Threadripper PRO 5945WX
+Ryzen Threadripper PRO 5955WX
+Ryzen Threadripper PRO 5965WX
+Ryzen Threadripper PRO 5975WX
+Ryzen Threadripper PRO 5995WX
 EOF
