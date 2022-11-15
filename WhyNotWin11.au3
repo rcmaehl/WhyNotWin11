@@ -1022,7 +1022,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 					Else
 						MsgBox($MB_OK+$MB_ICONINFORMATION+$MB_TOPMOST+$MB_SETFOREGROUND, _
 							_Translate($aMUI[1], "Supported"), _
-							_Translate($aMUI[1], "Your Computer is ready for Windows 11 and it's updates."))
+							_Translate($aMUI[1], "Your Computer is ready for Windows 11 and its updates."))
 					EndIf
 				EndIf
 
