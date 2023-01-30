@@ -1,7 +1,7 @@
 [MetaData]
 Language=Portuguese - Brazil
 RTL=false
-Translator=DanGM96, Eduardoaddad, maisondasilva
+Translator=DanGM96, Eduardoaddad, maisondasilva, Dieguesmosken
 Version=2.5.0.3
 [Font]
 Extra Large=24
@@ -85,7 +85,7 @@ Theme Switcher currently disabled with Group Policy.=O seletor de tema está atu
 Default - No Theme Files Found=Padrão - Nenhum arquivo de tema encontrado
 Guides=Guias
 Windows 11 Requirements=Requisitos do WIndows 11
-Convert Disk to GPT=Coverter Disco para GPT
+Convert Disk to GPT=Converter Disco para GPT
 Enable TPM=Ativar TPM
 Enable Secure Boot=Ativar Secure Boot
 Skip CPU && TPM=Pular CPU e TPM
