@@ -637,7 +637,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 			If @Compiled Then
 				_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
 			Else
-				_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\WhyNotWin11.ico", -1, 24, 24)
+				_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\Info.ico", -1, 24, 24)
 			EndIf
 			GUICtrlSetTip(-1, $aInfo[$iRow], "", $TIP_NOICON, $TIP_CENTER)
 		EndIf
@@ -870,7 +870,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 		GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Info") & " ", 40, 20, 618, 20)
 		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 		If @Compiled Then
-			GUICtrlCreateIcon(@ScriptFullPath, 208, 50, 30, 40, 40)
+			GUICtrlCreateIcon(@ScriptFullPath, 99, 50, 30, 40, 40)
 		Else
 			GUICtrlCreateIcon(@ScriptDir & "\assets\WhyNotWin11.ico", -1, 50, 50, 40, 40)
 		EndIf
