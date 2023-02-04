@@ -40,15 +40,15 @@ Func _GetCPUInfo($iFlag = 0)
 		Else
 			Return 0
 		EndIf
-	EndIf
-	If StringInStr($vName, "@") Then
-		$vName = StringSplit($vName, "@", $STR_NOCOUNT)
-		$sSpeed = StringRegExpReplace($vName[1], "[^[:digit:]]", "") & "0"
-		$vName = $vName[0]
-	EndIf
-	If StringRegExp($sFamily, "[^0-9]") Then
-			$sFamily = StringRegExp($sFamily, "Family\s\d+\sModel", $STR_REGEXPARRAYMATCH)[0]
-			$sFamily = StringRegExpReplace($sFamily, "[^0-9]", "")
+		If StringInStr($vName, "@") Then
+			$vName = StringSplit($vName, "@", $STR_NOCOUNT)
+			$sSpeed = StringRegExpReplace($vName[1], "[^[:digit:]]", "") & "0"
+			$vName = $vName[0]
+		EndIf
+		If StringRegExp($sFamily, "[^0-9]") Then
+				$sFamily = StringRegExp($sFamily, "Family\s\d+\sModel", $STR_REGEXPARRAYMATCH)[0]
+				$sFamily = StringRegExpReplace($sFamily, "[^0-9]", "")
+		EndIf
 	EndIf
 	Switch $iFlag
 		Case 0
