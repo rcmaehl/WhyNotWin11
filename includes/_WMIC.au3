@@ -28,7 +28,7 @@ Func _GetCPUInfo($iFlag = 0)
 				$sSpeed = $Obj_Item.MaxClockSpeed
 				$sArch = $Obj_Item.AddressWidth
 				$sVersion = $Obj_Item.Version
-				$sFamily = $Obj_Item.Family
+				$sFamily = $Obj_Item.Caption
 			Next
 
 			$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_ComputerSystem')
@@ -40,11 +40,15 @@ Func _GetCPUInfo($iFlag = 0)
 		Else
 			Return 0
 		EndIf
-	EndIf
-	If StringInStr($vName, "@") Then
-		$vName = StringSplit($vName, "@", $STR_NOCOUNT)
-		$sSpeed = StringRegExpReplace($vName[1], "[^[:digit:]]", "") & "0"
-		$vName = $vName[0]
+		If StringInStr($vName, "@") Then
+			$vName = StringSplit($vName, "@", $STR_NOCOUNT)
+			$sSpeed = StringRegExpReplace($vName[1], "[^[:digit:]]", "") & "0"
+			$vName = $vName[0]
+		EndIf
+		If StringRegExp($sFamily, "[^0-9]") Then
+				$sFamily = StringRegExp($sFamily, "Family\s\d+\sModel", $STR_REGEXPARRAYMATCH)[0]
+				$sFamily = StringRegExpReplace($sFamily, "[^0-9]", "")
+		EndIf
 	EndIf
 	Switch $iFlag
 		Case 0
@@ -60,7 +64,7 @@ Func _GetCPUInfo($iFlag = 0)
 		Case 5
 			Return String($sVersion)
 		Case 6
-			Return Number($sFamily)
+			Return $sFamily
 		Case Else
 			Return 0
 	EndSwitch

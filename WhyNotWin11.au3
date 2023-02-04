@@ -6,9 +6,9 @@
 #AutoIt3Wrapper_UseX64=Y
 #AutoIt3Wrapper_Res_Comment=https://www.whynotwin11.org
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready. Now Supporting Update Checks!
-#AutoIt3Wrapper_Res_Fileversion=2.5.0.3
+#AutoIt3Wrapper_Res_Fileversion=2.5.0.4
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
-#AutoIt3Wrapper_Res_ProductVersion=2.5.0.3
+#AutoIt3Wrapper_Res_ProductVersion=2.5.0.4
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
@@ -289,7 +289,7 @@ Func RunChecks($sDrive = Null)
 	$aResults[1][1] = @error
 	$aResults[1][2] = @extended
 
-	$aResults[2][0] = _CPUNameCheck(_GetCPUInfo(2), _GetCPUInfo(7), _GetCPUInfo(5))
+	$aResults[2][0] = _CPUNameCheck(_GetCPUInfo(2), _GetCPUInfo(6), _GetCPUInfo(5))
 	$aResults[2][1] = @error
 	$aResults[2][2] = @extended
 
@@ -637,7 +637,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 			If @Compiled Then
 				_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
 			Else
-				_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\WhyNotWin11.ico", -1, 24, 24)
+				_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\Info.ico", -1, 24, 24)
 			EndIf
 			GUICtrlSetTip(-1, $aInfo[$iRow], "", $TIP_NOICON, $TIP_CENTER)
 		EndIf
@@ -870,7 +870,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 		GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Info") & " ", 40, 20, 618, 20)
 		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 		If @Compiled Then
-			GUICtrlCreateIcon(@ScriptFullPath, 208, 50, 30, 40, 40)
+			GUICtrlCreateIcon(@ScriptFullPath, 99, 50, 30, 40, 40)
 		Else
 			GUICtrlCreateIcon(@ScriptDir & "\assets\WhyNotWin11.ico", -1, 50, 50, 40, 40)
 		EndIf
