@@ -1018,7 +1018,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 					If Not RunCheckValidation($aResults, $aExtended) Then
 						MsgBox($MB_OK+$MB_ICONWARNING+$MB_TOPMOST+$MB_SETFOREGROUND, _
 							_Translate($aMUI[1], "Supported"), _
-							_Translate($aMUI[1], "Your Computer is ready for Windows 11 and its updates, but Windows Update may you are not for 30 days. You can fix this using the Windows Installation Assistant."))
+							_Translate($aMUI[1], "Your Computer is ready for Windows 11 and its updates, but Windows Update may think you are not for 30 days. You can fix this using the Windows Installation Assistant."))
 					Else
 						MsgBox($MB_OK+$MB_ICONINFORMATION+$MB_TOPMOST+$MB_SETFOREGROUND, _
 							_Translate($aMUI[1], "Supported"), _
