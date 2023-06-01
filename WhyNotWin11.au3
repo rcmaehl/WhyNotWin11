@@ -63,7 +63,6 @@ EndIf
 
 Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
 
-Global $bWin11 = False
 Global Static $aMUI[2] = [Null, @MUILang] ; Forced, MUI Lang
 Global Static $aName[2] = [Null, "WhyNotWin11"] ; Forced, AppName
 
@@ -220,7 +219,7 @@ Func ProcessCMDLine()
 					MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Warning"), StringReplace(_Translate(@MUILang, "May Report DirectX 12 Incorrectly"), '#', @OSVersion))
 				EndIf
 			Case "WIN_11"
-				$bWin11 = True
+				;;;
 			Case Else
 				;;;
 		EndSwitch
@@ -333,25 +332,35 @@ EndFunc   ;==>RunChecks
 
 Func RunExtendedChecks($sDrive = Null)
 
+	Local $sTemp
 	Local $aResults[11][3]
+	Local $sFeatureUpdate
 
-	$aResults[2][0] = _CPUNameCheck(_GetCPUInfo(2), _GetCPUInfo(6), _GetCPUInfo(5), True)
+	For $iLoop = 1 To 10 Step 1
+		$sTemp = RegEnumKey("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators", $iLoop)
+		If @error Then ExitLoop
+		If StringRegExp($sTemp, ".*\d\d[Hh]\d") Then
+			If StringRegExpReplace($sTemp, "\D", "") > StringRegExpReplace($sFeatureUpdate, "\D", "") Then $sFeatureUpdate = $sTemp
+		EndIf
+	Next
+
+	$aResults[2][0] = _CPUNameCheck(_GetCPUInfo(2), _GetCPUInfo(6), _GetCPUInfo(5), $sFeatureUpdate)
 	$aResults[2][1] = @error
 	$aResults[2][2] = @extended
 
-	$aResults[7][0] = _MemCheck(True)
+	$aResults[7][0] = _MemCheck($sFeatureUpdate)
 	$aResults[7][1] = @error
 	$aResults[7][2] = @extended
 
-	$aResults[8][0] = _SecureBootCheck(True)
+	$aResults[8][0] = _SecureBootCheck($sFeatureUpdate)
 	$aResults[8][1] = @error
 	$aResults[8][2] = @extended
 
-	$aResults[9][0] = _SpaceCheck($sDrive, True)
+	$aResults[9][0] = _SpaceCheck($sDrive, $sFeatureUpdate)
 	$aResults[9][1] = @error
 	$aResults[9][2] = @extended
 
-	$aResults[10][0] = _TPMCheck(True)
+	$aResults[10][0] = _TPMCheck($sFeatureUpdate)
 	$aResults[10][1] = @error
 	$aResults[10][2] = @extended
 
@@ -381,7 +390,7 @@ EndFunc
 Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 
 	; Disable Scaling
-	If @OSVersion = 'WIN_10' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext", "HWND", "DPI_AWARENESS_CONTEXT" - 1)
+	If @OSVersion = 'WIN_10' Or 'WIN_11' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext", "HWND", "DPI_AWARENESS_CONTEXT" - 1)
 
 	Local $bComplete = False
 
@@ -444,7 +453,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 	GUICtrlSetCursor(-1, 0)
 
 	; Top Most Interaction for Socials
-	Local $hGithub = Default, $hDonate = Default, $hDiscord = Default, $hLTT = Default, $hJob = Default
+	Local $hGithub = Default, $hDonate = Default, $hDiscord = Default, $hWeb = Default, $hJob = Default
 	If $bWinPE Or Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
 		$hGithub = GUICtrlCreateLabel("", 34, 110, 32, 32)
 		GUICtrlSetTip(-1, "GitHub")
@@ -458,8 +467,8 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 		GUICtrlSetTip(-1, "Discord")
 		GUICtrlSetCursor(-1, 0)
 
-		$hLTT = GUICtrlCreateLabel("", 34, 260, 32, 32)
-		GUICtrlSetTip(-1, "LTT")
+		$hWeb = GUICtrlCreateLabel("", 34, 260, 32, 32)
+		GUICtrlSetTip(-1, "My Projects")
 		GUICtrlSetCursor(-1, 0)
 
 		If @LogonDomain <> @ComputerName Then
@@ -576,7 +585,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 
 	GUICtrlCreateLabel(@ComputerName, 113, 560, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
-	GUICtrlCreateLabel(_GetMotherboardInfo(0) & " " & _GetMotherboardInfo(1), 113, 580, 300, 20, $SS_CENTERIMAGE)
+	GUICtrlCreateLabel(_GetMotherboardInfo(0) & " " & _GetMotherboardInfo(1) & " @ " & _GetBIOSInfo(0), 113, 580, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
 	GUICtrlCreateLabel(_GetCPUInfo(2), 450, 560, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
@@ -685,7 +694,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 	#EndRegion
 
 	#Region ; _CPUNameCheck()
-	If $aExtended[2][0] Then
+	If $aResults[2][0] Then
 		_GUICtrlSetState($hCheck[2][0], $iPass)
 		GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Listed as Compatible"))
 	Else
@@ -966,11 +975,6 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 				If $aOutput[0] = True Then Return
 				Exit
 
-				#cs
-				Case $hMsg = $h_WWW
-					ShellExecute("https://www.whynotwin11.org/")
-				#ce
-
 			Case Not IsArray($aResults[5][0]) And $bComplete = False And Not $bSettings
 				$bComplete = True
 				Switch $aResults[5][0]
@@ -1053,8 +1057,8 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 			Case $hMsg = $hDiscord
 				ShellExecute("https://discord.gg/uBnBcBx")
 
-			Case $hMsg = $hLTT
-				ShellExecute("https://linustechtips.com/topic/1350354-windows-11-readiness-check-whynotwin11/")
+			Case $hMsg = $hWeb
+				ShellExecute("https://fcofix.org")
 
 			; Case $hMsg = $hMUI
 
