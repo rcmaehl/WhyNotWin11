@@ -5,6 +5,30 @@
 
 #include "GetDiskInfo.au3"
 
+Func _GetBIOSInfo($iFlag = 0)
+	Local Static $sSMBIOSBIOSVersion
+
+	If Not $sSMBIOSBIOSVersion <> "" Then
+		Local $Obj_WMIService = ObjGet('winmgmts:\\.\root\cimv2') ;
+		If (IsObj($Obj_WMIService)) And (Not @error) Then
+			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_BIOS')
+
+			Local $Obj_Item
+			For $Obj_Item In $Col_Items
+				$sSMBIOSBIOSVersion = $Obj_Item.SMBIOSBIOSVersion
+			Next
+		Else
+			Return 0
+		EndIf
+	EndIf
+	Switch $iFlag
+		Case 0
+			Return StringStripWS(String($sSMBIOSBIOSVersion), $STR_STRIPTRAILING)
+		Case Else
+			Return 0
+	EndSwitch		
+EndFunc   ;==>_GetBIOSInfo
+
 Func _GetCPUInfo($iFlag = 0)
 	Local Static $sCores
 	Local Static $sThreads
