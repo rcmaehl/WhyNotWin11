@@ -201,7 +201,7 @@ Func _GetGPUInfo($iFlag = 0)
 			For $Obj_Item In $Col_Items
 				Switch $Obj_Item.Name
 					Case "Citrix Indirect Display Adapter"
-						Continue Case
+						ContinueCase
 					Case "DisplayLink USB Device"
 						ContinueLoop
 					Case Else
