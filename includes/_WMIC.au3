@@ -245,6 +245,8 @@ Func _GetMotherboardInfo($iFlag = 0)
 				$sManufacturer = "ASUS"
 			Case "Microsoft Corporation"
 				$sManufacturer = "Microsoft"
+			Case "Micro-Star International Co., Ltd."
+				$sManufacturer = "MSI"
 			Case "Oracle Corporation"
 				$sManufacturer = "Oracle"
 			Case Else
