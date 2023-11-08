@@ -403,6 +403,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 	ProgressSet(100, _Translate($aMUI[1], "Done"))
 
 	Local $hGUI = GUICreate($aName[1], 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER), _GetTranslationRTL($aMUI[1]))
+	_WinAPI_DwmSetWindowAttributeExt($hGUI, 33, 2)
 	GUISetBkColor($aColors[$iBackground])
 	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", $aFonts[4])
 
