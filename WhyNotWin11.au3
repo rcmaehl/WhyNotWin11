@@ -5,6 +5,7 @@
 #AutoIt3Wrapper_Compile_Both=Y
 #AutoIt3Wrapper_UseX64=Y
 #AutoIt3Wrapper_Res_Comment=https://www.whynotwin11.org
+#AutoIt3Wrapper_Res_CompanyName=Robert Maehl Software
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready. Now Supporting Update Checks!
 #AutoIt3Wrapper_Res_Fileversion=2.5.0.5
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
