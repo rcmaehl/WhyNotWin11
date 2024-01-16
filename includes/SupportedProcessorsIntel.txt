@@ -53,6 +53,7 @@ Celeron(R) N4100
 Celeron(R) N4120
 Celeron(R) N4500
 Celeron(R) N4505
+Celeron(R) N5095
 Celeron(R) N5100
 Celeron(R) N5105
 Celeron(R) N6210
