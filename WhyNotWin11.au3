@@ -5,10 +5,11 @@
 #AutoIt3Wrapper_Compile_Both=Y
 #AutoIt3Wrapper_UseX64=Y
 #AutoIt3Wrapper_Res_Comment=https://www.whynotwin11.org
+#AutoIt3Wrapper_Res_CompanyName=Robert Maehl Software
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready. Now Supporting Update Checks!
-#AutoIt3Wrapper_Res_Fileversion=2.5.0.5
+#AutoIt3Wrapper_Res_Fileversion=2.6.0.0
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
-#AutoIt3Wrapper_Res_ProductVersion=2.5.0.5
+#AutoIt3Wrapper_Res_ProductVersion=2.6.0.0
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
@@ -403,6 +404,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 	ProgressSet(100, _Translate($aMUI[1], "Done"))
 
 	Local $hGUI = GUICreate($aName[1], 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER), _GetTranslationRTL($aMUI[1]))
+	_WinAPI_DwmSetWindowAttributeExt($hGUI, 33, 2)
 	GUISetBkColor($aColors[$iBackground])
 	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", $aFonts[4])
 
@@ -532,21 +534,21 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 			GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
 			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\GitHub.ico", -1, 32, 32)
 			GUICtrlCreateIcon("", -1, 34, 160, 32, 32)
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\PayPal.ico", -1, 32, 32)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\PayPal.ico", -1, 32, 32)
 			GUICtrlCreateIcon("", -1, 34, 210, 32, 32)
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Discord.ico", -1, 32, 32)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\Discord.ico", -1, 32, 32)
 			GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Web.ico", -1, 32, 32)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\Web.ico", -1, 32, 32)
 			If @LogonDomain <> @ComputerName Then
 				GUICtrlCreateIcon("", -1, 34, 310, 32, 32)
-				_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\HireMe.ico", -1, 32, 32)
+				_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\HireMe.ico", -1, 32, 32)
 			EndIf
 		EndIf
 		If BitAND($dSettings, 65535) = 65535 Then
 			;;;
 		Else
 			GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Settings.ico", -1, 32, 32)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\Settings.ico", -1, 32, 32)
 		EndIf
 		GUICtrlCreateIcon("", -1, 42, 20, 20, 20)
 		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\WhyNotWin11.ico", -1, 20, 20)
@@ -1206,7 +1208,7 @@ Func OutputResults(ByRef $aResults, $aOutput)
 
 	Switch $aOutput[1]
 		Case "txt"
-			If StringInStr($aOutput[2], ":") Then
+			If StringInStr($aOutput[2], ":") Or StringInStr($aOutput[2], "\\") Then
 				$sFile = $aOutput[2]
 			Else
 				$sFile = @ScriptDir & "\" & $aOutput[2]
@@ -1218,7 +1220,7 @@ Func OutputResults(ByRef $aResults, $aOutput)
 			Next
 			FileClose($hFile)
 		Case "csv"
-			If StringInStr($aOutput[2], ":") Then
+			If StringInStr($aOutput[2], ":") Or StringInStr($aOutput[2], "\\") Then
 				$sFile = $aOutput[2]
 			Else
 				$sFile = @ScriptDir & "\" & $aOutput[2]
