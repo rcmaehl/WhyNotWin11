@@ -164,6 +164,7 @@ Func ProcessCMDLine()
 									$aOutput[1] = $CmdLine[2]
 									$aOutput[2] = $CmdLine[3]
 									_ArrayDelete($CmdLine, "1-3")
+									FileWrite(".\debug.log", "Exporting as " & $aOutput[1] & " to Path: " & $aOutput[2] & @CRLF)
 								Case Else
 									MsgBox(0, "Invalid", "Invalid FORMAT parameter for /format." & @CRLF)
 									Exit 87 ; ERROR_INVALID_PARAMETER
@@ -1208,7 +1209,8 @@ Func OutputResults(ByRef $aResults, $aOutput)
 
 	Switch $aOutput[1]
 		Case "txt"
-			If StringInStr($aOutput[2], ":") Then
+			FileWrite(".\debug.log", "Plain Text Path Called" & @CRLF)
+			If StringInStr($aOutput[2], ":") Or StringInStr($aOutput[2], "\\") Then
 				$sFile = $aOutput[2]
 			Else
 				$sFile = @ScriptDir & "\" & $aOutput[2]
@@ -1220,7 +1222,8 @@ Func OutputResults(ByRef $aResults, $aOutput)
 			Next
 			FileClose($hFile)
 		Case "csv"
-			If StringInStr($aOutput[2], ":") Then
+			FileWrite(".\debug.log", "Spreadsheet Path Called" & @CRLF)
+			If StringInStr($aOutput[2], ":") Or StringInStr($aOutput[2], "\\") Then
 				$sFile = $aOutput[2]
 			Else
 				$sFile = @ScriptDir & "\" & $aOutput[2]
