@@ -164,7 +164,6 @@ Func ProcessCMDLine()
 									$aOutput[1] = $CmdLine[2]
 									$aOutput[2] = $CmdLine[3]
 									_ArrayDelete($CmdLine, "1-3")
-									FileWrite(".\debug.log", "Exporting as " & $aOutput[1] & " to Path: " & $aOutput[2] & @CRLF)
 								Case Else
 									MsgBox(0, "Invalid", "Invalid FORMAT parameter for /format." & @CRLF)
 									Exit 87 ; ERROR_INVALID_PARAMETER
@@ -535,21 +534,21 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 			GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
 			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\GitHub.ico", -1, 32, 32)
 			GUICtrlCreateIcon("", -1, 34, 160, 32, 32)
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\PayPal.ico", -1, 32, 32)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\PayPal.ico", -1, 32, 32)
 			GUICtrlCreateIcon("", -1, 34, 210, 32, 32)
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Discord.ico", -1, 32, 32)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\Discord.ico", -1, 32, 32)
 			GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Web.ico", -1, 32, 32)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\Web.ico", -1, 32, 32)
 			If @LogonDomain <> @ComputerName Then
 				GUICtrlCreateIcon("", -1, 34, 310, 32, 32)
-				_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\HireMe.ico", -1, 32, 32)
+				_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\HireMe.ico", -1, 32, 32)
 			EndIf
 		EndIf
 		If BitAND($dSettings, 65535) = 65535 Then
 			;;;
 		Else
 			GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & ".\assets\Settings.ico", -1, 32, 32)
+			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\Settings.ico", -1, 32, 32)
 		EndIf
 		GUICtrlCreateIcon("", -1, 42, 20, 20, 20)
 		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\WhyNotWin11.ico", -1, 20, 20)
@@ -1209,49 +1208,37 @@ Func OutputResults(ByRef $aResults, $aOutput)
 
 	Switch $aOutput[1]
 		Case "txt"
-			FileWrite(".\debug.log", "Plain Text Path Called" & @CRLF)
 			If StringInStr($aOutput[2], ":") Or StringInStr($aOutput[2], "\\") Then
 				$sFile = $aOutput[2]
 			Else
 				$sFile = @ScriptDir & "\" & $aOutput[2]
-				FileWrite(".\debug.log", "Set full path to " & $sFile & @CRLF)
 			EndIf
 			$hFile = FileOpen($sFile, $FO_CREATEPATH + $FO_OVERWRITE)
-			FileWrite(".\debug.log", "FileOpen Returned: " & $hFile & @CRLF)
 			FileWrite($hFile, "Results for " & @ComputerName & @CRLF)
 			For $iLoop = 0 To 10 Step 1
 				FileWrite($hFile, $aLabel[$iLoop] & @TAB & $aResults[$iLoop][0] & @TAB & $aResults[$iLoop][1] & @TAB & $aResults[$iLoop][2] & @CRLF)
 			Next
-			FileWrite(".\debug.log", "Wrote Results: " & _ArrayToString($aResults) & @CRLF)
 			FileClose($hFile)
 		Case "csv"
-			FileWrite(".\debug.log", "Spreadsheet Path Called" & @CRLF)
 			If StringInStr($aOutput[2], ":") Or StringInStr($aOutput[2], "\\") Then
 				$sFile = $aOutput[2]
 			Else
 				$sFile = @ScriptDir & "\" & $aOutput[2]
-				FileWrite(".\debug.log", "Set full path to " & $sFile & @CRLF)
 			EndIf
 			If Not FileExists($sFile) Then
-				FileWrite(".\debug.log", "Found Existing CSV" & @CRLF)
 				$hFile = FileOpen($sFile, $FO_CREATEPATH + $FO_OVERWRITE)
-				FileWrite(".\debug.log", "FileOpen Returned: " & $hFile & @CRLF)
 				FileWrite($hFile, "Hostname")
 				For $iLoop = 0 To 10 Step 1
 					FileWrite($hFile, "," & $aLabel[$iLoop])
 				Next
 				FileWrite($hFile, @CRLF)
-				FileWrite(".\debug.log", "Wrote Headers" & @CRLF)
 			Else
-				FileWrite(".\debug.log", "Found No Existing CSV" & @CRLF)
 				$hFile = FileOpen($sFile, $FO_APPEND)
-				FileWrite(".\debug.log", "FileOpen Returned: " & $hFile & @CRLF)
 			EndIf
 			FileWrite($hFile, @ComputerName)
 			For $iLoop = 0 To 10 Step 1
 				FileWrite($hFile, "," & $aResults[$iLoop][0])
 			Next
-			FileWrite(".\debug.log", "Wrote Results: " & _ArrayToString($aResults) & @CRLF)
 			FileWrite($hFile, @CRLF)
 			FileClose($hFile)
 		Case Else
