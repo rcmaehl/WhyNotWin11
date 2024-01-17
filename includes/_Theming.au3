@@ -197,3 +197,19 @@ Func _SetTheme($sName = False)
 
 	Return $aColors
 EndFunc   ;==>_SetTheme
+
+Func _WinAPI_DwmSetWindowAttributeExt($hWnd, $iAttribute, $iData)
+    Switch $iAttribute
+        Case 2, 3, 4, 6, 7, 8, 10, 11, 12, 33
+
+        Case Else
+            Return SetError(1, 0, 0)
+    EndSwitch
+
+    Local $aCall = DllCall('dwmapi.dll', 'long', 'DwmSetWindowAttribute', 'hwnd', $hWnd, 'dword', $iAttribute, _
+            'dword*', $iData, 'dword', 4)
+    If @error Then Return SetError(@error, @extended, 0)
+    If $aCall[0] Then Return SetError(10, $aCall[0], 0)
+
+    Return 1
+EndFunc   ;==>_WinAPI_DwmSetWindowAttributeExt
