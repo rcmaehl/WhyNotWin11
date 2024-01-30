@@ -1,7 +1,7 @@
 [MetaData]
 Language=Hungarian - Hungary
-Translator=BBence (bbence018)
-Version=2.2.5.0
+Translator=ExtremePro11299
+Version=2.2.5.1
 [Strings]
 Donate=Támogatás
 Check for Updates=Frissítések keresése
@@ -13,7 +13,7 @@ Architecture=Architektúra (CPU + OS)
 Boot Method= Bootolás módszere
 CPU Compatibility=CPU kompatibilitás
 CPU Core Count=CPU magok száma
-CPU Frequency=CPU órajel
+CPU Frequency=CPU óraszám
 DirectX + WDDM2=DirectX + WDDM2
 Disk Partition Type=Lemezpartíció típusa
 RAM Installed=Telepített memória (RAM)
@@ -47,9 +47,9 @@ No DirectX 12, but WDDM2=Nincs DirectX 12, de WDDM2 van
 DirectX 12, but no WDDM2=Van DirectX 12, de nincs WDDM2
 No DirectX 12 or WDDM2=Nincs DirectX 12 vagy WDDM2
 Test Build?=Tesztverzió?
-You're running a newer build than publicly Available!=A nyilvánosan elérhető verziónál újabbat futtat!
+You're running a newer build than publicly Available!=A nyilvánosan elérhető verziónál újabbat használ!
 Up to Date=Naprakész
-You're running the latest build!=A legújabb verziót futtatod!
+You're running the latest build!=A legújabb verziót használod!
 Unable to Check for Updates=Nem lehet ellenőrizni a frissítéseket
 Unable to load release data.=Nem sikerült betölteni a kiadási adatokat.
 Invalid Data Received!=Érvénytelen adat érkezett!
