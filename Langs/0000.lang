@@ -88,7 +88,7 @@ Windows 11 Requirements=
 Convert Disk to GPT=
 Enable TPM=
 Enable Secure Boot=
-Skip CPU and TPM=
+Skip CPU && TPM=
 Get Windows 11 Now=
 [Descriptions]
 Architecture=The amount of data your CPU and OS can process at once. 32-Bit OS result requires a disk wipe and new Windows 11 install. 32-Bit CPU requires a CPU replacement.
