@@ -6,16 +6,16 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Cache tools
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache
         with:
           path: |
             autoit-v3-setup.exe
             SciTE4AutoIt3.exe
             C:\Program Files (x86)\AutoIt3\SciTE\Au3Stripper
-          key: v3
+          key: v4
       - name: Download tools
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
@@ -31,7 +31,7 @@ jobs:
         run: |
           Start-Process "${env:ProgramFiles(x86)}\AutoIt3\AutoIt3.exe" "`"${env:ProgramFiles(x86)}\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3`" /NoStatus /prod /in WhyNotWin11.au3" -NoNewWindow -Wait
           sha256sum -b WhyNotWin*.exe > checksums.sha256
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: WNW11
           path: |
