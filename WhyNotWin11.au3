@@ -1202,7 +1202,7 @@ EndFunc   ;==>FinalizeResults
 ; ===============================================================================================================================
 Func OutputResults(ByRef $aResults, $aOutput)
 
-	Local $sFile, $hFile
+	Local $sFile, $hFile, $sOut = ""
 
 	Local $aLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 
@@ -1214,11 +1214,11 @@ Func OutputResults(ByRef $aResults, $aOutput)
 				$sFile = @ScriptDir & "\" & $aOutput[2]
 			EndIf
 			$hFile = FileOpen($sFile, $FO_CREATEPATH + $FO_OVERWRITE)
-			FileWrite($hFile, "Results for " & @ComputerName & @CRLF)
+			$sOut = "Results for " & @ComputerName & @CRLF
 			For $iLoop = 0 To 10 Step 1
-				FileWrite($hFile, $aLabel[$iLoop] & @TAB & $aResults[$iLoop][0] & @TAB & $aResults[$iLoop][1] & @TAB & $aResults[$iLoop][2] & @CRLF)
+				$sOut &= $aLabel[$iLoop] & @TAB & $aResults[$iLoop][0] & @TAB & $aResults[$iLoop][1] & @TAB & $aResults[$iLoop][2] & @CRLF
 			Next
-			FileClose($hFile)
+
 		Case "csv"
 			If StringInStr($aOutput[2], ":") Or StringInStr($aOutput[2], "\\") Then
 				$sFile = $aOutput[2]
@@ -1227,23 +1227,25 @@ Func OutputResults(ByRef $aResults, $aOutput)
 			EndIf
 			If Not FileExists($sFile) Then
 				$hFile = FileOpen($sFile, $FO_CREATEPATH + $FO_OVERWRITE)
-				FileWrite($hFile, "Hostname")
+				$sOut = FileWrite($hFile, "Hostname")
 				For $iLoop = 0 To 10 Step 1
-					FileWrite($hFile, "," & $aLabel[$iLoop])
+					$sOut &= FileWrite($hFile, "," & $aLabel[$iLoop])
 				Next
-				FileWrite($hFile, @CRLF)
+				FileWrite($hFile, $sOut & @CRLF)
 			Else
 				$hFile = FileOpen($sFile, $FO_APPEND)
 			EndIf
-			FileWrite($hFile, @ComputerName)
+			$sOut = @ComputerName
 			For $iLoop = 0 To 10 Step 1
-				FileWrite($hFile, "," & $aResults[$iLoop][0])
+				$sOut &= FileWrite($hFile, "," & $aResults[$iLoop][0])
 			Next
-			FileWrite($hFile, @CRLF)
-			FileClose($hFile)
+
 		Case Else
 			;;;
+
 	EndSwitch
+	FileWrite($hFile, $sOut & @CRLF)
+	FileClose($hFile)
 
 EndFunc   ;==>OutputResults
 
