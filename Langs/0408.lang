@@ -73,6 +73,7 @@ Unable to load release data.=Ανικανότητα φόρτωσης δεδομ�
 Invalid Data Received!=Λήφθηκαν μη έγκυρα δεδομένα!
 Invalid Release Tags Received!=Λήφθηκαν μη έγκυρες ετικέτες έκδοσης
 Invalid Release Types Received!=Λήφθηκαν μη έγκυροι τύποι εκδόσης!
+Update Available=Διαθέσιμη Ενημέρωση
 An Update is Available, would you like to download it?=Υπάρχει διαθέσιμη ενημέρωση, θα θέλατε να την κατεβάσετε?
 Done=Ολοκληρώθηκε
 Loading WMIC=Φόρτωση WMIC
