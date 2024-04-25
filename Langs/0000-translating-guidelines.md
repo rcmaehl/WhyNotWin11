@@ -23,20 +23,6 @@
 1. Open issue or pull request
 1. In the title please include language name and whether you add a new one or update existing
 
-## Review Process
-
-### New Translations
-
-Translation will (most likely) be checked using mechanical translation.
-
-### Existing Translations
-
-* Notification or approval is not required for the following
-   * Version Number Changes
-   * RTL Additions (Verified using Google)
-* Previous translators will be notified and will have 24h to reply.
-   * After all responding parties agree, translation will be updated.
-
 ## Getting Translator Role on the Community
 
 1. Link your GitHub to your Discord
