@@ -203,6 +203,8 @@ Func _GetGPUInfo($iFlag = 0)
 					Case "Citrix Indirect Display Adapter"
 						ContinueCase
 					Case "DisplayLink USB Device"
+						ContinueCase
+					Case "Microsoft Remote Display Adapter"
 						ContinueLoop
 					Case Else
 						$sName &= $Obj_Item.Name & ", "
