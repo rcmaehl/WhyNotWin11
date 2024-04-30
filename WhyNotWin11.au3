@@ -470,12 +470,12 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 		GUICtrlSetCursor(-1, 0)
 
 		$hWeb = GUICtrlCreateLabel("", 34, 260, 32, 32)
-		GUICtrlSetTip(-1, "My Projects")
+		GUICtrlSetTip(-1, _Translate($aMUI[1], "My Projects"))
 		GUICtrlSetCursor(-1, 0)
 
 		If @LogonDomain <> @ComputerName Then
 			$hJob = GUICtrlCreateLabel("", 34, 310, 32, 32)
-			GUICtrlSetTip(-1, "I'm For Hire")
+			GUICtrlSetTip(-1, _Translate($aMUI[1], "I'm For Hire"))
 			GUICtrlSetCursor(-1, 0)
 		EndIf
 	EndIf
@@ -589,7 +589,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
 	GUICtrlCreateLabel(_GetMotherboardInfo(0) & " " & _GetMotherboardInfo(1) & " @ " & _GetBIOSInfo(0), 113, 580, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
-	GUICtrlCreateLabel(_GetCPUInfo(2), 450, 560, 300, 20, $SS_CENTERIMAGE)
+	GUICtrlCreateLabel(StringReplace(_GetCPUInfo(2), " CPU", ""), 450, 560, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
 	GUICtrlCreateLabel(_GetGPUInfo(0), 450, 580, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $aColors[$iFooter])
@@ -797,7 +797,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 	Else
 		_GUICtrlSetState($hCheck[9][0], $iFail)
 	EndIf
-	GUICtrlSetData($hCheck[9][2], $aResults[9][1] & " GB " & $WINDOWS_DRIVE & @CRLF & $aResults[9][2] & " " & _Translate($aMUI[1], "Drive(s) Meet Requirements"))
+	GUICtrlSetData($hCheck[9][2], $WINDOWS_DRIVE & $aResults[9][1] & " GB " & @CRLF & $aResults[9][2] & " " & _Translate($aMUI[1], "Drive(s) Meet Requirements"))
 	#EndRegion
 
 	#Region : TPM Check
