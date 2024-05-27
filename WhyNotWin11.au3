@@ -335,15 +335,17 @@ Func RunExtendedChecks($sDrive = Null)
 
 	Local $sTemp
 	Local $aResults[11][3]
-	Local $sFeatureUpdate
+	Local $sFeatureUpdate = False
 
-	For $iLoop = 1 To 10 Step 1
-		$sTemp = RegEnumKey("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators", $iLoop)
-		If @error Then ExitLoop
-		If StringRegExp($sTemp, ".*\d\d[Hh]\d") Then
-			If StringRegExpReplace($sTemp, "\D", "") > StringRegExpReplace($sFeatureUpdate, "\D", "") Then $sFeatureUpdate = $sTemp
-		EndIf
-	Next
+	If @OSVersion = "WIN_11" Then
+		For $iLoop = 1 To 10 Step 1
+			$sTemp = RegEnumKey("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators", $iLoop)
+			If @error Then ExitLoop
+			If StringRegExp($sTemp, ".*\d\d[Hh]\d") Then
+				If StringRegExpReplace($sTemp, "\D", "") > StringRegExpReplace($sFeatureUpdate, "\D", "") Then $sFeatureUpdate = $sTemp
+			EndIf
+		Next
+	EndIf
 
 	$aResults[2][0] = _CPUNameCheck(_GetCPUInfo(2), _GetCPUInfo(6), _GetCPUInfo(5), $sFeatureUpdate)
 	$aResults[2][1] = @error
@@ -596,7 +598,11 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 	#EndRegion
 
 	#Region Header
-	Local $hHeader = GUICtrlCreateLabel(_Translate($aMUI[1], "Your Windows 11 Compatibility Results Are Below"), 130, 10, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
+	If @OSVersion = "WIN_11" Then
+		Local $hHeader = GUICtrlCreateLabel(_Translate($aMUI[1], "Your Feature Update Compatibility Results Are Below"), 130, 10, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
+	Else
+		Local $hHeader = GUICtrlCreateLabel(_Translate($aMUI[1], "Your Windows 11 Compatibility Results Are Below"), 130, 10, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
+	EndIf
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
 
 	#cs
