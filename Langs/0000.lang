@@ -84,7 +84,6 @@ Enable TPM=
 Enable Secure Boot=
 Skip CPU && TPM=
 Get Windows 11 Now=
-[Placeholder Strings]
 Cores=# Cores
 Threads=# Threads
 Not Supported=# Not Supported

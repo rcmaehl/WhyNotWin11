@@ -9,7 +9,7 @@ Large=18
 Medium=10
 Small=8.5
 Name=Arial
-[Simple Strings]
+[Strings]
 Donate=Donate
 My Projects=My Projects
 I'm For Hire=I'm For Hire
@@ -17,12 +17,12 @@ Settings=Settings
 Check for Updates=Check for Updates
 Your Windows 11 Compatibility Results Are Below=Your Windows 11 Compatibility Results Are Below
 Your Feature Update Compatibility Results Are Below=Your Feature Update Compatibility Results Are Below
-Now Reach WhyNotWin11 via https://www.whynotwin11.org/=
-Language=
-Info=
-Theme=
-Translation by=
-Theme by=
+Now Reach WhyNotWin11 via https://www.whynotwin11.org/=Now Reach WhyNotWin11 via https://www.whynotwin11.org/
+Language=Language
+Info=Info
+Theme=Theme
+Translation by=Translation by
+Theme by=Theme by
 Architecture=Architecture
 Boot Method=Boot Method
 CPU Compatibility=CPU Compatibility
@@ -84,7 +84,6 @@ Enable TPM=Enable TPM
 Enable Secure Boot=Enable Secure Boot
 Skip CPU && TPM=Skip CPU && TPM
 Get Windows 11 Now=Get Windows 11 Now
-[Placeholder Strings]
 Cores=# Cores
 Threads=# Threads
 Not Supported=# Not Supported

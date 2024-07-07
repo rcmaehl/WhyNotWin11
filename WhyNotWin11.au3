@@ -216,13 +216,13 @@ Func ProcessCMDLine()
 				If $bSilent Then
 					Exit 10 ; ERROR_BAD_ENVIRONMENT
 				Else
-					MsgBox($MB_ICONWARNING, StringReplace(_Translate($aMUI[1], "Not Supported"), '#', ""), StringReplace(_Translate($aMUI[1], "Not Supported"), '#', @OSVersion))
+					MsgBox($MB_ICONWARNING, StringReplace(_Translate($aMUI[1], "Not Supported"), "#", ""), StringReplace(_Translate($aMUI[1], "Not Supported"), "#", @OSVersion))
 				EndIf
 			Case "WIN_8", "WIN_8.1"
 				If $bSilent Then
 					Exit 10 ; ERROR_BAD_ENVIRONMENT
 				Else
-					MsgBox($MB_ICONWARNING, _Translate($aMUI[1], "Warning"), StringReplace(_Translate($aMUI[1], "May Report DirectX 12 Incorrectly"), '#', @OSVersion))
+					MsgBox($MB_ICONWARNING, _Translate($aMUI[1], "Warning"), StringReplace(_Translate($aMUI[1], "May Report DirectX 12 Incorrectly"), "#", @OSVersion))
 				EndIf
 			Case "WIN_11"
 				If $bSilent Then
@@ -242,7 +242,7 @@ Func ProcessCMDLine()
 			If $bSilent Then
 				Exit 10 ; ERROR_BAD_ENVIRONMENT
 			Else
-				MsgBox($MB_ICONWARNING, StringReplace(_Translate($aMUI[1], "Not Supported"), '#', ""), StringReplace(_Translate($aMUI[1], "Not Supported"), '#', "WINE"))
+				MsgBox($MB_ICONWARNING, StringReplace(_Translate($aMUI[1], "Not Supported"), "#", ""), StringReplace(_Translate($aMUI[1], "Not Supported"), "#", "WINE"))
 			EndIf
 		EndIf
 
@@ -710,7 +710,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput, $bFUC = False)
 					_GUICtrlSetState($hCheck[1][0], $iFail)
 					GUICtrlSetData($hCheck[1][2], "Legacy")
 				Case Else
-					GUICtrlSetData($hCheck[1][2], StringReplace(_Translate($aMUI[1], "Not Supported"), '#', ""))
+					GUICtrlSetData($hCheck[1][2], StringReplace(_Translate($aMUI[1], "Not Supported"), "#", ""))
 					_GUICtrlSetState($hCheck[1][0], $iWarn)
 			EndSwitch
 	EndSwitch
@@ -732,7 +732,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput, $bFUC = False)
 						GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Error Accessing List"))
 					Case 3
 						_GUICtrlSetState($hCheck[2][0], $iFail)
-						GUICtrlSetData($hCheck[2][2], StringReplace(_Translate($aMUI[1], "Not Supported"), '#', ""))
+						GUICtrlSetData($hCheck[2][2], StringReplace(_Translate($aMUI[1], "Not Supported"), "#", ""))
 				EndSwitch
 			Case Else
 				_GUICtrlSetState($hCheck[2][0], $iPass)
@@ -748,9 +748,9 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput, $bFUC = False)
 		_GUICtrlSetState($hCheck[3][0], $iFail)
 	EndIf
 
-	Local $sCores = StringReplace(_Translate($aMUI[1], "Cores"), '#', _GetCPUInfo(0))
+	Local $sCores = StringReplace(_Translate($aMUI[1], "Cores"), "#", _GetCPUInfo(0))
 	If @extended = 0 Then $sCores = _GetCPUInfo(0) & " " & $sCores
-	Local $sThreads = StringReplace(_Translate($aMUI[1], "Threads"), '#', _GetCPUInfo(1))
+	Local $sThreads = StringReplace(_Translate($aMUI[1], "Threads"), "#", _GetCPUInfo(1))
 	If @extended = 0 Then $sThreads = _GetCPUInfo(1) & " " & $sThreads
 	GUICtrlSetData($hCheck[3][2], $sCores & @CRLF & $sThreads)
 	#EndRegion
@@ -831,9 +831,9 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput, $bFUC = False)
 			Case 0
 				GUICtrlSetData($hCheck[10][2], _Translate($aMUI[1], "Disabled / Not Detected"))
 			Case 1
-				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & StringReplace(_Translate($aMUI[1], "Not Supported"), '#', ""))
+				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & StringReplace(_Translate($aMUI[1], "Not Supported"), "#", ""))
 			Case 2
-				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & StringReplace(_Translate($aMUI[1], "Not Supported"), '#', ""))
+				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & StringReplace(_Translate($aMUI[1], "Not Supported"), "#", ""))
 			Case 3
 				_GUICtrlSetState($hCheck[10][0], $iUnsure)
 				GUICtrlSetData($hCheck[10][2], _Translate($aMUI[1], "TPM Status Error"))
@@ -1037,7 +1037,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput, $bFUC = False)
 						If $iLoop = 2 And $aExtended[$iLoop][0] = True Then ContinueLoop ; Pass if Windows Update Reports CPU Okay
 						If $aResults[$iLoop][0] = False Or $aResults[$iLoop][0] < 1 Then
 							MsgBox($MB_OK+$MB_ICONERROR+$MB_TOPMOST+$MB_SETFOREGROUND, _
-								StringReplace(_Translate($aMUI[1], "Not Supported"), '#', ""), _
+								StringReplace(_Translate($aMUI[1], "Not Supported"), "#", ""), _
 								_Translate($aMUI[1], "Your Computer is NOT ready for Windows 11, you can join the Discord using the Discord Icon if you need assistance."))
 							ContinueLoop 2
 						EndIf
