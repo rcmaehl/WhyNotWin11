@@ -697,6 +697,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 	;Local $hBasic = GUICtrlCreateTabItem("Basic Checks")
 	;GUICtrlSetColor(-1, $aColors[$iBackground])
 
+	Local $hCheckMethod
 	Local $bInfoBox = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoInfoBox")
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX 12 and WDDM 2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
@@ -785,7 +786,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		_GUICtrlSetState($hCheck[2][0], $iUnsure)
 		GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		If $aResults[2][0] Then
+		If ($bFUC = True ? $aResults[2][0] : $aExtended[2][0]) Then
 			_GUICtrlSetState($hCheck[2][0], $iPass)
 			GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Listed as Compatible"))
 		Else
@@ -881,7 +882,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		_GUICtrlSetState($hCheck[7][0], $iUnsure)
 		GUICtrlSetData($hCheck[7][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		If $aResults[7][0] Then
+		If ($bFUC = True ? $aResults[7][0] : $aExtended[7][0]) Then
 			_GUICtrlSetState($hCheck[7][0], $iPass)
 			GUICtrlSetData($hCheck[7][2], $aResults[7][1] & " GB")
 		Else
@@ -896,7 +897,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		_GUICtrlSetState($hCheck[8][0], $iUnsure)
 		GUICtrlSetData($hCheck[8][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		Switch $aResults[8][0]
+		Switch ($bFUC = True ? $aResults[8][0] : $aExtended[8][0])
 			Case True
 				Switch $aResults[8][2]
 					Case 1
@@ -918,7 +919,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		_GUICtrlSetState($hCheck[9][0], $iUnsure)
 		GUICtrlSetData($hCheck[9][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		If $aResults[9][0] Then
+		If ($bFUC = True ? $aResults[9][0] : $aExtended[9][0]) Then
 			_GUICtrlSetState($hCheck[9][0], $iPass)
 		Else
 			_GUICtrlSetState($hCheck[9][0], $iFail)
