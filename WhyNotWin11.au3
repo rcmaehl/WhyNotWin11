@@ -818,7 +818,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput, $bFUC = False)
 	Else
 		_GUICtrlSetState($hCheck[9][0], $iFail)
 	EndIf
-	GUICtrlSetData($hCheck[9][2], $WINDOWS_DRIVE & $aResults[9][1] & " GB " & @CRLF & StringReplace(_Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
+	GUICtrlSetData($hCheck[9][2], $WINDOWS_DRIVE & " " & $aResults[9][1] & " GB" & @CRLF & StringReplace(_Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
 	#EndRegion
 
 	#Region : TPM Check
