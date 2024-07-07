@@ -1,10 +1,14 @@
-2.5.0.4
-AMD 3015e
-AMD 3020e
+2.6.1.0
+3015e
+3020e
 Athlon 3000G
 Athlon 300GE
 Athlon 300U
 Athlon 320GE
+Athlon 7120e
+Athlon 7120U
+Athlon 7220e
+Athlon 7220U
 Athlon Gold 3150C
 Athlon Gold 3150G
 Athlon Gold 3150GE
@@ -13,13 +17,10 @@ Athlon Silver 3050C
 Athlon Silver 3050e
 Athlon Silver 3050GE
 Athlon Silver 3050U
-Athlon 7120e
-Athlon 7120U
-Athlon 7220e
-Athlon 7220U
 Athlon Gold PRO 3125GE
 Athlon Gold PRO 3150G
 Athlon Gold PRO 3150GE
+Athlon Gold PRO 4150GE
 Athlon PRO 300GE
 Athlon PRO 300U
 Athlon PRO 3045B
@@ -67,7 +68,14 @@ EPYC 7F32
 EPYC 7F52
 EPYC 7F72
 EPYC 7H12
+Ryzen Embedded R2000 Series R2312
+Ryzen Embedded R2000 Series R2314
+Ryzen Embedded R2000 Series R2514
+Ryzen Embedded R2000 Series R2544
+Ryzen Z1
+Ryzen Z1 Extreme
 Ryzen 3 3100
+Ryzen 3 4100
 Ryzen 3 2300X
 Ryzen 3 3200G
 Ryzen 3 3200GE
@@ -79,11 +87,19 @@ Ryzen 3 3350U
 Ryzen 3 4300G
 Ryzen 3 4300GE
 Ryzen 3 4300U
+Ryzen 3 5125C
+Ryzen 3 5300G
 Ryzen 3 5300GE
 Ryzen 3 5300U
 Ryzen 3 5400U
+Ryzen 3 5425C
+Ryzen 3 5425U
 Ryzen 3 7320e
 Ryzen 3 7320U
+Ryzen 3 7330U
+Ryzen 3 7335U
+Ryzen 3 7440U
+Ryzen 3 5380U
 Ryzen 3 PRO 3200G
 Ryzen 3 PRO 3200GE
 Ryzen 3 PRO 3300U
@@ -93,8 +109,16 @@ Ryzen 3 PRO 4450U
 Ryzen 3 PRO 5350G
 Ryzen 3 PRO 5350GE
 Ryzen 3 PRO 5450U
+Ryzen 3 PRO 5475U
+Ryzen 3 PRO 7330U
+Ryzen 3 PRO 4355G
+Ryzen 3 PRO 4355GE
 Ryzen 5 2600
 Ryzen 5 3600
+Ryzen 5 4500
+Ryzen 5 5500
+Ryzen 5 5600
+Ryzen 5 7600
 Ryzen 5 2500X
 Ryzen 5 2600E
 Ryzen 5 2600X
@@ -106,6 +130,7 @@ Ryzen 5 3450U
 Ryzen 5 3500
 Ryzen 5 3500C
 Ryzen 5 3500U
+Ryzen 5 3500X
 Ryzen 5 3550H
 Ryzen 5 3580U
 Ryzen 5 3600X
@@ -118,19 +143,34 @@ Ryzen 5 4600HS
 Ryzen 5 4600U
 Ryzen 5 5300G
 Ryzen 5 5300GE
+Ryzen 5 5425U
 Ryzen 5 5500U
+Ryzen 5 5560U
 Ryzen 5 5600G
 Ryzen 5 5600GE
 Ryzen 5 5600H
 Ryzen 5 5600HS
 Ryzen 5 5600U
 Ryzen 5 5600X
+Ryzen 5 5625C
+Ryzen 5 5625U
 Ryzen 5 6600H
+Ryzen 5 6600HS
 Ryzen 5 6600U
 Ryzen 5 7520U
+Ryzen 5 7530U
+Ryzen 5 7535HS
+Ryzen 5 7535U
+Ryzen 5 7540U
 Ryzen 5 7600X
+Ryzen 5 7640HS
+Ryzen 5 7640S
+Ryzen 5 7640U
+Ryzen 5 7645HX
+Ryzen 5 7640H
 Ryzen 5 PRO 2600
 Ryzen 5 PRO 3600
+Ryzen 5 PRO 5645
 Ryzen 5 PRO 3350G
 Ryzen 5 PRO 3350GE
 Ryzen 5 PRO 3400G
@@ -139,15 +179,27 @@ Ryzen 5 PRO 3500U
 Ryzen 5 PRO 4650G
 Ryzen 5 PRO 4650GE
 Ryzen 5 PRO 4650U
+Ryzen 5 PRO 5475U
 Ryzen 5 PRO 5650G
 Ryzen 5 PRO 5650GE
 Ryzen 5 PRO 5650HS
 Ryzen 5 PRO 5650HX
 Ryzen 5 PRO 5650U
+Ryzen 5 PRO 5675U
 Ryzen 5 PRO 5750G
 Ryzen 5 PRO 5750GE
+Ryzen 5 PRO 6650H
+Ryzen 5 PRO 6650HS
+Ryzen 5 PRO 6650U
+Ryzen 5 PRO 7530U
+Ryzen 5 PRO 7540U
+Ryzen 5 PRO 7640U
+Ryzen 5 PRO 4655G
+Ryzen 5 PRO 4655GE
 Ryzen 7 2700 
 Ryzen 7 5800
+Ryzen 7 5800
+Ryzen 7 7700
 Ryzen 7 2700E
 Ryzen 7 2700X
 Ryzen 7 3700C
@@ -166,16 +218,32 @@ Ryzen 7 4800U
 Ryzen 7 5700G
 Ryzen 7 5700GE
 Ryzen 7 5700U
+Ryzen 7 5700X
 Ryzen 7 5800H
 Ryzen 7 5800HS
 Ryzen 7 5800U
 Ryzen 7 5800X
+Ryzen 7 5800X3D
+Ryzen 7 5825C
+Ryzen 7 5825U
 Ryzen 7 6800H
+Ryzen 7 6800HS
 Ryzen 7 6800U
 Ryzen 7 6810U
 Ryzen 7 7700X
+Ryzen 7 7730U
+Ryzen 7 7735HS
+Ryzen 7 7735U
+Ryzen 7 7736U
+Ryzen 7 7745HX
+Ryzen 7 7800X3D
+Ryzen 7 7840H
+Ryzen 7 7840HS
+Ryzen 7 7840S
+Ryzen 7 7840U
 Ryzen 7 PRO 2700
 Ryzen 7 PRO 3700
+Ryzen 7 PRO 5845
 Ryzen 7 PRO 2700X
 Ryzen 7 PRO 3700U
 Ryzen 7 PRO 4750G
@@ -184,7 +252,15 @@ Ryzen 7 PRO 4750U
 Ryzen 7 PRO 5850HS
 Ryzen 7 PRO 5850HX
 Ryzen 7 PRO 5850U
+Ryzen 7 PRO 5875U
+Ryzen 7 PRO 6850H
+Ryzen 7 PRO 6850HS
+Ryzen 7 PRO 6850U
+Ryzen 7 PRO 6860Z
+Ryzen 7 PRO 7730U
+Ryzen 7 PRO 7840U
 Ryzen 9 5900
+Ryzen 9 7900
 Ryzen 9 3900
 Ryzen 9 3900X
 Ryzen 9 3900XT
@@ -197,15 +273,30 @@ Ryzen 9 5900X
 Ryzen 9 5950X
 Ryzen 9 5980HS
 Ryzen 9 5980HX
+Ryzen 9 6900HS
 Ryzen 9 6900HX
+Ryzen 9 6980HS
 Ryzen 9 6980HX
+Ryzen 9 7845HX
 Ryzen 9 7900X
+Ryzen 9 7900X3D
+Ryzen 9 7940H
+Ryzen 9 7940HS
+Ryzen 9 7945HX
 Ryzen 9 7950X
+Ryzen 9 7950X3D
 Ryzen 9 PRO 3900
+Ryzen 9 PRO 5945
+Ryzen 9 PRO 6950H
+Ryzen 9 PRO 6950HS
 Ryzen Embedded V2516
 Ryzen Embedded V2546
 Ryzen Embedded V2718
 Ryzen Embedded V2748
+Ryzen Threadripper PRO 3945WX
+Ryzen Threadripper PRO 3955WX
+Ryzen Threadripper PRO 3975WX
+Ryzen Threadripper PRO 3995WX
 Ryzen Threadripper PRO 5945WX
 Ryzen Threadripper PRO 5955WX
 Ryzen Threadripper PRO 5965WX

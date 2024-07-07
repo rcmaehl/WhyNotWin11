@@ -51,7 +51,7 @@ Func _GetCPUInfo($iFlag = 0)
 				$vName = $Obj_Item.Name
 				$sSpeed = $Obj_Item.MaxClockSpeed
 				$sArch = $Obj_Item.AddressWidth
-				$sVersion = $Obj_Item.Version
+				$sVersion = $Obj_Item.Caption
 				$sFamily = $Obj_Item.Caption
 			Next
 
@@ -203,6 +203,8 @@ Func _GetGPUInfo($iFlag = 0)
 					Case "Citrix Indirect Display Adapter"
 						ContinueCase
 					Case "DisplayLink USB Device"
+						ContinueCase
+					Case "Microsoft Remote Display Adapter"
 						ContinueLoop
 					Case Else
 						$sName &= $Obj_Item.Name & ", "
