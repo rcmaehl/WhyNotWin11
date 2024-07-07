@@ -731,167 +731,224 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 	_GDIPlus_Shutdown()
 
 	#Region ; ArchCheck()
-	Switch $aResults[0][0]
-		Case True
-			_GUICtrlSetState($hCheck[0][0], $iPass)
-			GUICtrlSetData($hCheck[0][2], _Translate($aMUI[1], "64 Bit CPU") & @CRLF & _Translate($aMUI[1], "64 Bit OS"))
-		Case Else
-			Switch $aResults[0][1]
-				Case 0
-					_GUICtrlSetState($hCheck[0][0], $iUnsure)
-					GUICtrlSetData($hCheck[0][2], _Translate($aMUI[1], "Check Skipped"))
-				Case 1
-					_GUICtrlSetState($hCheck[0][0], $iWarn)
-					GUICtrlSetData($hCheck[0][2], _Translate($aMUI[1], "64 Bit CPU") & @CRLF & _Translate($aMUI[1], "32 Bit OS"))
-				Case 2
-					_GUICtrlSetState($hCheck[0][0], $iFail)
-					GUICtrlSetData($hCheck[0][2], _Translate($aMUI[1], "32 Bit CPU") & @CRLF & _Translate($aMUI[1], "32 Bit OS"))
-				Case Else
-					_GUICtrlSetState($hCheck[0][0], $iFail)
-					GUICtrlSetData($hCheck[0][2], "?")
-			EndSwitch
-	EndSwitch
+	If $aSkips[0] Then
+		_GUICtrlSetState($hCheck[0][0], $iUnsure)
+		GUICtrlSetData($hCheck[0][2], _Translate($aMUI[1], "Check Skipped"))
+	Else
+		Switch $aResults[0][0]
+			Case True
+				_GUICtrlSetState($hCheck[0][0], $iPass)
+				GUICtrlSetData($hCheck[0][2], _Translate($aMUI[1], "64 Bit CPU") & @CRLF & _Translate($aMUI[1], "64 Bit OS"))
+			Case Else
+				Switch $aResults[0][1]
+					Case 0
+						_GUICtrlSetState($hCheck[0][0], $iUnsure)
+						GUICtrlSetData($hCheck[0][2], _Translate($aMUI[1], "Check Skipped"))
+					Case 1
+						_GUICtrlSetState($hCheck[0][0], $iWarn)
+						GUICtrlSetData($hCheck[0][2], _Translate($aMUI[1], "64 Bit CPU") & @CRLF & _Translate($aMUI[1], "32 Bit OS"))
+					Case 2
+						_GUICtrlSetState($hCheck[0][0], $iFail)
+						GUICtrlSetData($hCheck[0][2], _Translate($aMUI[1], "32 Bit CPU") & @CRLF & _Translate($aMUI[1], "32 Bit OS"))
+					Case Else
+						_GUICtrlSetState($hCheck[0][0], $iFail)
+						GUICtrlSetData($hCheck[0][2], "?")
+				EndSwitch
+		EndSwitch
+	EndIf
 	#EndRegion
 
 	#Region ; _BootCheck()
-	Switch $aResults[1][0]
-		Case True
-			_GUICtrlSetState($hCheck[1][0], $iPass)
-			GUICtrlSetData($hCheck[1][2], "UEFI")
-		Case False
-			Switch $aResults[1][1]
-				Case 0
-					_GUICtrlSetState($hCheck[1][0], $iFail)
-					GUICtrlSetData($hCheck[1][2], "Legacy")
-				Case Else
-					GUICtrlSetData($hCheck[1][2], StringReplace(_Translate($aMUI[1], "Not Supported"), "#", ""))
-					_GUICtrlSetState($hCheck[1][0], $iWarn)
-			EndSwitch
-	EndSwitch
+	If $aSkips[1] Then
+		_GUICtrlSetState($hCheck[1][0], $iUnsure)
+		GUICtrlSetData($hCheck[1][2], _Translate($aMUI[1], "Check Skipped"))
+	Else
+		Switch $aResults[1][0]
+			Case True
+				_GUICtrlSetState($hCheck[1][0], $iPass)
+				GUICtrlSetData($hCheck[1][2], "UEFI")
+			Case False
+				Switch $aResults[1][1]
+					Case 0
+						_GUICtrlSetState($hCheck[1][0], $iFail)
+						GUICtrlSetData($hCheck[1][2], "Legacy")
+					Case Else
+						GUICtrlSetData($hCheck[1][2], StringReplace(_Translate($aMUI[1], "Not Supported"), "#", ""))
+						_GUICtrlSetState($hCheck[1][0], $iWarn)
+				EndSwitch
+		EndSwitch
+	EndIf
 	#EndRegion
 
 	#Region ; _CPUNameCheck()
-	If $aResults[2][0] Then
-		_GUICtrlSetState($hCheck[2][0], $iPass)
-		GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Listed as Compatible"))
+	If $aSkips[2] Then
+		_GUICtrlSetState($hCheck[2][0], $iUnsure)
+		GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		Switch $aResults[2][0]
-			Case False
-				Switch $aResults[2][1]
-					Case 1
-						_GUICtrlSetState($hCheck[2][0], $iWarn)
-						GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Unable to Check List"))
-					Case 2
-						_GUICtrlSetState($hCheck[2][0], $iWarn)
-						GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Error Accessing List"))
-					Case 3
-						_GUICtrlSetState($hCheck[2][0], $iFail)
-						GUICtrlSetData($hCheck[2][2], StringReplace(_Translate($aMUI[1], "Not Supported"), "#", ""))
-				EndSwitch
-			Case Else
-				_GUICtrlSetState($hCheck[2][0], $iPass)
-				GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Listed as Compatible"))
-		EndSwitch
+		If $aResults[2][0] Then
+			_GUICtrlSetState($hCheck[2][0], $iPass)
+			GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Listed as Compatible"))
+		Else
+			Switch $aResults[2][0]
+				Case False
+					Switch $aResults[2][1]
+						Case 1
+							_GUICtrlSetState($hCheck[2][0], $iWarn)
+							GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Unable to Check List"))
+						Case 2
+							_GUICtrlSetState($hCheck[2][0], $iWarn)
+							GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Error Accessing List"))
+						Case 3
+							_GUICtrlSetState($hCheck[2][0], $iFail)
+							GUICtrlSetData($hCheck[2][2], StringReplace(_Translate($aMUI[1], "Not Supported"), "#", ""))
+					EndSwitch
+				Case Else
+					_GUICtrlSetState($hCheck[2][0], $iPass)
+					GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Listed as Compatible"))
+			EndSwitch
+		EndIf
 	EndIf
 	#EndRegion
 
 	#Region ; _CPUCoresCheck()
-	If $aResults[3][0] Then
-		_GUICtrlSetState($hCheck[3][0], $iPass)
+	If $aSkips[3] Then
+		_GUICtrlSetState($hCheck[3][0], $iUnsure)
+		GUICtrlSetData($hCheck[3][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		_GUICtrlSetState($hCheck[3][0], $iFail)
-	EndIf
+		If $aResults[3][0] Then
+			_GUICtrlSetState($hCheck[3][0], $iPass)
+		Else
+			_GUICtrlSetState($hCheck[3][0], $iFail)
+		EndIf
 
-	Local $sCores = StringReplace(_Translate($aMUI[1], "Cores"), "#", _GetCPUInfo(0))
-	If @extended = 0 Then $sCores = _GetCPUInfo(0) & " " & $sCores
-	Local $sThreads = StringReplace(_Translate($aMUI[1], "Threads"), "#", _GetCPUInfo(1))
-	If @extended = 0 Then $sThreads = _GetCPUInfo(1) & " " & $sThreads
-	GUICtrlSetData($hCheck[3][2], $sCores & @CRLF & $sThreads)
+		Local $sCores = StringReplace(_Translate($aMUI[1], "Cores"), "#", _GetCPUInfo(0))
+		If @extended = 0 Then $sCores = _GetCPUInfo(0) & " " & $sCores
+		Local $sThreads = StringReplace(_Translate($aMUI[1], "Threads"), "#", _GetCPUInfo(1))
+		If @extended = 0 Then $sThreads = _GetCPUInfo(1) & " " & $sThreads
+		GUICtrlSetData($hCheck[3][2], $sCores & @CRLF & $sThreads)
+	EndIf
 	#EndRegion
 
 	#Region ; _CPUSpeedCheck()
-	If $aResults[4][0] Then
-		_GUICtrlSetState($hCheck[4][0], $iPass)
-		Switch $aResults[4][2]
-			Case 0
-				GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
-			Case 1
-				GUICtrlSetData($hCheck[4][2], RegRead("HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0", "~MHz") & " MHz")
-		EndSwitch
+	If $aSkips[4] Then
+		_GUICtrlSetState($hCheck[4][0], $iUnsure)
+		GUICtrlSetData($hCheck[4][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		_GUICtrlSetState($hCheck[4][0], $iFail)
-		GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
+		If $aResults[4][0] Then
+			_GUICtrlSetState($hCheck[4][0], $iPass)
+			Switch $aResults[4][2]
+				Case 0
+					GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
+				Case 1
+					GUICtrlSetData($hCheck[4][2], RegRead("HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0", "~MHz") & " MHz")
+			EndSwitch
+		Else
+			_GUICtrlSetState($hCheck[4][0], $iFail)
+			GUICtrlSetData($hCheck[4][2], _GetCPUInfo(3) & " MHz")
+		EndIf
 	EndIf
 	#EndRegion
 
+	#Region ; _DirectXStartCheck() Skip
+	If $aSkips[5] Then
+		_GUICtrlSetState($hCheck[5][0], $iUnsure)
+		GUICtrlSetData($hCheck[5][2], _Translate($aMUI[1], "Check Skipped"))
+		$bComplete = True
+	EndIf
+
 	#Region ; _GPTCheck()
-	If $aResults[6][0] Then
-		If $aResults[6][1] Then
-			_GUICtrlSetState($hCheck[6][0], $iPass)
-			GUICtrlSetData($hCheck[6][2], _Translate($aMUI[1], "GPT Detected"))
-		Else
-			_GUICtrlSetState($hCheck[6][0], $iPass)
-			GUICtrlSetData($hCheck[6][2], _Translate($aMUI[1], "GPT Detected"))
-		EndIf
+	If $aSkips[6] Then
+		_GUICtrlSetState($hCheck[6][0], $iUnsure)
+		GUICtrlSetData($hCheck[6][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		GUICtrlSetData($hCheck[6][2], _Translate($aMUI[1], "GPT Not Detected"))
-		_GUICtrlSetState($hCheck[6][0], $iFail)
+		If $aResults[6][0] Then
+			If $aResults[6][1] Then
+				_GUICtrlSetState($hCheck[6][0], $iPass)
+				GUICtrlSetData($hCheck[6][2], _Translate($aMUI[1], "GPT Detected"))
+			Else
+				_GUICtrlSetState($hCheck[6][0], $iPass)
+				GUICtrlSetData($hCheck[6][2], _Translate($aMUI[1], "GPT Detected"))
+			EndIf
+		Else
+			GUICtrlSetData($hCheck[6][2], _Translate($aMUI[1], "GPT Not Detected"))
+			_GUICtrlSetState($hCheck[6][0], $iFail)
+		EndIf
 	EndIf
 	#EndRegion
 
 	#Region ; _MemCheck()
-	If $aResults[7][0] Then
-		_GUICtrlSetState($hCheck[7][0], $iPass)
-		GUICtrlSetData($hCheck[7][2], $aResults[7][1] & " GB")
+	If $aSkips[7] Then
+		_GUICtrlSetState($hCheck[7][0], $iUnsure)
+		GUICtrlSetData($hCheck[7][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		GUICtrlSetData($hCheck[7][2], $aResults[7][1] & " GB")
-		_GUICtrlSetState($hCheck[7][0], $iFail)
+		If $aResults[7][0] Then
+			_GUICtrlSetState($hCheck[7][0], $iPass)
+			GUICtrlSetData($hCheck[7][2], $aResults[7][1] & " GB")
+		Else
+			GUICtrlSetData($hCheck[7][2], $aResults[7][1] & " GB")
+			_GUICtrlSetState($hCheck[7][0], $iFail)
+		EndIf
 	EndIf
 	#EndRegion
 
 	#Region ; _SecureBootCheck()
-	Switch $aResults[8][0]
-		Case True
-			Switch $aResults[8][2]
-				Case 1
-					_GUICtrlSetState($hCheck[8][0], $iPass)
-					GUICtrlSetData($hCheck[8][2], _Translate($aMUI[1], "Enabled"))
-				Case 0
-					_GUICtrlSetState($hCheck[8][0], $iPass)
-					GUICtrlSetData($hCheck[8][2], _Translate($aMUI[1], "Supported"))
-			EndSwitch
-		Case False
-			_GUICtrlSetState($hCheck[8][0], $iFail)
-			GUICtrlSetData($hCheck[8][2], _Translate($aMUI[1], "Disabled / Not Detected"))
-	EndSwitch
+	If $aSkips[8] Then
+		_GUICtrlSetState($hCheck[8][0], $iUnsure)
+		GUICtrlSetData($hCheck[8][2], _Translate($aMUI[1], "Check Skipped"))
+	Else
+		Switch $aResults[8][0]
+			Case True
+				Switch $aResults[8][2]
+					Case 1
+						_GUICtrlSetState($hCheck[8][0], $iPass)
+						GUICtrlSetData($hCheck[8][2], _Translate($aMUI[1], "Enabled"))
+					Case 0
+						_GUICtrlSetState($hCheck[8][0], $iPass)
+						GUICtrlSetData($hCheck[8][2], _Translate($aMUI[1], "Supported"))
+				EndSwitch
+			Case False
+				_GUICtrlSetState($hCheck[8][0], $iFail)
+				GUICtrlSetData($hCheck[8][2], _Translate($aMUI[1], "Disabled / Not Detected"))
+		EndSwitch
+	EndIf
 	#EndRegion
 
 	#Region ; _SpaceCheck()
-	If $aResults[9][0] Then
-		_GUICtrlSetState($hCheck[9][0], $iPass)
+	If $aSkips[9] Then
+		_GUICtrlSetState($hCheck[9][0], $iUnsure)
+		GUICtrlSetData($hCheck[9][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		_GUICtrlSetState($hCheck[9][0], $iFail)
+		If $aResults[9][0] Then
+			_GUICtrlSetState($hCheck[9][0], $iPass)
+		Else
+			_GUICtrlSetState($hCheck[9][0], $iFail)
+		EndIf
+		GUICtrlSetData($hCheck[9][2], $WINDOWS_DRIVE & " " & $aResults[9][1] & " GB" & @CRLF & StringReplace(_Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
 	EndIf
-	GUICtrlSetData($hCheck[9][2], $WINDOWS_DRIVE & " " & $aResults[9][1] & " GB" & @CRLF & StringReplace(_Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
 	#EndRegion
 
 	#Region : TPM Check
-	If $aResults[10][0] Then
-		_GUICtrlSetState($hCheck[10][0], $iPass)
-		GUICtrlSetData($hCheck[10][2], "TPM " & $aResults[10][1] & " " & _Translate($aMUI[1], "Detected"))
+	If $aSkips[10] Then
+		_GUICtrlSetState($hCheck[10][0], $iUnsure)
+		GUICtrlSetData($hCheck[10][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		_GUICtrlSetState($hCheck[10][0], $iFail)
-		Switch $aResults[10][1]
-			Case 0
-				GUICtrlSetData($hCheck[10][2], _Translate($aMUI[1], "Disabled / Not Detected"))
-			Case 1
-				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & StringReplace(_Translate($aMUI[1], "Not Supported"), "#", ""))
-			Case 2
-				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & StringReplace(_Translate($aMUI[1], "Not Supported"), "#", ""))
-			Case 3
-				_GUICtrlSetState($hCheck[10][0], $iUnsure)
-				GUICtrlSetData($hCheck[10][2], _Translate($aMUI[1], "TPM Status Error"))
-		EndSwitch
+		If $aResults[10][0] Then
+			_GUICtrlSetState($hCheck[10][0], $iPass)
+			GUICtrlSetData($hCheck[10][2], "TPM " & $aResults[10][1] & " " & _Translate($aMUI[1], "Detected"))
+		Else
+			_GUICtrlSetState($hCheck[10][0], $iFail)
+			Switch $aResults[10][1]
+				Case 0
+					GUICtrlSetData($hCheck[10][2], _Translate($aMUI[1], "Disabled / Not Detected"))
+				Case 1
+					GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & StringReplace(_Translate($aMUI[1], "Not Supported"), "#", ""))
+				Case 2
+					GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & StringReplace(_Translate($aMUI[1], "Not Supported"), "#", ""))
+				Case 3
+					_GUICtrlSetState($hCheck[10][0], $iUnsure)
+					GUICtrlSetData($hCheck[10][2], _Translate($aMUI[1], "TPM Status Error"))
+			EndSwitch
+		EndIf
 	EndIf
 	#EndRegion
 
