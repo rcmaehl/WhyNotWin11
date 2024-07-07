@@ -90,6 +90,7 @@ Func ProcessCMDLine()
 	Local $aResults
 	Local $aExtended
 
+	Local $bFUC = False
 	Local $sDrive = Null
 	Local $bForce = False
 	Local $bSilent = False
@@ -123,13 +124,14 @@ Func ProcessCMDLine()
 					MsgBox(0, "Help and Flags", _
 							"Checks PC for Windows 11 Release Compatibility" & @CRLF & _
 							@CRLF & _
-							"WhyNotWin11 [/export FORMAT FILENAME [/silent]][/drive DRIVE:][/force][/update [branch]]" & @CRLF & _
+							"WhyNotWin11 [/export FORMAT FILENAME [/silent]][/drive DRIVE:][/force][/fuonly][/update [branch]]" & @CRLF & _
 							@CRLF & _
 							@TAB & "/export" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
 							@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
 							@TAB & "       " & @TAB & "output. Requires a filename if used." & @CRLF & _
 							@TAB & "formats" & @TAB & "TXT, CSV" & @CRLF & _
 							@TAB & "/force " & @TAB & "Ignores program system requirements (e.g. WinPE)" & @CRLF & _
+							@TAB & "/fuonly" & @TAB & "Checks Win11 Feature Update compatibility on Win11" & @CRLF & _
 							@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systems will Exit" & @CRLF & _
 							@TAB & "       " & @TAB & "with ERROR_SUCCESS." & @CRLF & _
 							@TAB & "/update" & @TAB & "Downloads the latest RELEASE (default) or DEV build" & @CRLF & _
@@ -172,6 +174,9 @@ Func ProcessCMDLine()
 				Case "/f", "/force"
 					$bForce = True
 					_ArrayDelete($CmdLine, 1)
+				Case "/fu", "/fuonly"
+					$bFUC = True
+					_ArrayDelete($CmdLine, 1)
 				Case "/s", "/silent"
 					$bSilent = True
 					_ArrayDelete($CmdLine, 1)
@@ -211,16 +216,24 @@ Func ProcessCMDLine()
 				If $bSilent Then
 					Exit 10 ; ERROR_BAD_ENVIRONMENT
 				Else
-					MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Not Supported"), @OSVersion & " " & _Translate(@MUILang, "Not Supported"))
+					MsgBox($MB_ICONWARNING, StringReplace(_Translate($aMUI[1], "Not Supported"), '#', ""), StringReplace(_Translate($aMUI[1], "Not Supported"), '#', @OSVersion))
 				EndIf
 			Case "WIN_8", "WIN_8.1"
 				If $bSilent Then
 					Exit 10 ; ERROR_BAD_ENVIRONMENT
 				Else
-					MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Warning"), StringReplace(_Translate(@MUILang, "May Report DirectX 12 Incorrectly"), '#', @OSVersion))
+					MsgBox($MB_ICONWARNING, _Translate($aMUI[1], "Warning"), StringReplace(_Translate($aMUI[1], "May Report DirectX 12 Incorrectly"), '#', @OSVersion))
 				EndIf
 			Case "WIN_11"
-				;;;
+				If $bSilent Then
+					;;; ; Anyone using silent for WNW11 on Win11 can use /fuonly
+				Else
+					If MsgBox($MB_ICONQUESTION+$MB_YESNO, _Translate($aMUI[1], "Up to Date"), _Translate($aMUI[1], "Your computer is already on Windows 11. Would you like to check Feature Update Compatiblity instead?")) = $IDYES Then
+						$bFUC = True
+					Else
+						$bFUC = False
+					EndIf
+				EndIf
 			Case Else
 				;;;
 		EndSwitch
@@ -229,7 +242,7 @@ Func ProcessCMDLine()
 			If $bSilent Then
 				Exit 10 ; ERROR_BAD_ENVIRONMENT
 			Else
-				MsgBox($MB_ICONWARNING, _Translate(@MUILang, "Not Supported"), _Translate(@MUILang, "You're running the latest build!"))
+				MsgBox($MB_ICONWARNING, StringReplace(_Translate($aMUI[1], "Not Supported"), '#', ""), StringReplace(_Translate($aMUI[1], "Not Supported"), '#', "WINE"))
 			EndIf
 		EndIf
 
@@ -246,7 +259,7 @@ Func ProcessCMDLine()
 	If Not $bSilent And Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoProgress") Then ProgressOn($aName[1], _Translate(@MUILang, "Loading WMIC"))
 
 	$aResults = RunChecks($sDrive)
-	$aExtended = RunExtendedChecks($sDrive)
+	$aExtended = RunExtendedChecks($sDrive, $bFUC)
 
 	ProgressSet(80, "Done")
 
@@ -264,7 +277,7 @@ Func ProcessCMDLine()
 		$aColors = _SetTheme()
 		$aFonts = _GetTranslationFonts($aMUI[1])
 
-		Main($aResults, $aExtended, $aOutput)
+		Main($aResults, $aExtended, $aOutput, $bFUC)
 	Else
 		Do
 			FinalizeResults($aResults)
@@ -331,13 +344,13 @@ Func RunChecks($sDrive = Null)
 
 EndFunc   ;==>RunChecks
 
-Func RunExtendedChecks($sDrive = Null)
+Func RunExtendedChecks($sDrive = Null, $bFUC = False)
 
 	Local $sTemp
 	Local $aResults[11][3]
 	Local $sFeatureUpdate = False
 
-	If @OSVersion = "WIN_11" Then
+	If @OSVersion = "WIN_11" and $bFUC Then
 		For $iLoop = 1 To 10 Step 1
 			$sTemp = RegEnumKey("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators", $iLoop)
 			If @error Then ExitLoop
@@ -390,7 +403,7 @@ Func RunCheckValidation($aInitial, $aExtended)
 
 EndFunc
 
-Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
+Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput, $bFUC = False)
 
 	; Disable Scaling
 	If @OSVersion = 'WIN_10' Or 'WIN_11' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext", "HWND", "DPI_AWARENESS_CONTEXT" - 1)
@@ -598,10 +611,11 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 	#EndRegion
 
 	#Region Header
-	If @OSVersion = "WIN_11" Then
-		Local $hHeader = GUICtrlCreateLabel(_Translate($aMUI[1], "Your Feature Update Compatibility Results Are Below"), 130, 10, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
+	Local $hHeader
+	If $bFUC Then
+		$hHeader = GUICtrlCreateLabel(_Translate($aMUI[1], "Your Feature Update Compatibility Results Are Below"), 130, 10, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	Else
-		Local $hHeader = GUICtrlCreateLabel(_Translate($aMUI[1], "Your Windows 11 Compatibility Results Are Below"), 130, 10, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
+		$hHeader = GUICtrlCreateLabel(_Translate($aMUI[1], "Your Windows 11 Compatibility Results Are Below"), 130, 10, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	EndIf
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
 
@@ -631,10 +645,11 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 
 	Local $bInfoBox = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoInfoBox")
 	Local $hCheck[11][3]
-	Local $hLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
+	Local $hLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX 12 and WDDM 2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
 	Local $aInfo = _GetDescriptions($aMUI[1])
 
 	_GDIPlus_Startup()
+
 	For $iRow = 0 To 10 Step 1
 		$hCheck[$iRow][0] = GUICtrlCreateLabel("…", 113, 70 + $iRow * 44, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE) 
 		GUICtrlSetBkColor(-1, $aColors[$iBackground])
@@ -695,7 +710,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 					_GUICtrlSetState($hCheck[1][0], $iFail)
 					GUICtrlSetData($hCheck[1][2], "Legacy")
 				Case Else
-					GUICtrlSetData($hCheck[1][2], _Translate($aMUI[1], "Not Supported"))
+					GUICtrlSetData($hCheck[1][2], StringReplace(_Translate($aMUI[1], "Not Supported"), '#', ""))
 					_GUICtrlSetState($hCheck[1][0], $iWarn)
 			EndSwitch
 	EndSwitch
@@ -717,7 +732,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 						GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Error Accessing List"))
 					Case 3
 						_GUICtrlSetState($hCheck[2][0], $iFail)
-						GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Not Supported"))
+						GUICtrlSetData($hCheck[2][2], StringReplace(_Translate($aMUI[1], "Not Supported"), '#', ""))
 				EndSwitch
 			Case Else
 				_GUICtrlSetState($hCheck[2][0], $iPass)
@@ -803,7 +818,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 	Else
 		_GUICtrlSetState($hCheck[9][0], $iFail)
 	EndIf
-	GUICtrlSetData($hCheck[9][2], $WINDOWS_DRIVE & $aResults[9][1] & " GB " & @CRLF & $aResults[9][2] & " " & _Translate($aMUI[1], "Drive(s) Meet Requirements"))
+	GUICtrlSetData($hCheck[9][2], $WINDOWS_DRIVE & $aResults[9][1] & " GB " & @CRLF & StringReplace(_Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
 	#EndRegion
 
 	#Region : TPM Check
@@ -814,11 +829,11 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 		_GUICtrlSetState($hCheck[10][0], $iFail)
 		Switch $aResults[10][1]
 			Case 0
-				GUICtrlSetData($hCheck[10][2], _Translate($aMUI[1], "TPM Missing / Disabled"))
+				GUICtrlSetData($hCheck[10][2], _Translate($aMUI[1], "Disabled / Not Detected"))
 			Case 1
-				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($aMUI[1], "Not Supported"))
+				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & StringReplace(_Translate($aMUI[1], "Not Supported"), '#', ""))
 			Case 2
-				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & _Translate($aMUI[1], "Not Supported"))
+				GUICtrlSetData($hCheck[10][2], "TPM " & Number(StringSplit(_GetTPMInfo(2), ", ", $STR_NOCOUNT)[0]) & " " & StringReplace(_Translate($aMUI[1], "Not Supported"), '#', ""))
 			Case 3
 				_GUICtrlSetState($hCheck[10][0], $iUnsure)
 				GUICtrlSetData($hCheck[10][2], _Translate($aMUI[1], "TPM Status Error"))
@@ -990,10 +1005,10 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 						Switch $aResults[5][2]
 							Case 1
 								_GUICtrlSetState($hCheck[5][0], $iPass)
-								GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 2")   ; <== No translation, "DirectX 12 and WDDM 2" in LANG-file
+								GUICtrlSetData($hCheck[5][2], _Translate($aMUI[1], "DirectX 12 and WDDM 2"))
 							Case 2
 								_GUICtrlSetState($hCheck[5][0], $iPass)
-								GUICtrlSetData($hCheck[5][2], "DirectX 12 && WDDM 3")   ; <== No translation, "DirectX 12 and WDDM 3" in LANG-file
+								GUICtrlSetData($hCheck[5][2], _Translate($aMUI[1], "DirectX 12 and WDDM 3"))
 						EndSwitch
 					Case Else
 						Switch $aResults[5][1]
@@ -1022,7 +1037,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput)
 						If $iLoop = 2 And $aExtended[$iLoop][0] = True Then ContinueLoop ; Pass if Windows Update Reports CPU Okay
 						If $aResults[$iLoop][0] = False Or $aResults[$iLoop][0] < 1 Then
 							MsgBox($MB_OK+$MB_ICONERROR+$MB_TOPMOST+$MB_SETFOREGROUND, _
-								_Translate($aMUI[1], "Not Supported"), _
+								StringReplace(_Translate($aMUI[1], "Not Supported"), '#', ""), _
 								_Translate($aMUI[1], "Your Computer is NOT ready for Windows 11, you can join the Discord using the Discord Icon if you need assistance."))
 							ContinueLoop 2
 						EndIf
