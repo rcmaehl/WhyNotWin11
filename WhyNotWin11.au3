@@ -705,7 +705,6 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 	;Local $hBasic = GUICtrlCreateTabItem("Basic Checks")
 	;GUICtrlSetColor(-1, $aColors[$iBackground])
 
-	Local $hCheckMethod
 	Local $bInfoBox = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoInfoBox")
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX 12 and WDDM 2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
@@ -798,7 +797,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 			_GUICtrlSetState($hCheck[2][0], $iPass)
 			GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Listed as Compatible"))
 		Else
-			Switch $aResults[2][0]
+			Switch ($bFUC = True ? $aResults[2][0] : $aExtended[2][0])
 				Case False
 					Switch $aResults[2][1]
 						Case 1
@@ -824,7 +823,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		_GUICtrlSetState($hCheck[3][0], $iUnsure)
 		GUICtrlSetData($hCheck[3][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		If $aResults[3][0] Then
+		If ($bFUC = True ? $aResults[3][0] : $aExtended[3][0]) Then
 			_GUICtrlSetState($hCheck[3][0], $iPass)
 		Else
 			_GUICtrlSetState($hCheck[3][0], $iFail)
@@ -843,7 +842,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		_GUICtrlSetState($hCheck[4][0], $iUnsure)
 		GUICtrlSetData($hCheck[4][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		If $aResults[4][0] Then
+		If ($bFUC = True ? $aResults[4][0] : $aExtended[4][0]) Then
 			_GUICtrlSetState($hCheck[4][0], $iPass)
 			Switch $aResults[4][2]
 				Case 0
@@ -941,7 +940,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		_GUICtrlSetState($hCheck[10][0], $iUnsure)
 		GUICtrlSetData($hCheck[10][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		If $aResults[10][0] Then
+		If ($bFUC = True ? $aResults[10][0] : $aExtended[10][0]) Then
 			_GUICtrlSetState($hCheck[10][0], $iPass)
 			GUICtrlSetData($hCheck[10][2], "TPM " & $aResults[10][1] & " " & _Translate($aMUI[1], "Detected"))
 		Else
