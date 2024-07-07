@@ -51,7 +51,7 @@ Func _GetCPUInfo($iFlag = 0)
 				$vName = $Obj_Item.Name
 				$sSpeed = $Obj_Item.MaxClockSpeed
 				$sArch = $Obj_Item.AddressWidth
-				$sVersion = $Obj_Item.Version
+				$sVersion = $Obj_Item.Caption
 				$sFamily = $Obj_Item.Caption
 			Next
 
