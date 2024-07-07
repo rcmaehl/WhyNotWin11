@@ -793,11 +793,11 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		_GUICtrlSetState($hCheck[2][0], $iUnsure)
 		GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		If ($bFUC = True ? $aResults[2][0] : $aExtended[2][0]) Then
+		If ($bFUC = True ? $aExtended[2][0] : $aResults[2][0]) Then
 			_GUICtrlSetState($hCheck[2][0], $iPass)
 			GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Listed as Compatible"))
 		Else
-			Switch ($bFUC = True ? $aResults[2][0] : $aExtended[2][0])
+			Switch ($bFUC = True ? $aExtended[2][0] : $aResults[2][0])
 				Case False
 					Switch $aResults[2][1]
 						Case 1
@@ -807,6 +807,9 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 							_GUICtrlSetState($hCheck[2][0], $iWarn)
 							GUICtrlSetData($hCheck[2][2], _Translate($aMUI[1], "Error Accessing List"))
 						Case 3
+							_GUICtrlSetState($hCheck[2][0], $iFail)
+							GUICtrlSetData($hCheck[2][2], StringReplace(_Translate($aMUI[1], "Not Supported"), "#", ""))
+						Case Else
 							_GUICtrlSetState($hCheck[2][0], $iFail)
 							GUICtrlSetData($hCheck[2][2], StringReplace(_Translate($aMUI[1], "Not Supported"), "#", ""))
 					EndSwitch
@@ -823,7 +826,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		_GUICtrlSetState($hCheck[3][0], $iUnsure)
 		GUICtrlSetData($hCheck[3][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		If ($bFUC = True ? $aResults[3][0] : $aExtended[3][0]) Then
+		If ($bFUC = True ? $aExtended[3][0] : $aResults[3][0]) Then
 			_GUICtrlSetState($hCheck[3][0], $iPass)
 		Else
 			_GUICtrlSetState($hCheck[3][0], $iFail)
@@ -842,7 +845,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		_GUICtrlSetState($hCheck[4][0], $iUnsure)
 		GUICtrlSetData($hCheck[4][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		If ($bFUC = True ? $aResults[4][0] : $aExtended[4][0]) Then
+		If ($bFUC = True ? $aExtended[4][0] : $aResults[4][0]) Then
 			_GUICtrlSetState($hCheck[4][0], $iPass)
 			Switch $aResults[4][2]
 				Case 0
@@ -889,7 +892,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		_GUICtrlSetState($hCheck[7][0], $iUnsure)
 		GUICtrlSetData($hCheck[7][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		If ($bFUC = True ? $aResults[7][0] : $aExtended[7][0]) Then
+		If ($bFUC = True ? $aExtended[7][0] : $aResults[7][0]) Then
 			_GUICtrlSetState($hCheck[7][0], $iPass)
 			GUICtrlSetData($hCheck[7][2], $aResults[7][1] & " GB")
 		Else
@@ -904,7 +907,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		_GUICtrlSetState($hCheck[8][0], $iUnsure)
 		GUICtrlSetData($hCheck[8][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		Switch ($bFUC = True ? $aResults[8][0] : $aExtended[8][0])
+		Switch ($bFUC = True ? $aExtended[8][0] : $aResults[8][0])
 			Case True
 				Switch $aResults[8][2]
 					Case 1
@@ -926,7 +929,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		_GUICtrlSetState($hCheck[9][0], $iUnsure)
 		GUICtrlSetData($hCheck[9][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		If ($bFUC = True ? $aResults[9][0] : $aExtended[9][0]) Then
+		If ($bFUC = True ? $aExtended[9][0] : $aResults[9][0]) Then
 			_GUICtrlSetState($hCheck[9][0], $iPass)
 		Else
 			_GUICtrlSetState($hCheck[9][0], $iFail)
@@ -940,7 +943,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		_GUICtrlSetState($hCheck[10][0], $iUnsure)
 		GUICtrlSetData($hCheck[10][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
-		If ($bFUC = True ? $aResults[10][0] : $aExtended[10][0]) Then
+		If ($bFUC = True ? $aExtended[10][0] : $aResults[10][0]) Then
 			_GUICtrlSetState($hCheck[10][0], $iPass)
 			GUICtrlSetData($hCheck[10][2], "TPM " & $aResults[10][1] & " " & _Translate($aMUI[1], "Detected"))
 		Else
