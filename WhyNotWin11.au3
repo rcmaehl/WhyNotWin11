@@ -90,6 +90,8 @@ Func ProcessCMDLine()
 	Local $aResults
 	Local $aExtended
 
+	Local $aTemp
+	Local $aSkips[11] = [False, False, False, False, False, False, False, False, False, False, False]
 	Local $bFUC = False
 	Local $sDrive = Null
 	Local $bForce = False
@@ -124,16 +126,17 @@ Func ProcessCMDLine()
 					MsgBox(0, "Help and Flags", _
 							"Checks PC for Windows 11 Release Compatibility" & @CRLF & _
 							@CRLF & _
-							"WhyNotWin11 [/export FORMAT FILENAME [/silent]][/drive DRIVE:][/force][/fuonly][/update [branch]]" & @CRLF & _
+							"WhyNotWin11 [/export FORMAT FILENAME] [/drive DRIVE:] [/force] [/fuonly] [/silent] [/skip [check]] [/update [branch]]" & @CRLF & _
 							@CRLF & _
 							@TAB & "/export" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
 							@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
 							@TAB & "       " & @TAB & "output. Requires a filename if used." & @CRLF & _
 							@TAB & "formats" & @TAB & "TXT, CSV" & @CRLF & _
 							@TAB & "/force " & @TAB & "Ignores program system requirements (e.g. WinPE)" & @CRLF & _
-							@TAB & "/fuonly" & @TAB & "Checks Win11 Feature Update compatibility on Win11" & @CRLF & _
+							@TAB & "/fuonly" & @TAB & "Checks Win11 Feature Update compatibility" & @CRLF & _
 							@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systems will Exit" & @CRLF & _
 							@TAB & "       " & @TAB & "with ERROR_SUCCESS." & @CRLF & _
+							@TAB & "/skip  " & @TAB & "Skips a Comma Separated List of Checks (see Wiki)" & @CRLF & _
 							@TAB & "/update" & @TAB & "Downloads the latest RELEASE (default) or DEV build" & @CRLF & _
 							@CRLF & _
 							"Refer to https://WhyNotWin11.org/wiki/Command-Line-Switches for more details" & @CRLF)
@@ -180,8 +183,59 @@ Func ProcessCMDLine()
 				Case "/s", "/silent"
 					$bSilent = True
 					_ArrayDelete($CmdLine, 1)
-				Case "/sc", "/skipcheck"
-					_ArrayDelete($CmdLine, 1)
+				Case "/sc", "/skip"
+					Select
+						Case UBound($CmdLine) <= 2
+							MsgBox(0, "Invalid", "Missing FORMAT parameter for /format." & @CRLF)
+							Exit 87 ; ERROR_INVALID_PARAMETER
+						Case Else
+							$aTemp = StringSplit($CmdLine[2], ",", $STR_NOCOUNT)
+							For $iLoop = 0 To UBound($aTemp) - 1
+								Switch $aTemp[$iLoop]
+									Case "Arch"
+										$aSkips[0] = True
+									Case "Boot"
+										$aSkips[1] = True
+									Case "Config"
+										$aSkips[1] = True
+										$aSkips[6] = True
+										$aSkips[8] = True
+									Case "CPU"
+										$aSkips[2] = True
+										$aSkips[3] = True
+										$aSkips[4] = True
+									Case "CPUCompat"
+										$aSkips[2] = True
+									Case "CPUCores"
+										$aSkips[3] = True
+									Case "CPUFreq"
+										$aSkips[4] = True
+									Case "DirectX"
+										$aSkips[5] = True
+									Case "Disk"
+										$aSkips[6] = True
+									Case "Hardware"
+										$aSkips[0] = True
+										$aSkips[2] = True
+										$aSkips[3] = True
+										$aSkips[4] = True
+										$aSkips[5] = True
+										$aSkips[7] = True
+									Case "RAM"
+										$aSkips[7] = True
+									Case "SecureBoot"
+										$aSkips[8] = True
+									Case "Storage"
+										$aSkips[9] = True
+									Case "TPM"
+										$aSkips[10] = True
+									Case Else
+										MsgBox(0, "Invalid", "Invalid CHECK parameter for /skip." & @CRLF)
+										Exit 87 ; ERROR_INVALID_PARAMETER	
+								EndSwitch
+							Next
+							_ArrayDelete($CmdLine, "1-2")
+					EndSelect
 				Case "/u", "/update"
 					Select
 						Case UBound($CmdLine) = 2
@@ -277,13 +331,13 @@ Func ProcessCMDLine()
 		$aColors = _SetTheme()
 		$aFonts = _GetTranslationFonts($aMUI[1])
 
-		Main($aResults, $aExtended, $aOutput, $bFUC)
+		Main($aResults, $aExtended, $aSkips, $aOutput, $bFUC)
 	Else
 		Do
 			FinalizeResults($aResults)
 		Until Not IsArray($aResults[5][0])
 	EndIf
-	If $aOutput[0] = True Then OutputResults($aResults, $aOutput)
+	If $aOutput[0] = True Then OutputResults($aResults, $aSkips, $aOutput)
 	For $iLoop = 0 To 10 Step 1
 		If $aResults[$iLoop][0] = False Or $aResults[$iLoop][0] < 1 Then Exit 1
 	Next
@@ -403,7 +457,7 @@ Func RunCheckValidation($aInitial, $aExtended)
 
 EndFunc
 
-Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput, $bFUC = False)
+Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFUC = False)
 
 	; Disable Scaling
 	If @OSVersion = 'WIN_10' Or 'WIN_11' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext", "HWND", "DPI_AWARENESS_CONTEXT" - 1)
@@ -1057,13 +1111,13 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aOutput, $bFUC = False)
 				If StringLeft(GUICtrlRead($hLanguage), 4) <> $aMUI[1] Then
 					$aMUI[1] = StringLeft(GUICtrlRead($hLanguage), 4)
 					GUIDelete($hGUI)
-					Main($aResults, $aExtended, $aOutput)
+					Main($aResults, $aExtended, $aSkips, $aOutput, $bFUC)
 				EndIf
 
 			Case $hMsg = $hTheme
 				$aColors = _SetTheme(StringSplit(GUICtrlRead($hTheme), " - ")[1])
 				GUIDelete($hGUI)
-				Main($aResults, $aExtended, $aOutput)
+				Main($aResults, $aExtended, $aSkips, $aOutput, $bFUC)
 
 			Case $hMsg = $hDumpLang
 				FileDelete(@LocalAppDataDir & "\WhyNotWin11\langs\")
@@ -1221,7 +1275,7 @@ EndFunc   ;==>FinalizeResults
 ; Link ..........:
 ; Example .......: No
 ; ===============================================================================================================================
-Func OutputResults(ByRef $aResults, $aOutput)
+Func OutputResults(ByRef $aResults, ByRef $aSkips, $aOutput)
 
 	Local $sFile, $hFile, $sOut = ""
 
@@ -1237,7 +1291,11 @@ Func OutputResults(ByRef $aResults, $aOutput)
 			$hFile = FileOpen($sFile, $FO_CREATEPATH + $FO_OVERWRITE)
 			$sOut = "Results for " & @ComputerName & @CRLF
 			For $iLoop = 0 To 10 Step 1
-				$sOut &= $aLabel[$iLoop] & @TAB & $aResults[$iLoop][0] & @TAB & $aResults[$iLoop][1] & @TAB & $aResults[$iLoop][2] & @CRLF
+				If $aSkips[$iLoop] Then
+					$sOut &= $aLabel[$iLoop] & @TAB & True & @TAB & "Skipped" & @TAB & "Skipped" & @CRLF
+				Else
+					$sOut &= $aLabel[$iLoop] & @TAB & $aResults[$iLoop][0] & @TAB & $aResults[$iLoop][1] & @TAB & $aResults[$iLoop][2] & @CRLF
+				EndIf
 			Next
 
 		Case "csv"
@@ -1258,7 +1316,11 @@ Func OutputResults(ByRef $aResults, $aOutput)
 			EndIf
 			$sOut = @ComputerName
 			For $iLoop = 0 To 10 Step 1
-				$sOut &= FileWrite($hFile, "," & $aResults[$iLoop][0])
+				If $aSkips[$iLoop] Then
+					$sOut &= FileWrite($hFile, "," & True)
+				Else
+					$sOut &= FileWrite($hFile, "," & $aResults[$iLoop][0])
+				EndIf
 			Next
 
 		Case Else
