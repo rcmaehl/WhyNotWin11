@@ -418,6 +418,14 @@ Func RunExtendedChecks($sDrive = Null, $bFUC = False)
 	$aResults[2][1] = @error
 	$aResults[2][2] = @extended
 
+	$aResults[3][0] = _CPUCoresCheck(_GetCPUInfo(0), _GetCPUInfo(1), $sFeatureUpdate)
+	$aResults[3][1] = @error
+	$aResults[3][2] = @extended
+
+	$aResults[4][0] = _CPUSpeedCheck($sFeatureUpdate)
+	$aResults[4][1] = @error
+	$aResults[4][2] = @extended
+
 	$aResults[7][0] = _MemCheck($sFeatureUpdate)
 	$aResults[7][1] = @error
 	$aResults[7][2] = @extended
