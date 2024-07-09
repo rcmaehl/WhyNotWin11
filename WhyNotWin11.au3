@@ -7,9 +7,9 @@
 #AutoIt3Wrapper_Res_Comment=https://www.whynotwin11.org
 #AutoIt3Wrapper_Res_CompanyName=Robert Maehl Software
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready. Now Supporting Update Checks!
-#AutoIt3Wrapper_Res_Fileversion=2.6.1.1
+#AutoIt3Wrapper_Res_Fileversion=2.6.1.0
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
-#AutoIt3Wrapper_Res_ProductVersion=2.6.1.1
+#AutoIt3Wrapper_Res_ProductVersion=2.6.1.0
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
@@ -130,8 +130,8 @@ Func ProcessCMDLine()
 							@CRLF & _
 							@TAB & "/export" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
 							@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
-							@TAB & "       " & @TAB & "output. Requires a filename if used." & @CRLF & _
-							@TAB & "formats" & @TAB & "TXT, CSV" & @CRLF & _
+							@TAB & "       " & @TAB & "output. Defaults to HOSTNAME if no filename set." & @CRLF & _
+							@TAB & "formats" & @TAB & "CSV, TSV, TXT" & @CRLF & _
 							@TAB & "/force " & @TAB & "Ignores program system requirements (e.g. WinPE)" & @CRLF & _
 							@TAB & "/fuonly" & @TAB & "Checks Win11 Feature Update compatibility" & @CRLF & _
 							@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systems will Exit" & @CRLF & _
@@ -156,19 +156,22 @@ Func ProcessCMDLine()
 					EndSelect
 				Case "/e", "/export", "/format"
 					Select
-						Case UBound($CmdLine) <= 3
-							MsgBox(0, "Invalid", "Missing FILENAME parameter for /format." & @CRLF)
-							Exit 87 ; ERROR_INVALID_PARAMETER
 						Case UBound($CmdLine) <= 2
 							MsgBox(0, "Invalid", "Missing FORMAT parameter for /format." & @CRLF)
 							Exit 87 ; ERROR_INVALID_PARAMETER
 						Case Else
 							Switch $CmdLine[2]
-								Case "CSV", "TXT"
+								Case "CSV", "TSV", "TXT"
 									$aOutput[0] = True
 									$aOutput[1] = $CmdLine[2]
-									$aOutput[2] = $CmdLine[3]
-									_ArrayDelete($CmdLine, "1-3")
+									If StringLeft($CmdLine[3], 1) = "/" Then
+										$aOutput[2] = @ComputerName & "." & $CmdLine[2]	
+										_ArrayDelete($CmdLine, "1-2")
+									Else
+										$aOutput[2] = $CmdLine[3]
+										_ArrayDelete($CmdLine, "1-3")
+									EndIf
+									
 								Case Else
 									MsgBox(0, "Invalid", "Invalid FORMAT parameter for /format." & @CRLF)
 									Exit 87 ; ERROR_INVALID_PARAMETER
@@ -1366,6 +1369,31 @@ Func OutputResults(ByRef $aResults, ByRef $aSkips, $aOutput)
 				EndIf
 			Next
 
+		Case "tsv"
+			If StringInStr($aOutput[2], ":") Or StringInStr($aOutput[2], "\\") Then
+				$sFile = $aOutput[2]
+			Else
+				$sFile = @ScriptDir & "\" & $aOutput[2]
+			EndIf
+			If Not FileExists($sFile) Then
+				$hFile = FileOpen($sFile, $FO_CREATEPATH + $FO_OVERWRITE)
+				$sOut = "Hostname"
+				For $iLoop = 0 To 10 Step 1
+					$sOut &= @TAB & $aLabel[$iLoop]
+				Next
+				FileWrite($hFile, $sOut & @CRLF)
+			Else
+				$hFile = FileOpen($sFile, $FO_APPEND)
+			EndIf
+			$sOut = @ComputerName
+			For $iLoop = 0 To 10 Step 1
+				If $aSkips[$iLoop] Then
+					$sOut &= @TAB & True
+				Else
+					$sOut &= @TAB & $aResults[$iLoop][0]
+				EndIf
+			Next
+	
 		Case "csv"
 			If StringInStr($aOutput[2], ":") Or StringInStr($aOutput[2], "\\") Then
 				$sFile = $aOutput[2]
