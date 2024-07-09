@@ -96,7 +96,7 @@ Func ProcessCMDLine()
 	Local $sDrive = Null
 	Local $bForce = False
 	Local $bSilent = False
-	Local $aOutput[3] = [True, "csv", "test.csv"]
+	Local $aOutput[3] = [False, "", ""]
 	Local $iParams = $CmdLine[0]
 
 	If $aMUI[0] = Null Then
