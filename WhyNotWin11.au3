@@ -7,9 +7,9 @@
 #AutoIt3Wrapper_Res_Comment=https://www.whynotwin11.org
 #AutoIt3Wrapper_Res_CompanyName=Robert Maehl Software
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready. Now Supporting Update Checks!
-#AutoIt3Wrapper_Res_Fileversion=2.6.1.0
+#AutoIt3Wrapper_Res_Fileversion=2.6.1.1
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
-#AutoIt3Wrapper_Res_ProductVersion=2.6.1.0
+#AutoIt3Wrapper_Res_ProductVersion=2.6.1.1
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
@@ -96,7 +96,7 @@ Func ProcessCMDLine()
 	Local $sDrive = Null
 	Local $bForce = False
 	Local $bSilent = False
-	Local $aOutput[3] = [False, "", ""]
+	Local $aOutput[3] = [True, "csv", "test.csv"]
 	Local $iParams = $CmdLine[0]
 
 	If $aMUI[0] = Null Then
@@ -1374,9 +1374,9 @@ Func OutputResults(ByRef $aResults, ByRef $aSkips, $aOutput)
 			EndIf
 			If Not FileExists($sFile) Then
 				$hFile = FileOpen($sFile, $FO_CREATEPATH + $FO_OVERWRITE)
-				$sOut = FileWrite($hFile, "Hostname")
+				$sOut = "Hostname"
 				For $iLoop = 0 To 10 Step 1
-					$sOut &= FileWrite($hFile, "," & $aLabel[$iLoop])
+					$sOut &= "," & $aLabel[$iLoop]
 				Next
 				FileWrite($hFile, $sOut & @CRLF)
 			Else
@@ -1385,9 +1385,9 @@ Func OutputResults(ByRef $aResults, ByRef $aSkips, $aOutput)
 			$sOut = @ComputerName
 			For $iLoop = 0 To 10 Step 1
 				If $aSkips[$iLoop] Then
-					$sOut &= FileWrite($hFile, "," & True)
+					$sOut &= "," & True
 				Else
-					$sOut &= FileWrite($hFile, "," & $aResults[$iLoop][0])
+					$sOut &= "," & $aResults[$iLoop][0]
 				EndIf
 			Next
 
