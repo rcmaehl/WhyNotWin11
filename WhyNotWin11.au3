@@ -126,18 +126,18 @@ Func ProcessCMDLine()
 					MsgBox(0, "Help and Flags", _
 							"Checks PC for Windows 11 Release Compatibility" & @CRLF & _
 							@CRLF & _
-							"WhyNotWin11 [/export FORMAT FILENAME] [/drive DRIVE:] [/force] [/fuonly] [/silent] [/skip [check]] [/update [branch]]" & @CRLF & _
+							"WhyNotWin11 [/drive DRIVE:] [/export FORMAT FILENAME] [/force] [/fuonly] [/silent] [/skip [check]] [/update [build]]" & @CRLF & _
 							@CRLF & _
-							@TAB & "/export" & @TAB & "Export Results in an Available format, can be used" & @CRLF & _
+							@TAB & "/drive " & @TAB & "Overrides which Disk Drive to run checks on." & @CRLF & _
+							@TAB & "/export" & @TAB & "Export Results in CSV, TSV, or TXT, can be used" & @CRLF & _
 							@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
 							@TAB & "       " & @TAB & "output. Defaults to HOSTNAME if no filename set." & @CRLF & _
-							@TAB & "formats" & @TAB & "CSV, TSV, TXT" & @CRLF & _
 							@TAB & "/force " & @TAB & "Ignores program system requirements (e.g. WinPE)" & @CRLF & _
 							@TAB & "/fuonly" & @TAB & "Checks Win11 Feature Update compatibility" & @CRLF & _
 							@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systems will Exit" & @CRLF & _
 							@TAB & "       " & @TAB & "with ERROR_SUCCESS." & @CRLF & _
-							@TAB & "/skip  " & @TAB & "Skips a Comma Separated List of Checks (see Wiki)" & @CRLF & _
-							@TAB & "/update" & @TAB & "Downloads the latest RELEASE (default) or DEV build" & @CRLF & _
+							@TAB & "/skip  " & @TAB & "Skips a Comma Separated List of Checks (see Wiki)." & @CRLF & _
+							@TAB & "/update" & @TAB & "Downloads the latest RELEASE (default) or DEV build." & @CRLF & _
 							@CRLF & _
 							"Refer to https://WhyNotWin11.org/wiki/Command-Line-Switches for more details" & @CRLF)
 					Exit 0
@@ -164,14 +164,22 @@ Func ProcessCMDLine()
 								Case "CSV", "TSV", "TXT"
 									$aOutput[0] = True
 									$aOutput[1] = $CmdLine[2]
-									If StringLeft($CmdLine[3], 1) = "/" Then
-										$aOutput[2] = @ComputerName & "." & $CmdLine[2]	
-										_ArrayDelete($CmdLine, "1-2")
-									Else
-										$aOutput[2] = $CmdLine[3]
-										_ArrayDelete($CmdLine, "1-3")
-									EndIf
-									
+									Select
+										Case UBound($CmdLine) <= 3
+											ContinueCase
+										Case StringLeft($CmdLine[3], 1) = "/"
+											$aOutput[2] = @ComputerName & "." & $CmdLine[2]	
+											_ArrayDelete($CmdLine, "1-2")
+										Case Else
+											MsgBox(0, FileGetAttrib($CmdLine[3]), StringInStr(FileGetAttrib($CmdLine[3]), "D"))
+											$aOutput[2] = $CmdLine[3]
+											If StringInStr(FileGetAttrib($CmdLine[3]), "D") Then
+												If Not StringRight($CmdLine[3], 1) <> "\" Then $aOutput[2] &= "\"
+												$aOutput[2] &= @ComputerName & "." & $CmdLine[2]
+												MsgBox(0, "", $aOutput[2])
+											EndIf
+											_ArrayDelete($CmdLine, "1-3")
+									EndSelect
 								Case Else
 									MsgBox(0, "Invalid", "Invalid FORMAT parameter for /format." & @CRLF)
 									Exit 87 ; ERROR_INVALID_PARAMETER
