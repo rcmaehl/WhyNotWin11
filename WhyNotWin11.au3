@@ -350,7 +350,7 @@ Func ProcessCMDLine()
 	EndIf
 	If $aOutput[0] = True Then OutputResults($aResults, $aSkips, $aOutput)
 	For $iLoop = 0 To 10 Step 1
-		If $aResults[$iLoop][0] = False Or $aResults[$iLoop][0] < 1 Then Exit 1
+		If ($aResults[$iLoop][0] = False Or $aResults[$iLoop][0] < 1) And Not $aSkips[$iLoop] Then Exit 1
 	Next
 	Exit 0
 EndFunc   ;==>ProcessCMDLine
