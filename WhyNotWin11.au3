@@ -171,12 +171,10 @@ Func ProcessCMDLine()
 											$aOutput[2] = @ComputerName & "." & $CmdLine[2]	
 											_ArrayDelete($CmdLine, "1-2")
 										Case Else
-											MsgBox(0, FileGetAttrib($CmdLine[3]), StringInStr(FileGetAttrib($CmdLine[3]), "D"))
 											$aOutput[2] = $CmdLine[3]
 											If StringInStr(FileGetAttrib($CmdLine[3]), "D") Then
 												If Not StringRight($CmdLine[3], 1) <> "\" Then $aOutput[2] &= "\"
 												$aOutput[2] &= @ComputerName & "." & $CmdLine[2]
-												MsgBox(0, "", $aOutput[2])
 											EndIf
 											_ArrayDelete($CmdLine, "1-3")
 									EndSelect
