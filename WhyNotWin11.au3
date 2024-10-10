@@ -7,9 +7,9 @@
 #AutoIt3Wrapper_Res_Comment=https://www.whynotwin11.org
 #AutoIt3Wrapper_Res_CompanyName=Robert Maehl Software
 #AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready. Now Supporting Update Checks!
-#AutoIt3Wrapper_Res_Fileversion=2.6.1.0
+#AutoIt3Wrapper_Res_Fileversion=2.6.1.1
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
-#AutoIt3Wrapper_Res_ProductVersion=2.6.1.0
+#AutoIt3Wrapper_Res_ProductVersion=2.6.1.1
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
@@ -127,7 +127,7 @@ Func ProcessCMDLine()
 					MsgBox(0, "Help and Flags", _
 							"Checks PC for Windows 11 Release Compatibility" & @CRLF & _
 							@CRLF & _
-							"WhyNotWin11 [/drive DRIVE:] [/export FORMAT FILENAME] [/extras DATA] [/force] [/fuonly] [/silent] [/skip CHECK] [/update [BUILD]]" & @CRLF & _
+							"WhyNotWin11 [/drive DRIVE:] [/export FORMAT [FILENAME]] [/extras DATA] [/force] [/fuonly] [/silent] [/skip CHECK] [/update [BUILD]]" & @CRLF & _
 							@CRLF & _
 							@TAB & "/drive " & @TAB & "Overrides which Disk Drive to run checks on." & @CRLF & _
 							@TAB & "/export" & @TAB & "Export Results in CSV, TSV, or TXT, can be used" & @CRLF & _
