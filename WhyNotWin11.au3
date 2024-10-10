@@ -96,7 +96,8 @@ Func ProcessCMDLine()
 	Local $sDrive = Null
 	Local $bForce = False
 	Local $bSilent = False
-	Local $aOutput[3] = [False, "", ""]
+	Local $aExtras[2] = ["",""]
+	Local $aOutput[4] = [False, "", "", $aExtras]
 	Local $iParams = $CmdLine[0]
 
 	If $aMUI[0] = Null Then
@@ -126,12 +127,13 @@ Func ProcessCMDLine()
 					MsgBox(0, "Help and Flags", _
 							"Checks PC for Windows 11 Release Compatibility" & @CRLF & _
 							@CRLF & _
-							"WhyNotWin11 [/drive DRIVE:] [/export FORMAT FILENAME] [/force] [/fuonly] [/silent] [/skip [check]] [/update [build]]" & @CRLF & _
+							"WhyNotWin11 [/drive DRIVE:] [/export FORMAT FILENAME] [/extras DATA] [/force] [/fuonly] [/silent] [/skip CHECK] [/update [BUILD]]" & @CRLF & _
 							@CRLF & _
 							@TAB & "/drive " & @TAB & "Overrides which Disk Drive to run checks on." & @CRLF & _
 							@TAB & "/export" & @TAB & "Export Results in CSV, TSV, or TXT, can be used" & @CRLF & _
 							@TAB & "       " & @TAB & "without the /silent flag for both GUI and file" & @CRLF & _
 							@TAB & "       " & @TAB & "output. Defaults to HOSTNAME if no filename set." & @CRLF & _
+							@TAB & "/extras" & @TAB & "Extra data to output when using /export (See Wiki." & @CRLF & _
 							@TAB & "/force " & @TAB & "Ignores program system requirements (e.g. WinPE)" & @CRLF & _
 							@TAB & "/fuonly" & @TAB & "Checks Win11 Feature Update compatibility" & @CRLF & _
 							@TAB & "/silent" & @TAB & "Don't Display the GUI. Compatible Systems will Exit" & @CRLF & _
@@ -183,6 +185,43 @@ Func ProcessCMDLine()
 									Exit 87 ; ERROR_INVALID_PARAMETER
 							EndSwitch
 					EndSelect
+					Case "/ex", "/extras"
+						Select
+							Case UBound($CmdLine) <= 2
+								MsgBox(0, "Invalid", "Missing DATA parameter for /extras." & @CRLF)
+								Exit 87 ; ERROR_INVALID_PARAMETER
+							Case Else
+								$aTemp = StringSplit($CmdLine[2], ",", $STR_NOCOUNT)
+								For $iLoop = 0 To UBound($aTemp) - 1
+									Switch $aTemp[$iLoop]
+										Case "BUILD"
+											$aExtras[0] &= ",OS Build"
+											$aExtras[1] &= "," & @OSBuild
+										Case "KEYBOARD"
+											$aExtras[0] &= ",Keyboard Langauage"
+											$aExtras[1] &= "," & @KBLayout
+										Case "LANGUAGE"
+											$aExtras[0] &= ",OS Langauage"
+											$aExtras[1] &= "," & @OSLang									
+										Case "MUI"
+											$aExtras[0] &= ",MUI Langauage"
+											$aExtras[1] &= "," & @MUILang
+										Case "OS"
+											$aExtras[0] &= ",Operating System"
+											$aExtras[1] &= "," & @OSVersion
+										Case "USER"
+											$aExtras[0] &= ",Logged In User"
+											$aExtras[1] &= "," & @UserName
+										Case Else
+											MsgBox(0, "Invalid", "Invalid DATA parameter for /extras." & @CRLF)
+											Exit 87 ; ERROR_INVALID_PARAMETER	
+									EndSwitch
+								Next
+								$aExtras[0] = StringTrimLeft($aExtras[0], 1)
+								$aExtras[1] = StringTrimLeft($aExtras[1], 1)
+								$aOutput[3] = $aExtras
+								_ArrayDelete($CmdLine, "1-2")
+						EndSelect
 				Case "/f", "/force"
 					$bForce = True
 					_ArrayDelete($CmdLine, 1)
@@ -1355,8 +1394,20 @@ EndFunc   ;==>FinalizeResults
 Func OutputResults(ByRef $aResults, ByRef $aSkips, $aOutput)
 
 	Local $sFile, $hFile, $sOut = ""
+	Local $aExtras, $aExtraData
 
 	Local $aLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX + WDDM2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
+
+	$aExtras = $aOutput[3]
+
+	_ArrayAdd($aLabel, StringSplit($aExtras[0], ",", $STR_NOCOUNT))
+	$aExtraData = StringSplit($aExtras[1], ",", $STR_NOCOUNT)
+
+	If $aLabel[11] <> "" Then
+		;;;
+	Else
+		_ArrayDelete($aLabel, 11)
+	EndIf
 
 	Switch $aOutput[1]
 		Case "txt"
@@ -1367,11 +1418,15 @@ Func OutputResults(ByRef $aResults, ByRef $aSkips, $aOutput)
 			EndIf
 			$hFile = FileOpen($sFile, $FO_CREATEPATH + $FO_OVERWRITE)
 			$sOut = "Results for " & @ComputerName & @CRLF
-			For $iLoop = 0 To 10 Step 1
-				If $aSkips[$iLoop] Then
-					$sOut &= $aLabel[$iLoop] & @TAB & True & @TAB & "Skipped" & @TAB & "Skipped" & @CRLF
+			For $iLoop = 0 To UBound($aLabel) - 1 Step 1
+				If $iLoop > 10 Then
+					$sOut &= $aLabel[$iLoop] & ": " & $aExtraData[$iLoop - 11] & @CRLF
 				Else
-					$sOut &= $aLabel[$iLoop] & @TAB & $aResults[$iLoop][0] & @TAB & $aResults[$iLoop][1] & @TAB & $aResults[$iLoop][2] & @CRLF
+					If $aSkips[$iLoop] Then
+						$sOut &= $aLabel[$iLoop] & @TAB & True & @TAB & "Skipped" & @TAB & "Skipped" & @CRLF
+					Else
+						$sOut &= $aLabel[$iLoop] & @TAB & $aResults[$iLoop][0] & @TAB & $aResults[$iLoop][1] & @TAB & $aResults[$iLoop][2] & @CRLF
+					EndIf
 				EndIf
 			Next
 
@@ -1384,7 +1439,7 @@ Func OutputResults(ByRef $aResults, ByRef $aSkips, $aOutput)
 			If Not FileExists($sFile) Then
 				$hFile = FileOpen($sFile, $FO_CREATEPATH + $FO_OVERWRITE)
 				$sOut = "Hostname"
-				For $iLoop = 0 To 10 Step 1
+				For $iLoop = 0 To UBound($aLabel) - 1 Step 1
 					$sOut &= @TAB & $aLabel[$iLoop]
 				Next
 				FileWrite($hFile, $sOut & @CRLF)
@@ -1392,14 +1447,18 @@ Func OutputResults(ByRef $aResults, ByRef $aSkips, $aOutput)
 				$hFile = FileOpen($sFile, $FO_APPEND)
 			EndIf
 			$sOut = @ComputerName
-			For $iLoop = 0 To 10 Step 1
-				If $aSkips[$iLoop] Then
-					$sOut &= @TAB & True
+			For $iLoop = 0 To UBound($aLabel) - 1 Step 1
+				If $iLoop > 10 Then
+					$sOut &= @TAB & $aExtraData[$iLoop - 11]
 				Else
-					$sOut &= @TAB & $aResults[$iLoop][0]
+					If $aSkips[$iLoop] Then
+						$sOut &= @TAB & True
+					Else
+						$sOut &= @TAB & $aResults[$iLoop][0]
+					EndIf
 				EndIf
 			Next
-	
+
 		Case "csv"
 			If StringInStr($aOutput[2], ":") Or StringInStr($aOutput[2], "\\") Then
 				$sFile = $aOutput[2]
@@ -1409,7 +1468,7 @@ Func OutputResults(ByRef $aResults, ByRef $aSkips, $aOutput)
 			If Not FileExists($sFile) Then
 				$hFile = FileOpen($sFile, $FO_CREATEPATH + $FO_OVERWRITE)
 				$sOut = "Hostname"
-				For $iLoop = 0 To 10 Step 1
+				For $iLoop = 0 To UBound($aLabel) - 1 Step 1
 					$sOut &= "," & $aLabel[$iLoop]
 				Next
 				FileWrite($hFile, $sOut & @CRLF)
@@ -1417,11 +1476,15 @@ Func OutputResults(ByRef $aResults, ByRef $aSkips, $aOutput)
 				$hFile = FileOpen($sFile, $FO_APPEND)
 			EndIf
 			$sOut = @ComputerName
-			For $iLoop = 0 To 10 Step 1
-				If $aSkips[$iLoop] Then
-					$sOut &= "," & True
+			For $iLoop = 0 To UBound($aLabel) - 1 Step 1
+				If $iLoop > 10 Then
+					$sOut &= "," & $aExtraData[$iLoop - 11]
 				Else
-					$sOut &= "," & $aResults[$iLoop][0]
+					If $aSkips[$iLoop] Then
+						$sOut &= "," & True
+					Else
+						$sOut &= "," & $aResults[$iLoop][0]
+					EndIf
 				EndIf
 			Next
 
