@@ -245,7 +245,7 @@ Func _GetMotherboardInfo($iFlag = 0)
 		Switch $sManufacturer
 			Case "ASUSTek COMPUTER INC."
 				$sManufacturer = "ASUS"
-			Case "Gigabyte Technology Co., Ltd"
+			Case "Gigabyte Technology Co., Ltd."
 				$sManufacturer = "Gigabyte"
 			Case "Microsoft Corporation"
 				$sManufacturer = "Microsoft"
