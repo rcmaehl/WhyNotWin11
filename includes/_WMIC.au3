@@ -5,6 +5,13 @@
 
 #include "GetDiskInfo.au3"
 
+Func _CreateWMIObjects()
+	Local $Obj_WMIService = ObjGet('winmgmts:\\.\root\cimv2')
+	Local $Obj_WMIServiceTPM = ObjGet('winmgmts:\\.\root\cimv2\Security\MicrosoftTPM')
+	Local $aHandles[2] = [$Obj_WMIService, $Obj_WMIServiceTPM]
+	Return $aHandles
+EndFunc
+
 Func _GetBIOSInfo($iFlag = 0)
 	Local Static $sSMBIOSBIOSVersion
 
