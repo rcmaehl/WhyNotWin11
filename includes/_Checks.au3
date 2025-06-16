@@ -49,7 +49,16 @@ Func _CPUNameCheck($sCPU, $sFamily, $sVersion, $sWinFU = False)
 			If StringInStr($sCPU, "1600") And StringInStr($sVersion, "Stepping 2") Then Return True ; 1600AF
 			$ListFile = "\WhyNotWin11\SupportedProcessorsAMD.txt"
 		Case StringInStr($sCPU, "Intel")
-			If $sFamily = 6 And StringRegExp($sVersion, ".*Model\s(1[6-9][0-9]|2[0-9]{2})\s.*") Then Return True
+			If $sFamily = 6 Then
+				Select
+					Case StringRegExp($sVersion, ".*Model\s(1[6-9][0-9]|2[0-9]{2})\s.*")
+						ContinueCase
+					Case StringInStr($sVersion, "Model 142") And StringRegExp($sVersion, ".*Stepping\s1[0-9]\s.*")
+						ContinueCase
+					Case StringInStr($sVersion, "Model 158") And StringRegExp($sVersion, ".*Stepping\s1[0-9]\s.*")
+						Return True
+				EndSelect
+			EndIf
 			$ListFile = "\WhyNotWin11\SupportedProcessorsIntel.txt"
 		Case StringInStr($sCPU, "SnapDragon") Or StringInStr($sCPU, "Microsoft")
 			$ListFile = "\WhyNotWin11\SupportedProcessorsQualcomm.txt"
