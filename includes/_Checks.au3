@@ -53,9 +53,9 @@ Func _CPUNameCheck($sCPU, $sFamily, $sVersion, $sWinFU = False)
 				Select
 					Case StringRegExp($sVersion, ".*Model\s(1[6-9][0-9]|2[0-9]{2})\s.*")
 						ContinueCase
-					Case StringInStr($sVersion, "Model 142") And StringRegExp($sVersion, ".*Stepping\s1[0-9]\s.*")
+					Case StringInStr($sVersion, "Model 142") And StringRegExp($sVersion, ".*Stepping\s1[0-9].*")
 						ContinueCase
-					Case StringInStr($sVersion, "Model 158") And StringRegExp($sVersion, ".*Stepping\s1[0-9]\s.*")
+					Case StringInStr($sVersion, "Model 158") And StringRegExp($sVersion, ".*Stepping\s1[0-9].*")
 						Return True
 				EndSelect
 			EndIf
