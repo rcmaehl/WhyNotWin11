@@ -1245,7 +1245,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 				ShellExecute("https://whynotwin11.org")
 
 			Case $hMsg = $hDonate
-				ShellExecute("https://paypal.me/rhsky")
+				ShellExecute("https://www.paypal.com/donate/?hosted_button_id=YL5HFNEJAAMTL")
 
 			Case $hMsg = $hDiscord
 				ShellExecute("https://discord.gg/uBnBcBx")
