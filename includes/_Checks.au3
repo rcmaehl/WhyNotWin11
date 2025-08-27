@@ -135,7 +135,9 @@ Func _DirectXStartCheck()
 EndFunc   ;==>_DirectXStartCheck
 
 Func _GetDirectXCheck(ByRef $aArray)
-	If TimerDiff($aArray[2]) > 120000 Then
+	If Not IsArray($aArray) Then
+		;;;
+	Elseif TimerDiff($aArray[2]) > 120000 Then
 		FileDelete($aArray[0])
 		Return SetError(0, 2, False)
 	ElseIf Not ProcessExists($aArray[1]) Then
@@ -228,6 +230,16 @@ Func _GPTCheck($iFlag)
 	EndSwitch
 EndFunc   ;==>_GPTCheck
 #ce
+
+Func _GPUNameCheck($sGPU)
+	Select
+		Case StringRegExp($sGPU, ".*(GTX (7|10|16)|RTX| Super|Max-Q|RX|Vega|VII).*") ; Modern GPUs 
+			Return SetError(0, 0, True)
+		Case Else
+			Return SetError(0, 0, False)
+	EndSelect
+EndFunc   ;==>_GPUNameCheck
+
 Func _InternetCheck()
 	Return _WinAPI_IsInternetConnected()
 EndFunc
@@ -341,7 +353,7 @@ Func _TPMCheck($sWinFU = False)
 			ContinueCase
 		Case _GetTPMInfo(1) = False
 			Return SetError(0, 0, False)
-		Case _GetTPMInfo(0) = True And _GetTPMInfo(3) <> "OK"
+		Case _GetTPMInfo(0) = True And _GetTPMInfo(3) <> "OK" And Not IsAdmin()
 			Return SetError(3, 0 , False)
 		Case _GetTPMInfo(0) = True And Number(_GetTPMInfo(2)) >= 2.0
 			Return SetError(Number(_GetTPMInfo(2)), 0, True)

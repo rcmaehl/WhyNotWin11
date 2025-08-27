@@ -381,9 +381,9 @@ Func ProcessCMDLine()
 
 		Main($aResults, $aExtended, $aSkips, $aOutput, $bFUC)
 	Else
-		Do
+		While IsArray($aResults[5][0]) ; Wait for DirectX Check to complete
 			FinalizeResults($aResults)
-		Until Not IsArray($aResults[5][0])
+		WEnd
 	EndIf
 	If $aOutput[0] = True Then OutputResults($aResults, $aSkips, $aOutput)
 	For $iLoop = 0 To 10 Step 1
@@ -416,9 +416,15 @@ Func RunChecks($sDrive = Null)
 	$aResults[4][1] = @error
 	$aResults[4][2] = @extended
 
-	$aResults[5][0] = _DirectXStartCheck()
-	$aResults[5][1] = -1
-	$aResults[5][2] = -1
+	$aResults[5][0] = _GPUNameCheck(_GetGPUInfo(0))
+	$aResults[5][1] = @error
+	$aResults[5][2] = @extended
+
+	If $aResults[5][0] = False Then
+		$aResults[5][0] = _DirectXStartCheck()
+		$aResults[5][1] = -1
+		$aResults[5][2] = -1
+	EndIf
 
 	Local $aDisks, $aPartitions
 	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
