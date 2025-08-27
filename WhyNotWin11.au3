@@ -1179,6 +1179,9 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 				Switch $aResults[5][0]
 					Case True
 						Switch $aResults[5][2]
+							Case 0
+								_GUICtrlSetState($hCheck[5][0], $iPass)
+								GUICtrlSetData($hCheck[5][2], _Translate($aMUI[1], "DirectX 12 and WDDM 2") & "+")
 							Case 1
 								_GUICtrlSetState($hCheck[5][0], $iPass)
 								GUICtrlSetData($hCheck[5][2], _Translate($aMUI[1], "DirectX 12 and WDDM 2"))
