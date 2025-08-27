@@ -655,8 +655,9 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		If BitAND($dSettings, 65535) = 65535 Then
 			;;;
 		Else
-			GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
-			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 206, 32, 32)
+			GUICtrlCreateIcon("", -1, 34, 518, 32, 32);
+			GUICtrlSetImage(-1, @SystemDir & "\shell32.dll", 16826)
+			;_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 206, 32, 32)
 		EndIf
 		GUICtrlCreateIcon("", -1, 42, 20, 20, 20)
 		_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 208, 20, 20)
@@ -679,7 +680,8 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 			;;;
 		Else
 			GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\Settings.ico", -1, 32, 32)
+			GUICtrlSetImage(-1, @SystemDir & "\shell32.dll", 16826)
+			;_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\Settings.ico", -1, 32, 32)
 		EndIf
 		GUICtrlCreateIcon("", -1, 42, 20, 20, 20)
 		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\WhyNotWin11.ico", -1, 20, 20)
@@ -767,7 +769,8 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 	_GDIPlus_Startup()
 
 	For $iRow = 0 To 10 Step 1
-		$hCheck[$iRow][0] = GUICtrlCreateLabel("…", 113, 70 + $iRow * 44, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE) 
+		$hCheck[$iRow][0] = GUICtrlCreateIcon(@SystemDir & "\imageres.dll", 99, 114, 74 + $iRow * 44, 32, 32, $SS_CENTER + $SS_CENTERIMAGE) 
+		;$hCheck[$iRow][0] = GUICtrlCreateLabel("…", 113, 70 + $iRow * 44, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE) 
 		GUICtrlSetBkColor(-1, $aColors[$iBackground])
 		GUICtrlCreateIcon("", -1, 763, 78 + $iRow * 44, 24, 40)
 		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($aMUI[1], $hLabel[$iRow]), 153, 70 + $iRow * 44, 297, 40, $SS_CENTERIMAGE)
@@ -781,12 +784,9 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		EndSwitch
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
 		If Not $bInfoBox Then
-			GUICtrlCreateIcon("", -1, 763, 78 + $iRow * 44, 24, 40)
-			If @Compiled Then
-				_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
-			Else
-				_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\Info.ico", -1, 24, 24)
-			EndIf
+			GUICtrlCreateIcon(@SystemDir & "\imageres.dll", 81, 763, 78 + $iRow * 44, 24, 24, $SS_CENTER + $SS_CENTERIMAGE)
+			GUICtrlCreateLabel("", 763, 78 + $iRow * 44, 24, 24)
+			GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 			GUICtrlSetTip(-1, $aInfo[$iRow], "", $TIP_NOICON, $TIP_CENTER)
 		EndIf
 	Next
@@ -1075,8 +1075,8 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		;;;
 	Else
 		GUICtrlCreateGroup("", 30, 20, 638, 100)
-		GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Info") & " ", 40, 20, 618, 20)
-		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+		GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Info") & " ", 40, 20, 618, 20, $SS_CENTER)
+		GUICtrlSetBkColor(-1, $aColors[$iBackground])
 		If @Compiled Then
 			GUICtrlCreateIcon(@ScriptFullPath, 99, 50, 30, 40, 40)
 		Else
@@ -1084,9 +1084,12 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		EndIf
 	EndIf
 
+	GUICtrlCreateLabel($aName[1] & " " & $sVersion, 100, 50, 550, 20, $SS_CENTERIMAGE)
+	GUICtrlCreateLabel("Consumer Edition", 100, 70, 550, 20, $SS_CENTERIMAGE)
+
 	GUICtrlCreateGroup("", 30, 180, 400, 328)
-	GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Settings") & " ", 40, 180, 380, 20)
-	GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+	GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Settings") & " ", 40, 180, 380, 20, $SS_CENTER)
+	GUICtrlSetBkColor(-1, $aColors[$iBackground])
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Language") & ":", 40, 200, 380, 20)
 	Local $hLanguage = GUICtrlCreateCombo($alangs, 40, 220, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
 	If BitAND($dSettings, 4) = 4 Then
@@ -1136,8 +1139,8 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		;;;
 	Else
 		GUICtrlCreateGroup("", 470, 180, 200, 328)
-		GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Guides") & " ", 480, 180, 180, 20)
-		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+		GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Guides") & " ", 480, 180, 180, 20, $SS_CENTER)
+		GUICtrlSetBkColor(-1, $aColors[$iBackground])
 		$hChecks = GUICtrlCreateButton(_Translate($aMUI[1],"Windows 11 Requirements"), 480, 200, 180, 40)
 		GUICtrlSetCursor(-1, 0)
 		$hConvert = GUICtrlCreateButton(_Translate($aMUI[1],"Convert Disk to GPT"), 480, 250, 180, 40)
@@ -1553,16 +1556,20 @@ EndFunc   ;==>_SetBannerText
 Func _GUICtrlSetState($hCtrl, $iState)
 	Switch $iState
 		Case 0
-			GUICtrlSetData($hCtrl, "❌") ; Failed
-			GUICtrlSetBkColor($hCtrl, 0xFA113D)
+			GUICtrlSetImage($hCtrl, @SystemDir & "\imageres.dll", "98") ; Failed
+			;GUICtrlSetData($hCtrl, "❌") ; Failed
+			;GUICtrlSetBkColor($hCtrl, 0xFA113D)
 		Case 1
-			GUICtrlSetData($hCtrl, $aPass[1]) ; Passed
-			GUICtrlSetBkColor($hCtrl, 0x4CC355)
+			GUICtrlSetImage($hCtrl, @SystemDir & "\imageres.dll", "1405") ; Passed
+			;GUICtrlSetData($hCtrl, $aPass[1]) ; Passed
+			;GUICtrlSetBkColor($hCtrl, 0x4CC355)
 		Case 2
-			GUICtrlSetData($hCtrl, "?") ; Unsure
-			GUICtrlSetBkColor($hCtrl, 0xF4C141)
+			GUICtrlSetImage($hCtrl, @SystemDir & "\imageres.dll", "99")
+			;GUICtrlSetData($hCtrl, "?") ; Unsure
+			;GUICtrlSetBkColor($hCtrl, 0xF4C141)
 		Case 3
-			GUICtrlSetData($hCtrl, "!") ; Warn
-			GUICtrlSetBkColor($hCtrl, 0xF4C141)
+			GUICtrlSetImage($hCtrl, @SystemDir & "\imageres.dll", "84")
+			;GUICtrlSetData($hCtrl, "!") ; Warn
+			;GUICtrlSetBkColor($hCtrl, 0xF4C141)
 	EndSwitch
 EndFunc   ;==>_GUICtrlSetState
