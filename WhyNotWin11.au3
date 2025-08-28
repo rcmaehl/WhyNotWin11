@@ -31,11 +31,12 @@
 
 Global $aFonts[5]
 Global $bWinPE = False
-Global $aColors[4] ; Convert to [4][8] for 2.0 themes
-Global $sEdition = "Standard"
+Global $aTheme[3]
+Global $aBgColors[5]
+Global $aTxtColors[9]
+Global $aBgFiles[3]
 Global $sVersion
 FileChangeDir(@SystemDir)
-Global Static $aPass[2] = [Null, ""] ; Forced, Pass Symbol
 
 If @Compiled Then
 	$sVersion = FileGetVersion(@ScriptFullPath)
@@ -110,12 +111,6 @@ Func ProcessCMDLine()
 		$aName[1] = RegRead("HKEY_LOCAL_MACHINE\Software\Policies\Robert Maehl Software\WhyNotWin11", "SetAppName")
 		$aName[0] = $aName[1] ? True : False
 		If Not $aName[0] Then $aName[1] = "WhyNotWin11"
-	EndIf
-
-	If $aPass[0] = Null Then
-		$aPass[1] = RegRead("HKEY_LOCAL_MACHINE\Software\Policies\Robert Maehl Software\WhyNotWin11", "SetPassedSymbol")
-		$aPass[0] = $aPass[1] ? True : False
-		If Not $aPass[0] Then $aPass[1] = ""
 	EndIf
 
 	If RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoAppName") Then $aName[1] = ""
@@ -376,14 +371,17 @@ Func ProcessCMDLine()
 		Local Enum $iFail = 0, $iPass, $iUnsure, $iWarn, $iRunning
 		#ce
 
-		$aColors = _SetTheme()
+		$aTheme = _SetTheme()
+		$aBgColors = $aTheme[0]
+		$aTxtColors = $aTheme[1]
+		$aBgFiles = $aTheme[2]
 		$aFonts = _GetTranslationFonts($aMUI[1])
 
 		Main($aResults, $aExtended, $aSkips, $aOutput, $bFUC)
 	Else
-		Do
+		While IsArray($aResults[5][0]) ; Wait for DirectX Check to complete
 			FinalizeResults($aResults)
-		Until Not IsArray($aResults[5][0])
+		WEnd
 	EndIf
 	If $aOutput[0] = True Then OutputResults($aResults, $aSkips, $aOutput)
 	For $iLoop = 0 To 10 Step 1
@@ -416,9 +414,15 @@ Func RunChecks($sDrive = Null)
 	$aResults[4][1] = @error
 	$aResults[4][2] = @extended
 
-	$aResults[5][0] = _DirectXStartCheck()
-	$aResults[5][1] = -1
-	$aResults[5][2] = -1
+	$aResults[5][0] = _GPUNameCheck(_GetGPUInfo(0))
+	$aResults[5][1] = @error
+	$aResults[5][2] = @extended
+
+	If $aResults[5][0] = False Then
+		$aResults[5][0] = _DirectXStartCheck()
+		$aResults[5][1] = -1
+		$aResults[5][2] = -1
+	EndIf
 
 	Local $aDisks, $aPartitions
 	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
@@ -515,13 +519,20 @@ EndFunc
 
 Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFUC = False)
 
+	_GDIPlus_Startup()
+
 	; Disable Scaling
 	If @OSVersion = 'WIN_10' Or 'WIN_11' Then DllCall(@SystemDir & "\User32.dll", "bool", "SetProcessDpiAwarenessContext", "HWND", "DPI_AWARENESS_CONTEXT" - 1)
 
 	Local $bComplete = False
 
 	Local Enum $iFail = 0, $iPass, $iUnsure, $iWarn
-	Local Enum $iBackground = 0, $iText, $iSidebar, $iFooter
+
+	Local Enum $iBg = 0, $iText, $iBgFiles
+
+	Local Enum $iMainBg = 0, $iSidebarBg, $iFooterBg, $iResultsBg, $iSettingsBg
+	Local Enum $iMainText = 0, $iNameText, $iVersionText, $iHeaderText, $iFooterText, $iLinksText, $iChecksText, $iResultsText, $iSettingsText
+	Local Enum $iSidebarFile = 0, $iBackgroundFile, $iFooterFile
 
 	Local Const $DPI_RATIO = _GDIPlus_GraphicsGetDPIRatio()[0]
 	Local Enum $FontSmall, $FontMedium, $FontLarge, $FontExtraLarge
@@ -530,11 +541,10 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 
 	Local $hGUI = GUICreate($aName[1], 800, 600, -1, -1, BitOR($WS_POPUP, $WS_BORDER), _GetTranslationRTL($aMUI[1]))
 	_WinAPI_DwmSetWindowAttributeExt($hGUI, 33, 2)
-	GUISetBkColor($aColors[$iBackground])
+	GUISetBkColor($aBgColors[$iMainBg])
 	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", $aFonts[4])
 
-	GUICtrlSetDefColor($aColors[$iText])
-	GUICtrlSetDefBkColor($aColors[$iBackground])
+	GUICtrlSetDefColor($aTxtColors[$iMainText])
 
 	Local $aLangs = _FileListToArray(@LocalAppDataDir & "\WhyNotWin11\langs\", "*.lang", $FLTA_FILES)
 	If Not @error Then
@@ -545,10 +555,10 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 			_ArrayDelete($aLangs, 55) ;==> Remove the "Unknown" entry
 	EndIf
 
-	Local $aThemes = _FileListToArray(@ScriptDir & "\", "*.def", $FLTA_FILES)
+	Local $aThemes = _FileListToArray(@ScriptDir & "\Themes\", "*.def", $FLTA_FILES)
 	If Not @error Then
 		For $iLoop = 1 To $aThemes[0] Step 1
-			$aThemes[$iLoop] &= " - " & IniRead(@ScriptDir & "\" & $aThemes[$iLoop], "MetaData", "Name", "Unknown")
+			$aThemes[$iLoop] &= " - " & IniRead(@ScriptDir & "\Themes" & $aThemes[$iLoop], "MetaData", "Name", "Unknown")
 		Next
 		_ArrayDelete($aThemes, 0)
 	EndIf
@@ -560,29 +570,23 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 	GUISetAccelerators($aAccel)
 
 	#Region Sidebar
+	Local $hSidebarGUI = GUICreate("", 100, 600, 2, 2, $WS_POPUP, $WS_EX_MDICHILD, $hGUI)
+	GUISetBkColor($aBgColors[$iSidebarBg])
+	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", $aFonts[4])
+
 	; Top Most Interaction for Update Text
 	Local $hUpdate = Default
 	If $bWinPE Or Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoUpdate") Then
 		$hUpdate = GUICtrlCreateLabel("", 0, 560, 90, 60, $SS_CENTER + $SS_CENTERIMAGE)
-		GUICtrlSetBkColor(-1, $aColors[$iSidebar])
+		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 		GUICtrlSetCursor(-1, 0)
 	EndIf
-
-	#cs Maybe Readd Later
-	; Top Most Interaction for Banner
-	Local $hBanner = GUICtrlCreateLabel("", 5, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
-	#ce Maybe Readd Later
-
-	; Top Most Interaction for Closing Window
-	Local $hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, $aFonts[$FontExtraLarge] * $DPI_RATIO, $FW_MEDIUM)
-	GUICtrlSetCursor(-1, 0)
 
 	; Top Most Interaction for Socials
 	Local $hGithub = Default, $hDonate = Default, $hDiscord = Default, $hWeb = Default, $hJob = Default
 	If $bWinPE Or Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
 		$hGithub = GUICtrlCreateLabel("", 34, 110, 32, 32)
+		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 		GUICtrlSetTip(-1, "GitHub")
 		GUICtrlSetCursor(-1, 0)
 
@@ -616,109 +620,133 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		GUICtrlSetCursor(-1, 0)
 	EndIf
 
-	; Allow Dragging of Window
-	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
+	; Sidebar Background
+	If $aBgFiles[$iSidebarFile] <> "" Then
+		Local $hSidebar = GUICtrlCreatePic("", 0, 0, 100, 600)
+		Local $hSidebarFile = _GDIPlus_ImageLoadFromFile(@ScriptDir & "\" & $aBgFiles[$iSidebarFile])
+		Local $hSidebarImage = _GDIPlus_BitmapCreateHBITMAPFromBitmap($hSidebarFile)
+		_WinAPI_DeleteObject(GUICtrlSendMsg($hSidebar, $STM_SETIMAGE, $IMAGE_BITMAP, $hSidebarImage))
+	EndIf
 
-	GUICtrlCreateLabel("", 0, 0, 100, 600)
-	GUICtrlSetBkColor(-1, $aColors[$iSidebar])
+	If @Compiled Then
+		If $bWinPE Or Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
+			GUICtrlCreatePic("", 34, 110, 32, 32)
+			_SetBkSelfIcon(-1, @ScriptFullPath, 201)
+			GUICtrlCreatePic("", 34, 160, 32, 32)
+			_SetBkSelfIcon(-1, @ScriptFullPath, 202)
+			GUICtrlCreatePic("", 34, 210, 32, 32)
+			_SetBkSelfIcon(-1, @ScriptFullPath, 203)
+			GUICtrlCreatePic("", 34, 260, 32, 32)
+			_SetBkSelfIcon(-1, @ScriptFullPath, 204)
+			If @LogonDomain <> @ComputerName Then
+				GUICtrlCreatePic("", 34, 310, 32, 32)
+				_SetBkSelfIcon(-1, @SystemDir & "\imageres.dll", 124)
+			EndIf
+		EndIf
+		If BitAND($dSettings, 65535) = 65535 Then
+			;;;
+		Else
+			GUICtrlCreatePic("", 34, 518, 32, 32);
+			_SetBkIcon(-1, @SystemDir & "\shell32.dll", -16826, 32, 32)
+		EndIf
+		GUICtrlCreatePic("", 34, 20, 32, 32)
+		_SetBkSelfIcon(-1, @ScriptFullPath, 208)
+	Else
+		If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
+			GUICtrlCreatePic("", 34, 110, 32, 32)
+			_SetBkIcon(-1, @ScriptDir & "\assets\GitHub.ico", -1, 32, 32)
+			GUICtrlCreatePic("", 34, 160, 32, 32)
+			_SetBkIcon(-1, @ScriptDir & "\assets\PayPal.ico", -1, 32, 32)
+			GUICtrlCreatePic("", 34, 210, 32, 32)
+			_SetBkIcon(-1, @ScriptDir & "\assets\Discord.ico", -1, 32, 32)
+			GUICtrlCreatePic("", 34, 260, 32, 32)
+			_SetBkIcon(-1, @ScriptDir & "\assets\Web.ico", -1, 32, 32)
+			If @LogonDomain <> @ComputerName Then
+				GUICtrlCreatePic("", 34, 310, 32, 32)
+				_SetBkIcon(-1, @SystemDir & "\imageres.dll", 124, 32, 32)
+			EndIf
+		EndIf
+		If BitAND($dSettings, 65535) = 65535 Then
+			;;;
+		Else
+			GUICtrlCreatePic("", 34, 518, 32, 32)
+			_SetBkIcon(-1, @SystemDir & "\shell32.dll", -16826, 32, 32)
+		EndIf
+		GUICtrlCreatePic("", 34, 20, 32, 32)
+		_SetBkIcon(-1, @ScriptDir & "\assets\WhyNotWin11.ico", -1, 32, 32)
+	EndIf
+
+	If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoAppName") Then
+		;GUICtrlCreateIcon(@ScriptDir & "\assets\WhyNotWin11.ico", -1, 42, 20, 20, 20)
+		;GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+		GUICtrlCreateLabel($aName[1], 10, 52, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
+		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+		GUICtrlSetColor(-1, $aTxtColors[$iNameText])
+		GUICtrlCreateLabel("v " & $sVersion, 10, 72, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
+		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+		GUICtrlSetColor(-1, $aTxtColors[$iVersionText])
+	EndIf
 
 	If $bWinPE Or Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoUpdate") Then
 		GUICtrlCreateLabel(_Translate($aMUI[1], "Check for Updates"), 0, 563, 100, 60, $SS_CENTER)
 		GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
-		GUICtrlSetBkColor(-1, $aColors[$iSidebar])
+		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+		GUICtrlSetColor(-1, $aTxtColors[$iLinksText])
 		GUICtrlSetTip(-1, "Update")
 		GUICtrlSetCursor(-1, 0)
 	EndIf
 
-	_GDIPlus_Startup()
-	If @Compiled Then
-		If $bWinPE Or Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
-			GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
-			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 201, 32, 32)
-			GUICtrlCreateIcon("", -1, 34, 160, 32, 32)
-			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 202, 32, 32)
-			GUICtrlCreateIcon("", -1, 34, 210, 32, 32)
-			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 203, 32, 32)
-			GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
-			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 204, 32, 32)
-			If @LogonDomain <> @ComputerName Then
-				GUICtrlCreateIcon("", -1, 34, 310, 32, 32)
-				_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 205, 32, 32)
-			EndIf
-		EndIf
-		If BitAND($dSettings, 65535) = 65535 Then
-			;;;
-		Else
-			GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
-			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 206, 32, 32)
-		EndIf
-		GUICtrlCreateIcon("", -1, 42, 20, 20, 20)
-		_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptFullPath, 208, 20, 20)
-	Else
-		If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
-			GUICtrlCreateIcon("", -1, 34, 110, 32, 32)
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\GitHub.ico", -1, 32, 32)
-			GUICtrlCreateIcon("", -1, 34, 160, 32, 32)
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\PayPal.ico", -1, 32, 32)
-			GUICtrlCreateIcon("", -1, 34, 210, 32, 32)
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\Discord.ico", -1, 32, 32)
-			GUICtrlCreateIcon("", -1, 34, 260, 32, 32)
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\Web.ico", -1, 32, 32)
-			If @LogonDomain <> @ComputerName Then
-				GUICtrlCreateIcon("", -1, 34, 310, 32, 32)
-				_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\HireMe.ico", -1, 32, 32)
-			EndIf
-		EndIf
-		If BitAND($dSettings, 65535) = 65535 Then
-			;;;
-		Else
-			GUICtrlCreateIcon("", -1, 34, 518, 32, 32)
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\Settings.ico", -1, 32, 32)
-		EndIf
-		GUICtrlCreateIcon("", -1, 42, 20, 20, 20)
-		_SetBkIcon(-1, $aColors[$iText], $aColors[$iSidebar], @ScriptDir & "\assets\WhyNotWin11.ico", -1, 20, 20)
-	EndIf
-
-	If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoAppName") Then
-		GUICtrlCreateIcon(@ScriptDir & "\assets\WhyNotWin11.ico", -1, 42, 20, 20, 20)
-		GUICtrlSetBkColor(-1, $aColors[$iSidebar])
-		GUICtrlCreateLabel($aName[1], 10, 40, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
-		GUICtrlSetBkColor(-1, $aColors[$iSidebar])
-		GUICtrlCreateLabel("v " & $sVersion, 10, 60, 80, 20, $SS_CENTER + $SS_CENTERIMAGE)
-		GUICtrlSetBkColor(-1, $aColors[$iSidebar])
-	EndIf
-	_GDIPlus_Shutdown()
-
+	GUISwitch($hGUI)
 	#EndRegion
+
+	; Top Most Interaction for Closing Window
+	Local $hExit = GUICtrlCreateLabel("", 760, 10, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
+	GUICtrlSetFont(-1, $aFonts[$FontExtraLarge] * $DPI_RATIO, $FW_MEDIUM)
+	GUICtrlSetCursor(-1, 0)
+
+	; Allow Dragging of Window
+	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
 
 	#Region Footer
-	GUICtrlCreateLabel("", 100, 560, 700, 40)
-	GUICtrlSetBkColor(-1, $aColors[$iFooter])
+	Local $hFooterGUI = GUICreate("", 700, 40, 102, 562, $WS_POPUP, $WS_EX_MDICHILD, $hGUI)
+	GUICtrlSetDefColor($aTxtColors[$iFooterText])
+	GUISetBkColor($aBgColors[$iFooterBg])
+	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", $aFonts[4])
 
-	#cs Maybe Readd Later
-	Local $hBannerText = GUICtrlCreateLabel("", 130, 560, 90, 40, $SS_CENTER + $SS_CENTERIMAGE)
-	GUICtrlSetFont(-1, $aFonts[$FontSmall] * $DPI_RATIO, $FW_NORMAL, $GUI_FONTUNDER)
-	GUICtrlSetBkColor(-1, _HighContrast(0xE6E6E6))
+	; Background
+	If $aBgFiles[$iFooterFile] <> "" Then
+		Local $hFooter = GUICtrlCreatePic("", 100, 0, 700, 560)
+		Local $hFooterFile = _GDIPlus_ImageLoadFromFile(@ScriptDir & "\" & $aBgFiles[$iFooterFile])
+		Local $hFooterImage = _GDIPlus_BitmapCreateHBITMAPFromBitmap($hFooterFile)
+		_WinAPI_DeleteObject(GUICtrlSendMsg($hFooter, $STM_SETIMAGE, $IMAGE_BITMAP, $hFooterImage))
+	EndIf
 
-	Local $sBannerURL = _SetBannerText($hBannerText, $hBanner)
-	#ce Maybe Readd Later
+	GUICtrlCreateLabel(@ComputerName, 10, 0, 300, 20, $SS_CENTERIMAGE)
+	GUICtrlCreateLabel(_GetMotherboardInfo(0) & " " & _GetMotherboardInfo(1) & " @ " & _GetBIOSInfo(0), 10, 20, 300, 20, $SS_CENTERIMAGE)
+	GUICtrlCreateLabel(StringReplace(_GetCPUInfo(2), " CPU", ""), 350, 0, 300, 20, $SS_CENTERIMAGE)
+	GUICtrlCreateLabel(_GetGPUInfo(0), 350, 20, 300, 20, $SS_CENTERIMAGE)
 
-	#cs
-		If Not (@MUILang = "0409") Then
-			GUICtrlCreateLabel(_Translate($aMUI[1], "Translation by") & " " & _GetTranslationCredit(), 130, 560, 310, 40)
-			GUICtrlSetBkColor(-1, _HighContrast(0xF2F2F2))
-		EndIf
-	#ce
-
-	GUICtrlCreateLabel(@ComputerName, 113, 560, 300, 20, $SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, $aColors[$iFooter])
-	GUICtrlCreateLabel(_GetMotherboardInfo(0) & " " & _GetMotherboardInfo(1) & " @ " & _GetBIOSInfo(0), 113, 580, 300, 20, $SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, $aColors[$iFooter])
-	GUICtrlCreateLabel(StringReplace(_GetCPUInfo(2), " CPU", ""), 450, 560, 300, 20, $SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, $aColors[$iFooter])
-	GUICtrlCreateLabel(_GetGPUInfo(0), 450, 580, 300, 20, $SS_CENTERIMAGE)
-	GUICtrlSetBkColor(-1, $aColors[$iFooter])
+	GUISwitch($hGUI)
 	#EndRegion
+
+	Local $bInfoBox = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoInfoBox")
+	Local $aInfo = _GetDescriptions($aMUI[1])
+
+	For $iRow = 0 To 10 Step 1
+		If Not $bInfoBox Then
+			GUICtrlCreateLabel("", 763, 78 + $iRow * 44, 24, 24, -1, $WS_EX_TOPMOST)
+			GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+			GUICtrlSetTip(-1, $aInfo[$iRow], "", $TIP_NOICON, $TIP_CENTER)
+		EndIf
+	Next
+
+	; Background
+	If $aBgFiles[$iBackgroundFile] <> "" Then
+		Local $hBackground = GUICtrlCreatePic("", 100, 0, 700, 560)
+		Local $hBackgroundFile = _GDIPlus_ImageLoadFromFile(@ScriptDir & "\" & $aBgFiles[$iBackgroundFile])
+		Local $hBackgroundImage = _GDIPlus_BitmapCreateHBITMAPFromBitmap($hBackgroundFile)
+		_WinAPI_DeleteObject(GUICtrlSendMsg($hBackground, $STM_SETIMAGE, $IMAGE_BITMAP, $hBackgroundImage))
+	EndIf
 
 	#Region Header
 	Local $hHeader
@@ -728,6 +756,8 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		$hHeader = GUICtrlCreateLabel(_Translate($aMUI[1], "Your Windows 11 Compatibility Results Are Below"), 130, 10, 640, 40, $SS_CENTER + $SS_CENTERIMAGE)
 	EndIf
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_SEMIBOLD, "", "", $CLEARTYPE_QUALITY)
+	GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+	GUICtrlSetColor(-1, $aTxtColors[$iHeaderText])
 
 	#cs
 	Local $h_WWW = GUICtrlCreateLabel(_Translate($aMUI[1], "Now Reach WhyNotWin11 via https://www.whynotwin11.org/"), 130, 45, 640, 20, $SS_CENTER + $SS_CENTERIMAGE)
@@ -737,6 +767,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 
 	GUICtrlCreateLabel(ChrW(0x274C), 765, 5, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
+	GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 	#EndRegion
 
 	#cs
@@ -751,21 +782,23 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 
 	#Region Basic Checks Tab
 	;Local $hBasic = GUICtrlCreateTabItem("Basic Checks")
-	;GUICtrlSetColor(-1, $aColors[$iBackground])
+	;GUICtrlSetColor(-1, $aTheme[3iBackground])
 
-	Local $bInfoBox = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoInfoBox")
+	
 	Local $hCheck[11][3]
 	Local $hLabel[11] = ["Architecture", "Boot Method", "CPU Compatibility", "CPU Core Count", "CPU Frequency", "DirectX 12 and WDDM 2", "Disk Partition Type", "RAM Installed", "Secure Boot", "Storage Available", "TPM Version"]
-	Local $aInfo = _GetDescriptions($aMUI[1])
-
-	_GDIPlus_Startup()
 
 	For $iRow = 0 To 10 Step 1
-		$hCheck[$iRow][0] = GUICtrlCreateLabel("…", 113, 70 + $iRow * 44, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE) 
-		GUICtrlSetBkColor(-1, $aColors[$iBackground])
-		GUICtrlCreateIcon("", -1, 763, 78 + $iRow * 44, 24, 40)
+		$hCheck[$iRow][0] = GUICtrlCreatePic("", 114, 74 + $iRow * 44, 32, 32)
+		_SetBkIcon($hCheck[$iRow][0], @SystemDir & "\imageres.dll", 94, 32, 32)
+		;$hCheck[$iRow][0] = GUICtrlCreateLabel("…", 113, 70 + $iRow * 44, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE) 
+		;GUICtrlSetBkColor(-1, $aTheme[3iBackground])
+		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+		;GUICtrlCreatePic("", 763, 78 + $iRow * 44, 24, 40)
 		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($aMUI[1], $hLabel[$iRow]), 153, 70 + $iRow * 44, 297, 40, $SS_CENTERIMAGE)
 		GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
+		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+		GUICtrlSetColor(-1, $aTxtColors[$iChecksText])
 		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($aMUI[1], "Checking..."), 450, 70 + $iRow * 44, 300, 40, $SS_SUNKEN)
 		Switch $iRow
 			Case 0, 3, 9
@@ -774,17 +807,13 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 				GUICtrlSetStyle(-1, $SS_CENTER + $SS_CENTERIMAGE + $SS_SUNKEN)
 		EndSwitch
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
-		If Not $bInfoBox Then
-			GUICtrlCreateIcon("", -1, 763, 78 + $iRow * 44, 24, 40)
-			If @Compiled Then
-				_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
-			Else
-				_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\Info.ico", -1, 24, 24)
-			EndIf
-			GUICtrlSetTip(-1, $aInfo[$iRow], "", $TIP_NOICON, $TIP_CENTER)
+		GUICtrlSetBkColor(-1, $aBgColors[$iResultsBg])
+		GUICtrlSetColor(-1, $aTxtColors[$iResultsText])
+		If Not $bInfoBox Then 
+			GUICtrlCreatePic("", 763, 78 + $iRow * 44, 24, 24)
+			_SetBKIcon(-1, @SystemDir & "\imageres.dll", -81, 24, 24)
 		EndIf
 	Next
-	_GDIPlus_Shutdown()
 
 	#Region ; ArchCheck()
 	If $aSkips[0] Then
@@ -1023,7 +1052,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 	_GDIPlus_Startup()
 	For $iRow = 0 To 10 Step 1
 		$hAdvCheck[$iRow][0] = GUICtrlCreateLabel("?", 113, 110 + $iRow * 40, 40, 40, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
-		GUICtrlSetBkColor(-1, $aColors[$iBackground])
+		GUICtrlSetBkColor(-1, $aTheme[3iBackground])
 		$hAdvCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($aMUI[1], $hAdvLabel[$iRow]), 153, 110 + $iRow * 40, 297, 40, $SS_CENTERIMAGE)
 		GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
 		$hAdvCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($aMUI[1], "Checking..."), 450, 110 + $iRow * 40, 300, 40, $SS_SUNKEN)
@@ -1034,11 +1063,11 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 				GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN + $SS_CENTERIMAGE)
 		EndSwitch
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
-		GUICtrlCreateIcon("", -1, 763, 118 + $iRow * 40, 24, 40)
+		GUICtrlCreatePic("", 763, 118 + $iRow * 40, 24, 40)
 		If @Compiled Then
-			_SetBkSelfIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptFullPath, 207, 24, 24)
+			_SetBkSelfIcon(-1, $aTheme[3iText], $aTheme[3iBackground], @ScriptFullPath, 207, 24, 24)
 		Else
-			_SetBkIcon(-1, $aColors[$iText], $aColors[$iBackground], @ScriptDir & "\assets\Info.ico", -1, 24, 24)
+			_SetBkIcon(-1, $aTheme[3iText], $aTheme[3iBackground], @ScriptDir & "\assets\Info.ico", -1, 24, 24)
 		EndIf
 		;GUICtrlSetTip(-1, $aInfo[$iRow + 10], "", $TIP_NOICON,  $TIP_CENTER)
 	Next
@@ -1057,30 +1086,33 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 	;GUICtrlCreateTabItem("")
 
 	#Region Settings GUI
-	Local $hSettings = GUICreate(_Translate($aMUI[1], "Settings"), 698, 528, 102, 32, $WS_POPUP, $WS_EX_MDICHILD, $hGUI)
+	Local $hSettings = GUICreate(_Translate($aMUI[1], "Settings"), 700, 530, 102, 32, $WS_POPUP, $WS_EX_MDICHILD, $hGUI)
 	Local $bSettings = False
-	GUISetBkColor($aColors[$iBackground])
+	GUISetBkColor($aBgColors[$iSettingsBg])
 	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", "Arial")
 
-	GUICtrlSetDefColor($aColors[$iText])
-	GUICtrlSetDefBkColor($aColors[$iBackground])
+	GUICtrlSetDefBkColor($aBgColors[$iSettingsBg])
+	GUICtrlSetDefColor($aTxtColors[$iSettingsText])
+
 
 	If BitAND($dSettings, 1) = 1 Then
 		;;;
 	Else
 		GUICtrlCreateGroup("", 30, 20, 638, 100)
-		GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Info") & " ", 40, 20, 618, 20)
-		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+		GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Info") & " ", 40, 20, 618, 20, $SS_CENTER)
+		GUICtrlCreatePic("", 54, 54, 32, 32)
 		If @Compiled Then
-			GUICtrlCreateIcon(@ScriptFullPath, 99, 50, 30, 40, 40)
+			_SetBkSelfIcon(-1, @ScriptFullPath, 99)
 		Else
-			GUICtrlCreateIcon(@ScriptDir & "\assets\WhyNotWin11.ico", -1, 50, 50, 40, 40)
+			_SetBkIcon(-1, @ScriptDir & "\assets\WhyNotWin11.ico", -1, 32, 32)
 		EndIf
 	EndIf
 
+	GUICtrlCreateLabel($aName[1] & " " & $sVersion, 100, 50, 550, 20, $SS_CENTERIMAGE)
+	GUICtrlCreateLabel("Consumer Edition", 100, 70, 550, 20, $SS_CENTERIMAGE)
+
 	GUICtrlCreateGroup("", 30, 180, 400, 328)
-	GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Settings") & " ", 40, 180, 380, 20)
-	GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+	GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Settings") & " ", 40, 180, 380, 20, $SS_CENTER)
 	GUICtrlCreateLabel(_Translate($aMUI[1], "Language") & ":", 40, 200, 380, 20)
 	Local $hLanguage = GUICtrlCreateCombo($alangs, 40, 220, 380, 20, $CBS_DROPDOWNLIST+$WS_VSCROLL)
 	If BitAND($dSettings, 4) = 4 Then
@@ -1130,27 +1162,33 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		;;;
 	Else
 		GUICtrlCreateGroup("", 470, 180, 200, 328)
-		GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Guides") & " ", 480, 180, 180, 20)
-		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+		GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Guides") & " ", 480, 180, 180, 20, $SS_CENTER)
 		$hChecks = GUICtrlCreateButton(_Translate($aMUI[1],"Windows 11 Requirements"), 480, 200, 180, 40)
+		GUICtrlSetColor(-1, $aTxtColors[$iLinksText])
 		GUICtrlSetCursor(-1, 0)
 		$hConvert = GUICtrlCreateButton(_Translate($aMUI[1],"Convert Disk to GPT"), 480, 250, 180, 40)
+		GUICtrlSetColor(-1, $aTxtColors[$iLinksText])
 		GUICtrlSetCursor(-1, 0)
 		$hSecure = GUICtrlCreateButton(_Translate($aMUI[1],"Enable Secure Boot"), 480, 300, 180, 40)
+		GUICtrlSetColor(-1, $aTxtColors[$iLinksText])
 		GUICtrlSetCursor(-1, 0)
 		$hTPM = GUICtrlCreateButton(_Translate($aMUI[1],"Enable TPM"), 480, 350, 180, 40)
+		GUICtrlSetColor(-1, $aTxtColors[$iLinksText])
 		GUICtrlSetCursor(-1, 0)
 		$hSkips = GUICtrlCreateButton(_Translate($aMUI[1],"Skip CPU && TPM"), 480, 400, 180, 40)
+		GUICtrlSetColor(-1, $aTxtColors[$iLinksText])
 		GUICtrlSetCursor(-1, 0)
 		$hInstall = GUICtrlCreateButton(_Translate($aMUI[1],"Get Windows 11 Now"), 480, 450, 180, 40)
+		GUICtrlSetColor(-1, $aTxtColors[$iLinksText])
 		GUICtrlSetCursor(-1, 0)
 	EndIf
 
+	GUISwitch($hGUI)
 	#EndRegion Settings GUI
 
-	GUISwitch($hGUI)
-
 	ProgressOff()
+	GUISetState(@SW_SHOW, $hSidebarGUI)
+	GUISetState(@SW_SHOW, $hFooterGUI)
 	GUISetState(@SW_SHOW, $hGUI)
 
 	Local $hMsg
@@ -1164,6 +1202,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		Select
 
 			Case $hMsg = $GUI_EVENT_CLOSE Or $hMsg = $hExit
+				_GDIPlus_Shutdown()
 				GUIDelete($hGUI)
 				If $aOutput[0] = True Then Return
 				Exit
@@ -1173,6 +1212,9 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 				Switch $aResults[5][0]
 					Case True
 						Switch $aResults[5][2]
+							Case 0
+								_GUICtrlSetState($hCheck[5][0], $iPass)
+								GUICtrlSetData($hCheck[5][2], _Translate($aMUI[1], "DirectX 12 and WDDM 2") & "+")
 							Case 1
 								_GUICtrlSetState($hCheck[5][0], $iPass)
 								GUICtrlSetData($hCheck[5][2], _Translate($aMUI[1], "DirectX 12 and WDDM 2"))
@@ -1231,7 +1273,10 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 				EndIf
 
 			Case $hMsg = $hTheme
-				$aColors = _SetTheme(StringSplit(GUICtrlRead($hTheme), " - ")[1])
+				$aTheme = _SetTheme("Themes\" & StringSplit(GUICtrlRead($hTheme), " - ")[1])
+				$aBgColors = $aTheme[0]
+				$aTxtColors = $aTheme[1]
+				$aBgFiles = $aTheme[2]
 				GUIDelete($hGUI)
 				Main($aResults, $aExtended, $aSkips, $aOutput, $bFUC)
 
@@ -1544,16 +1589,12 @@ EndFunc   ;==>_SetBannerText
 Func _GUICtrlSetState($hCtrl, $iState)
 	Switch $iState
 		Case 0
-			GUICtrlSetData($hCtrl, "❌") ; Failed
-			GUICtrlSetBkColor($hCtrl, 0xFA113D)
+			_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -98, 32, 32) ; Failed
 		Case 1
-			GUICtrlSetData($hCtrl, $aPass[1]) ; Passed
-			GUICtrlSetBkColor($hCtrl, 0x4CC355)
+			_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -1405, 32, 32) ; Passed
 		Case 2
-			GUICtrlSetData($hCtrl, "?") ; Unsure
-			GUICtrlSetBkColor($hCtrl, 0xF4C141)
+			_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -99, 32, 32) ; Unsure
 		Case 3
-			GUICtrlSetData($hCtrl, "!") ; Warn
-			GUICtrlSetBkColor($hCtrl, 0xF4C141)
+			_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -84, 32, 32) ; Warm
 	EndSwitch
 EndFunc   ;==>_GUICtrlSetState
