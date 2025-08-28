@@ -194,7 +194,10 @@ Func _SetTheme($sName = False)
 	EndIf
 
 	Local $aTxtColors[9] = [$dText, $dText, $dText, $dText, $dText, 0x0F8BD9, $dText, $dText, $dText] ; Main, Name, Version, Header, Footer, Links, Checks, Results, Settings
-	Local $aBgFiles[3] = [False, False, False] ; Sidebar, Background, Footer
+	Local $aBgFiles[3] = _
+		[RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "SidebarImg"), _
+		RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "MainImg"), _
+		RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "FooterImg")] ; Sidebar, Background, Footer
 		
 	If $sName Then $sFile = @ScriptDir & "\" & $sName
 	ClipPut($sFile)
