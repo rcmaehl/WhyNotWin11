@@ -2,36 +2,32 @@
 #Rename file to theme.def
 [MetaData]
 Name=Inclusive
-Version=1.0
+Version=2.0
 Designer=rcmaehl
 
-[General Colors]
-Background=0xFFFFFF
+[Backgrounds]
+#Set Any to -2 for Transparent
+Main=0xFFFFFF
 Sidebar=0xF7A8B8
 Footer=0x55CDFC
 Results=0x8C4799
+Settings=0xFFFFFF
 
-[Text Colors]
-Default=0x000000
+[Text]
+Main=0x000000
 Name=0x000000
 Version=0x000000
 Header=0x000000
-SubHead=0xE20012
+Footer=0x000000
 Links=0x0000EE
 Checks=0xD00070
 Results=0x0032A0
+Settings=0x000000
 
-[Icon Colors]
-Github=0xFFF430
-Donate=0xFFFFFF
-Discord=0x9C59D1
-LTT=0x000000
-Work=0x9C59D1
-Settings=0xFFFFFF
-
-[Status Colors]
-Fail=0xFA113D
-Pass=0x4CC355
-Unsure=0xF4C141
-Warn=0xF4C141
-Running=0xFFFFFF
+[Files]
+# Sidebar is 100x600
+Sidebar=
+# Background is 700x560
+Background=
+# Footer is 700x40
+Footer=
