@@ -715,7 +715,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 
 	; Background
 	If $aBgFiles[$iFooterFile] <> "" Then
-		Local $hFooter = GUICtrlCreatePic("", 100, 0, 700, 560)
+		Local $hFooter = GUICtrlCreatePic("", 100, 560, 700, 40)
 		Local $hFooterFile = _GDIPlus_ImageLoadFromFile(@ScriptDir & "\" & $aBgFiles[$iFooterFile])
 		Local $hFooterImage = _GDIPlus_BitmapCreateHBITMAPFromBitmap($hFooterFile)
 		_WinAPI_DeleteObject(GUICtrlSendMsg($hFooter, $STM_SETIMAGE, $IMAGE_BITMAP, $hFooterImage))
