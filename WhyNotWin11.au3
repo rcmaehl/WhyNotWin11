@@ -212,8 +212,8 @@ Func ProcessCMDLine()
 											Exit 87 ; ERROR_INVALID_PARAMETER	
 									EndSwitch
 								Next
-								$aExtras[0] = StringTrimLeft($aExtras[0], 1)
-								$aExtras[1] = StringTrimLeft($aExtras[1], 1)
+								If StringLeft($aExtras[0], 1) = "," Then $aExtras[0] = StringTrimLeft($aExtras[0], 1)
+								If StringLeft($aExtras[1], 1) = "," Then $aExtras[1] = StringTrimLeft($aExtras[1], 1)
 								$aOutput[3] = $aExtras
 								_ArrayDelete($CmdLine, "1-2")
 						EndSelect
