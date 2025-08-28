@@ -1468,6 +1468,14 @@ Func OutputResults(ByRef $aResults, ByRef $aSkips, $aOutput)
 			EndIf
 			$hFile = FileOpen($sFile, $FO_CREATEPATH + $FO_OVERWRITE)
 			$sOut = "Results for " & @ComputerName & @CRLF
+			; # 778
+			$aLabel[0] &= @TAB
+			$aLabel[1] &= @TAB
+			$aLabel[3] &= @TAB
+			$aLabel[4] &= @TAB
+			$aLabel[7] &= @TAB
+			$aLabel[8] &= @TAB
+			$aLabel[10] &= @TAB
 			For $iLoop = 0 To UBound($aLabel) - 1 Step 1
 				If $iLoop > 10 Then
 					$sOut &= $aLabel[$iLoop] & ": " & $aExtraData[$iLoop - 11] & @CRLF
