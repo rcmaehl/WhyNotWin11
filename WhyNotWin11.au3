@@ -558,7 +558,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 	Local $aThemes = _FileListToArray(@ScriptDir & "\Themes\", "*.def", $FLTA_FILES)
 	If Not @error Then
 		For $iLoop = 1 To $aThemes[0] Step 1
-			$aThemes[$iLoop] &= " - " & IniRead(@ScriptDir & "\Themes" & $aThemes[$iLoop], "MetaData", "Name", "Unknown")
+			$aThemes[$iLoop] &= " - " & IniRead(@ScriptDir & "\Themes\" & $aThemes[$iLoop], "MetaData", "Name", "Unnamed")
 		Next
 		_ArrayDelete($aThemes, 0)
 	EndIf
@@ -570,10 +570,6 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 	GUISetAccelerators($aAccel)
 
 	#Region Sidebar
-	Local $hSidebarGUI = GUICreate("", 100, 600, 2, 2, $WS_POPUP, $WS_EX_MDICHILD, $hGUI)
-	GUISetBkColor($aBgColors[$iSidebarBg])
-	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", $aFonts[4])
-
 	; Top Most Interaction for Update Text
 	Local $hUpdate = Default
 	If $bWinPE Or Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoUpdate") Then
@@ -620,6 +616,10 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		GUICtrlSetCursor(-1, 0)
 	EndIf
 
+	GUICtrlCreateLabel("", 0, 0, 100, 600)
+	GUICtrlSetBkColor(-1, $aBgColors[$iSidebarBg])
+	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", $aFonts[4])
+
 	; Sidebar Background
 	If $aBgFiles[$iSidebarFile] <> "" Then
 		Local $hSidebar = GUICtrlCreatePic("", 0, 0, 100, 600)
@@ -637,10 +637,10 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 			GUICtrlCreatePic("", 34, 210, 32, 32)
 			_SetBkSelfIcon(-1, @ScriptFullPath, 203)
 			GUICtrlCreatePic("", 34, 260, 32, 32)
-			_SetBkSelfIcon(-1, @ScriptFullPath, 204)
+			_SetBkIcon(-1, @SystemDir & "\shell32.dll", -14, 32, 32)
 			If @LogonDomain <> @ComputerName Then
 				GUICtrlCreatePic("", 34, 310, 32, 32)
-				_SetBkSelfIcon(-1, @SystemDir & "\imageres.dll", 124)
+				_SetBkIcon(-1, @SystemDir & "\imageres.dll", 124, 32, 32)
 			EndIf
 		EndIf
 		If BitAND($dSettings, 65535) = 65535 Then
@@ -660,7 +660,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 			GUICtrlCreatePic("", 34, 210, 32, 32)
 			_SetBkIcon(-1, @ScriptDir & "\assets\Discord.ico", -1, 32, 32)
 			GUICtrlCreatePic("", 34, 260, 32, 32)
-			_SetBkIcon(-1, @ScriptDir & "\assets\Web.ico", -1, 32, 32)
+			_SetBkIcon(-1, @SystemDir & "\shell32.dll", -14, 32, 32)
 			If @LogonDomain <> @ComputerName Then
 				GUICtrlCreatePic("", 34, 310, 32, 32)
 				_SetBkIcon(-1, @SystemDir & "\imageres.dll", 124, 32, 32)
@@ -706,11 +706,11 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 
 	; Allow Dragging of Window
 	GUICtrlCreateLabel("", 0, 0, 800, 30, -1, $GUI_WS_EX_PARENTDRAG)
+	GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 
 	#Region Footer
-	Local $hFooterGUI = GUICreate("", 700, 40, 102, 562, $WS_POPUP, $WS_EX_MDICHILD, $hGUI)
-	GUICtrlSetDefColor($aTxtColors[$iFooterText])
-	GUISetBkColor($aBgColors[$iFooterBg])
+	GUICtrlCreateLabel("", 100, 560, 700, 40)
+	GUICtrlSetBkColor(-1, $aBgColors[$iFooterBg])
 	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", $aFonts[4])
 
 	; Background
@@ -721,12 +721,19 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		_WinAPI_DeleteObject(GUICtrlSendMsg($hFooter, $STM_SETIMAGE, $IMAGE_BITMAP, $hFooterImage))
 	EndIf
 
-	GUICtrlCreateLabel(@ComputerName, 10, 0, 300, 20, $SS_CENTERIMAGE)
-	GUICtrlCreateLabel(_GetMotherboardInfo(0) & " " & _GetMotherboardInfo(1) & " @ " & _GetBIOSInfo(0), 10, 20, 300, 20, $SS_CENTERIMAGE)
-	GUICtrlCreateLabel(StringReplace(_GetCPUInfo(2), " CPU", ""), 350, 0, 300, 20, $SS_CENTERIMAGE)
-	GUICtrlCreateLabel(_GetGPUInfo(0), 350, 20, 300, 20, $SS_CENTERIMAGE)
+	GUICtrlCreateLabel(@ComputerName, 113, 560, 300, 20, $SS_CENTERIMAGE)
+	GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+	GUICtrlSetColor(-1, $aTxtColors[$iFooterText])
+	GUICtrlCreateLabel(_GetMotherboardInfo(0) & " " & _GetMotherboardInfo(1) & " @ " & _GetBIOSInfo(0), 113, 580, 300, 20, $SS_CENTERIMAGE)
+	GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+	GUICtrlSetColor(-1, $aTxtColors[$iFooterText])
+	GUICtrlCreateLabel(StringReplace(_GetCPUInfo(2), " CPU", ""), 450, 560, 300, 20, $SS_CENTERIMAGE)
+	GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+	GUICtrlSetColor(-1, $aTxtColors[$iFooterText])
+	GUICtrlCreateLabel(_GetGPUInfo(0), 450, 580, 300, 20, $SS_CENTERIMAGE)
+	GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+	GUICtrlSetColor(-1, $aTxtColors[$iFooterText])
 
-	GUISwitch($hGUI)
 	#EndRegion
 
 	Local $bInfoBox = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoInfoBox")
@@ -1187,8 +1194,6 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 	#EndRegion Settings GUI
 
 	ProgressOff()
-	GUISetState(@SW_SHOW, $hSidebarGUI)
-	GUISetState(@SW_SHOW, $hFooterGUI)
 	GUISetState(@SW_SHOW, $hGUI)
 
 	Local $hMsg
