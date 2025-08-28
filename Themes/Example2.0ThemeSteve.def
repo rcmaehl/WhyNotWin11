@@ -8,8 +8,8 @@ Designer=rcmaehl
 [Backgrounds]
 #Set Any to -2 for Transparent
 Main=0xFFFFFF
-Sidebar=0xF7A8B8
-Footer=0x55CDFC
+Sidebar=0xCECDCD
+Footer=0x8FD5FB
 Results=-2
 Settings=0xFFFFFF
 
@@ -30,4 +30,4 @@ Sidebar=Themes\Example2.0ThemeStevesidebar.png
 # Background is 700x560
 Background=Themes\Example2.0ThemeStevebackground.png
 # Footer is 700x40
-Footer=
+Footer=Themes\Example2.0ThemeStevefooter.png
