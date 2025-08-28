@@ -193,7 +193,7 @@ Func _SetTheme($sName = False)
 		Local $aBgColors[5] = [0xF8F8F8, 0xE6E6E6, 0xF2F2F2, 0xF8F8F8, 0xF8F8F8] ; Background, Sidebar, Footer, Results, Settings
 	EndIf
 
-	Local $aTxtColors[9] = [$dText, $dText, $dText, $dText, $dText, 0x0000FF, $dText, $dText, $dText] ; Main, Name, Version, Header, Footer, Links, Checks, Results, Settings
+	Local $aTxtColors[9] = [$dText, $dText, $dText, $dText, $dText, 0xADD8E6, $dText, $dText, $dText] ; Main, Name, Version, Header, Footer, Links, Checks, Results, Settings
 	Local $aBgFiles[3] = [False, False, False] ; Sidebar, Background, Footer
 		
 	If $sName Then $sFile = @ScriptDir & "\" & $sName
