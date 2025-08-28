@@ -184,6 +184,8 @@ Func _SetTheme($sName = False)
 	Local $sFile = @ScriptDir & "\theme.def"
 	Local $dWindow = _WinAPI_GetSysColor($COLOR_WINDOW)
 	Local $bLTheme = RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
+	Local $GPTheme = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "ThemeFile")
+
 	If @error Then $bLTheme = True
 
 	If $dWindow = 0x000000 Or ($dWindow = 0xFFFFFF And Not $bLTheme) Then
@@ -200,7 +202,10 @@ Func _SetTheme($sName = False)
 		RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "FooterImg")] ; Sidebar, Background, Footer
 		
 	If $sName Then $sFile = @ScriptDir & "\" & $sName
-	ClipPut($sFile)
+	
+	If $GPTheme <> "" Then
+		If FileExists($GPTheme) Then $sName = $GPTheme
+	EndIf
 
 	Select
 		Case FileExists($sFile)
