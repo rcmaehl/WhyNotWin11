@@ -555,10 +555,10 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 			_ArrayDelete($aLangs, 55) ;==> Remove the "Unknown" entry
 	EndIf
 
-	Local $aThemes = _FileListToArray(@ScriptDir & "\", "*.def", $FLTA_FILES)
+	Local $aThemes = _FileListToArray(@ScriptDir & "\Themes\", "*.def", $FLTA_FILES)
 	If Not @error Then
 		For $iLoop = 1 To $aThemes[0] Step 1
-			$aThemes[$iLoop] &= " - " & IniRead(@ScriptDir & "\" & $aThemes[$iLoop], "MetaData", "Name", "Unknown")
+			$aThemes[$iLoop] &= " - " & IniRead(@ScriptDir & "\Themes" & $aThemes[$iLoop], "MetaData", "Name", "Unknown")
 		Next
 		_ArrayDelete($aThemes, 0)
 	EndIf
@@ -798,6 +798,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		$hCheck[$iRow][1] = GUICtrlCreateLabel(" " & _Translate($aMUI[1], $hLabel[$iRow]), 153, 70 + $iRow * 44, 297, 40, $SS_CENTERIMAGE)
 		GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
 		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+		GUICtrlSetColor(-1, $aTxtColors[$iChecksText])
 		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($aMUI[1], "Checking..."), 450, 70 + $iRow * 44, 300, 40, $SS_SUNKEN)
 		Switch $iRow
 			Case 0, 3, 9
@@ -806,7 +807,8 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 				GUICtrlSetStyle(-1, $SS_CENTER + $SS_CENTERIMAGE + $SS_SUNKEN)
 		EndSwitch
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
-		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+		GUICtrlSetBkColor(-1, $aBgColors[$iResultsBg])
+		GUICtrlSetColor(-1, $aTxtColors[$iResultsText])
 		If Not $bInfoBox Then 
 			GUICtrlCreatePic("", 763, 78 + $iRow * 44, 24, 24)
 			_SetBKIcon(-1, @SystemDir & "\imageres.dll", -81, 24, 24)
@@ -1084,7 +1086,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 	;GUICtrlCreateTabItem("")
 
 	#Region Settings GUI
-	Local $hSettings = GUICreate(_Translate($aMUI[1], "Settings"), 698, 528, 102, 32, $WS_POPUP, $WS_EX_MDICHILD, $hGUI)
+	Local $hSettings = GUICreate(_Translate($aMUI[1], "Settings"), 700, 530, 102, 32, $WS_POPUP, $WS_EX_MDICHILD, $hGUI)
 	Local $bSettings = False
 	GUISetBkColor($aBgColors[$iSettingsBg])
 	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", "Arial")
@@ -1162,16 +1164,22 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		GUICtrlCreateGroup("", 470, 180, 200, 328)
 		GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Guides") & " ", 480, 180, 180, 20, $SS_CENTER)
 		$hChecks = GUICtrlCreateButton(_Translate($aMUI[1],"Windows 11 Requirements"), 480, 200, 180, 40)
+		GUICtrlSetColor(-1, $aTxtColors[$iLinksText])
 		GUICtrlSetCursor(-1, 0)
 		$hConvert = GUICtrlCreateButton(_Translate($aMUI[1],"Convert Disk to GPT"), 480, 250, 180, 40)
+		GUICtrlSetColor(-1, $aTxtColors[$iLinksText])
 		GUICtrlSetCursor(-1, 0)
 		$hSecure = GUICtrlCreateButton(_Translate($aMUI[1],"Enable Secure Boot"), 480, 300, 180, 40)
+		GUICtrlSetColor(-1, $aTxtColors[$iLinksText])
 		GUICtrlSetCursor(-1, 0)
 		$hTPM = GUICtrlCreateButton(_Translate($aMUI[1],"Enable TPM"), 480, 350, 180, 40)
+		GUICtrlSetColor(-1, $aTxtColors[$iLinksText])
 		GUICtrlSetCursor(-1, 0)
 		$hSkips = GUICtrlCreateButton(_Translate($aMUI[1],"Skip CPU && TPM"), 480, 400, 180, 40)
+		GUICtrlSetColor(-1, $aTxtColors[$iLinksText])
 		GUICtrlSetCursor(-1, 0)
 		$hInstall = GUICtrlCreateButton(_Translate($aMUI[1],"Get Windows 11 Now"), 480, 450, 180, 40)
+		GUICtrlSetColor(-1, $aTxtColors[$iLinksText])
 		GUICtrlSetCursor(-1, 0)
 	EndIf
 
@@ -1265,7 +1273,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 				EndIf
 
 			Case $hMsg = $hTheme
-				$aTheme = _SetTheme(StringSplit(GUICtrlRead($hTheme), " - ")[1])
+				$aTheme = _SetTheme("Themes\" & StringSplit(GUICtrlRead($hTheme), " - ")[1])
 				$aBgColors = $aTheme[0]
 				$aTxtColors = $aTheme[1]
 				$aBgFiles = $aTheme[2]
