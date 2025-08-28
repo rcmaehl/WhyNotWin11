@@ -1,0 +1,33 @@
+#2.0 themes are not yet implemented
+#Rename file to theme.def
+[MetaData]
+Name=PCMR
+Version=2.0
+Designer=rcmaehl
+
+[Backgrounds]
+#Set Any to -2 for Transparent
+Main=0x000000
+Sidebar=0xFACA04
+Footer=0xFACA04
+Results=-2
+Settings=0x000000
+
+[Text]
+Main=0xFFFFFF
+Name=0x000000
+Version=0x000000
+Header=0xFFFFFF 
+Footer=0x000000
+Links=0x0F8BD9
+Checks=0xFFFFFF
+Results=0xFACA04
+Settings=0xFFFFFF
+
+[Files]
+# Sidebar is 100x600
+Sidebar=
+# Background is 700x560
+Background=
+# Footer is 700x40
+Footer=
