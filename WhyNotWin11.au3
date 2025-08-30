@@ -640,7 +640,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 			_SetBkIcon(-1, @SystemDir & "\shell32.dll", -14, 32, 32)
 			If @LogonDomain <> @ComputerName Then
 				GUICtrlCreatePic("", 34, 310, 32, 32)
-				_SetBkIcon(-1, @SystemDir & "\imageres.dll", 124, 32, 32)
+				_SetBkIcon(-1, @SystemDir & "\imageres.dll", 226, 32, 32)
 			EndIf
 		EndIf
 		If BitAND($dSettings, 65535) = 65535 Then
@@ -663,7 +663,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 			_SetBkIcon(-1, @SystemDir & "\shell32.dll", -14, 32, 32)
 			If @LogonDomain <> @ComputerName Then
 				GUICtrlCreatePic("", 34, 310, 32, 32)
-				_SetBkIcon(-1, @SystemDir & "\imageres.dll", 124, 32, 32)
+				_SetBkIcon(-1, @SystemDir & "\imageres.dll", 226, 32, 32)
 			EndIf
 		EndIf
 		If BitAND($dSettings, 65535) = 65535 Then
