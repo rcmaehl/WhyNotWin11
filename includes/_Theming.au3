@@ -209,8 +209,8 @@ Func _SetTheme($sName = False)
 	Select
 		Case FileExists($sFile)
 			$sVer = IniRead($sFile, "MetaData", "Version", "1")
-			Switch Int($sVer)
-				Case 1
+			Switch Number($sVer)
+				Case 1 ; Legacy Themes
 					$aBgColors[0] = IniRead($sFile, "Colors", "Background", $aBgColors[0])
 					$aBgColors[1] = IniRead($sFile, "Colors", "Sidebar", $aBgColors[1])
 					$aBgColors[2] = IniRead($sFile, "Colors", "Footer", $aBgColors[2])
@@ -225,7 +225,7 @@ Func _SetTheme($sName = False)
 					$aTxtColors[6] = IniRead($sFile, "Colors", "Text", $aTxtColors[0])
 					$aTxtColors[7] = IniRead($sFile, "Colors", "Text", $aTxtColors[0])
 					$aTxtColors[8] = IniRead($sFile, "Colors", "Text", $aTxtColors[0])
-				Case 2
+				Case 2 ; 2.0 Themes
 					$aBgColors[0] = IniRead($sFile, "Backgrounds", "Main", $aBgColors[0])
 					$aBgColors[1] = IniRead($sFile, "Backgrounds", "Sidebar", $aBgColors[1])
 					$aBgColors[2] = IniRead($sFile, "Backgrounds", "Footer", $aBgColors[2])
