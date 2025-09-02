@@ -198,7 +198,7 @@ Func ProcessCMDLine()
 											$aExtras[1] &= "," & @KBLayout
 										Case "LANGUAGE"
 											$aExtras[0] &= ",OS Langauage"
-											$aExtras[1] &= "," & @OSLang									
+											$aExtras[1] &= "," & @OSLang
 										Case "MUI"
 											$aExtras[0] &= ",MUI Langauage"
 											$aExtras[1] &= "," & @MUILang

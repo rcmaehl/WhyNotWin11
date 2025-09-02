@@ -1,3 +1,8 @@
+#include-once
+
+#include <Misc.au3>
+#include <FileConstants.au3>
+
 Func CopyLangFiles()
 	; FileInstall doc says : The source file must be specified using a string literal.
 	FileInstall(".\langs\0004.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\0004.lang", $FC_OVERWRITE)
@@ -64,7 +69,7 @@ Func CopySupportedProcessorsFiles()
 	FileInstall(".\includes\SupportedProcessorsQualcomm.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $FC_OVERWRITE)
 EndFunc   ;==>CopySupportedProcessorsFiles
 
-Func ExtractFiles()
+Func ExtractFiles($sVersion = "x.x.x.x")
 	FileChangeDir(@ScriptDir)
 	; This is need for uncompiled versions, relative path is not used once compiled
 	If FileExists(@LocalAppDataDir & "\WhyNotWin11\langs\version") Then
