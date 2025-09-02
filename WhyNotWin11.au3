@@ -84,7 +84,7 @@ Opt("TrayAutoPause", 0)
 
 Opt("GUIResizeMode", $GUI_DOCKSIZE)
 
-ExtractFiles()
+ExtractFiles($sVersion)
 
 ProcessCMDLine()
 
