@@ -6,14 +6,14 @@
 #AutoIt3Wrapper_UseX64=Y
 #AutoIt3Wrapper_Res_Comment=https://www.whynotwin11.org
 #AutoIt3Wrapper_Res_CompanyName=Robert Maehl Software
-#AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready. Now Supporting Update Checks!
+#AutoIt3Wrapper_Res_Description=Detection Script to help identify why your PC isn't Windows 11 Release Ready.
 #AutoIt3Wrapper_Res_Fileversion=2.6.1.1
 #AutoIt3Wrapper_Res_ProductName=WhyNotWin11
 #AutoIt3Wrapper_Res_ProductVersion=2.6.1.1
 #AutoIt3Wrapper_Res_LegalCopyright=Robert Maehl, using LGPL 3 License
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
-#AutoIt3Wrapper_Res_Compatibility=Win8,Win81,Win10
+#AutoIt3Wrapper_Res_Compatibility=Win8,Win81,Win10,Win11
 #AutoIt3Wrapper_Res_Icon_Add=Assets\GitHub.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\PayPal.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\Discord.ico
@@ -22,6 +22,7 @@
 #AutoIt3Wrapper_Res_Icon_Add=Assets\Settings.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\Info.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\WhyNotWin11.ico
+#AutoIt3Wrapper_Res_SaveSource=y
 #AutoIt3Wrapper_AU3Check_Parameters=-d -w 1 -w 2 -w 3 -w 4 -w 5 -w 6 -w 7 -v1 -v2 -v3
 #AutoIt3Wrapper_Run_Tidy=n
 #Tidy_Parameters=/tc 0 /serc /scec
