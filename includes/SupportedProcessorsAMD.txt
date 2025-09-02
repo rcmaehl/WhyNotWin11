@@ -196,7 +196,7 @@ Ryzen 5 PRO 7540U
 Ryzen 5 PRO 7640U
 Ryzen 5 PRO 4655G
 Ryzen 5 PRO 4655GE
-Ryzen 7 2700 
+Ryzen 7 2700
 Ryzen 7 5800
 Ryzen 7 5800
 Ryzen 7 7700

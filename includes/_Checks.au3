@@ -78,7 +78,7 @@ Func _CPUNameCheck($sCPU, $sFamily, $sVersion, $sWinFU = False)
 				Case $iLine = $iLines
 					Return SetError(3, 0, False)
 					ExitLoop
-				Case StringInStr($sCPU, $sLine)
+				Case StringInStr($sCPU & " ", $sLine & " ")
 					Return True
 					ExitLoop
 			EndSelect
