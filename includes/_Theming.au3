@@ -181,7 +181,7 @@ Func _SetTheme($sName = False)
 	
 	Local $sVer
 	Local $dText = _WinAPI_GetSysColor($COLOR_WINDOWTEXT)
-	Local $sFile = @ScriptDir & "\theme.def"
+	Local $sFile = @ScriptDir & "\Themes\theme.def"
 	Local $dWindow = _WinAPI_GetSysColor($COLOR_WINDOW)
 	Local $bLTheme = RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
 	If @error Then $bLTheme = True
