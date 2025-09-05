@@ -241,7 +241,27 @@ Func _GPUNameCheck($sGPU)
 EndFunc   ;==>_GPUNameCheck
 
 Func _GPUHWIDCheck($sGPU)
-	Return False
+	$aGPU = StringSplit($sGPU, "&", $STR_NOCOUNT)
+	If UBound($aGPU) < 2 Then Return False
+	Switch StringReplace($aGPU[0], "PCI\VEN_", "")
+		Case "1002" ; AMD
+			;;;
+		Case "10DE" ; Nvidia
+			Switch Dec(StringReplace($aGPU[1], "DEV_", ""))
+				Case 0 To 5017 ; DO NOT SHIP WITHOUT VERIFYING
+					Return False
+				Case 5018 To 2147483647
+					Return True
+			EndSwitch
+		Case "1414" ; HyperV
+			;;;
+		Case "5143" ; Qualcomm
+			;;;
+		Case "8086" ; Intel
+			;;;
+		Case Else
+			Return False
+	EndSwitch
 EndFunc
 
 Func _InternetCheck()
