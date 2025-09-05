@@ -240,6 +240,10 @@ Func _GPUNameCheck($sGPU)
 	EndSelect
 EndFunc   ;==>_GPUNameCheck
 
+Func _GPUHWIDCheck($sGPU)
+	Return False
+EndFunc
+
 Func _InternetCheck()
 	Return _WinAPI_IsInternetConnected()
 EndFunc

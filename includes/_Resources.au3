@@ -1,6 +1,7 @@
 #include-once
 
 #include <Misc.au3>
+#include <WinAPIDiag.au3>
 #include <FileConstants.au3>
 
 Func CopyLangFiles()
@@ -63,6 +64,17 @@ Func CopyLangFiles()
 	FileInstall(".\langs\540A.lang", @LocalAppDataDir & "\WhyNotWin11\Langs\540A.lang", $FC_OVERWRITE)
 EndFunc   ;==>CopyLangFiles
 
+Func CopyPCIIDs()
+	Select
+		Case _WinAPI_IsNetworkAlive()
+			InetGet("https://github.com/pciutils/pciids/raw/refs/heads/master/pci.ids", @LocalAppDataDir & "\WhyNotWin11\PCI.ids", $FC_OVERWRITE)
+			If FileReadLine(@LocalAppDataDir & "\WhyNotWin11\PCI.ids") <> "#	List of PCI ID's" Then ContinueCase
+		Case Else
+			FileInstall(".\includes\PCI.ids", @LocalAppDataDir & "\WhyNotWin11\PCI.ids", $FC_OVERWRITE)
+	EndSelect
+EndFunc   ;==>CopyPCIIDs
+
+
 Func CopySupportedProcessorsFiles()
 	FileInstall(".\includes\SupportedProcessorsAMD.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $FC_OVERWRITE)
 	FileInstall(".\includes\SupportedProcessorsIntel.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $FC_OVERWRITE)
@@ -72,11 +84,11 @@ EndFunc   ;==>CopySupportedProcessorsFiles
 Func ExtractFiles($sVersion = "x.x.x.x")
 	FileChangeDir(@ScriptDir)
 	; This is need for uncompiled versions, relative path is not used once compiled
-	If FileExists(@LocalAppDataDir & "\WhyNotWin11\langs\version") Then
-		If _VersionCompare($sVersion, FileReadLine(@LocalAppDataDir & "\WhyNotWin11\langs\version", 1)) = 1 Then
+	If FileExists(@LocalAppDataDir & "\WhyNotWin11\Langs\Version") Then
+		If _VersionCompare($sVersion, FileReadLine(@LocalAppDataDir & "\WhyNotWin11\Langs\Version", 1)) = 1 Then
 			CopyLangFiles()
-			FileDelete(@LocalAppDataDir & "\WhyNotWin11\langs\version")
-			FileWrite(@LocalAppDataDir & "\WhyNotWin11\langs\version", $sVersion)
+			FileDelete(@LocalAppDataDir & "\WhyNotWin11\Langs\Version")
+			FileWrite(@LocalAppDataDir & "\WhyNotWin11\Langs\Version", $sVersion)
 		EndIf
 	EndIf
 	If FileExists(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt") Then
@@ -90,11 +102,14 @@ Func ExtractFiles($sVersion = "x.x.x.x")
 			ContinueCase
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\Langs\")
 			DirCreate(@LocalAppDataDir & "\WhyNotWin11\Langs\")
-			FileWrite(@LocalAppDataDir & "\WhyNotWin11\langs\version", $sVersion)
+			FileWrite(@LocalAppDataDir & "\WhyNotWin11\Langs\Version", $sVersion)
 			CopyLangFiles()
 			ContinueCase
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
 			CopySupportedProcessorsFiles()
+			ContinueCase
+		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\PCI.ids")
+			CopyPCIIDs()
 		Case Else
 			;;;
 	EndSelect

@@ -350,13 +350,14 @@ Func ProcessCMDLine()
 	If @error Then
 		$bWinPE = False
 	Else
+		$bWinPE = True
 		If $sDrive = Null Then $WINDOWS_DRIVE = "C:"
 	EndIf
 	#EndRegion
 
 	If Not $bSilent And Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoProgress") Then ProgressOn($aName[1], _Translate(@MUILang, "Loading WMIC"))
 
-	$aResults = RunChecks($sDrive)
+	$aResults = RunChecks($sDrive, $bWinPE)
 	$aExtended = RunExtendedChecks($sDrive, $bFUC)
 
 	ProgressSet(80, "Done")
@@ -391,7 +392,7 @@ Func ProcessCMDLine()
 	Exit 0
 EndFunc   ;==>ProcessCMDLine
 
-Func RunChecks($sDrive = Null)
+Func RunChecks($sDrive = Null, $bWinPE = False)
 
 	Local $aResults[11][3]
 
@@ -415,14 +416,20 @@ Func RunChecks($sDrive = Null)
 	$aResults[4][1] = @error
 	$aResults[4][2] = @extended
 
-	$aResults[5][0] = _GPUNameCheck(_GetGPUInfo(0))
-	$aResults[5][1] = @error
-	$aResults[5][2] = @extended
+	If Not $bWinPE Then
+		$aResults[5][0] = _GPUNameCheck(_GetGPUInfo(0))
+		$aResults[5][1] = @error
+		$aResults[5][2] = @extended
 
-	If $aResults[5][0] = False Then
-		$aResults[5][0] = _DirectXStartCheck()
-		$aResults[5][1] = -1
-		$aResults[5][2] = -1
+		If $aResults[5][0] = False Then
+			$aResults[5][0] = _DirectXStartCheck()
+			$aResults[5][1] = -1
+			$aResults[5][2] = -1
+		EndIf
+	Else
+		$aResults[5][0] = _GPUHWIDCheck(_GetGPUInfo(2))
+		$aResults[5][1] = @error
+		$aResults[5][2] = @extended
 	EndIf
 
 	Local $aDisks, $aPartitions

@@ -206,6 +206,7 @@ EndFunc   ;==>_GetDiskProperties
 Func _GetGPUInfo($iFlag = 0)
 	Local Static $sName
 	Local Static $sMemory
+	Local Static $sHWID
 	Local Static $Obj_WMIService = __GetWMIObjects()[0]
 
 	If Not $sName <> "" Then
@@ -224,6 +225,7 @@ Func _GetGPUInfo($iFlag = 0)
 					Case Else
 						$sName &= $Obj_Item.Name & ", "
 						$sMemory = $Obj_Item.AdapterRAM
+						$sHWID &= $Obj_Item.PNPDeviceID & ", "
 				EndSwitch
 			Next
 		Else
@@ -235,6 +237,8 @@ Func _GetGPUInfo($iFlag = 0)
 			Return StringTrimRight(String($sName), 2)
 		Case 1
 			Return StringStripWS(String($sMemory), $STR_STRIPTRAILING)
+		Case 2
+			Return StringTrimRight(String($sHWID), 2)
 		Case Else
 			Return 0
 	EndSwitch
