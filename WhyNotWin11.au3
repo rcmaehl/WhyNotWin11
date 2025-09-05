@@ -416,6 +416,11 @@ Func RunChecks($sDrive = Null, $bWinPE = False)
 	$aResults[4][1] = @error
 	$aResults[4][2] = @extended
 
+	If $aResults[2][0] Then
+		$aResults[3][0] = True
+		$aResults[4][0] = True
+	EndIf
+
 	If Not $bWinPE Then
 		$aResults[5][0] = _GPUNameCheck(_GetGPUInfo(0))
 		$aResults[5][1] = @error
