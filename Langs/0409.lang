@@ -2,7 +2,7 @@
 Language=English - United States
 RTL=false
 Translator=rcmaehl, htcfreek
-Version=2.6.0.0
+Version=2.7.0.0
 [Font]
 Extra Large=24
 Large=18
@@ -46,6 +46,7 @@ Check Skipped=Check Skipped
 Listed as Compatible=Listed as Compatible
 GPT Detected=GPT Detected
 GPT Not Detected=GPT Not Detected
+Clean Install=Clean Install
 Enabled=Enabled
 Supported=Supported
 TPM Status Error=TPM Status Error

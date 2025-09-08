@@ -443,11 +443,17 @@ Func RunChecks($sDrive = Null, $bWinPE = False)
 		EndIf
 	EndIf
 
-	Local $aDisks, $aPartitions
-	_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
-	$aResults[6][0] = _GPTCheck($aDisks)
-	$aResults[6][1] = @error
-	$aResults[6][2] = @extended
+	If $bWinPE Then
+		$aResults[6][0] = True
+		$aResults[6][1] = -1
+		$aResults[6][2] = -1
+	Else
+		Local $aDisks, $aPartitions
+		_GetDiskInfoFromWmi($aDisks, $aPartitions, 1)
+		$aResults[6][0] = _GPTCheck($aDisks)
+		$aResults[6][1] = @error
+		$aResults[6][2] = @extended
+	EndIf
 
 	$aResults[7][0] = _MemCheck()
 	$aResults[7][1] = @error
@@ -976,7 +982,10 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		GUICtrlSetData($hCheck[6][2], _Translate($aMUI[1], "Check Skipped"))
 	Else
 		If $aResults[6][0] Then
-			If $aResults[6][1] Then
+			If $aResults[6][1] = -1 And $aResults[6][2] Then
+				_GUICtrlSetState($hCheck[6][0], $iWarn)
+				GUICtrlSetData($hCheck[6][2], _Translate($aMUI[1], "Clean Install"))
+			ElseIf $aResults[6][1] Then
 				_GUICtrlSetState($hCheck[6][0], $iPass)
 				GUICtrlSetData($hCheck[6][2], _Translate($aMUI[1], "GPT Detected"))
 			Else
@@ -1627,6 +1636,6 @@ Func _GUICtrlSetState($hCtrl, $iState)
 		Case 2
 			_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -99, 32, 32) ; Unsure
 		Case 3
-			_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -84, 32, 32) ; Warm
+			_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -84, 32, 32) ; Warn
 	EndSwitch
 EndFunc   ;==>_GUICtrlSetState
