@@ -233,7 +233,33 @@ EndFunc   ;==>_GPTCheck
 
 Func _GPUNameCheck($sGPU)
 	Select
-		Case StringRegExp($sGPU, ".*(GTX (7|10|16)|RTX| Super|Max-Q|RX|Vega|VII).*") ; Modern GPUs 
+		Case StringRegExp($sGPU, ".*(RX|Vega|VII|AI).*") ; Modern AMD Dedicated GPUs
+			ContinueCase
+		Case StringRegExp($sGPU, ".*(Xe|UHD|Iris Plus|Iris Pro Graphics P?5(5|8)(0|5)[^0]|Iris Graphics 5(4|5)0[^0]|HD Graphics P?[5-9][0-9](5|0)[^0]).*") ; Modern Intel iGPUs
+			ContinueCase
+		Case StringRegExp($sGPU, ".*\s(A|B)([3-6]|(3|5|7)[0-9])0.*") ; Modern Intel Dedicated GPUs
+			ContinueCase
+		Case StringRegExp($sGPU, ".*(GTX (9|10|16|(Titan (X|V)))|RTX| Super|Max-Q).*") ; Modern Nvidia GPUs
+			ContinueCase
+		Case StringRegExp($sGPU, ".*GeForce (9(6-8)(0|5)M|MX(150|[2-9][0-9]0[^0])).*") ; Modern Nvidia Mobile GPUs
+			ContinueCase
+		Case StringRegExp($sGPU, ".*Quadro (K2000M|M|P|GV|T).*") ; Modern Nvidia Workstation GPUs (incl Mobile)
+			ContinueCase
+		Case StringRegExp($sGPU, ".*Nvidia T(4|6|10)00.*"); TU117 Naming...
+			ContinueCase
+		Case StringRegExp($sGPU, ".*[^Fire].Pro (W(X|[5-9][0-9]00)|5(3|5|7)00).*") ; Modern AMD Workstation GPUs
+			ContinueCase
+		Case StringRegExp($sGPU, ".*Pro (4|5)[5-8](0|5)[^0].*") ; Modern AMD Mobile Workstation GPUs
+			ContinueCase
+		Case StringRegExp($sGPU, ".*Radeon (HD (779|877)0[^M]*|R7 (2|3)60|R9 380|R9 285|R9 (2|3)90|R9 295|R9 (Fury|Nano)|53(0|5)|Pro (Duo|SSG)).*") ; Older AMD Dedicated GPUs
+			ContinueCase
+		Case StringRegExp($sGPU, ".*Radeon (R9 M2(80|95)X|R9 M3(85|90)X|R9 M395[X]*|R9 M4(70|85)|5(40|50)|6(20|25|30)).*") ; Older AMD Mobile GPUs
+			ContinueCase
+		Case StringRegExp($sGPU, ".*FirePro W(4300|(5|[7-9])100).*") ; Older AMD Workstation GPUs
+			ContinueCase
+		Case StringRegExp($sGPU, ".*Tegra (K1|T1(24|32|86|94)[^0]|X1|T21(0|4)[^0]|T23(4|9)[^0]|T241[^0]|T2(5|6)4[^0]|X2).*") ; Nvidia ARM GPUs
+			ContinueCase
+		Case StringRegExp($sGPU, ".*(Xavier|Orin) ((AG|N)X|Nano).*") ; Nvidia ARM GPUs Continued
 			Return SetError(0, 0, True)
 		Case Else
 			Return SetError(0, 0, False)
@@ -241,27 +267,25 @@ Func _GPUNameCheck($sGPU)
 EndFunc   ;==>_GPUNameCheck
 
 Func _GPUHWIDCheck($sGPU)
+
+	Local $iEnd
+    Local $aGPU
+    Local $aIDs
+	Local $iMatch
+	Local $iStart
+	
 	$aGPU = StringSplit($sGPU, "&", $STR_NOCOUNT)
 	If UBound($aGPU) < 2 Then Return False
-	Switch StringReplace($aGPU[0], "PCI\VEN_", "")
-		Case "1002" ; AMD
-			;;;
-		Case "10DE" ; Nvidia
-			Switch Dec(StringReplace($aGPU[1], "DEV_", ""))
-				Case 0 To 5017 ; DO NOT SHIP WITHOUT VERIFYING
-					Return False
-				Case 5018 To 2147483647
-					Return True
-			EndSwitch
-		Case "1414" ; HyperV
-			;;;
-		Case "5143" ; Qualcomm
-			;;;
-		Case "8086" ; Intel
-			;;;
-		Case Else
-			Return False
-	EndSwitch
+
+    $aIDs = FileReadToArray(@LocalAppDataDir & "\WhyNotWin11\PCI.ids")
+    If @error Then Return SetError(1, 0, False)
+
+    $iStart = _ArraySearch($aIDs, "^" & StringReplace($aGPU[0], "PCI\VEN_", ""), 0, 0, 0, 3)
+    $iEnd = _ArraySearch($aIDs, "^[0-9a-f]", $iStart+1, 0, 0, 3)
+    $iMatch = _ArraySearch($aIDs, "^" & @TAB & StringLower(StringReplace($aGPU[1], "DEV_", "")), $iStart+1, $iEnd, 0, 3)
+    If Not $iMatch Then Return SetError(0, 0, False)
+    
+    Return SetError (0, 0, _GPUNameCheck($aIDs[$iMatch]))
 EndFunc
 
 Func _InternetCheck()
