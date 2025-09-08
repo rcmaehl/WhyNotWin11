@@ -421,20 +421,26 @@ Func RunChecks($sDrive = Null, $bWinPE = False)
 		$aResults[4][0] = True
 	EndIf
 
-	If Not $bWinPE Then
-		$aResults[5][0] = _GPUNameCheck(_GetGPUInfo(0))
+	If StringInStr(_GetCPUInfo(2), "Qualcomm") And $aResults[2][0] Then
+		$aResults[5][0] = True
 		$aResults[5][1] = @error
 		$aResults[5][2] = @extended
-
-		If $aResults[5][0] = False Then
-			$aResults[5][0] = _DirectXStartCheck()
-			$aResults[5][1] = -1
-			$aResults[5][2] = -1
-		EndIf
 	Else
-		$aResults[5][0] = _GPUHWIDCheck(_GetGPUInfo(2))
-		$aResults[5][1] = @error
-		$aResults[5][2] = @extended
+		If Not $bWinPE Then
+			$aResults[5][0] = _GPUNameCheck(_GetGPUInfo(0))
+			$aResults[5][1] = @error
+			$aResults[5][2] = @extended
+
+			If $aResults[5][0] = False Then ; DirectX Check is time heavy, prefer Name Check
+				$aResults[5][0] = _DirectXStartCheck()
+				$aResults[5][1] = -1
+				$aResults[5][2] = -1
+			EndIf
+		Else
+			$aResults[5][0] = _GPUHWIDCheck(_GetGPUInfo(2))
+			$aResults[5][1] = @error
+			$aResults[5][2] = @extended
+		EndIf
 	EndIf
 
 	Local $aDisks, $aPartitions
