@@ -243,7 +243,7 @@ Func _GPUNameCheck($sGPU)
 			ContinueCase
 		Case StringRegExp($sGPU, ".*GeForce (9(6-8)(0|5)M|MX(150|[2-9][0-9]0[^0])).*") ; Modern Nvidia Mobile GPUs
 			ContinueCase
-		Case StringRegExp($sGPU, ".*Quadro (K2000M|M|P|GV|T).*") ; Modern Nvidia Workstation GPUs (incl Mobile)
+		Case StringRegExp($sGPU, ".*Quadro (K2200M|M|P|GV|T).*") ; Modern Nvidia Workstation GPUs (incl Mobile)
 			ContinueCase
 		Case StringRegExp($sGPU, ".*Nvidia T(4|6|10)00.*"); TU117 Naming...
 			ContinueCase
