@@ -41,7 +41,7 @@ Func _CPUNameCheck($sCPU, $sFamily, $sVersion, $sWinFU = False)
 		EndIf
 	EndIf
 
-	Local $iLines, $sLine, $ListFile
+	Local $aFile, $ListFile
 
 	Select
 		Case StringInStr($sCPU, "AMD")
@@ -63,7 +63,20 @@ Func _CPUNameCheck($sCPU, $sFamily, $sVersion, $sWinFU = False)
 		Case StringInStr($sCPU, "SnapDragon") Or StringInStr($sCPU, "Microsoft")
 			$ListFile = "\WhyNotWin11\SupportedProcessorsQualcomm.txt"
 	EndSelect
+	
+	If $ListFile = Null Then
+		Return SetError(1, 0, False)
+	Else
+		$aFile = FileReadToArray(@LocalAppDataDir & $ListFile)
+		If @error Then Return SetError(2, 0, False)
+		; Pad Array to increase search accuracy
+		For $iLoop = 0 To UBound($aFile) - 1
+			If StringInStr($sCPU & " ", $aFile[$iLoop] & " ") Then Return True
+		Next
+		Return SetError(3, 0, False)
+	EndIf
 
+	#cs
 	If $ListFile = Null Then
 		Return SetError(1, 0, False)
 	Else
@@ -84,6 +97,8 @@ Func _CPUNameCheck($sCPU, $sFamily, $sVersion, $sWinFU = False)
 			EndSelect
 		Next
 	EndIf
+	#ce
+
 EndFunc   ;==>_CPUNameCheck
 
 Func _CPUCoresCheck($iCores, $iThreads, $sWinFU = False)
