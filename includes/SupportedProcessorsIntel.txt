@@ -1,4 +1,4 @@
-2.5.0.4
+2025.09.08
 Atom(R) x6200FE
 Atom(R) x6211E
 Atom(R) x6212RE
@@ -7,17 +7,21 @@ Atom(R) x6414RE
 Atom(R) x6425E
 Atom(R) x6425RE
 Atom(R) x6427FE
-Celeron(R) 6305
-Celeron(R) 7300
-Celeron(R) 7305
+Atom(R) x7211E
+Atom(R) x7213E
+Atom(R) x7425E
 Celeron(R) 3867U
 Celeron(R) 4205U
 Celeron(R) 4305U
 Celeron(R) 4305UE
 Celeron(R) 5205U
 Celeron(R) 5305U
+Celeron(R) 5805
+Celeron(R) 6305
 Celeron(R) 6305E
 Celeron(R) 6600HE
+Celeron(R) 7300
+Celeron(R) 7305
 Celeron(R) 7305E
 Celeron(R) 7305L
 Celeron(R) G4900
@@ -53,11 +57,31 @@ Celeron(R) N4100
 Celeron(R) N4120
 Celeron(R) N4500
 Celeron(R) N4505
-Celeron(R) N5095
 Celeron(R) N5100
 Celeron(R) N5105
 Celeron(R) N6210
 Celeron(R) N6211
+Core(TM) 3-100HL
+Core(TM) 3-100U
+Core(TM) 3-100U with IPU
+Core(TM) 3-100UL
+Core(TM) 3-N350
+Core(TM) 3-N355
+Core(TM) 5-120HL
+Core(TM) 5-120U
+Core(TM) 5-120UL
+Core(TM) 5-130HL
+Core(TM) 5-130UL
+Core(TM) 5-210H
+Core(TM) 5-220H
+Core(TM) 7-150HL
+Core(TM) 7-150U
+Core(TM) 7-150UL
+Core(TM) 7-160HL
+Core(TM) 7-160UL
+Core(TM) 7-240H
+Core(TM) 7-250H
+Core(TM) 9-270H
 Core(TM) i3-1000G1
 Core(TM) i3-1000G4
 Core(TM) i3-1005G1
@@ -108,8 +132,14 @@ Core(TM) i3-13100T
 Core(TM) i3-13100TE
 Core(TM) i3-1315U
 Core(TM) i3-1315UE
+Core(TM) i3-1315URE
 Core(TM) i3-1320PE
+Core(TM) i3-1320PRE
 Core(TM) i3-13300HE
+Core(TM) i3-13300HRE
+Core(TM) i3-14100
+Core(TM) i3-14100F
+Core(TM) i3-14100T
 Core(TM) i3-8100
 Core(TM) i3-8100B
 Core(TM) i3-8100H
@@ -133,7 +163,6 @@ Core(TM) i3-9300T
 Core(TM) i3-9320
 Core(TM) i3-9350K
 Core(TM) i3-9350KF
-Core(TM) i3-L13G4
 Core(TM) i3-N300
 Core(TM) i3-N305
 Core(TM) i5-10200H
@@ -166,7 +195,6 @@ Core(TM) i5-11260H
 Core(TM) i5-11300H
 Core(TM) i5-1130G7
 Core(TM) i5-11320H
-Core(TM) i5-1135G7
 Core(TM) i5-1135G7
 Core(TM) i5-11400
 Core(TM) i5-11400F
@@ -227,6 +255,7 @@ Core(TM) i5-13420H
 Core(TM) i5-13450HX
 Core(TM) i5-1345U
 Core(TM) i5-1345UE
+Core(TM) i5-1345URE
 Core(TM) i5-13490F
 Core(TM) i5-13500
 Core(TM) i5-13500E
@@ -237,13 +266,27 @@ Core(TM) i5-13500TE
 Core(TM) i5-13505H
 Core(TM) i5-1350P
 Core(TM) i5-1350PE
+Core(TM) i5-1350PRE
 Core(TM) i5-13600
 Core(TM) i5-13600H
 Core(TM) i5-13600HE
+Core(TM) i5-13600HRE
 Core(TM) i5-13600HX
 Core(TM) i5-13600K
 Core(TM) i5-13600KF
 Core(TM) i5-13600T
+Core(TM) i5-14400
+Core(TM) i5-14400F
+Core(TM) i5-14400T
+Core(TM) i5-14450HX
+Core(TM) i5-14490F
+Core(TM) i5-14500
+Core(TM) i5-14500HX
+Core(TM) i5-14500T
+Core(TM) i5-14600
+Core(TM) i5-14600K
+Core(TM) i5-14600KF
+Core(TM) i5-14600T
 Core(TM) i5-8200Y
 Core(TM) i5-8210Y
 Core(TM) i5-8250U
@@ -284,7 +327,6 @@ Core(TM) i5-9600
 Core(TM) i5-9600K
 Core(TM) i5-9600KF
 Core(TM) i5-9600T
-Core(TM) i5-L16G7
 Core(TM) i7-10510U
 Core(TM) i7-10510Y
 Core(TM) i7-1060G7
@@ -311,7 +353,6 @@ Core(TM) i7-11390H
 Core(TM) i7-11600H
 Core(TM) i7-1160G7
 Core(TM) i7-1165G7
-Core(TM) i7-1165G7
 Core(TM) i7-11700
 Core(TM) i7-11700F
 Core(TM) i7-11700K
@@ -330,6 +371,7 @@ Core(TM) i7-1255U
 Core(TM) i7-1255UL
 Core(TM) i7-1260P
 Core(TM) i7-1260U
+Core(TM) i7-12650H
 Core(TM) i7-12650HX
 Core(TM) i7-1265U
 Core(TM) i7-1265UE
@@ -357,6 +399,8 @@ Core(TM) i7-13620H
 Core(TM) i7-13650HX
 Core(TM) i7-1365U
 Core(TM) i7-1365UE
+Core(TM) i7-1365URE
+Core(TM) i7-1366URE
 Core(TM) i7-13700
 Core(TM) i7-13700E
 Core(TM) i7-13700F
@@ -369,10 +413,20 @@ Core(TM) i7-13700TE
 Core(TM) i7-13705H
 Core(TM) i7-1370P
 Core(TM) i7-1370PE
+Core(TM) i7-1370PRE
+Core(TM) i7-1375PRE
 Core(TM) i7-13790F
 Core(TM) i7-13800H
 Core(TM) i7-13800HE
+Core(TM) i7-13800HRE
 Core(TM) i7-13850HX
+Core(TM) i7-14650HX
+Core(TM) i7-14700
+Core(TM) i7-14700F
+Core(TM) i7-14700HX
+Core(TM) i7-14700K
+Core(TM) i7-14700KF
+Core(TM) i7-14700T
 Core(TM) i7-7800X
 Core(TM) i7-7820HQ
 Core(TM) i7-7820X
@@ -444,10 +498,25 @@ Core(TM) i9-12900T
 Core(TM) i9-12900TE
 Core(TM) i9-12950HX
 Core(TM) i9-13900
+Core(TM) i9-13900E
 Core(TM) i9-13900F
+Core(TM) i9-13900H
+Core(TM) i9-13900HK
+Core(TM) i9-13900HX
 Core(TM) i9-13900K
 Core(TM) i9-13900KF
+Core(TM) i9-13900KS
 Core(TM) i9-13900T
+Core(TM) i9-13900TE
+Core(TM) i9-13905H
+Core(TM) i9-13950HX
+Core(TM) i9-13980HX
+Core(TM) i9-14900
+Core(TM) i9-14900F
+Core(TM) i9-14900HX
+Core(TM) i9-14900K
+Core(TM) i9-14900KF
+Core(TM) i9-14900T
 Core(TM) i9-7900X
 Core(TM) i9-7920X
 Core(TM) i9-7940X
@@ -468,8 +537,72 @@ Core(TM) i9-9960X
 Core(TM) i9-9980HK
 Core(TM) i9-9980XE
 Core(TM) m3-8100Y
+Core(TM) Ultra 3-105UL
+Core(TM) Ultra 3-205T
+Core(TM) Ultra 5-125H
+Core(TM) Ultra 5-125U
+Core(TM) Ultra 5-125UL
+Core(TM) Ultra 5-134U
+Core(TM) Ultra 5-135H
+Core(TM) Ultra 5-135HL
+Core(TM) Ultra 5-135U
+Core(TM) Ultra 5-135UL
+Core(TM) Ultra 5-205
+Core(TM) Ultra 5-225
+Core(TM) Ultra 5-225F
+Core(TM) Ultra 5-225H
+Core(TM) Ultra 5-225T
+Core(TM) Ultra 5-225U
+Core(TM) Ultra 5-226V
+Core(TM) Ultra 5-228V
+Core(TM) Ultra 5-230F
+Core(TM) Ultra 5-235
+Core(TM) Ultra 5-235H
+Core(TM) Ultra 5-235HX
+Core(TM) Ultra 5-235T
+Core(TM) Ultra 5-235U
+Core(TM) Ultra 5-236V
+Core(TM) Ultra 5-238V
+Core(TM) Ultra 5-245
+Core(TM) Ultra 5-245HX
+Core(TM) Ultra 5-245K
+Core(TM) Ultra 5-245KF
+Core(TM) Ultra 5-245T
+Core(TM) Ultra 7-155H
+Core(TM) Ultra 7-155HL
+Core(TM) Ultra 7-155U
+Core(TM) Ultra 7-155UL
+Core(TM) Ultra 7-164U
+Core(TM) Ultra 7-165H
+Core(TM) Ultra 7-165HL
+Core(TM) Ultra 7-165U
+Core(TM) Ultra 7-255H
+Core(TM) Ultra 7-255HX
+Core(TM) Ultra 7-255U
+Core(TM) Ultra 7-256V
+Core(TM) Ultra 7-258V
+Core(TM) Ultra 7-265
+Core(TM) Ultra 7-265F
+Core(TM) Ultra 7-265H
+Core(TM) Ultra 7-265HX
+Core(TM) Ultra 7-265K
+Core(TM) Ultra 7-265KF
+Core(TM) Ultra 7-265T
+Core(TM) Ultra 7-265U
+Core(TM) Ultra 7-266V
+Core(TM) Ultra 7-268V
+Core(TM) Ultra 9-185H
+Core(TM) Ultra 9-275HX
+Core(TM) Ultra 9-285
+Core(TM) Ultra 9-285H
+Core(TM) Ultra 9-285HX
+Core(TM) Ultra 9-285K
+Core(TM) Ultra 9-285T
+Core(TM) Ultra 9-288V
+Pentium(R) 6805
 Pentium(R) Gold 4417U
 Pentium(R) Gold 4425Y
+Pentium(R) Gold 5400T
 Pentium(R) Gold 5405U
 Pentium(R) Gold 6405U
 Pentium(R) Gold 6500Y
@@ -503,7 +636,9 @@ Pentium(R) Gold G7400
 Pentium(R) Gold G7400E
 Pentium(R) Gold G7400T
 Pentium(R) Gold G7400TE
+Pentium(R) J5040
 Pentium(R) J6426
+Pentium(R) N5030
 Pentium(R) N6415
 Pentium(R) Silver J5005
 Pentium(R) Silver J5040
@@ -511,8 +646,23 @@ Pentium(R) Silver N5000
 Pentium(R) Silver N5030
 Pentium(R) Silver N6000
 Pentium(R) Silver N6005
+Processor 300
+Processor 300T
+Processor 310
+Processor 310T
 Processor N100
+Processor N150
 Processor N200
+Processor N250
+Processor N50
+Processor N95
+Processor N97
+Processor U300
+Processor U300E
+Processor U300RE
+Processor U301L
+Processor U302L
+Processor U303L
 Xeon(R) Bronze 3104
 Xeon(R) Bronze 3106
 Xeon(R) Bronze 3204
@@ -526,8 +676,10 @@ Xeon(R) D-1715TER
 Xeon(R) D-1718T
 Xeon(R) D-1722NE
 Xeon(R) D-1726
+Xeon(R) D-1731NTE
 Xeon(R) D-1732TE
 Xeon(R) D-1733NT
+Xeon(R) D-1734NT
 Xeon(R) D-1735TR
 Xeon(R) D-1736
 Xeon(R) D-1736NT
@@ -536,22 +688,91 @@ Xeon(R) D-1746TER
 Xeon(R) D-1747NTE
 Xeon(R) D-1748TE
 Xeon(R) D-1749NT
+Xeon(R) D-1813NT
+Xeon(R) D-1823NT
+Xeon(R) D-1834
+Xeon(R) D-1844NT
+Xeon(R) D-1846
+Xeon(R) D-1848TER
 Xeon(R) D-2712T
 Xeon(R) D-2733NT
 Xeon(R) D-2738
+Xeon(R) D-2739NT
+Xeon(R) D-2745NX
 Xeon(R) D-2752NTE
 Xeon(R) D-2752TER
 Xeon(R) D-2753NT
+Xeon(R) D-2757NX
 Xeon(R) D-2766NT
 Xeon(R) D-2775TE
 Xeon(R) D-2776NT
+Xeon(R) D-2777NX
 Xeon(R) D-2779
 Xeon(R) D-2786NTE
 Xeon(R) D-2795NT
 Xeon(R) D-2796NT
 Xeon(R) D-2796TE
 Xeon(R) D-2798NT
+Xeon(R) D-2798NX
 Xeon(R) D-2799
+Xeon(R) D-2832NT
+Xeon(R) D-2843NT
+Xeon(R) D-2876NT
+Xeon(R) D-2896NT
+Xeon(R) D-2896TER
+Xeon(R) D-2899NT
+Xeon(R) E-2104G
+Xeon(R) E-2124
+Xeon(R) E-2124G
+Xeon(R) E-2126G
+Xeon(R) E-2134
+Xeon(R) E-2136
+Xeon(R) E-2144G
+Xeon(R) E-2146G
+Xeon(R) E-2174G
+Xeon(R) E-2176G
+Xeon(R) E-2176M
+Xeon(R) E-2186G
+Xeon(R) E-2186M
+Xeon(R) E-2224
+Xeon(R) E-2224G
+Xeon(R) E-2226G
+Xeon(R) E-2226GE
+Xeon(R) E-2234
+Xeon(R) E-2236
+Xeon(R) E-2244G
+Xeon(R) E-2246G
+Xeon(R) E-2254ME
+Xeon(R) E-2254ML
+Xeon(R) E-2274G
+Xeon(R) E-2276G
+Xeon(R) E-2276M
+Xeon(R) E-2276ME
+Xeon(R) E-2276ML
+Xeon(R) E-2278G
+Xeon(R) E-2278GE
+Xeon(R) E-2278GEL
+Xeon(R) E-2286G
+Xeon(R) E-2286M
+Xeon(R) E-2288G
+Xeon(R) E-2314
+Xeon(R) E-2324G
+Xeon(R) E-2334
+Xeon(R) E-2336
+Xeon(R) E-2356G
+Xeon(R) E-2374G
+Xeon(R) E-2378
+Xeon(R) E-2378G
+Xeon(R) E-2386G
+Xeon(R) E-2388G
+Xeon(R) E-2414
+Xeon(R) E-2434
+Xeon(R) E-2436
+Xeon(R) E-2456
+Xeon(R) E-2468
+Xeon(R) E-2478
+Xeon(R) E-2486
+Xeon(R) E-2488
 Xeon(R) Gold 5115
 Xeon(R) Gold 5118
 Xeon(R) Gold 5119T
@@ -579,6 +800,10 @@ Xeon(R) Gold 5318S
 Xeon(R) Gold 5318Y
 Xeon(R) Gold 5320
 Xeon(R) Gold 5320T
+Xeon(R) Gold 5415+
+Xeon(R) Gold 5416S
+Xeon(R) Gold 5418Y
+Xeon(R) Gold 5420+
 Xeon(R) Gold 6126
 Xeon(R) Gold 6126F
 Xeon(R) Gold 6126T
@@ -654,6 +879,25 @@ Xeon(R) Gold 6342
 Xeon(R) Gold 6346
 Xeon(R) Gold 6348
 Xeon(R) Gold 6354
+Xeon(R) Gold 6405U
+Xeon(R) Gold 6416H
+Xeon(R) Gold 6418H
+Xeon(R) Gold 6430
+Xeon(R) Gold 6438Y+
+Xeon(R) Gold 6442Y
+Xeon(R) Gold 6444Y
+Xeon(R) Gold G6400
+Xeon(R) Gold G6400E
+Xeon(R) Gold G6400T
+Xeon(R) Gold G6400TE
+Xeon(R) Gold G6405
+Xeon(R) Gold G6405T
+Xeon(R) Gold G6500
+Xeon(R) Gold G6500T
+Xeon(R) Gold G6505
+Xeon(R) Gold G6505T
+Xeon(R) Gold G6600
+Xeon(R) Gold G6605
 Xeon(R) Platinum 8153
 Xeon(R) Platinum 8156
 Xeon(R) Platinum 8158
@@ -694,6 +938,12 @@ Xeon(R) Platinum 8362
 Xeon(R) Platinum 8368
 Xeon(R) Platinum 8368Q
 Xeon(R) Platinum 8380
+Xeon(R) Platinum 8452Y
+Xeon(R) Platinum 8460Y+
+Xeon(R) Platinum 8468
+Xeon(R) Platinum 8470
+Xeon(R) Platinum 8480+
+Xeon(R) Platinum 8490H
 Xeon(R) Platinum 9221
 Xeon(R) Platinum 9222
 Xeon(R) Platinum 9242
@@ -722,6 +972,9 @@ Xeon(R) Silver 4310
 Xeon(R) Silver 4310T
 Xeon(R) Silver 4314
 Xeon(R) Silver 4316
+Xeon(R) Silver 4410T
+Xeon(R) Silver 4410Y
+Xeon(R) Silver 4416+
 Xeon(R) W-10855M
 Xeon(R) W-10885M
 Xeon(R) W-11055M
@@ -729,7 +982,6 @@ Xeon(R) W-11155MLE
 Xeon(R) W-11155MRE
 Xeon(R) W-11555MLE
 Xeon(R) W-11555MRE
-Xeon(R) W-11855M
 Xeon(R) W-11855M
 Xeon(R) W-11865MLE
 Xeon(R) W-11865MRE
@@ -787,4 +1039,21 @@ Xeon(R) W-3335
 Xeon(R) W-3345
 Xeon(R) W-3365
 Xeon(R) W-3375
+Xeon(R) W3-2423
+Xeon(R) W3-2425
+Xeon(R) W3-2435
+Xeon(R) W5-2445
+Xeon(R) W5-2455X
+Xeon(R) W5-2465X
+Xeon(R) W5-3423
+Xeon(R) W5-3425
+Xeon(R) W5-3433
+Xeon(R) W5-3435X
+Xeon(R) W7-2475X
+Xeon(R) W7-2495X
+Xeon(R) W7-3445
+Xeon(R) W7-3455
+Xeon(R) W7-3465X
+Xeon(R) W9-3475X
+Xeon(R) W9-3495X
 EOF

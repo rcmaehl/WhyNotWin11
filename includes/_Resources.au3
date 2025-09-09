@@ -67,7 +67,7 @@ EndFunc   ;==>CopyLangFiles
 Func CopyPCIIDs()
 	Select
 		Case _WinAPI_IsNetworkAlive()
-			InetGet("https://github.com/pciutils/pciids/raw/refs/heads/master/pci.ids", @LocalAppDataDir & "\WhyNotWin11\PCI.ids", $FC_OVERWRITE)
+			InetGet("https://raw.githubusercontent.com/pciutils/pciids/refs/heads/master/pci.ids", @LocalAppDataDir & "\WhyNotWin11\PCI.ids", $FC_OVERWRITE)
 			If FileReadLine(@LocalAppDataDir & "\WhyNotWin11\PCI.ids") <> "#	List of PCI ID's" Then ContinueCase
 		Case Else
 			FileInstall(".\includes\PCI.ids", @LocalAppDataDir & "\WhyNotWin11\PCI.ids", $FC_OVERWRITE)
@@ -76,9 +76,19 @@ EndFunc   ;==>CopyPCIIDs
 
 
 Func CopySupportedProcessorsFiles()
-	FileInstall(".\includes\SupportedProcessorsAMD.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $FC_OVERWRITE)
-	FileInstall(".\includes\SupportedProcessorsIntel.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $FC_OVERWRITE)
-	FileInstall(".\includes\SupportedProcessorsQualcomm.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $FC_OVERWRITE)
+	Select
+		Case _WinAPI_IsNetworkAlive()
+			InetGet("https://raw.githubusercontent.com/rcmaehl/WhyNotWin11/refs/heads/main/includes/SupportedProcessorsAMD.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $FC_OVERWRITE)
+			If Not StringRegExp(FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", 1), "[0-9]{4}\.[0-9]{2}\.[0-9]{2}") Then ContinueCase
+			InetGet("https://raw.githubusercontent.com/rcmaehl/WhyNotWin11/refs/heads/main/includes/SupportedProcessorsIntel.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $FC_OVERWRITE)
+			If Not StringRegExp(FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", 1), "[0-9]{4}\.[0-9]{2}\.[0-9]{2}") Then ContinueCase
+			InetGet("https://raw.githubusercontent.com/rcmaehl/WhyNotWin11/refs/heads/main/includes/SupportedProcessorsQualcomm.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $FC_OVERWRITE)
+			If Not StringRegExp(FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", 1), "[0-9]{4}\.[0-9]{2}\.[0-9]{2}") Then ContinueCase
+		Case Else
+			FileInstall(".\includes\SupportedProcessorsAMD.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", $FC_OVERWRITE)
+			FileInstall(".\includes\SupportedProcessorsIntel.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsIntel.txt", $FC_OVERWRITE)
+			FileInstall(".\includes\SupportedProcessorsQualcomm.txt", @LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsQualcomm.txt", $FC_OVERWRITE)
+	EndSelect
 EndFunc   ;==>CopySupportedProcessorsFiles
 
 Func ExtractFiles($sVersion = "x.x.x.x")
@@ -91,11 +101,6 @@ Func ExtractFiles($sVersion = "x.x.x.x")
 			FileWrite(@LocalAppDataDir & "\WhyNotWin11\Langs\Version", $sVersion)
 		EndIf
 	EndIf
-	If FileExists(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt") Then
-		If _VersionCompare($sVersion, FileReadLine(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt", 1)) = 1 Then
-			CopySupportedProcessorsFiles()
-		EndIf
-	EndIf
 	Select
 		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\")
 			DirCreate(@LocalAppDataDir & "\WhyNotWin11\")
@@ -104,14 +109,9 @@ Func ExtractFiles($sVersion = "x.x.x.x")
 			DirCreate(@LocalAppDataDir & "\WhyNotWin11\Langs\")
 			FileWrite(@LocalAppDataDir & "\WhyNotWin11\Langs\Version", $sVersion)
 			CopyLangFiles()
-			ContinueCase
-		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\SupportedProcessorsAMD.txt")
-			CopySupportedProcessorsFiles()
-			ContinueCase
-		Case Not FileExists(@LocalAppDataDir & "\WhyNotWin11\PCI.ids")
-			CopyPCIIDs()
 		Case Else
-			;;;
 	EndSelect
+	CopySupportedProcessorsFiles()
+	CopyPCIIDs()
 	FileChangeDir(@SystemDir)
 EndFunc   ;==>ExtractFiles
