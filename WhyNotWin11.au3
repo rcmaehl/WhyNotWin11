@@ -69,6 +69,7 @@ Global $WINDOWS_DRIVE = EnvGet("SystemDrive")
 Global Static $aMUI[2] = [Null, @MUILang] ; Forced, MUI Lang
 Global Static $aName[2] = [Null, "WhyNotWin11"] ; Forced, AppName
 
+#include "Includes\RoundGUI.au3"
 #include "Includes\GetDiskInfo.au3"
 #include "Includes\ResourcesEx.au3"
 
@@ -569,7 +570,8 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 	GUISetBkColor($aBgColors[$iMainBg])
 	GUISetFont($aFonts[$FontSmall] * $DPI_RATIO, $FW_BOLD, "", $aFonts[4])
 
-	GUICtrlSetDefColor($aTxtColors[$iMainText])
+	;GUICtrlSetDefColor($aTxtColors[$iMainText])
+	;_WinAPI_SetLayeredWindowAttributes($hGUI, $aBgColors[$iMainBg])
 
 	Local $aLangs = _FileListToArray(@LocalAppDataDir & "\WhyNotWin11\langs\", "*.lang", $FLTA_FILES)
 	If Not @error Then
@@ -661,10 +663,10 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 			_SetBkSelfIcon(-1, @ScriptFullPath, 202)
 			GUICtrlCreatePic("", 34, 210, 32, 32)
 			_SetBkSelfIcon(-1, @ScriptFullPath, 203)
-			GUICtrlCreatePic("", 34, 260, 32, 32)
-			_SetBkIcon(-1, @SystemDir & "\shell32.dll", -14, 32, 32)
+			;GUICtrlCreatePic("", 34, 260, 32, 32)
+			;_SetBkIcon(-1, @SystemDir & "\shell32.dll", -14, 32, 32)
 			If @LogonDomain <> @ComputerName Then
-				GUICtrlCreatePic("", 34, 310, 32, 32)
+				GUICtrlCreatePic("", 34, 260, 32, 32)
 				_SetBkIcon(-1, @SystemDir & "\imageres.dll", 124, 32, 32)
 			EndIf
 		EndIf
@@ -684,10 +686,10 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 			_SetBkIcon(-1, @ScriptDir & "\assets\PayPal.ico", -1, 32, 32)
 			GUICtrlCreatePic("", 34, 210, 32, 32)
 			_SetBkIcon(-1, @ScriptDir & "\assets\Discord.ico", -1, 32, 32)
-			GUICtrlCreatePic("", 34, 260, 32, 32)
-			_SetBkIcon(-1, @SystemDir & "\shell32.dll", -14, 32, 32)
+			;GUICtrlCreatePic("", 34, 260, 32, 32)
+			;_SetBkIcon(-1, @SystemDir & "\shell32.dll", -14, 32, 32)
 			If @LogonDomain <> @ComputerName Then
-				GUICtrlCreatePic("", 34, 310, 32, 32)
+				GUICtrlCreatePic("", 34, 260, 32, 32)
 				_SetBkIcon(-1, @SystemDir & "\imageres.dll", 124, 32, 32)
 			EndIf
 		EndIf
@@ -800,6 +802,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 	GUICtrlCreateLabel(ChrW(0x274C), 765, 5, 30, 30, $SS_CENTER + $SS_CENTERIMAGE)
 	GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
 	GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+	GUICtrlSetColor(-1, $aTxtColors[$iMainText])
 	#EndRegion
 
 	#cs
@@ -831,16 +834,19 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		GUICtrlSetFont(-1, $aFonts[$FontLarge] * $DPI_RATIO, $FW_NORMAL)
 		GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 		GUICtrlSetColor(-1, $aTxtColors[$iChecksText])
-		$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($aMUI[1], "Checking..."), 450, 70 + $iRow * 44, 300, 40, $SS_SUNKEN)
+		;$hCheck[$iRow][2] = GUICtrlCreateLabel(_Translate($aMUI[1], "Checking..."), 450, 70 + $iRow * 44, 300, 40, $SS_SUNKEN)
+		$hCheck[$iRow][2] = _RGUI_RoundLabel(_Translate($aMUI[1], "Checking..."), $aTxtColors[$iResultsText], 450, 70 + $iRow * 44, 300, 40, $aTxtColors[$iResultsText]-1, $aBgColors[$iResultsBg], 18)
 		Switch $iRow
 			Case 0, 3, 9
-				GUICtrlSetStyle(-1, $SS_CENTER + $SS_SUNKEN)
+				GUICtrlSetStyle(-1, $SS_CENTER) ; + $SS_SUNKEN)
 			Case Else
-				GUICtrlSetStyle(-1, $SS_CENTER + $SS_CENTERIMAGE + $SS_SUNKEN)
+				GUICtrlSetStyle(-1, $SS_CENTER + $SS_CENTERIMAGE) ; + $SS_SUNKEN)
 		EndSwitch
 		GUICtrlSetFont(-1, $aFonts[$FontMedium] * $DPI_RATIO, $FW_SEMIBOLD)
+		#cs
 		GUICtrlSetBkColor(-1, $aBgColors[$iResultsBg])
 		GUICtrlSetColor(-1, $aTxtColors[$iResultsText])
+		#ce
 		If Not $bInfoBox Then 
 			GUICtrlCreatePic("", 763, 78 + $iRow * 44, 24, 24)
 			_SetBKIcon(-1, @SystemDir & "\imageres.dll", -81, 24, 24)
@@ -1145,6 +1151,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 
 	GUICtrlCreateLabel($aName[1] & " " & $sVersion, 100, 50, 550, 20, $SS_CENTERIMAGE)
 	GUICtrlCreateLabel("Consumer Edition", 100, 70, 550, 20, $SS_CENTERIMAGE)
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 	GUICtrlCreateGroup("", 30, 180, 400, 328)
 	GUICtrlCreateLabel(" " & _Translate($aMUI[1], "Settings") & " ", 40, 180, 380, 20, $SS_CENTER)
@@ -1191,6 +1198,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 	;Local $hUOL = GUICtrlCreateCheckbox(_Translate($aMUI[1], "Check for Updates on App Launch"), 40, 400, 380, 20, $BS_RIGHTBUTTON)
 
 	;GUICtrlCreateCheckbox(_Translate($aMUI[1], "Save Settings in Registry, Not Disk"), 40, 480, 380, 20, $BS_RIGHTBUTTON)
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 	Local $hChecks = Default, $hConvert = Default, $hSecure = Default, $hTPM = Default, $hSkips = Default, $hInstall = Default
 	If BitAND($dSettings, 2) = 2 Then
@@ -1216,6 +1224,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		$hInstall = GUICtrlCreateButton(_Translate($aMUI[1],"Get Windows 11 Now"), 480, 450, 180, 40)
 		GUICtrlSetColor(-1, $aTxtColors[$iLinksText])
 		GUICtrlSetCursor(-1, 0)
+		GUICtrlCreateGroup("", -99, -99, 1, 1)
 	EndIf
 
 	GUISwitch($hGUI)
