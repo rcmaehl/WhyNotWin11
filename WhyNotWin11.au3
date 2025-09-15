@@ -464,9 +464,15 @@ Func RunChecks($sDrive = Null, $bWinPE = False)
 	$aResults[8][1] = @error
 	$aResults[8][2] = @extended
 
-	$aResults[9][0] = _SpaceCheck($sDrive)
-	$aResults[9][1] = @error
-	$aResults[9][2] = @extended
+	If $bWinPE Then
+		$aResults[9][0] = _SpaceCheck(-1)
+		$aResults[9][1] = @error
+		$aResults[9][2] = @extended
+	Else
+		$aResults[9][0] = _SpaceCheck($sDrive)
+		$aResults[9][1] = @error
+		$aResults[9][2] = @extended
+	EndIf
 
 	$aResults[10][0] = _TPMCheck()
 	$aResults[10][1] = @error
@@ -1052,7 +1058,11 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		Else
 			_GUICtrlSetState($hCheck[9][0], $iFail)
 		EndIf
-		GUICtrlSetData($hCheck[9][2], $WINDOWS_DRIVE & " " & $aResults[9][1] & " GB" & @CRLF & StringReplace(_Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
+		IF $bWinPE Then
+			GUICtrlSetData($hCheck[9][2], _Translate($aMUI[1], "Clean Install") & @CRLF & StringReplace(_Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
+		Else
+			GUICtrlSetData($hCheck[9][2], $WINDOWS_DRIVE & " " & $aResults[9][1] & " GB" & @CRLF & StringReplace(_Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
+		EndIf
 	EndIf
 	#EndRegion
 

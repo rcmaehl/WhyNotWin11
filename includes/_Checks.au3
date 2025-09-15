@@ -1,5 +1,6 @@
 #include-once
 #include <File.au3>
+#include <Memory.au3>
 #include <WinAPIDiag.au3>
 
 #include ".\_WMIC.au3"
@@ -284,23 +285,23 @@ EndFunc   ;==>_GPUNameCheck
 Func _GPUHWIDCheck($sGPU)
 
 	Local $iEnd
-    Local $aGPU
-    Local $aIDs
+	Local $aGPU
+	Local $aIDs
 	Local $iMatch
 	Local $iStart
 	
 	$aGPU = StringSplit($sGPU, "&", $STR_NOCOUNT)
 	If UBound($aGPU) < 2 Then Return False
 
-    $aIDs = FileReadToArray(@LocalAppDataDir & "\WhyNotWin11\PCI.ids")
-    If @error Then Return SetError(1, 0, False)
+	$aIDs = FileReadToArray(@LocalAppDataDir & "\WhyNotWin11\PCI.ids")
+	If @error Then Return SetError(1, 0, False)
 
-    $iStart = _ArraySearch($aIDs, "^" & StringReplace($aGPU[0], "PCI\VEN_", ""), 0, 0, 0, 3)
-    $iEnd = _ArraySearch($aIDs, "^[0-9a-f]", $iStart+1, 0, 0, 3)
-    $iMatch = _ArraySearch($aIDs, "^" & @TAB & StringLower(StringReplace($aGPU[1], "DEV_", "")), $iStart+1, $iEnd, 0, 3)
-    If Not $iMatch Then Return SetError(0, 0, False)
-    
-    Return SetError (0, 0, _GPUNameCheck($aIDs[$iMatch]))
+	$iStart = _ArraySearch($aIDs, "^" & StringReplace($aGPU[0], "PCI\VEN_", ""), 0, 0, 0, 3)
+	$iEnd = _ArraySearch($aIDs, "^[0-9a-f]", $iStart+1, 0, 0, 3)
+	$iMatch = _ArraySearch($aIDs, "^" & @TAB & StringLower(StringReplace($aGPU[1], "DEV_", "")), $iStart+1, $iEnd, 0, 3)
+	If Not $iMatch Then Return SetError(0, 0, False)
+
+	Return SetError (0, 0, _GPUNameCheck($aIDs[$iMatch]))
 EndFunc
 
 Func _InternetCheck()
@@ -377,28 +378,73 @@ Func _SpaceCheck($sDrive = Null, $sWinFU = False)
 		EndIf
 	EndIf
 
-	Local $sWindows
-
-	If $sDrive = Null Then
-		$sWindows = EnvGet("SystemDrive")
-	Else
-		$sWindows = $sDrive
-	EndIf
-
-	Local $iFree = Round(DriveSpaceTotal($sWindows) / 1024, 0)
-	Local $aDrives = DriveGetDrive($DT_FIXED)
 	Local $iDrives = 0
 
-	For $iLoop = 1 To $aDrives[0] Step 1
-		If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 60 Then $iDrives += 1
-	Next
+	Switch $sDrive
+		Case -1
+			For $iLoop = 0 To 25 Step 1
+				If Round(__SpaceCheckPE($iLoop) / 1024, 0) >= 60 Then $iDrives += 1
+			Next
 
-	If $iFree >= 64 Then
-		Return SetError($iFree, $iDrives, True)
-	Else
-		Return SetError($iFree, $iDrives, False)
-	EndIf
+			If $iDrives >= 1 Then
+				Return SetError(-1, $iDrives, True)
+			Else
+				Return SetError(-1, $iDrives, False)
+			EndIf
+		Case Null
+			$sDrive = EnvGet("SystemDrive")
+			ContinueCase
+		Case Else
+			Local $iFree = Round(DriveSpaceTotal($sDrive) / 1024, 0)
+			Local $aDrives = DriveGetDrive($DT_FIXED)
+
+			For $iLoop = 1 To $aDrives[0] Step 1
+				If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 60 Then $iDrives += 1
+			Next
+
+			If $iFree >= 64 Then
+				Return SetError($iFree, $iDrives, True)
+			Else
+				Return SetError($iFree, $iDrives, False)
+			EndIf
+	EndSwitch
+
 EndFunc   ;==>_SpaceCheck
+
+Func __SpaceCheckPE($iDisk)
+
+	Local $sDescriptor = "\\.\PHYSICALDRIVE" & $iDisk
+	Local Const $eIOCTL_DISK_GET_LENGTH_INFO = 0x0007405C
+
+	Local $pBuffer = _MemGlobalAlloc(8, $GPTR)
+	Local $iBytesReturned = 0
+	Local $hFile = _WinAPI_CreateFile($sDescriptor, 2, 2, 2, 8)	; file exists, open for reading, OS file
+	If @error Then Return SetError(-1, -1, False)
+	Local $aCall = DllCall("kernel32.dll", "int", "DeviceIoControl", _
+		"ptr", $hFile, _
+		"dword", $eIOCTL_DISK_GET_LENGTH_INFO, _
+		'ptr', 0, _
+		'dword', 0, _
+		'ptr', $pBuffer, _
+		'dword', 8, _ 
+		"dword*", $iBytesReturned, _
+		"ptr", 0)
+	$bErr = @error
+
+	Local $iDiskSize = -1
+	If Not @error And $aCall[0] Then
+		Local $aSize = DllCall("msvcrt.dll", "int64:cdecl", "memcpy", _
+			"int64*", 0, _
+			"ptr", $pBuffer, _
+			"int", 8)
+		If Not @error Then $iDiskSize = $aSize[1]
+	EndIf
+
+	_MemGlobalFree($pBuffer)
+	_WinAPI_CloseHandle($hFile)	; generates new @error
+	If $bErr Or @error Then Return SetError(-2, -2, False)
+
+EndFunc
 
 Func _TPMCheck($sWinFU = False)
 
