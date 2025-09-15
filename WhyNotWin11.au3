@@ -431,7 +431,6 @@ Func RunChecks($sDrive = Null, $bWinPE = False)
 			$aResults[5][0] = _GPUNameCheck(_GetGPUInfo(0))
 			$aResults[5][1] = @error
 			$aResults[5][2] = @extended
-
 			If $aResults[5][0] = False Then ; DirectX Check is time heavy, prefer Name Check
 				$aResults[5][0] = _DirectXStartCheck()
 				$aResults[5][1] = -1
