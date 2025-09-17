@@ -21,7 +21,7 @@ Header=0xFFFFFF
 Footer=0x000000
 Links=0x0F8BD9
 Checks=0xFFFFFF
-Results=0xFFFFFF
+Results=0xCCCCCC
 Settings=0x000000
 
 [Files]
