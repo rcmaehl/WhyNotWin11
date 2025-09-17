@@ -289,19 +289,31 @@ Func _GPUHWIDCheck($sGPU)
 	Local $aIDs
 	Local $iMatch
 	Local $iStart
+	Local $aGPUIDs[0]
 	
-	$aGPU = StringSplit($sGPU, "&", $STR_NOCOUNT)
-	If UBound($aGPU) < 2 Then Return False
+	If StringInStr($sGPU, ", ") Then ; Split multiple GPUs
+		$aGPUIDs = StringSplit($sGPU, ", ", $STR_ENTIRESPLIT + $STR_NOCOUNT)
+	Else
+		Redim $aGPUIDs[1]
+		$aGPUIDs[0] = $sGPU
+	EndIf
 
-	$aIDs = FileReadToArray(@LocalAppDataDir & "\WhyNotWin11\PCI.ids")
-	If @error Then Return SetError(1, 0, False)
+	For $iLoop = 0 To UBound($aGPUIDs) - 1 Step 1
+		$aGPU = StringSplit($sGPU, "&", $STR_NOCOUNT)
+		If UBound($aGPU) < 2 Then Return False
 
-	$iStart = _ArraySearch($aIDs, "^" & StringReplace($aGPU[0], "PCI\VEN_", ""), 0, 0, 0, 3)
-	$iEnd = _ArraySearch($aIDs, "^[0-9a-f]", $iStart+1, 0, 0, 3)
-	$iMatch = _ArraySearch($aIDs, "^" & @TAB & StringLower(StringReplace($aGPU[1], "DEV_", "")), $iStart+1, $iEnd, 0, 3)
-	If Not $iMatch Then Return SetError(0, 0, False)
+		$aIDs = FileReadToArray(@LocalAppDataDir & "\WhyNotWin11\PCI.ids")
+		If @error Then Return SetError(1, 0, False)
 
-	Return SetError (0, 0, _GPUNameCheck($aIDs[$iMatch]))
+		$iStart = _ArraySearch($aIDs, "^" & StringReplace($aGPU[0], "PCI\VEN_", ""), 0, 0, 0, 3)
+		$iEnd = _ArraySearch($aIDs, "^[0-9a-f]", $iStart+1, 0, 0, 3)
+		$iMatch = _ArraySearch($aIDs, "^" & @TAB & StringLower(StringReplace($aGPU[1], "DEV_", "")), $iStart+1, $iEnd, 0, 3)
+
+		If $iMatch Then 
+			If _GPUNameCheck($aIDs[$iMatch]) Then Return SetError(0, 0, True)
+		EndIf
+	Next
+	Return SetError(0, 0, False)
 EndFunc
 
 Func _InternetCheck()
@@ -383,7 +395,7 @@ Func _SpaceCheck($sDrive = Null, $sWinFU = False)
 	Switch $sDrive
 		Case -1
 			For $iLoop = 0 To 25 Step 1
-				If Round(__SpaceCheckPE($iLoop) / 1024, 0) >= 60 Then $iDrives += 1
+				If Round(__SpaceCheckPE($iLoop) / 1073741824, 0) >= 60 Then $iDrives += 1
 			Next
 
 			If $iDrives >= 1 Then
@@ -420,6 +432,7 @@ Func __SpaceCheckPE($iDisk)
 	Local $iBytesReturned = 0
 	Local $hFile = _WinAPI_CreateFile($sDescriptor, 2, 2, 2, 8)	; file exists, open for reading, OS file
 	If @error Then Return SetError(-1, -1, False)
+
 	Local $aCall = DllCall("kernel32.dll", "int", "DeviceIoControl", _
 		"ptr", $hFile, _
 		"dword", $eIOCTL_DISK_GET_LENGTH_INFO, _
@@ -444,6 +457,7 @@ Func __SpaceCheckPE($iDisk)
 	_WinAPI_CloseHandle($hFile)	; generates new @error
 	If $bErr Or @error Then Return SetError(-2, -2, False)
 
+	Return $iDiskSize
 EndFunc
 
 Func _TPMCheck($sWinFU = False)
