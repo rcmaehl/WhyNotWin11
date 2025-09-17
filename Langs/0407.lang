@@ -1,8 +1,8 @@
 [MetaData]
 Language=German - Germany
 RTL=false
-Translator=botflakes, JimBim89, schmelto, speedy-pc, htcfreek
-Version= 2.6.1.0
+Translator=botflakes, JimBim89, schmelto, speedy-pc, htcfreek, rcmaehl
+Version= 2.6.1.1
 [Font]
 Extra Large=24
 Large=18
@@ -46,11 +46,11 @@ Check Skipped=Prüfung übersprungen
 Listed as Compatible=CPU als kompatibel gelistet
 GPT Detected=GPT erkannt
 GPT Not Detected=GPT nicht erkannt
-Enabled=aktiviert
-Supported=unterstützt
+Enabled=Aktiviert
+Supported=Unterstützt
 TPM Status Error=TPM Status Fehler
 Disabled / Not Detected=deaktiviert oder nicht erkannt
-Detected=erkannt
+Detected=Erkannt
 DirectX 12 and WDDM 3=DirectX 12 und WDDM 3
 No DirectX 12, but WDDM2=kein DirectX 12, aber WDDM2
 DirectX 12, but no WDDM2=DirectX 12, aber kein WDDM2
@@ -88,7 +88,7 @@ Cores=Kerne
 Threads=Threads
 Not Supported=nicht unterstützt
 May Report DirectX 12 Incorrectly=Möglicherweise wird DirectX 12 falsch gemeldet
-Drive(s) Meet Requirements=Laufwerk(e) kompatibel
+Drive(s) Meet Requirements=# Laufwerk(e) kompatibel
 [Descriptions]
 Architecture=Sollten Sie ein 32-Bit-Betriebssystem einsetzen, erfordert dies eine 64-Bit-Neuinstallation von Windows 11. Ihre Daten müssen vorab gesichert werden. Eine 32-Bit-CPU erfordert einen Wechsel auf eine neue 64-Bit-CPU.
 Boot=Windows 11 benötigt als Boot-Methode den UEFI-Modus. Sollten Sie "Legacy" (traditioneller Startmodus) nutzen, kann dies oft in den BIOS/UEFI-Einstellungen umgestellt werden. Schlagen Sie im Handbuch Ihres Motherboards nach.
