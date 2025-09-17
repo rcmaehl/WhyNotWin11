@@ -1058,8 +1058,12 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		Else
 			_GUICtrlSetState($hCheck[9][0], $iFail)
 		EndIf
-		IF $bWinPE Then
-			GUICtrlSetData($hCheck[9][2], _Translate($aMUI[1], "Clean Install") & @CRLF & StringReplace(_Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
+		If $bWinPE Then
+			If StringInStr(_Translate($aMUI[1], "Drive(s) Meet Requirements"), "#") Then
+				GUICtrlSetData($hCheck[9][2], _Translate($aMUI[1], "Clean Install") & @CRLF & StringReplace("# " & _Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
+			Else
+				GUICtrlSetData($hCheck[9][2], _Translate($aMUI[1], "Clean Install") & @CRLF & StringReplace("# " & _Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
+			EndIf
 		Else
 			GUICtrlSetData($hCheck[9][2], $WINDOWS_DRIVE & " " & $aResults[9][1] & " GB" & @CRLF & StringReplace(_Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
 		EndIf
