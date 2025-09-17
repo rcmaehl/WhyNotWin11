@@ -627,12 +627,12 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		GUICtrlSetTip(-1, "Discord")
 		GUICtrlSetCursor(-1, 0)
 
-		$hWeb = GUICtrlCreateLabel("", 34, 260, 32, 32)
-		GUICtrlSetTip(-1, _Translate($aMUI[1], "My Projects"))
-		GUICtrlSetCursor(-1, 0)
+		;$hWeb = GUICtrlCreateLabel("", 34, 260, 32, 32)
+		;GUICtrlSetTip(-1, _Translate($aMUI[1], "My Projects"))
+		;GUICtrlSetCursor(-1, 0)
 
 		If @LogonDomain <> @ComputerName Then
-			$hJob = GUICtrlCreateLabel("", 34, 310, 32, 32)
+			$hJob = GUICtrlCreateLabel("", 34, 260, 32, 32)
 			GUICtrlSetTip(-1, _Translate($aMUI[1], "I'm For Hire"))
 			GUICtrlSetCursor(-1, 0)
 		EndIf
