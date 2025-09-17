@@ -109,6 +109,8 @@ Func ProcessCMDLine()
 		If Not $aMUI[0] Then $aMUI[1] = @MUILang
 	EndIf
 
+	If $aMUI[1] = 0000 Then $aMUI[1] = 0409 ; Default to English if MUI is not set (WinPE)
+
 	If $aName[0] = Null Then
 		$aName[1] = RegRead("HKEY_LOCAL_MACHINE\Software\Policies\Robert Maehl Software\WhyNotWin11", "SetAppName")
 		$aName[0] = $aName[1] ? True : False
@@ -422,26 +424,25 @@ Func RunChecks($sDrive = Null, $bWinPE = False)
 		$aResults[4][0] = True
 	EndIf
 
-	If StringInStr(_GetCPUInfo(2), "Qualcomm") And $aResults[2][0] Then
-		$aResults[5][0] = True
-		$aResults[5][1] = @error
-		$aResults[5][2] = @extended
-	Else
-		If Not $bWinPE Then
-			$aResults[5][0] = _GPUNameCheck(_GetGPUInfo(0))
+	Select
+		Case StringInStr(_GetCPUInfo(2), "Qualcomm") And $aResults[2][0]
+			$aResults[5][0] = True
+			$aResults[5][1] = 0
+			$aResults[5][2] = 0
+		Case $bWinPE ; WinPE does not have DirectX components, use GPU HWID Check
+			$aResults[5][0] = _GPUHWIDCheck(_GetGPUInfo(1, $bWinPE))
 			$aResults[5][1] = @error
 			$aResults[5][2] = @extended
-			If $aResults[5][0] = False Then ; DirectX Check is time heavy, prefer Name Check
-				$aResults[5][0] = _DirectXStartCheck()
-				$aResults[5][1] = -1
-				$aResults[5][2] = -1
-			EndIf
-		Else
-			$aResults[5][0] = _GPUHWIDCheck(_GetGPUInfo(2))
+		Case Not $bWinPE
+			$aResults[5][0] = _GPUNameCheck(_GetGPUInfo(0)) ; DirectX Check is time heavy, prefer Name Check
 			$aResults[5][1] = @error
 			$aResults[5][2] = @extended
-		EndIf
-	EndIf
+			If $aResults[5][0] = False Then ContinueCase
+		Case Else ; This shouldn't heppen outside of the above ContiueCase
+			$aResults[5][0] = _DirectXStartCheck()
+			$aResults[5][1] = -1
+			$aResults[5][2] = -1
+	EndSelect
 
 	If $bWinPE Then
 		$aResults[6][0] = True
@@ -762,7 +763,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 	GUICtrlCreateLabel(StringReplace(_GetCPUInfo(2), " CPU", ""), 450, 560, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 	GUICtrlSetColor(-1, $aTxtColors[$iFooterText])
-	GUICtrlCreateLabel(_GetGPUInfo(0), 450, 580, 300, 20, $SS_CENTERIMAGE)
+	GUICtrlCreateLabel(_GetGPUInfo(0, $bWinPE), 450, 580, 300, 20, $SS_CENTERIMAGE)
 	GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 	GUICtrlSetColor(-1, $aTxtColors[$iFooterText])
 
@@ -1646,14 +1647,27 @@ EndFunc   ;==>_SetBannerText
 ; Example .......: No
 ; ===============================================================================================================================
 Func _GUICtrlSetState($hCtrl, $iState)
-	Switch $iState
-		Case 0
-			_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -98, 32, 32) ; Failed
-		Case 1
-			_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -1405, 32, 32) ; Passed
-		Case 2
-			_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -99, 32, 32) ; Unsure
-		Case 3
-			_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -84, 32, 32) ; Warn
-	EndSwitch
+	If IsAdmin() Then
+		Switch $iState
+			Case 0
+				_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -105, 32, 32) ; Failed
+			Case 1
+				_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -106, 32, 32) ; Passed
+			Case 2
+				_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -104, 32, 32) ; Unsure
+			Case 3
+				_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -107, 32, 32) ; Warn
+		EndSwitch
+	Else
+		Switch $iState
+			Case 0
+				_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -98, 32, 32) ; Failed
+			Case 1
+				_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -1405, 32, 32) ; Passed
+			Case 2
+				_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -99, 32, 32) ; Unsure
+			Case 3
+				_SetBkIcon($hCtrl, @SystemDir & "\imageres.dll", -84, 32, 32) ; Warn
+		EndSwitch
+	EndIf
 EndFunc   ;==>_GUICtrlSetState
