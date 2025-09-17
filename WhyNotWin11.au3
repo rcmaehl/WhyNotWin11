@@ -17,11 +17,6 @@
 #AutoIt3Wrapper_Res_Icon_Add=Assets\GitHub.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\PayPal.ico
 #AutoIt3Wrapper_Res_Icon_Add=Assets\Discord.ico
-#AutoIt3Wrapper_Res_Icon_Add=Assets\Web.ico
-#AutoIt3Wrapper_Res_Icon_Add=Assets\HireMe.ico
-#AutoIt3Wrapper_Res_Icon_Add=Assets\Settings.ico
-#AutoIt3Wrapper_Res_Icon_Add=Assets\Info.ico
-#AutoIt3Wrapper_Res_Icon_Add=Assets\WhyNotWin11.ico
 #AutoIt3Wrapper_Res_SaveSource=y
 #AutoIt3Wrapper_AU3Check_Parameters=-d -w 1 -w 2 -w 3 -w 4 -w 5 -w 6 -w 7 -v1 -v2 -v3
 #AutoIt3Wrapper_Run_Tidy=n
@@ -683,7 +678,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 			_SetBkIcon(-1, @SystemDir & "\shell32.dll", -16826, 32, 32)
 		EndIf
 		GUICtrlCreatePic("", 34, 20, 32, 32)
-		_SetBkSelfIcon(-1, @ScriptFullPath, 208)
+		_SetBkSelfIcon(-1, @ScriptFullPath, 99)
 	Else
 		If Not RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "NoSocials") Then
 			GUICtrlCreatePic("", 34, 110, 32, 32)
