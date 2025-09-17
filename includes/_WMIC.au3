@@ -203,15 +203,19 @@ Func _GetDiskProperties($iFlag = 0)
 	SetError(1, 3, "Error_NoDataReturned")
 EndFunc   ;==>_GetDiskProperties
 
-Func _GetGPUInfo($iFlag = 0)
+Func _GetGPUInfo($iFlag = 0, $bWinPE = False)
 	Local Static $sName
-	Local Static $sMemory
 	Local Static $sHWID
+	Local Static $Col_Items
 	Local Static $Obj_WMIService = __GetWMIObjects()[0]
 
 	If Not $sName <> "" Then
 		If (IsObj($Obj_WMIService)) And (Not @error) Then
-			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_VideoController')
+			If $bWinPE Then
+				$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_PNPEntity where Name="Video Controller (VGA Compatible)"')
+			Else
+				$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_VideoController')
+			EndIf
 
 			Local $Obj_Item
 			For $Obj_Item In $Col_Items
@@ -222,9 +226,11 @@ Func _GetGPUInfo($iFlag = 0)
 						ContinueCase
 					Case "Microsoft Remote Display Adapter"
 						ContinueLoop
+					Case "Video Controller (VGA Compatible)"
+						$sName &= "Inactive GPU, "
+						$sHWID &= $Obj_Item.PNPDeviceID & ", "						
 					Case Else
 						$sName &= $Obj_Item.Name & ", "
-						$sMemory = $Obj_Item.AdapterRAM
 						$sHWID &= $Obj_Item.PNPDeviceID & ", "
 				EndSwitch
 			Next
@@ -236,8 +242,6 @@ Func _GetGPUInfo($iFlag = 0)
 		Case 0
 			Return StringTrimRight(String($sName), 2)
 		Case 1
-			Return StringStripWS(String($sMemory), $STR_STRIPTRAILING)
-		Case 2
 			Return StringTrimRight(String($sHWID), 2)
 		Case Else
 			Return 0
