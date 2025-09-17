@@ -983,7 +983,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 
 	#Region ; _DirectXStartCheck() Skip
 	If $aSkips[5] Then
-		_GUICtrlSetState($hCheck[5][0], $iUnsure)
+		;_GUICtrlSetState($hCheck[5][0], $iUnsure)
 		GUICtrlSetData($hCheck[5][2], _Translate($aMUI[1], "Check Skipped"))
 		$bComplete = True
 	EndIf
