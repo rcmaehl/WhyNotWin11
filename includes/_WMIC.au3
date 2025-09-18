@@ -53,6 +53,8 @@ Func _GetCPUInfo($iFlag = 0)
 	Local Static $sCPUs
 	Local Static $sVersion
 	Local Static $sFamily
+	Local Static $sModel
+	Local Static $sStepping
 	Local Static $Obj_WMIService = __GetWMIObjects()[0]
 
 	If Not $vName <> "" Then
@@ -67,7 +69,9 @@ Func _GetCPUInfo($iFlag = 0)
 				$sSpeed = $Obj_Item.MaxClockSpeed
 				$sArch = $Obj_Item.AddressWidth
 				$sVersion = $Obj_Item.Caption
-				$sFamily = $Obj_Item.Caption
+				$sFamily = $Obj_Item.Level
+				$sModel = $Obj_Item.Revision
+				$sStepping = $Obj_Item.Stepping
 			Next
 
 			$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_ComputerSystem')
@@ -84,10 +88,6 @@ Func _GetCPUInfo($iFlag = 0)
 			$sSpeed = StringRegExpReplace($vName[1], "[^[:digit:]]", "") & "0"
 			$vName = $vName[0]
 		EndIf
-		If StringRegExp($sFamily, "[^0-9]") Then
-				$sFamily = StringRegExp($sFamily, "Family\s\d+\sModel", $STR_REGEXPARRAYMATCH)[0]
-				$sFamily = StringRegExpReplace($sFamily, "[^0-9]", "")
-		EndIf
 	EndIf
 	Switch $iFlag
 		Case 0
@@ -103,7 +103,11 @@ Func _GetCPUInfo($iFlag = 0)
 		Case 5
 			Return String($sVersion)
 		Case 6
-			Return $sFamily
+			Return Number($sFamily)
+		Case 7
+			Return BitAND(BitShift($sModel, 8), 0xFF)
+		Case 8
+			Return BitAND($sStepping, 0xFF)
 		Case Else
 			Return 0
 	EndSwitch

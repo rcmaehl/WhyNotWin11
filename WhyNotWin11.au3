@@ -402,7 +402,7 @@ Func RunChecks($sDrive = Null, $bWinPE = False)
 	$aResults[1][1] = @error
 	$aResults[1][2] = @extended
 
-	$aResults[2][0] = _CPUNameCheck(_GetCPUInfo(2), _GetCPUInfo(6), _GetCPUInfo(5))
+	$aResults[2][0] = _CPUCheck(_GetCPUInfo(2), _GetCPUInfo(6), _GetCPUInfo(7), _GetCPUInfo(8))
 	$aResults[2][1] = @error
 	$aResults[2][2] = @extended
 
@@ -493,7 +493,7 @@ Func RunExtendedChecks($sDrive = Null, $bFUC = False)
 		Next
 	EndIf
 
-	$aResults[2][0] = _CPUNameCheck(_GetCPUInfo(2), _GetCPUInfo(6), _GetCPUInfo(5), $sFeatureUpdate)
+	$aResults[2][0] = _CPUCheck(_GetCPUInfo(2), _GetCPUInfo(6), _GetCPUInfo(7), _GetCPUInfo(8), $sFeatureUpdate)
 	$aResults[2][1] = @error
 	$aResults[2][2] = @extended
 

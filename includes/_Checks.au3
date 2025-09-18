@@ -1,6 +1,7 @@
 #include-once
 #include <File.au3>
 #include <Memory.au3>
+#include <WinAPISys.au3>
 #include <WinAPIDiag.au3>
 
 #include ".\_WMIC.au3"
@@ -31,7 +32,9 @@ Func _BootCheck()
 	EndSwitch
 EndFunc   ;==>_BootCheck
 
-Func _CPUNameCheck($sCPU, $sFamily, $sVersion, $sWinFU = False)
+Func _CPUCheck($sCPU, $iFamily, $iModel, $iStepping, $sWinFU = False)
+
+	Local $PF_ARM_V81_ATOMIC_INSTRUCTIONS_AVAILABLE = 34
 
 	If $sWinFU Then
 		Local $sReg = RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\" & $sWinFU, "RedReason")
@@ -42,21 +45,42 @@ Func _CPUNameCheck($sCPU, $sFamily, $sVersion, $sWinFU = False)
 		EndIf
 	EndIf
 
+	Local $sPSF1, $sCP4030
 	Local $aFile, $ListFile
 
+	; Microsoft Hardware Readiness PS Script Values
+	Switch RegRead("HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0", "VendorIdentifier")
+		Case "Qualcomm Technologies Inc"
+			If Not _WinAPI_IsProcessorFeaturePresent($PF_ARM_V81_ATOMIC_INSTRUCTIONS_AVAILABLE) Then
+				$sCP4030 = RegRead("HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0", "CP 4030")
+				If BitAND(BitShift($sCP4030, 20), 0xF) >= 2 Then Return True
+				Return False
+			EndIf
+		Case "GenuineIntel"
+			If $iFamily >= 6 And $iModel <= 95 And Not ($iFamily = 6 And $iModel = 85) Then
+				Return False
+			ElseIf $iFamily = 6 And ($iModel = 142 Or $iModel = 158) And $iStepping = 9 Then
+				$sPSF1 = RegRead("HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0", "Platform Specific Field 1")
+				If (($iModel = 142 And Not $sPSF1 = 16) Or ($iModel = 158 And Not $sPSF1 = 8)) Then Return False
+			EndIf
+		Case "AuthenticAMD"
+			If $iFamily < 23 Or $iFamily = 23 And ($iModel = 1 Or $iModel = 17) Then Return False
+	EndSwitch
+
+	; Borrowed from mq1n
 	Select
 		Case StringInStr($sCPU, "AMD")
-			If $sFamily >= 25 Then Return True
-			If StringInStr($sCPU, "1600") And StringInStr($sVersion, "Stepping 2") Then Return True ; 1600AF
+			If $iFamily >= 25 Then Return True
+			If StringInStr($sCPU, "1600") And $iStepping = 2 Then Return True ; 1600AF
 			$ListFile = "\WhyNotWin11\SupportedProcessorsAMD.txt"
 		Case StringInStr($sCPU, "Intel")
-			If $sFamily = 6 Then
+			If $iFamily = 6 Then
 				Select
-					Case StringRegExp($sVersion, ".*Model\s(1[6-9][0-9]|2[0-9]{2})\s.*")
+					Case StringRegExp(String($iModel), "(1[6-9][0-9]|2[0-9]{2})")
 						ContinueCase
-					Case StringInStr($sVersion, "Model 142") And StringRegExp($sVersion, ".*Stepping\s1[0-9].*")
+					Case $iModel = 142 And StringRegExp(String($iStepping), "1[0-9]")
 						ContinueCase
-					Case StringInStr($sVersion, "Model 158") And StringRegExp($sVersion, ".*Stepping\s1[0-9].*")
+					Case $iModel = 158 And StringRegExp(String($iStepping), "1[0-9]")
 						Return True
 				EndSelect
 			EndIf
@@ -100,7 +124,7 @@ Func _CPUNameCheck($sCPU, $sFamily, $sVersion, $sWinFU = False)
 	EndIf
 	#ce
 
-EndFunc   ;==>_CPUNameCheck
+EndFunc   ;==>_CPUCheck
 
 Func _CPUCoresCheck($iCores, $iThreads, $sWinFU = False)
 
@@ -294,7 +318,7 @@ Func _GPUNameCheck($sGPU)
 				;;;
 		EndSelect
 	Next
-	
+
 	Return SetError(0, 0, False)
 EndFunc   ;==>_GPUNameCheck
 
