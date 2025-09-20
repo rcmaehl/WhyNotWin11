@@ -324,7 +324,7 @@ Func ProcessCMDLine()
 				If $bSilent Then
 					;;; ; Anyone using silent for WNW11 on Win11 can use /fuonly
 				Else
-					If MsgBox($MB_ICONQUESTION+$MB_YESNO, _Translate($aMUI[1], "Up to Date"), _Translate($aMUI[1], "Your computer is already on Windows 11. Would you like to check Feature Update Compatiblity instead?")) = $IDYES Then
+					If MsgBox($MB_ICONQUESTION+$MB_YESNO+$MB_DEFBUTTON2, _Translate($aMUI[1], "Up to Date"), _Translate($aMUI[1], "Your computer is already on Windows 11. Would you like to check Feature Update Compatiblity instead?")) = $IDYES Then
 						$bFUC = True
 					Else
 						$bFUC = False
