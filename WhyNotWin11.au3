@@ -991,7 +991,7 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		If $aResults[6][0] Then
 			If $aResults[6][1] = -1 And $aResults[6][2] Then
 				_GUICtrlSetState($hCheck[6][0], $iWarn)
-				GUICtrlSetData($hCheck[6][2], _Translate($aMUI[1], "Clean Install"))
+				GUICtrlSetData($hCheck[6][2], _Translate($aMUI[1], "Clean Install May Be Required"))
 			ElseIf $aResults[6][1] Then
 				_GUICtrlSetState($hCheck[6][0], $iPass)
 				GUICtrlSetData($hCheck[6][2], _Translate($aMUI[1], "GPT Detected"))
@@ -1055,12 +1055,16 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 		EndIf
 		If $bWinPE Then
 			If StringInStr(_Translate($aMUI[1], "Drive(s) Meet Requirements"), "#") Then
-				GUICtrlSetData($hCheck[9][2], _Translate($aMUI[1], "Clean Install") & @CRLF & StringReplace("# " & _Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
+				GUICtrlSetData($hCheck[9][2], _Translate($aMUI[1], "Clean Install May Be Required") & @CRLF & StringReplace("# " & _Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
 			Else
-				GUICtrlSetData($hCheck[9][2], _Translate($aMUI[1], "Clean Install") & @CRLF & StringReplace("# " & _Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
+				GUICtrlSetData($hCheck[9][2], _Translate($aMUI[1], "Clean Install May Be Required") & @CRLF & StringReplace("# " & _Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
 			EndIf
 		Else
-			GUICtrlSetData($hCheck[9][2], $WINDOWS_DRIVE & " " & $aResults[9][1] & " GB" & @CRLF & StringReplace(_Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
+			If DriveSpaceFree($WINDOWS_DRIVE) <= DriveSpaceTotal($WINDOWS_DRIVE) / 10 Then
+				GUICtrlSetData($hCheck[9][2], _Translate($aMUI[1], "Clean Install May Be Required") & @CRLF & StringReplace("# " & _Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
+			Else
+				GUICtrlSetData($hCheck[9][2], $WINDOWS_DRIVE & " " & $aResults[9][1] & " GB" & @CRLF & StringReplace(_Translate($aMUI[1], "Drive(s) Meet Requirements"), "#", $aResults[9][2]))
+			EndIf
 		EndIf
 	EndIf
 	#EndRegion
