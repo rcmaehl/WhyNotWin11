@@ -482,7 +482,7 @@ Func __SpaceCheckPE($iDisk)
 		'dword', 8, _ 
 		"dword*", $iBytesReturned, _
 		"ptr", 0)
-	$bErr = @error
+	Local $bErr = @error
 
 	Local $iDiskSize = -1
 	If Not @error And $aCall[0] Then
