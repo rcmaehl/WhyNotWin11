@@ -230,9 +230,12 @@ Func _GetGPUInfo($iFlag = 0, $bWinPE = False)
 						ContinueCase
 					Case "Microsoft Remote Display Adapter"
 						ContinueLoop
+					Case "Virtual Desktop Monitor"
+						$sName &= "VM GPU, "
+						$sHWID &= $Obj_Item.PNPDeviceID & ", "
 					Case "Video Controller (VGA Compatible)"
 						$sName &= "Inactive GPU, "
-						$sHWID &= $Obj_Item.PNPDeviceID & ", "						
+						$sHWID &= $Obj_Item.PNPDeviceID & ", "
 					Case Else
 						$sName &= $Obj_Item.Name & ", "
 						$sHWID &= $Obj_Item.PNPDeviceID & ", "
