@@ -25,7 +25,7 @@ do {
 }
 until ($featureVersion -eq '22H2')
 
-$dateString = $(Get-Date -UFormat '%Y.%m.%d')
+$dateString = $(Get-Date -Format 'yyyy.M.d')
 
 $outputFolderPath = "$PSScriptRoot\Windows 11 Supported Processors Lists $dateString"
 if (-not (Test-Path $outputFolderPath)) {
@@ -69,8 +69,9 @@ foreach ($thisProcessorBrand in $processorBrands) {
 							$trademarkSymbolReplacement = ''
 						}
 
-						$processorFamily = $tdNodes[1].InnerText.Replace("$([char]0x00AE)", $registeredSymbolReplacement).Replace("$([char]0x2122)", $trademarkSymbolReplacement).Trim()
-						$processorModel = ($tdNodes[2].InnerText.Replace("$([char]0x00AE)", $registeredSymbolReplacement).Replace("$([char]0x2122)", $trademarkSymbolReplacement) -Replace '\[\d+\]', '').Trim()
+						$processorFamily = $tdNodes[1].InnerText.Replace("$([char]0x00AE)", $registeredSymbolReplacement).Replace("$([char]0x2122)", $trademarkSymbolReplacement).Replace("$([char]0x200B)", '').Trim()
+						$processorModel = ($tdNodes[2].InnerText.Replace("$([char]0x00AE)", $registeredSymbolReplacement).Replace("$([char]0x2122)", $trademarkSymbolReplacement).Replace("$([char]0x200B)", '') -Replace '\[\d+\]', '').Trim()
+						# On https://learn.microsoft.com/en-us/windows-hardware/design/minimum/supported/windows-11-24h2-supported-amd-processors some model names such as "4345P" has a zero-width space (ZWSP) character (0x200B) after them that needs to be removed.
 
 						if ($thisProcessorBrand -eq 'Intel') {
 							$processorModel = $processorModel -Replace ' [Pp]rocessor ', '-'
