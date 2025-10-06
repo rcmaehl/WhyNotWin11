@@ -1,6 +1,7 @@
 #include-once
 
 #include <Array.au3>
+#include <WinAPISys.au3>
 #include <StringConstants.au3>
 
 #include "GetDiskInfo.au3"
@@ -70,8 +71,8 @@ Func _GetCPUInfo($iFlag = 0)
 				$sArch = $Obj_Item.AddressWidth
 				$sVersion = $Obj_Item.Caption
 				$sFamily = $Obj_Item.Level
-				$sModel = $Obj_Item.Revision
-				$sStepping = $Obj_Item.Stepping
+				$sModel = $Obj_Item.Revision ; Doesn't work for Intel...
+				$sStepping = $Obj_Item.Stepping ; Doesn't work for Intel...
 			Next
 
 			$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_ComputerSystem')
@@ -105,9 +106,17 @@ Func _GetCPUInfo($iFlag = 0)
 		Case 6
 			Return Number($sFamily)
 		Case 7
-			Return BitAND(BitShift($sModel, 8), 0xFF)
+			If StringInStr($vName, "Intel") Then
+				Return BitAND(BitShift(_WinAPI_GetSystemInfo()[9], 8), 0xFF)
+			Else
+				Return BitAND(BitShift($sModel, 8), 0xFF)
+			EndIf
 		Case 8
-			Return BitAND($sStepping, 0xFF)
+			If StringInStr($vName, "Intel") Then
+				Return BitAND(_WinAPI_GetSystemInfo()[9], 0xFF)
+			Else
+				Return BitAND($sStepping, 0xFF)
+			EndIf
 		Case Else
 			Return 0
 	EndSwitch
