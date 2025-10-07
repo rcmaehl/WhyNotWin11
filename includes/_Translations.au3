@@ -67,7 +67,7 @@ EndFunc   ;==>_GetTranslationRTL
 
 Func _INIUnicode($sINI)
 	If FileExists($sINI) = 0 Then
-		Return FileClose(FileOpen($sINI, $FO_OVERWRITE + $FO_UNICODE))
+		Return FileClose(FileOpen($sINI, $FO_READ + $FO_UNICODE))
 	Else
 		Local Const $iEncoding = FileGetEncoding($sINI)
 		Local $fReturn = True

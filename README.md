@@ -9,7 +9,8 @@
 # WhyNotWin11
 Detection Script to help identify why your PC isn't Windows 11 Release Ready, including Update Checks!
 
-![image](https://user-images.githubusercontent.com/716581/187039796-f5a2aa29-b367-416c-b3f0-a07e53c8b14c.png)
+![image](https://github.com/user-attachments/assets/fcf85b8d-856a-43bf-9637-a7a475b87b48)
+
 ----
 
 ## Download
@@ -22,12 +23,10 @@ Detection Script to help identify why your PC isn't Windows 11 Release Ready, in
 ## System Requirements
  |Minimum Requirements*|Recommended
 ----|----|----
-OS|Windows 8.1|Latest Windows 10 Build
+OS|WinPE/Windows 8.1|Latest Windows 10 Build
 CPU|32-bit Single Core|64-bit Dual Core or Higher
 RAM (Memory)|40MB Free|100MB Free
 Disk (Storage)|5MB Free|100MB Free
-||
-Limitations|DirectX 12 Check Inaccurate|None
 
 \* WhyNotWin11 can be forced to run on Unsupported Systems using the `/force` parameter, no support will be given for this parameter.
 

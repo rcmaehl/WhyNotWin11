@@ -1,10 +1,26 @@
-2.5.0.0
-Snapdragon (TM) 850
+2025.10.6
+Microsoft SQ1
+Microsoft SQ2
+Microsoft SQ3
+QCM5430
+QCM6490
+QCS5430
+QCS6490
 Snapdragon (TM) 7c
 Snapdragon (TM) 7c Gen 2
+Snapdragon (TM) 7c+ Gen 3
+Snapdragon (TM) 850
 Snapdragon (TM) 8c
 Snapdragon (TM) 8cx
 Snapdragon (TM) 8cx Gen 2
-Microsoft SQ1
-Microsoft SQ2
+Snapdragon (TM) 8cx Gen 3
+Snapdragon (R) X
+X1-26-100
+X1E-78-100
+X1E-80-100
+X1E-84-100
+X1P-42-100
+X1P-46-100
+X1P-64-100
+X1P-66-100
 EOF

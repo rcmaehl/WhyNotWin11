@@ -1,5 +1,6 @@
 #include-once
 
+#include <Array.au3>
 #include <GDIPlus.au3>
 #include <WinAPISysWin.au3>
 #include <WinAPIShellEx.au3>
@@ -65,6 +66,19 @@ Func _GDIPlus_EffectsSetParameters($pEffectObject, $tEffectParameters, $iSizeAdj
 	Return SetError($aResult[0], 0, $aResult[3])
 EndFunc   ;==>_GDIPlus_EffectsSetParameters
 
+Func _SetBkIcon($ControlID, $sIcon, $iIndex, $iWidth, $iHeight)
+
+    Local Static $STM_SETIMAGE = 0x0172
+    Local $hBitmap, $hImage, $hIcon
+
+    $hIcon = _WinAPI_ShellExtractIcon($sIcon, $iIndex, $iWidth, $iHeight)
+    $hBitmap = _GDIPlus_BitmapCreateFromHICON32($hIcon)
+	$hImage = _GDIPlus_BitmapCreateHBITMAPFromBitmap($hBitmap)
+
+	_WinAPI_DeleteObject(GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_BITMAP, $hImage))
+EndFunc
+
+#cs
 Func _SetBkIcon($ControlID, $iForeground, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
 
     Local Static $STM_SETIMAGE = 0x0172
@@ -84,17 +98,15 @@ Func _SetBkIcon($ControlID, $iForeground, $iBackground, $sIcon, $iIndex, $iWidth
     _GDIPlus_BitmapApplyEffect($hImage, $hEffect)
     _GDIPlus_EffectDispose($hEffect)
 
-    If $iBackground Then
-		$iBackground = "0xFF" & Hex($iBackground, 6)
-        $hBitmap = _GDIPlus_BitmapCreateFromScan0($iWidth, $iHeight)
-        $hGfx = _GDIPlus_ImageGetGraphicsContext($hBitmap)
-        _GDIPlus_GraphicsClear($hGfx, $iBackground)
-        _GDIPlus_GraphicsDrawImageRect($hGfx, $hImage, 0, 0, $iWidth, $iHeight)
-        _GDIPlus_ImageDispose($hImage)
-        $hImage = _GDIPlus_ImageClone($hBitmap)
-        _GDIPlus_GraphicsDispose($hGfx)
-        _GDIPlus_ImageDispose($hBitmap)
-    EndIf
+	$iBackground = "0x00" & Hex($iBackground, 6)
+	$hBitmap = _GDIPlus_BitmapCreateFromScan0($iWidth, $iHeight)
+	$hGfx = _GDIPlus_ImageGetGraphicsContext($hBitmap)
+	_GDIPlus_GraphicsClear($hGfx, $iBackground)
+	_GDIPlus_GraphicsDrawImageRect($hGfx, $hImage, 0, 0, $iWidth, $iHeight)
+	_GDIPlus_ImageDispose($hImage)
+	$hImage = _GDIPlus_ImageClone($hBitmap)
+	_GDIPlus_GraphicsDispose($hGfx)
+	_GDIPlus_ImageDispose($hBitmap)
 
     $hBkIcon = _GDIPlus_HICONCreateFromBitmap($hImage)
     GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_ICON, $hBkIcon)
@@ -105,7 +117,22 @@ Func _SetBkIcon($ControlID, $iForeground, $iBackground, $sIcon, $iIndex, $iWidth
     _GDIPlus_ImageDispose($hImage)
     Return SetError(0, 0, 1)
 EndFunc   ;==>_SetBkIcon
+#ce
 
+Func _SetBkSelfIcon($ControlID, $sIcon, $iIndex)
+
+	Local Static $STM_SETIMAGE = 0x0172
+	Local $hBitmap, $hImage, $hIcon
+
+	$hIcon = _Resource_GetAsIcon($iIndex, "RC_DATA", $sIcon)
+	$hBitmap = _GDIPlus_BitmapCreateFromHICON32($hIcon)
+	$hImage = _GDIPlus_BitmapCreateHBITMAPFromBitmap($hBitmap)
+
+	_WinAPI_DeleteObject(GUICtrlSendMsg($ControlID, $STM_SETIMAGE, $IMAGE_BITMAP, $hImage))
+
+EndFunc
+
+#cs
 Func _SetBkSelfIcon($ControlID, $iForeground, $iBackground, $sIcon, $iIndex, $iWidth, $iHeight)
 
     Local Static $STM_SETIMAGE = 0x0172
@@ -146,56 +173,95 @@ Func _SetBkSelfIcon($ControlID, $iForeground, $iBackground, $sIcon, $iIndex, $iW
     _GDIPlus_ImageDispose($hImage)
     Return SetError(0, 0, 1)
 EndFunc   ;==>_SetBkSelfIcon
+#ce
 
 Func _SetTheme($sName = False)
-	Local $aColors[4] ; Convert to [4][8] for 2.0 themes
 
+	Local $aTheme[3]
+	
 	Local $sVer
 	Local $dText = _WinAPI_GetSysColor($COLOR_WINDOWTEXT)
-	Local $sFile = "\theme.def"
+	Local $sFile = @ScriptDir & "\Themes\theme.def"
 	Local $dWindow = _WinAPI_GetSysColor($COLOR_WINDOW)
 	Local $bLTheme = RegRead("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme")
 	If @error Then $bLTheme = True
+	Local $GPTheme = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "ThemeFile")
 
-	#forceref $sVer
+	If $dWindow = 0x000000 Or ($dWindow = 0xFFFFFF And Not $bLTheme) Then
+		$dText = 0xFFFFFF
+		Local $aBgColors[5] = [0x070707, 0x191919, 0x0D0D0D, 0x070707, 0x070707] ; Background, Sidebar, Footer, Results, Settings
+	Else
+		Local $aBgColors[5] = [0xF8F8F8, 0xE6E6E6, 0xF2F2F2, 0xF8F8F8, 0xF8F8F8] ; Background, Sidebar, Footer, Results, Settings
+	EndIf
 
-	$aColors[0] = 0xF8F8F8 ; Backgrounds
-	$aColors[1] = $dText ;Text
-	$aColors[2] = 0xE6E6E6 ; Sidebar
-	$aColors[3] = 0xF2F2F2 ; Footer
-
-	If $sName Then $sFile = "\" & $sName
+	Local $aTxtColors[9] = [$dText, $dText, $dText, $dText, $dText, 0x0F8BD9, $dText, $dText, $dText] ; Main, Name, Version, Header, Footer, Links, Checks, Results, Settings
+	Local $aBgFiles[3] = _
+		[RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "SidebarImg"), _
+		RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "MainImg"), _
+		RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Robert Maehl Software\WhyNotWin11", "FooterImg")] ; Sidebar, Background, Footer
+		
+	If $sName Then $sFile = @ScriptDir & "\" & $sName
+	
+	If $GPTheme <> "" Then
+		If FileExists($GPTheme) Then $sName = $GPTheme
+	EndIf
 
 	Select
-		Case FileExists(@ScriptDir & $sFile)
-			$sVer = IniReadSection(@ScriptDir & $sFile, "MetaData")
-			If @error Then ; 1.0 Theme
-				$aColors[0] = IniRead(@ScriptDir & $sFile, "Colors", "Background", $aColors[0])
-				$aColors[1] = IniRead(@ScriptDir & $sFile, "Colors", "Text", $aColors[1])
-				$aColors[2] = IniRead(@ScriptDir & $sFile, "Colors", "Sidebar", $aColors[2])
-				$aColors[3] = IniRead(@ScriptDir & $sFile, "Colors", "Footer", $aColors[3])
-			Else
-				;;;
-			EndIf
-		Case $dWindow = 0x000000
-			ContinueCase
-		Case $dWindow = 0xFFFFFF And Not $bLTheme
-			$aColors[0] = 0x070707
-			$aColors[1] = 0xFFFFFF
-			$aColors[2] = 0x191919
-			$aColors[3] = 0x0D0D0D
-		Case 0xFFFFFF > $dWindow > 0x000000
-			$aColors[0] = $dWindow + 0xF8F8F9
-			$aColors[1] = $dText
-			$aColors[2] = $dWindow + 0xE6E6E7
-			$aColors[3] = $dWindow + 0xF2F2F3
+		Case FileExists($sFile)
+			$sVer = IniRead($sFile, "MetaData", "Version", "1")
+			Switch Number($sVer)
+				Case 1 ; Legacy Themes
+					$aBgColors[0] = IniRead($sFile, "Colors", "Background", $aBgColors[0])
+					$aBgColors[1] = IniRead($sFile, "Colors", "Sidebar", $aBgColors[1])
+					$aBgColors[2] = IniRead($sFile, "Colors", "Footer", $aBgColors[2])
+					$aBgColors[3] = IniRead($sFile, "Colors", "Background", $aBgColors[3])
+					$aBgColors[4] = IniRead($sFile, "Colors", "Background", $aBgColors[4])
+					$aTxtColors[0] = IniRead($sFile, "Colors", "Text", $aTxtColors[0])
+					$aTxtColors[1] = IniRead($sFile, "Colors", "Text", $aTxtColors[0])
+					$aTxtColors[2] = IniRead($sFile, "Colors", "Text", $aTxtColors[0])
+					$aTxtColors[3] = IniRead($sFile, "Colors", "Text", $aTxtColors[0])
+					$aTxtColors[4] = IniRead($sFile, "Colors", "Text", $aTxtColors[0])
+					$aTxtColors[5] = IniRead($sFile, "Colors", "Text", $aTxtColors[0])
+					$aTxtColors[6] = IniRead($sFile, "Colors", "Text", $aTxtColors[0])
+					$aTxtColors[7] = IniRead($sFile, "Colors", "Text", $aTxtColors[0])
+					$aTxtColors[8] = IniRead($sFile, "Colors", "Text", $aTxtColors[0])
+				Case 2 ; 2.0 Themes
+					$aBgColors[0] = IniRead($sFile, "Backgrounds", "Main", $aBgColors[0])
+					$aBgColors[1] = IniRead($sFile, "Backgrounds", "Sidebar", $aBgColors[1])
+					$aBgColors[2] = IniRead($sFile, "Backgrounds", "Footer", $aBgColors[2])
+					$aBgColors[3] = IniRead($sFile, "Backgrounds", "Results", $aBgColors[3])
+					$aBgColors[4] = IniRead($sFile, "Backgrounds", "Settings", $aBgColors[4])
+					$aTxtColors[0] = IniRead($sFile, "Text", "Main", $aTxtColors[0])
+					$aTxtColors[1] = IniRead($sFile, "Text", "Name", $aTxtColors[1])
+					$aTxtColors[2] = IniRead($sFile, "Text", "Version", $aTxtColors[2])
+					$aTxtColors[3] = IniRead($sFile, "Text", "Header", $aTxtColors[3])
+					$aTxtColors[4] = IniRead($sFile, "Text", "Footer", $aTxtColors[4])
+					$aTxtColors[5] = IniRead($sFile, "Text", "Links", $aTxtColors[5])
+					$aTxtColors[6] = IniRead($sFile, "Text", "Checks", $aTxtColors[6])
+					$aTxtColors[7] = IniRead($sFile, "Text", "Results", $aTxtColors[7])
+					$aTxtColors[8] = IniRead($sFile, "Text", "Settings", $aTxtColors[8])
+					$aBgFiles[0] = IniRead($sFile, "Files", "Sidebar", $aBgFiles[0])
+					$aBgFiles[1] = IniRead($sFile, "Files", "Background", $aBgFiles[1])
+					$aBgFiles[2] = IniRead($sFile, "Files", "Footer", $aBgFiles[2])		
+				Case Else
+					;;;
+			EndSwitch					
+		;Case 0xFFFFFF > $dWindow > 0x000000 ; Custom Window Color...
+			;$aColors[0] = $dWindow + 0xF8F8F8
+			;$aColors[1] = $dText
+			;$aColors[2] = $dWindow + 0xE6E6E6
+			;$aColors[3] = $dWindow + 0xF2F2F2
 		Case $bLTheme
-			;;;
+			; Use Default Colors
 		Case Else
 			;;;
 	EndSelect
 
-	Return $aColors
+	$aTheme[0] = $aBgColors
+	$aTheme[1] = $aTxtColors
+	$aTheme[2] = $aBgFiles
+
+	Return $aTheme
 EndFunc   ;==>_SetTheme
 
 Func _WinAPI_DwmSetWindowAttributeExt($hWnd, $iAttribute, $iData)

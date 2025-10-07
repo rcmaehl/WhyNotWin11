@@ -1,5 +1,7 @@
 #include-once
 #include <File.au3>
+#include <Memory.au3>
+#include <WinAPISys.au3>
 #include <WinAPIDiag.au3>
 
 #include ".\_WMIC.au3"
@@ -30,7 +32,9 @@ Func _BootCheck()
 	EndSwitch
 EndFunc   ;==>_BootCheck
 
-Func _CPUNameCheck($sCPU, $sFamily, $sVersion, $sWinFU = False)
+Func _CPUCheck($sCPU, $iFamily, $iModel, $iStepping, $sWinFU = False)
+
+	Local $PF_ARM_V81_ATOMIC_INSTRUCTIONS_AVAILABLE = 34
 
 	If $sWinFU Then
 		Local $sReg = RegRead("HKLM64\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TargetVersionUpgradeExperienceIndicators\" & $sWinFU, "RedReason")
@@ -41,20 +45,63 @@ Func _CPUNameCheck($sCPU, $sFamily, $sVersion, $sWinFU = False)
 		EndIf
 	EndIf
 
-	Local $iLines, $sLine, $ListFile
+	Local $sPSF1, $sCP4030
+	Local $aFile, $ListFile
 
+	; Microsoft Hardware Readiness PS Script Values
+	Switch RegRead("HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0", "VendorIdentifier")
+		Case "Qualcomm Technologies Inc"
+			If Not _WinAPI_IsProcessorFeaturePresent($PF_ARM_V81_ATOMIC_INSTRUCTIONS_AVAILABLE) Then
+				$sCP4030 = RegRead("HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0", "CP 4030")
+				If BitAND(BitShift($sCP4030, 20), 0xF) >= 2 Then Return True
+				Return False
+			EndIf
+		Case "GenuineIntel"
+			If $iFamily >= 6 And $iModel <= 95 And Not ($iFamily = 6 And $iModel = 85) Then
+				Return False
+			ElseIf $iFamily = 6 And ($iModel = 142 Or $iModel = 158) And $iStepping = 9 Then
+				$sPSF1 = RegRead("HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0", "Platform Specific Field 1")
+				If (($iModel = 142 And Not $sPSF1 = 16) Or ($iModel = 158 And Not $sPSF1 = 8)) Then Return False
+			EndIf
+		Case "AuthenticAMD"
+			If $iFamily < 23 Or $iFamily = 23 And ($iModel = 1 Or $iModel = 17) Then Return False
+	EndSwitch
+
+	; Borrowed from mq1n
 	Select
 		Case StringInStr($sCPU, "AMD")
-			If $sFamily >= 25 Then Return True
-			If StringInStr($sCPU, "1600") And StringInStr($sVersion, "Stepping 2") Then Return True ; 1600AF
+			If $iFamily >= 25 Then Return True
+			If StringInStr($sCPU, "1600") And $iStepping = 2 Then Return True ; 1600AF
 			$ListFile = "\WhyNotWin11\SupportedProcessorsAMD.txt"
 		Case StringInStr($sCPU, "Intel")
-			If $sFamily = 6 And StringRegExp($sVersion, ".*Model\s(1[6-9][0-9]|2[0-9]{2})\s.*") Then Return True
+			If $iFamily = 6 Then
+				Select
+					Case StringRegExp(String($iModel), "(1[6-9][0-9]|2[0-9]{2})")
+						ContinueCase
+					Case $iModel = 142 And StringRegExp(String($iStepping), "1[0-9]")
+						ContinueCase
+					Case $iModel = 158 And StringRegExp(String($iStepping), "1[0-9]")
+						Return True
+				EndSelect
+			EndIf
 			$ListFile = "\WhyNotWin11\SupportedProcessorsIntel.txt"
 		Case StringInStr($sCPU, "SnapDragon") Or StringInStr($sCPU, "Microsoft")
 			$ListFile = "\WhyNotWin11\SupportedProcessorsQualcomm.txt"
 	EndSelect
+	
+	If $ListFile = Null Then
+		Return SetError(1, 0, False)
+	Else
+		$aFile = FileReadToArray(@LocalAppDataDir & $ListFile)
+		If @error Then Return SetError(2, 0, False)
+		; Pad Array to increase search accuracy
+		For $iLoop = 0 To UBound($aFile) - 1
+			If StringInStr($sCPU & " ", $aFile[$iLoop] & " ") Then Return True
+		Next
+		Return SetError(3, 0, False)
+	EndIf
 
+	#cs
 	If $ListFile = Null Then
 		Return SetError(1, 0, False)
 	Else
@@ -69,13 +116,15 @@ Func _CPUNameCheck($sCPU, $sFamily, $sVersion, $sWinFU = False)
 				Case $iLine = $iLines
 					Return SetError(3, 0, False)
 					ExitLoop
-				Case StringInStr($sCPU, $sLine)
+				Case StringInStr($sCPU & " ", $sLine & " ")
 					Return True
 					ExitLoop
 			EndSelect
 		Next
 	EndIf
-EndFunc   ;==>_CPUNameCheck
+	#ce
+
+EndFunc   ;==>_CPUCheck
 
 Func _CPUCoresCheck($iCores, $iThreads, $sWinFU = False)
 
@@ -126,7 +175,9 @@ Func _DirectXStartCheck()
 EndFunc   ;==>_DirectXStartCheck
 
 Func _GetDirectXCheck(ByRef $aArray)
-	If TimerDiff($aArray[2]) > 120000 Then
+	If Not IsArray($aArray) Then
+		;;;
+	Elseif TimerDiff($aArray[2]) > 120000 Then
 		FileDelete($aArray[0])
 		Return SetError(0, 2, False)
 	ElseIf Not ProcessExists($aArray[1]) Then
@@ -219,6 +270,92 @@ Func _GPTCheck($iFlag)
 	EndSwitch
 EndFunc   ;==>_GPTCheck
 #ce
+
+Func _GPUNameCheck($sGPU)
+
+	Local $aGPUIDs[0]
+
+	If StringInStr($sGPU, ", ") Then ; Split multiple GPUs
+		$aGPUIDs = StringSplit($sGPU, ", ", $STR_ENTIRESPLIT + $STR_NOCOUNT)
+	Else
+		Redim $aGPUIDs[1]
+		$aGPUIDs[0] = $sGPU
+	EndIf
+
+	For $iLoop = 0 To UBound($aGPUIDs) - 1 Step 1
+		Select
+			Case StringRegExp($sGPU, ".*(RX|Vega|VII|AI).*") ; Modern AMD Dedicated GPUs
+				ContinueCase
+			Case StringRegExp($sGPU, ".*(Xe|UHD|Iris Plus|Iris Pro Graphics P?5(5|8)(0|5)[^0]|Iris Graphics 5(4|5)0[^0]|HD Graphics P?[5-9][0-9](5|0)[^0]).*") ; Modern Intel iGPUs
+				ContinueCase
+			Case StringRegExp($sGPU, ".*\s(A|B)([3-6]|(3|5|7)[0-9])0.*") ; Modern Intel Dedicated GPUs
+				ContinueCase
+			Case StringRegExp($sGPU, ".*(GTX (9|10|16|(Titan (X|V)))|RTX| Super|Max-Q).*") ; Modern Nvidia GPUs
+				ContinueCase
+			Case StringRegExp($sGPU, ".*GeForce (9(6-8)(0|5)M|MX(150|[2-9][0-9]0[^0])).*") ; Modern Nvidia Mobile GPUs
+				ContinueCase
+			Case StringRegExp($sGPU, ".*Quadro (M|P|GV|T).*") ; Modern Nvidia Workstation GPUs (incl Mobile)
+				ContinueCase
+			Case StringRegExp($sGPU, ".*Nvidia T(4|6|10)00.*"); TU117 Naming...
+				ContinueCase
+			Case StringRegExp($sGPU, ".*[^Fire].Pro (W(X|[5-9][0-9]00)|5(3|5|7)00).*") ; Modern AMD Workstation GPUs
+				ContinueCase
+			Case StringRegExp($sGPU, ".*Pro (4|5)[5-8](0|5)[^0].*") ; Modern AMD Mobile Workstation GPUs
+				ContinueCase
+			Case StringRegExp($sGPU, ".*Radeon (HD (779|877)0[^M]*|R7 (2|3)60|R9 380|R9 285|R9 (2|3)90|R9 295|R9 (Fury|Nano)|53(0|5)|Pro (Duo|SSG)).*") ; Older AMD Dedicated GPUs
+				ContinueCase
+			Case StringRegExp($sGPU, ".*Radeon (R9 M2(80|95)X|R9 M3(85|90)X|R9 M395[X]*|R9 M4(70|85)|5(40|50)|6(20|25|30)).*") ; Older AMD Mobile GPUs
+				ContinueCase
+			Case StringRegExp($sGPU, ".*FirePro W(4300|(5|[7-9])100).*") ; Older AMD Workstation GPUs
+				ContinueCase
+			Case StringRegExp($sGPU, ".*Tegra (K1|T1(24|32|86|94)[^0]|X1|T21(0|4)[^0]|T23(4|9)[^0]|T241[^0]|T2(5|6)4[^0]|X2).*") ; Nvidia ARM GPUs
+				ContinueCase
+			Case StringRegExp($sGPU, ".*(Xavier|Orin) ((AG|N)X|Nano).*") ; Nvidia ARM GPUs Continued
+				ContinueCase
+			Case StringRegExp($sGPU, ".*(VirtualBox|Hyper-V|VMware|Citrix).*") ; Virtual GPUs
+				Return SetError(0, 0, True)
+			Case Else
+				;;;
+		EndSelect
+	Next
+
+	Return SetError(0, 0, False)
+EndFunc   ;==>_GPUNameCheck
+
+Func _GPUHWIDCheck($sGPU)
+
+	Local $iEnd
+	Local $aGPU
+	Local $aIDs
+	Local $iMatch
+	Local $iStart
+	Local $aGPUIDs[0]
+	
+	If StringInStr($sGPU, ", ") Then ; Split multiple GPUs
+		$aGPUIDs = StringSplit($sGPU, ", ", $STR_ENTIRESPLIT + $STR_NOCOUNT)
+	Else
+		Redim $aGPUIDs[1]
+		$aGPUIDs[0] = $sGPU
+	EndIf
+
+	For $iLoop = 0 To UBound($aGPUIDs) - 1 Step 1
+		$aGPU = StringSplit($sGPU, "&", $STR_NOCOUNT)
+		If UBound($aGPU) < 2 Then Return False
+
+		$aIDs = FileReadToArray(@LocalAppDataDir & "\WhyNotWin11\PCI.ids")
+		If @error Then Return SetError(1, 0, False)
+
+		$iStart = _ArraySearch($aIDs, "^" & StringReplace($aGPU[0], "PCI\VEN_", ""), 0, 0, 0, 3)
+		$iEnd = _ArraySearch($aIDs, "^[0-9a-f]", $iStart+1, 0, 0, 3)
+		$iMatch = _ArraySearch($aIDs, "^" & @TAB & StringLower(StringReplace($aGPU[1], "DEV_", "")), $iStart+1, $iEnd, 0, 3)
+
+		If $iMatch Then 
+			If _GPUNameCheck($aIDs[$iMatch]) Then Return SetError(0, 0, True)
+		EndIf
+	Next
+	Return SetError(0, 0, False)
+EndFunc
+
 Func _InternetCheck()
 	Return _WinAPI_IsInternetConnected()
 EndFunc
@@ -293,28 +430,75 @@ Func _SpaceCheck($sDrive = Null, $sWinFU = False)
 		EndIf
 	EndIf
 
-	Local $sWindows
-
-	If $sDrive = Null Then
-		$sWindows = EnvGet("SystemDrive")
-	Else
-		$sWindows = $sDrive
-	EndIf
-
-	Local $iFree = Round(DriveSpaceTotal($sWindows) / 1024, 0)
-	Local $aDrives = DriveGetDrive($DT_FIXED)
 	Local $iDrives = 0
 
-	For $iLoop = 1 To $aDrives[0] Step 1
-		If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 60 Then $iDrives += 1
-	Next
+	Switch $sDrive
+		Case -1
+			For $iLoop = 0 To 25 Step 1
+				If Round(__SpaceCheckPE($iLoop) / 1073741824, 0) >= 60 Then $iDrives += 1
+			Next
 
-	If $iFree >= 64 Then
-		Return SetError($iFree, $iDrives, True)
-	Else
-		Return SetError($iFree, $iDrives, False)
-	EndIf
+			If $iDrives >= 1 Then
+				Return SetError(-1, $iDrives, True)
+			Else
+				Return SetError(-1, $iDrives, False)
+			EndIf
+		Case Null
+			$sDrive = EnvGet("SystemDrive")
+			ContinueCase
+		Case Else
+			Local $iFree = Round(DriveSpaceTotal($sDrive) / 1024, 0)
+			Local $aDrives = DriveGetDrive($DT_FIXED)
+
+			For $iLoop = 1 To $aDrives[0] Step 1
+				If Round(DriveSpaceTotal($aDrives[$iLoop]) / 1024, 0) >= 60 Then $iDrives += 1
+			Next
+
+			If $iFree >= 64 Then
+				Return SetError($iFree, $iDrives, True)
+			Else
+				Return SetError($iFree, $iDrives, False)
+			EndIf
+	EndSwitch
+
 EndFunc   ;==>_SpaceCheck
+
+Func __SpaceCheckPE($iDisk)
+
+	Local $sDescriptor = "\\.\PHYSICALDRIVE" & $iDisk
+	Local Const $eIOCTL_DISK_GET_LENGTH_INFO = 0x0007405C
+
+	Local $pBuffer = _MemGlobalAlloc(8, $GPTR)
+	Local $iBytesReturned = 0
+	Local $hFile = _WinAPI_CreateFile($sDescriptor, 2, 2, 2, 8)	; file exists, open for reading, OS file
+	If @error Then Return SetError(-1, -1, False)
+
+	Local $aCall = DllCall("kernel32.dll", "int", "DeviceIoControl", _
+		"ptr", $hFile, _
+		"dword", $eIOCTL_DISK_GET_LENGTH_INFO, _
+		'ptr', 0, _
+		'dword', 0, _
+		'ptr', $pBuffer, _
+		'dword', 8, _ 
+		"dword*", $iBytesReturned, _
+		"ptr", 0)
+	Local $bErr = @error
+
+	Local $iDiskSize = -1
+	If Not @error And $aCall[0] Then
+		Local $aSize = DllCall("msvcrt.dll", "int64:cdecl", "memcpy", _
+			"int64*", 0, _
+			"ptr", $pBuffer, _
+			"int", 8)
+		If Not @error Then $iDiskSize = $aSize[1]
+	EndIf
+
+	_MemGlobalFree($pBuffer)
+	_WinAPI_CloseHandle($hFile)	; generates new @error
+	If $bErr Or @error Then Return SetError(-2, -2, False)
+
+	Return $iDiskSize
+EndFunc
 
 Func _TPMCheck($sWinFU = False)
 
@@ -332,7 +516,7 @@ Func _TPMCheck($sWinFU = False)
 			ContinueCase
 		Case _GetTPMInfo(1) = False
 			Return SetError(0, 0, False)
-		Case _GetTPMInfo(0) = True And _GetTPMInfo(3) <> "OK"
+		Case _GetTPMInfo(0) = True And _GetTPMInfo(3) <> "OK" And Not IsAdmin()
 			Return SetError(3, 0 , False)
 		Case _GetTPMInfo(0) = True And Number(_GetTPMInfo(2)) >= 2.0
 			Return SetError(Number(_GetTPMInfo(2)), 0, True)

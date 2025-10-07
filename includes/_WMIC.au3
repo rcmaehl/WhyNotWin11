@@ -1,15 +1,31 @@
 #include-once
 
 #include <Array.au3>
+#include <WinAPISys.au3>
 #include <StringConstants.au3>
 
 #include "GetDiskInfo.au3"
 
+Func __CreateWMIObjects()
+	Local Static $Obj_WMIService
+	Local Static $Obj_WMIServiceTPM
+	
+	$Obj_WMIService = ObjGet('winmgmts:\\.\root\cimv2')
+	If IsAdmin() Then $Obj_WMIServiceTPM = ObjGet('winmgmts:\\.\root\cimv2\Security\MicrosoftTPM')
+	Local $aHandles[2] = [$Obj_WMIService, $Obj_WMIServiceTPM]
+	Return $aHandles
+EndFunc
+
+Func __GetWMIObjects()
+	Local Static $aHandles = __CreateWMIObjects()
+	Return $aHandles
+EndFunc
+
 Func _GetBIOSInfo($iFlag = 0)
 	Local Static $sSMBIOSBIOSVersion
+	Local Static $Obj_WMIService = __GetWMIObjects()[0]
 
 	If Not $sSMBIOSBIOSVersion <> "" Then
-		Local $Obj_WMIService = ObjGet('winmgmts:\\.\root\cimv2') ;
 		If (IsObj($Obj_WMIService)) And (Not @error) Then
 			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_BIOS')
 
@@ -38,9 +54,11 @@ Func _GetCPUInfo($iFlag = 0)
 	Local Static $sCPUs
 	Local Static $sVersion
 	Local Static $sFamily
+	Local Static $sModel
+	Local Static $sStepping
+	Local Static $Obj_WMIService = __GetWMIObjects()[0]
 
 	If Not $vName <> "" Then
-		Local $Obj_WMIService = ObjGet('winmgmts:\\.\root\cimv2') ;
 		If (IsObj($Obj_WMIService)) And (Not @error) Then
 			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_Processor')
 
@@ -52,7 +70,9 @@ Func _GetCPUInfo($iFlag = 0)
 				$sSpeed = $Obj_Item.MaxClockSpeed
 				$sArch = $Obj_Item.AddressWidth
 				$sVersion = $Obj_Item.Caption
-				$sFamily = $Obj_Item.Caption
+				$sFamily = $Obj_Item.Level
+				$sModel = $Obj_Item.Revision ; Doesn't work for Intel...
+				$sStepping = $Obj_Item.Stepping ; Doesn't work for Intel...
 			Next
 
 			$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_ComputerSystem')
@@ -69,10 +89,6 @@ Func _GetCPUInfo($iFlag = 0)
 			$sSpeed = StringRegExpReplace($vName[1], "[^[:digit:]]", "") & "0"
 			$vName = $vName[0]
 		EndIf
-		If StringRegExp($sFamily, "[^0-9]") Then
-				$sFamily = StringRegExp($sFamily, "Family\s\d+\sModel", $STR_REGEXPARRAYMATCH)[0]
-				$sFamily = StringRegExpReplace($sFamily, "[^0-9]", "")
-		EndIf
 	EndIf
 	Switch $iFlag
 		Case 0
@@ -88,7 +104,19 @@ Func _GetCPUInfo($iFlag = 0)
 		Case 5
 			Return String($sVersion)
 		Case 6
-			Return $sFamily
+			Return Number($sFamily)
+		Case 7
+			If StringInStr($vName, "Intel") Then
+				Return BitAND(BitShift(_WinAPI_GetSystemInfo()[9], 8), 0xFF)
+			Else
+				Return BitAND(BitShift($sModel, 8), 0xFF)
+			EndIf
+		Case 8
+			If StringInStr($vName, "Intel") Then
+				Return BitAND(_WinAPI_GetSystemInfo()[9], 0xFF)
+			Else
+				Return BitAND($sStepping, 0xFF)
+			EndIf
 		Case Else
 			Return 0
 	EndSwitch
@@ -97,9 +125,9 @@ EndFunc   ;==>_GetCPUInfo
 Func _GetDiskInfo($iFlag = 0)
 	Local Static $sType
 	Local Static $aDisks[2]
+	Local Static $Obj_WMIService = __GetWMIObjects()[0]
 
 	If Not $sType <> "" Then
-		Local $Obj_WMIService = ObjGet('winmgmts:\\.\root\cimv2') ;
 		If (IsObj($Obj_WMIService)) And (Not @error) Then
 			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_DiskPartition where BootPartition=True')
 
@@ -188,14 +216,19 @@ Func _GetDiskProperties($iFlag = 0)
 	SetError(1, 3, "Error_NoDataReturned")
 EndFunc   ;==>_GetDiskProperties
 
-Func _GetGPUInfo($iFlag = 0)
+Func _GetGPUInfo($iFlag = 0, $bWinPE = False)
 	Local Static $sName
-	Local Static $sMemory
+	Local Static $sHWID
+	Local Static $Col_Items
+	Local Static $Obj_WMIService = __GetWMIObjects()[0]
 
 	If Not $sName <> "" Then
-		Local $Obj_WMIService = ObjGet('winmgmts:\\.\root\cimv2') ;
 		If (IsObj($Obj_WMIService)) And (Not @error) Then
-			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_VideoController')
+			If $bWinPE Then
+				$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_PNPEntity where Name="Video Controller (VGA Compatible)"')
+			Else
+				$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_VideoController')
+			EndIf
 
 			Local $Obj_Item
 			For $Obj_Item In $Col_Items
@@ -206,9 +239,15 @@ Func _GetGPUInfo($iFlag = 0)
 						ContinueCase
 					Case "Microsoft Remote Display Adapter"
 						ContinueLoop
+					Case "Virtual Desktop Monitor"
+						$sName &= "VM GPU, "
+						$sHWID &= $Obj_Item.PNPDeviceID & ", "
+					Case "Video Controller (VGA Compatible)"
+						$sName &= "Inactive GPU, "
+						$sHWID &= $Obj_Item.PNPDeviceID & ", "
 					Case Else
 						$sName &= $Obj_Item.Name & ", "
-						$sMemory = $Obj_Item.AdapterRAM
+						$sHWID &= $Obj_Item.PNPDeviceID & ", "
 				EndSwitch
 			Next
 		Else
@@ -219,7 +258,7 @@ Func _GetGPUInfo($iFlag = 0)
 		Case 0
 			Return StringTrimRight(String($sName), 2)
 		Case 1
-			Return StringStripWS(String($sMemory), $STR_STRIPTRAILING)
+			Return StringTrimRight(String($sHWID), 2)
 		Case Else
 			Return 0
 	EndSwitch
@@ -228,9 +267,9 @@ EndFunc   ;==>_GetGPUInfo
 Func _GetMotherboardInfo($iFlag = 0)
 	Local Static $sManufacturer
 	Local Static $sProduct
+	Local Static $Obj_WMIService = __GetWMIObjects()[0]
 
 	If Not $sManufacturer <> "" Then
-		Local $Obj_WMIService = ObjGet('winmgmts:\\.\root\cimv2') ;
 		If (IsObj($Obj_WMIService)) And (Not @error) Then
 			Local $Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_Baseboard')
 
@@ -245,7 +284,7 @@ Func _GetMotherboardInfo($iFlag = 0)
 		Switch $sManufacturer
 			Case "ASUSTek COMPUTER INC."
 				$sManufacturer = "ASUS"
-			Case "Gigabyte Technology Co., Ltd"
+			Case "Gigabyte Technology Co., Ltd."
 				$sManufacturer = "Gigabyte"
 			Case "Microsoft Corporation"
 				$sManufacturer = "Microsoft"
@@ -274,12 +313,15 @@ Func _GetTPMInfo($iFlag = 0)
 	Local Static $sName
 	Local Static $sPresent
 	Local Static $sStatus
+	Local Static $Col_Items
+
+	Local Static $Obj_WMIService = __GetWMIObjects()[0]
+	Local Static $Obj_WMIServiceTPM = __GetWMIObjects()[1]
+
 	If IsAdmin() Then
-		Local $Obj_WMIService, $Col_Items
 		If Not $sActivated <> "" Then
-			$Obj_WMIService = ObjGet('winmgmts:\\.\root\cimv2\Security\MicrosoftTPM') ;
-			If (IsObj($Obj_WMIService)) And (Not @error) Then
-				$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_TPM')
+			If (IsObj($Obj_WMIServiceTPM)) And (Not @error) Then
+				$Col_Items = $Obj_WMIServiceTPM.ExecQuery('Select * from Win32_TPM')
 				For $Obj_Item In $Col_Items
 					$sActivated = $Obj_Item.IsActivated_InitialValue
 					$sEnabled = $Obj_Item.IsEnabled_InitialValue
@@ -301,7 +343,6 @@ Func _GetTPMInfo($iFlag = 0)
 		EndSwitch
 	Else
 		If Not $sPresent <> "" Then
-			$Obj_WMIService = ObjGet('winmgmts:\\.\root\cimv2') ;
 			If (IsObj($Obj_WMIService)) And (Not @error) Then
 				$Col_Items = $Obj_WMIService.ExecQuery('Select * from Win32_PNPEntity where Service="TPM"')
 				For $Obj_Item In $Col_Items

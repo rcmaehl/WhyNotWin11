@@ -1,0 +1,33 @@
+#2.0 themes are not yet implemented
+#Rename file to theme.def
+[MetaData]
+Name=Thanks Steve
+Version=2.0
+Designer=rcmaehl
+
+[Backgrounds]
+#Set Any to -2 for Transparent
+Main=0xFFFFFF
+Sidebar=0xCECDCD
+Footer=0x8FD5FB
+Results=-2
+Settings=0xFFFFFF
+
+[Text]
+Main=0x000000
+Name=0x000000
+Version=0x000000
+Header=0xFFFFFF
+Footer=0x000000
+Links=0x0F8BD9
+Checks=0xFFFFFF
+Results=0xCCCCCC
+Settings=0x000000
+
+[Files]
+# Sidebar is 100x600
+Sidebar=Themes\Example2.0ThemeStevesidebar.png
+# Background is 700x560
+Background=Themes\Example2.0ThemeStevebackground.png
+# Footer is 700x40
+Footer=Themes\Example2.0ThemeStevefooter.png
