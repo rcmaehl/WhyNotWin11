@@ -1,4 +1,4 @@
-2025.09.08
+2025.10.6
 Atom(R) x6200FE
 Atom(R) x6211E
 Atom(R) x6212RE
@@ -1045,6 +1045,7 @@ Xeon(R) W3-2435
 Xeon(R) W5-2445
 Xeon(R) W5-2455X
 Xeon(R) W5-2465X
+Xeon(R) W5-2555X
 Xeon(R) W5-3423
 Xeon(R) W5-3425
 Xeon(R) W5-3433
@@ -1054,6 +1055,7 @@ Xeon(R) W7-2495X
 Xeon(R) W7-3445
 Xeon(R) W7-3455
 Xeon(R) W7-3465X
+Xeon(R) W7-3565X
 Xeon(R) W9-3475X
 Xeon(R) W9-3495X
 EOF
