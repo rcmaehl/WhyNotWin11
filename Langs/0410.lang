@@ -2,7 +2,7 @@
 Language=Italian - Italy
 
 Translator=MarioMarietto, davide93, LucaPolese, bovirus
-Version=2.6.1.0
+Version=2.7.0.0
 [Font]
 Extra Large=24
 Large=18
@@ -46,6 +46,7 @@ Check Skipped=Verifica saltata
 Listed as Compatible=Elencato come compatibile
 GPT Detected=Rilevato GPT
 GPT Not Detected=Non rilevato GPT
+Clean Install=Installazione pulita
 Enabled=abilitato
 Supported=supportato
 TPM Status Error=Errore stato TPM
@@ -95,7 +96,7 @@ Boot=Un metodo usato dalla scheda madre per caricare Windows. I risultati "legac
 CPU Name=La CPU che è installata nel computer. La compatibilità è soggetta a modifiche. Richiede la sostituzione fisica nei PC Desktop; Non sostituibile nei laptop.
 CPU Cores=Il numero di attività che la CPU può elaborare contemporaneamente. Richiede la sostituzione fisica nei PC Desktop; Non sostituibile nei laptop.
 CPU Speed=La velocità con la quale la CPU elabora le attività. Richiede la sostituzione fisica nei PC Desktop; Non sostituibile sui laptop.
-DirectX=La versione di DirectX DDI/Feature Level supportata dalla scheda grafica. Questo non è relativo alla versione del software DirectX. Le schede "DirectX 12 API" potrebbero non passare questo controllo.
+DirectX=La versione di DirectX DDI/livello funzionalità supportata dalla scheda grafica. Questo non è relativo alla versione del software DirectX. Le schede "DirectX 12 API" potrebbero non passare questo controllo.
 Disk Type=Il formato con il quale i dati sono archiviati nel disco. I risultati diversi da GPT possono essere corretti usando lo strumento MBR2GPT di Microsoft.
 RAM=La quantità di memoria RAM installata nel computer. Aggiornabile fisicamente nei PC Desktop; Aggiornabile fisicamente anche nei laptop di fascia alta.
 Secure Boot=Un metodo usato dalla scheda madre per caricare Windows. Se non viene rilevato, può essere risolto nelle schede madri più recenti nelle impostazioni BIOS/UEFI. Fai riferimento al manuale della scheda madre.
