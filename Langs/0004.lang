@@ -87,7 +87,7 @@ Get Windows 11 Now=立即获取Windows 11
 Cores=# 核心
 Threads=# 线程
 Not Supported=# 不支持
-May Report DirectX 12 Incorrectly=# 可能报告DirectX12不准确
+May Report DirectX 12 Incorrectly=# 可能报告DirectX 12不准确
 Drive(s) Meet Requirements=# 磁盘驱动器/SSD符合要求
 [Descriptions]
 Architecture=您的 CPU 和操作系统可以同时处理的数据量。如果结果为 32 位操作系，则您需要擦除磁盘并安装新的 Windows 11。32 位 CPU 需要更换 CPU。
