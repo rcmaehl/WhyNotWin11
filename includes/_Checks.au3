@@ -67,6 +67,9 @@ Func _CPUCheck($sCPU, $iFamily, $iModel, $iStepping, $sWinFU = False)
 			If $iFamily < 23 Or $iFamily = 23 And ($iModel = 1 Or $iModel = 17) Then Return False
 	EndSwitch
 
+	Return True
+
+	#cs
 	; Borrowed from mq1n
 	Select
 		Case StringInStr($sCPU, "AMD")
@@ -101,7 +104,6 @@ Func _CPUCheck($sCPU, $iFamily, $iModel, $iStepping, $sWinFU = False)
 		Return SetError(3, 0, False)
 	EndIf
 
-	#cs
 	If $ListFile = Null Then
 		Return SetError(1, 0, False)
 	Else
