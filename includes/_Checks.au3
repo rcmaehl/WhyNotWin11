@@ -332,6 +332,8 @@ Func _GPUHWIDCheck($sGPU)
 	Local $iMatch
 	Local $iStart
 	Local $aGPUIDs[0]
+
+	Local $aReturn[3] = [0, 0, False] ; Error, Extended, Return
 	
 	If StringInStr($sGPU, ", ") Then ; Split multiple GPUs
 		$aGPUIDs = StringSplit($sGPU, ", ", $STR_ENTIRESPLIT + $STR_NOCOUNT)
@@ -342,20 +344,25 @@ Func _GPUHWIDCheck($sGPU)
 
 	For $iLoop = 0 To UBound($aGPUIDs) - 1 Step 1
 		$aGPU = StringSplit($sGPU, "&", $STR_NOCOUNT)
-		If UBound($aGPU) < 2 Then Return False
+		If UBound($aGPU) < 2 Then ContinueLoop
 
 		$aIDs = FileReadToArray(@LocalAppDataDir & "\WhyNotWin11\PCI.ids")
-		If @error Then Return SetError(1, 0, False)
+		If @error Then
+			$aReturn[0] = 0
+			$aReturn[1] = 3
+			ExitLoop
+		EndIf
 
 		$iStart = _ArraySearch($aIDs, "^" & StringReplace($aGPU[0], "PCI\VEN_", ""), 0, 0, 0, 3)
 		$iEnd = _ArraySearch($aIDs, "^[0-9a-f]", $iStart+1, 0, 0, 3)
 		$iMatch = _ArraySearch($aIDs, "^" & @TAB & StringLower(StringReplace($aGPU[1], "DEV_", "")), $iStart+1, $iEnd, 0, 3)
+		If @error Then ContinueLoop
 
-		If $iMatch Then 
-			If _GPUNameCheck($aIDs[$iMatch]) Then Return SetError(0, 0, True)
+		If $iMatch Then
+			If _GPUNameCheck($aIDs[$iMatch]) Then $aReturn[2] = True
 		EndIf
 	Next
-	Return SetError(0, 0, False)
+	Return SetError($aReturn[0], $aReturn[1], $aReturn[2])
 EndFunc
 
 Func _InternetCheck()
