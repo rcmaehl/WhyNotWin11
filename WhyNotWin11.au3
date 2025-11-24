@@ -1287,6 +1287,9 @@ Func Main(ByRef $aResults, ByRef $aExtended, ByRef $aSkips, ByRef $aOutput, $bFU
 									Case 2
 										_GUICtrlSetState($hCheck[5][0], $iUnsure)
 										GUICtrlSetData($hCheck[5][2], _Translate($aMUI[1], "Check Timed Out"))
+									Case 3
+										_GUICtrlSetState($hCheck[5][0], $iUnsure)
+										GUICtrlSetData($hCheck[5][2], _Translate($aMUI[1], "PCI IDs Missing"))
 								EndSwitch
 							Case 1
 								_GUICtrlSetState($hCheck[5][0], $iPass)
