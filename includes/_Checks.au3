@@ -346,11 +346,13 @@ Func _GPUHWIDCheck($sGPU)
 		$aGPU = StringSplit($sGPU, "&", $STR_NOCOUNT)
 		If UBound($aGPU) < 2 Then ContinueLoop
 
-		$aIDs = FileReadToArray(@LocalAppDataDir & "\WhyNotWin11\PCI.ids")
-		If @error Then
-			$aReturn[0] = 0
-			$aReturn[1] = 3
-			ExitLoop
+		If Not IsArray($aIDs) Then
+			$aIDs = FileReadToArray(@LocalAppDataDir & "\WhyNotWin11\PCI.ids")
+			If @error Then
+				$aReturn[0] = 0
+				$aReturn[1] = 3
+				ExitLoop
+			EndIf
 		EndIf
 
 		$iStart = _ArraySearch($aIDs, "^" & StringReplace($aGPU[0], "PCI\VEN_", ""), 0, 0, 0, 3)
