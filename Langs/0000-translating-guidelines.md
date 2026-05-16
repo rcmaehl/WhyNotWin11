@@ -12,6 +12,7 @@
 * Ideally, file must be at least UTF-8 encoded.
    * Files will be converted to UTF-16 upon usage
    * The GitHub editor will save this way by default
+* After translating new language, put it to `CopyLangFiles` method in [_Resources.au3](../includes/_Resources.au3) file.
 
 ## Testing Translations Locally
 1. Go to folder: *%localappdata%\WhyNotWin11\langs*
